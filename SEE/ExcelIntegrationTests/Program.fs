@@ -11,4 +11,10 @@ let dnaMult x y = x * y
 
 // take an array as argument
 [<ExcelFunction(Description="Sum array elements")>]
-let dnaSumArr (xs : double[]) = Array.fold (+) 0.0 xs   
+let dnaSumArr (xs : double[]) = Array.fold (+) 0.0 xs
+
+// take an array2D as argument
+[<ExcelFunction(Description="Sum array elements")>]
+let dnaSumArr2d (xs : double[,]) = 
+    xs |> Seq.cast<double>
+       |> Seq.fold (+) 0.0
