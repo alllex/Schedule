@@ -27,10 +27,9 @@ and ILesson =
     abstract member GetDenominator : unit -> Option<IElementaryLesson>
     abstract member GetElementaryLessonList : unit -> List<IElementaryLesson>
 
-and
-    ILecturer =
+and ILecturer =
     abstract member Name : string with set, get
-    abstract member SetLesson : Day -> LessonNumber -> ILesson 
+    abstract member SetLesson : Day -> LessonNumber -> ILesson  -> unit
     abstract member GetLesson : Day -> LessonNumber -> ILesson
 
 and IClassroom =
@@ -38,7 +37,7 @@ and IClassroom =
     abstract member Address : string with set, get
     abstract member Projector : bool with set, get
     abstract member Computers : bool with set, get
-    abstract member SetLesson : Day -> LessonNumber -> ILesson 
+    abstract member SetLesson : Day -> LessonNumber -> ILesson  -> unit
     abstract member GetLesson : Day -> LessonNumber -> ILesson
 
 and IGroup =
@@ -47,7 +46,7 @@ and IGroup =
     abstract member AddSubgroup : IGroup -> unit
     abstract member RemoveSubgroup : IGroup -> unit
     abstract member GetSubgroup : string -> IGroup
-    abstract member SetLesson : Day -> LessonNumber -> ILesson 
+    abstract member SetLesson : Day -> LessonNumber -> ILesson -> unit
     abstract member GetLesson : Day -> LessonNumber -> ILesson 
 
 type ISchedule =
