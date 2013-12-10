@@ -25,6 +25,7 @@ and ILesson =
     abstract member GetElementaryLesson : unit -> Option<IElementaryLesson>
     abstract member GetNumerator : unit -> Option<IElementaryLesson>
     abstract member GetDenominator : unit -> Option<IElementaryLesson>
+    abstract member GetElementaryLessonList : unit -> List<IElementaryLesson>
 
 and
     ILecturer =
@@ -33,7 +34,7 @@ and
     abstract member GetLesson : Day -> LessonNumber -> ILesson
 
 and IClassroom =
-    abstract member Number : int with set, get
+    abstract member Number : string with set, get
     abstract member Address : string with set, get
     abstract member Projector : bool with set, get
     abstract member Computers : bool with set, get
@@ -51,8 +52,8 @@ and IGroup =
 
 type ISchedule =
 //  1
-    abstract member SaveData : ISchedule -> unit
-    abstract member LoadData : unit -> ISchedule
+    abstract member SaveData : string -> unit
+    abstract member LoadData : unit -> string
 //  2
     abstract member AddGroup : IGroup -> unit
     abstract member RemoveGroup : IGroup -> unit
@@ -60,6 +61,9 @@ type ISchedule =
     abstract member RemoveLecturer : ILecturer -> unit
     abstract member AddClassroom : IClassroom -> unit
     abstract member RemoveClassroom : IClassroom -> unit
+    abstract member GetGroup : string -> IGroup
+    abstract member GetLecturer : string -> ILecturer
+    abstract member GetClassroom : string -> IClassroom
 //  3
     abstract member Undo : unit -> unit
     abstract member Redo : unit -> unit
