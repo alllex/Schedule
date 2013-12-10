@@ -49,11 +49,11 @@ and IGroup =
     abstract member SetLesson : Day -> LessonNumber -> ILesson -> unit
     abstract member GetLesson : Day -> LessonNumber -> ILesson 
 
-type ISchedule =
-//  1
+type IScheduleMemory =
     abstract member SaveData : string -> unit
     abstract member LoadData : unit -> string
-//  2
+
+type IScheduleData =
     abstract member AddGroup : IGroup -> unit
     abstract member RemoveGroup : IGroup -> unit
     abstract member AddLecturer : ILecturer -> unit
@@ -63,6 +63,7 @@ type ISchedule =
     abstract member GetGroup : string -> IGroup
     abstract member GetLecturer : string -> ILecturer
     abstract member GetClassroom : string -> IClassroom
-//  3
+
+type IScheduleAction =
     abstract member Undo : unit -> unit
     abstract member Redo : unit -> unit
