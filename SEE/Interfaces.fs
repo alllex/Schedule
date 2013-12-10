@@ -5,9 +5,9 @@ type Time = int
 type LessonType = Empty | Full | Partial
 
 type IElementaryLesson =
-    abstract member Name : string
-    abstract member Lecturer : ILecturer
-    abstract member Classroom : IClassroom
+    abstract member Name : string with set, get
+    abstract member Lecturer : ILecturer with set, get
+    abstract member Classroom : IClassroom with set, get
     abstract member AddGroup : IGroup -> unit
     abstract member RemoveGroup : IGroup -> unit
     abstract member CheckGroup : IGroup -> bool
@@ -22,23 +22,26 @@ and ILesson =
 
 and
     ILecturer =
-    abstract member Name : string
-    abstract member Lesson : Time -> ILesson
+    abstract member Name : string with set, get
+    abstract member SetLesson : Time -> ILesson 
+    abstract member GetLesson : Time -> ILesson
 
 and IClassroom =
-    abstract member Number : int
-    abstract member Address : string
-    abstract member Projector : bool
-    abstract member Computers : bool
-    abstract member Lesson : Time -> ILesson
+    abstract member Number : int with set, get
+    abstract member Address : string with set, get
+    abstract member Projector : bool with set, get
+    abstract member Computers : bool with set, get
+    abstract member SetLesson : Time -> ILesson 
+    abstract member GetLesson : Time -> ILesson
 
 and IGroup =
-    abstract member Identifier : string
+    abstract member Identifier : string with set, get
     abstract member ExternalGroup : Option<IGroup>
     abstract member AddSubgroup : IGroup -> unit
     abstract member RemoveSubgroup : IGroup -> unit
     abstract member GetSubgroup : string -> IGroup
-    abstract member Lesson : Time -> ILesson
+    abstract member SetLesson : Time -> ILesson 
+    abstract member GetLesson : Time -> ILesson 
 
 type ISchedule =
 //  1
@@ -52,5 +55,5 @@ type ISchedule =
     abstract member AddClassroom : IClassroom -> unit
     abstract member RemoveClassroom : IClassroom -> unit
 //  3
-    abstract member Undo : Operation -> unit
-    abstract member Redo : Operation -> unit
+    abstract member Undo : unit -> unit
+    abstract member Redo : unit -> unit
