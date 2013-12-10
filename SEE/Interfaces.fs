@@ -1,6 +1,10 @@
 ﻿open System
 
-type Time = int
+type Day = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday
+
+type LessonNumber = int
+
+type TimeLimitation = string
 
 type LessonType = Empty | Full | Partial
 
@@ -12,27 +16,29 @@ type IElementaryLesson =
     abstract member RemoveGroup : IGroup -> unit
     abstract member CheckGroup : IGroup -> bool
     abstract member ShowGroupList : unit -> List<IGroup>
-//  (#7 ?)
+    abstract member Day : Day with set, get
+    abstract member LessonNumber : LessonNumber with set, get
+    abstract member TimeLimitation : TimeLimitation with set, get
 
 and ILesson =
     abstract member GetType : unit -> LessonType
     abstract member GetElementaryLesson : unit -> Option<IElementaryLesson>
-    abstract member GetNumerator : unit -> IElementaryLesson
-    abstract member GetDenominator : unit -> IElementaryLesson
+    abstract member GetNumerator : unit -> Option<IElementaryLesson>
+    abstract member GetDenominator : unit -> Option<IElementaryLesson>
 
 and
     ILecturer =
     abstract member Name : string with set, get
-    abstract member SetLesson : Time -> ILesson 
-    abstract member GetLesson : Time -> ILesson
+    abstract member SetLesson : Day -> LessonNumber -> ILesson 
+    abstract member GetLesson : Day -> LessonNumber -> ILesson
 
 and IClassroom =
     abstract member Number : int with set, get
     abstract member Address : string with set, get
     abstract member Projector : bool with set, get
     abstract member Computers : bool with set, get
-    abstract member SetLesson : Time -> ILesson 
-    abstract member GetLesson : Time -> ILesson
+    abstract member SetLesson : Day -> LessonNumber -> ILesson 
+    abstract member GetLesson : Day -> LessonNumber -> ILesson
 
 and IGroup =
     abstract member Identifier : string with set, get
@@ -40,8 +46,8 @@ and IGroup =
     abstract member AddSubgroup : IGroup -> unit
     abstract member RemoveSubgroup : IGroup -> unit
     abstract member GetSubgroup : string -> IGroup
-    abstract member SetLesson : Time -> ILesson 
-    abstract member GetLesson : Time -> ILesson 
+    abstract member SetLesson : Day -> LessonNumber -> ILesson 
+    abstract member GetLesson : Day -> LessonNumber -> ILesson 
 
 type ISchedule =
 //  1
