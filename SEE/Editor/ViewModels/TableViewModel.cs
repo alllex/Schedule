@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -11,9 +12,6 @@ namespace Editor.ViewModels
 {
     class TableRecord : NotificationObject
     {
-        public int RowIndex { get; set; }
-        public int ColumnIndex { get; set; }
-
         private string _data;
         public string Data
         {
@@ -27,61 +25,44 @@ namespace Editor.ViewModels
                 }
             }
         }
-
-        private bool _isEdited;
-        public bool IsEdited
-        {
-            get { return _isEdited; }
-            set
-            {
-                if (_isEdited != value)
-                {
-                    _isEdited = value;
-                    RaisePropertyChanged(() => IsEdited);
-                }
-            }
-        }
     }
 
     class TableViewModel : BaseViewModel
     {
-        private String[,] table;
-        private ObservableCollection<TableRecord> _tableRecords = new ObservableCollection<TableRecord>();
+        private const int Rows = 3;
+        private const int Cols = 3;
+        private DataTable table = new DataTable();
 
         public TableViewModel()
         {
-            const int rows = 3;
-            const int cols = 3;
-            table = new string[rows, cols];
-            for (int i = 0; i < rows; i++)
+            for (int j = 0; j < Cols; j++)
             {
-                for (int j = 0; j < cols; j++)
-                {
-                    table[i, j] = String.Format("[{0}, {1}]", i + 1, j + 1);
-                }
+                table.Columns.Add(String.Format("Column {0}", j));
             }
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < Rows; i++)
             {
-                for (int j = 0; j < cols; j++)
+                var arr = new object[Cols];
+                for (int j = 0; j < Cols; j++)
                 {
-                    _tableRecords.Add(new TableRecord{RowIndex = i, ColumnIndex = j, Data = table[i, j]});
+                    arr[j] = new TableRecord{Data = String.Format("[{0}, {1}]", i, j)};
                 }
+                table.Rows.Add(arr);
             }
         }
 
         public int RowCount
         {
-            get { return table.GetLength(0); }
+            get { return Rows; }
         }
 
         public int ColumnCount
         {
-            get { return table.GetLength(1); }
+            get { return Cols; }
         }
 
-        public ObservableCollection<TableRecord> TableRecords
+        public DataTable TableRecords
         {
-            get { return _tableRecords; }
+            get { return table; }
         }
     }
 }

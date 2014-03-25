@@ -13,47 +13,27 @@
     </UserControl.Resources>
     <StackPanel DataContext="{StaticResource TableViewModel}">
         <Button Width="100"
-                Content="Button"/>
-        <ItemsControl ItemsSource="{Binding TableRecords}"
-                      x:Name="itemsControl" 
-                      >
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                     <Grid>
-                         <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                     </Grid>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock TextWrapping="Wrap"
-                                    Text="{Binding Data}" 
-                                    Margin="10"
-                               MouseDown="TableElem_OnMouseDown"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemContainerStyle>
-                <Style>
-                    <Style.Setters>
-                        <Setter Property="Grid.Row" Value="{Binding RowIndex}" />
-                        <Setter Property="Grid.Column" Value="{Binding ColumnIndex}" />
-                    </Style.Setters>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-        </ItemsControl>
+                Content="Button"
+                Margin="10"/>
+        <DataGrid ItemsSource="{Binding TableRecords}"
+                  AutoGenerateColumns="True">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Data}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBox Text="{Binding Data}"/>
+                                <Button Content="OK" Width="50" Height="25"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </StackPanel>
 </UserControl>
