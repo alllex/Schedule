@@ -65,6 +65,23 @@ namespace Editor.ViewModels
 
         #endregion
 
+        #region Room
+
+        public string Room
+        {
+            get { return _lecture.Room.Name; }
+            set
+            {
+                if (_lecture.Room.Name != value)
+                {
+                    _lecture.Room.Name = value;
+                    RaisePropertyChanged(() => Room);
+                }
+            }
+        }
+
+        #endregion
+
         #region IsEditing
 
         private bool _isEditing;

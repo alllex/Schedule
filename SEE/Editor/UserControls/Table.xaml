@@ -8,9 +8,9 @@
              xmlns:helpers="clr-namespace:Editor.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
-    <StackPanel>
-        <Grid x:Name="tableGrid">
+    <Grid x:Name="tableGrid"
+          Margin="10"
+          HorizontalAlignment="Stretch">
             
-        </Grid>
-    </StackPanel>
+    </Grid>
 </UserControl>
