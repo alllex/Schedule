@@ -2,10 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:userControls="clr-namespace:Editor.UserControls"
-        Title="EditorWindow" Height="500" Width="500">
-    <Grid>
-        <userControls:Table>
-            
-        </userControls:Table>
-    </Grid>
+        Title="EditorWindow" Height="500" Width="500"
+        x:Name="Window">
+    <DockPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+            <StackPanel >
+                <userControls:Table/>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </Window>

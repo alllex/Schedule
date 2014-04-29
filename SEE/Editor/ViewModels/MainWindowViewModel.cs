@@ -90,17 +90,6 @@ namespace Editor.ViewModels
         {
             PersonsCollection = new ObservableCollection<Person>();
 
-            for (var i = 0; i < 10; i++)
-            {
-                PersonsCollection.Add(new Person(
-                    RandomHelper.RandomString(10, true),
-                    RandomHelper.RandomInt(1, 43),
-                    RandomHelper.RandomBool(),
-                    RandomHelper.RandomNumber(50, 180, 1),
-                    RandomHelper.RandomDate(new DateTime(1980, 1, 1), DateTime.Now),
-                    RandomHelper.RandomColor()
-                    ));
-            }
         }
     }
 }

@@ -24,70 +24,55 @@ namespace Editor.UserControls
     /// </summary>
     public partial class Table : UserControl
     {
+
+        TableViewModel tableViewModel = new TableViewModel();
+
         public Table()
         {
             InitializeComponent();
-            /*
-            itemsControl.ItemsSource = new[]
+            tableGrid.Loaded += TableGridOnLoaded;
+        }
+        
+        private void TableGridOnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            ResizeGrid(tableViewModel.TableHeight(), tableViewModel.TableWidth());
+            tableGrid.Children.Clear();
+            foreach (var lecture in tableViewModel.LectureCards)
             {
-                new { RowIndex = 0, ColumnIndex = 0, Data = "abc"},
-                new { RowIndex = 1, ColumnIndex = 1, Data = "bbb"},
-                new { RowIndex = 2, ColumnIndex = 2, Data = "ccc"}
-            };
-            ItemsControl itemsControl = new ItemsControl();
-            GridEx grid = new GridEx(){RowCount = 3, ColumnCount = 3};
-            itemsControl.ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(GridEx))); 
-            
-            var model = itemsControl.DataContext as TableViewModel;
-            if (model == null)
-            {
-                MessageBox.Show("Fail...");
-                return;
+                tableGrid.Children.Add(lecture);
             }
-            itemsControl.ItemsSource = model.TableRecords;
-            itemsControl.ItemContainerGenerator.StatusChanged += (e, a) =>
+            foreach (var time in tableViewModel.TimeLine)
             {
-                var gen = e as ItemContainerGenerator; 
-                if (gen == null)
-                {
-                    MessageBox.Show("WTF");
-                    return;
-                }
-                if (gen.Status == GeneratorStatus.ContainersGenerated)
-                {
-                    if (_grid == null)
-                    {
-                        MessageBox.Show("Incorrect order!!((((");
-                        return;
-                    }
-                    _grid.RowCount = model.RowCount;
-                    _grid.ColumnCount = model.ColumnCount;
-                }
-            };
-             */
-        }
-
-        /*
-        private GridEx _grid = null;
-
-        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            _grid = sender as GridEx;
-        }
-         */
-
-        private void TableElem_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var tb = sender as TextBlock;
-            if (tb == null) return;
-            if (e.ClickCount >= 2)
+                tableGrid.Children.Add(time);
+            }
+            foreach (var day in tableViewModel.DayLine)
             {
-                var dc = tb.DataContext as TableRecord;
-                if (dc == null) return;
-                var ecw = new EditCardWindow(this){DataContext = dc};
-                IsEnabled = false;
-                ecw.Show();
+                tableGrid.Children.Add(day);
+            }
+            foreach (var title in tableViewModel.Titles)
+            {
+                tableGrid.Children.Add(title);
+            }
+            foreach (var subtitle in tableViewModel.Subtitles)
+            {
+                tableGrid.Children.Add(subtitle);
             }
         }
+
+        private void ResizeGrid(int rowCount, int colCount)
+        {
+            tableGrid.RowDefinitions.Clear();
+            for (int i = 0; i < rowCount; i++)
+            {
+                tableGrid.RowDefinitions.Add(new RowDefinition{Height = GridLength.Auto});
+            }
+            for (int i = 0; i < colCount; i++)
+            {
+                tableGrid.ColumnDefinitions.Add(new ColumnDefinition{Width = GridLength.Auto});
+            }
+        }
+         
+
+
     }
 }
