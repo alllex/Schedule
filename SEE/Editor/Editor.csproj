@@ -37,8 +37,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -47,6 +52,8 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -72,7 +79,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\GroupEditPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\LectureCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\LecturerEditPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\RoomEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -96,6 +115,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ListsEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -105,6 +128,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\BaseConverter.cs" />
+    <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
@@ -113,8 +137,17 @@
     <Compile Include="UserControls\DayCard.xaml.cs">
       <DependentUpon>DayCard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\GroupEditPanel.xaml.cs">
+      <DependentUpon>GroupEditPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\LectureCard.xaml.cs">
       <DependentUpon>LectureCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\LecturerEditPanel.xaml.cs">
+      <DependentUpon>LecturerEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RoomEditPanel.xaml.cs">
+      <DependentUpon>RoomEditPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\SubtitleCard.xaml.cs">
       <DependentUpon>SubtitleCard.xaml</DependentUpon>
@@ -131,14 +164,21 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\DayCardViewModel.cs" />
     <Compile Include="ViewModels\EditorWindowViewModel.cs" />
+    <Compile Include="ViewModels\GroupEditPanelViewModel.cs" />
     <Compile Include="ViewModels\LectureCardViewModel.cs" />
+    <Compile Include="ViewModels\LecturerEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\ListsEditWindowViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\RoomEditPanelViewModel.cs" />
     <Compile Include="ViewModels\SubtitleCardViewModel.cs" />
     <Compile Include="ViewModels\TableViewModel.cs" />
     <Compile Include="ViewModels\TimeCardViewModel.cs" />
     <Compile Include="ViewModels\TitleCardViewModel.cs" />
     <Compile Include="Views\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ListsEditWindow.xaml.cs">
+      <DependentUpon>ListsEditWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

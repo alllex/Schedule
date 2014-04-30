@@ -8,30 +8,10 @@ using System.Threading.Tasks;
 
 namespace ScheduleData
 {
-    public enum WeekType
-    {
-        Odd,
-        Even,
-        Both
-    }
 
-    public enum Weekdays
+    public interface IHavingId
     {
-        Monday, Tuesday, Wednesday, Thursday, Friday, Saturday //, Sunday
-    }
-
-    public class Time
-    {
-        public int Hours { get; set; }
-        public int Minutes { get; set; }
-        public override string ToString()
-        {
-            string h = Hours.ToString(CultureInfo.InvariantCulture);
-            if (Hours < 10) h = "0" + h;
-            string m = Minutes.ToString(CultureInfo.InvariantCulture);
-            if (Minutes < 10) m = "0" + m;
-            return String.Format("{0}:{1}", h, m);
-        }
+        int Id { get; set; }
     }
 
     public interface ITimeInterval
@@ -53,14 +33,18 @@ namespace ScheduleData
 
     public interface ISubject : IHavingName
     {
+
     }
 
     public interface IRoom : IHavingName
     {
+        string Address { get; set; }
     }
 
     public interface ILecturer : IHavingName
     {
+        string Degree { get; set; }
+        string Department { get; set; }
     }
 
     public interface IGroup : IHavingName
