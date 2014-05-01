@@ -8,6 +8,7 @@
     <Grid>
         <Border BorderThickness="1"
                 BorderBrush="Black"
+                Background="White"
                 CornerRadius="3">
             <TextBlock Text="{Binding Title, Mode=OneTime}"
                        HorizontalAlignment="Center"

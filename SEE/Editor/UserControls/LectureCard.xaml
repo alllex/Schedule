@@ -5,48 +5,101 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:Editor.ViewModels"
              xmlns:converters="clr-namespace:Editor.Converters"
+             xmlns:userControls="clr-namespace:Editor.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             >
+    <UserControl.InputBindings>
+        <MouseBinding Gesture="LeftClick" Command="{Binding ClickCommand}" 
+                      CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type userControls:LectureCard}}}"
+                      />
+    </UserControl.InputBindings>
     <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="3,4,3,0" />
+        </Style>
         <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="3" />
+            <Setter Property="Margin" Value="3,1,3,0" />
+        </Style>
+        <Style x:Key="BorderStyle" TargetType="Border">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                    <Setter Property="BorderBrush" Value="OrangeRed"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Background" Value="PeachPuff"/>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding IsSelected}" Value="False">
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
         </Style>
         <DataTemplate x:Key="CardEditModeDataTemplate">
-            <StackPanel Margin="3">
-                <StackPanel.Resources>
-                <Style TargetType="TextBox">
-                    <Setter Property="HorizontalAlignment" Value="Center"/>
-                    <Setter Property="Margin" Value="3"/>
-                </Style>
-                </StackPanel.Resources>
-                <TextBox Text="{Binding Subject, Mode=TwoWay}"
-                     Margin="3,10,3,3"/>
-                <TextBox Text="{Binding Lecturer, Mode=TwoWay}"/>
-                <TextBox Text="{Binding Group, Mode=TwoWay}"/>
-                <Button Content="OK" Command="{Binding SetViewModeCommand}"/>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="CardViewModeDataTemplate">
-            <StackPanel Margin="3">
-                <StackPanel.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Border Style="{StaticResource BorderStyle}"
+                    CornerRadius="3"
+                    MinWidth="150"
+                    MaxWidth="250">
+                <StackPanel Margin="3">
+                    <StackPanel.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
                         <Setter Property="Margin" Value="3"/>
                     </Style>
-                </StackPanel.Resources>
-                <StackPanel.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SetEditModeCommand}"/>
-                </StackPanel.InputBindings>
-                <TextBlock Text="{Binding Subject}"
-                           Margin="3,10,3,3"/>
-                <TextBlock Text="{Binding Lecturer}"/>
-                <TextBlock Text="{Binding Group}"/>
-            </StackPanel>
+                    </StackPanel.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Предмет: "
+                           HorizontalAlignment="Left"/>
+                        <TextBox Text="{Binding Subject, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Преподаватель: "
+                           HorizontalAlignment="Left"/>
+                        <TextBox Text="{Binding Lecturer, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Аудитория:"
+                           HorizontalAlignment="Left"/>
+                        <TextBox Text="{Binding Room, Mode=TwoWay}"
+                                 />
+                    </StackPanel>
+                    <Button Content="OK" Command="{Binding SetViewModeCommand}"
+                            HorizontalAlignment="Right"
+                            Height="30"
+                            Width="30"
+                            Margin="2"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="CardViewModeDataTemplate">
+            <Border CornerRadius="3"
+                    MinWidth="150"
+                    MaxWidth="250"
+                    Style="{StaticResource BorderStyle}"
+                    >
+                <Border.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SetEditModeCommand}" />
+                </Border.InputBindings>
+                <StackPanel Margin="3">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="3" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Text="{Binding Subject}"
+                               Margin="3,10,3,3"
+                               FontWeight="Bold" />
+                    <TextBlock Text="{Binding Lecturer}"
+                               FontStyle="Italic" />
+                    <TextBlock Text="{Binding Room}"
+                               Margin="3,3,10,3" />
+                </StackPanel></Border>
         </DataTemplate>
     </UserControl.Resources>
-    <Border BorderThickness="1"
-            BorderBrush="Black"
-            CornerRadius="3">
         <ContentControl Content="{Binding}">
             <ContentControl.Style>
                 <Style TargetType="ContentControl">
@@ -61,5 +114,4 @@
                 </Style>
             </ContentControl.Style>
         </ContentControl>
-    </Border>
 </UserControl>

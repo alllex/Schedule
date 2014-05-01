@@ -1,15 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Effects;
+using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
 using Editor.Repository;
@@ -123,6 +119,9 @@ namespace Editor.ViewModels
 
         #endregion
 
+        private LecturesTable _lectureTable;
+        private List<LectureCard> _selectedCards = new List<LectureCard>();
+
         public TableViewModel()
         {
             InitializeLectureCards();
@@ -190,7 +189,25 @@ namespace Editor.ViewModels
             var lc = new LectureCard {DataContext = lvm};
             Grid.SetRow(lc, row + TitleRowsCount);
             Grid.SetColumn(lc, col + TimeColumnsCount);
+            lc.Click += LectureCardOnClick;
             return lc;
+        }
+
+        private void LectureCardOnClick(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var lc = (LectureCard) sender;
+            if (_selectedCards.Any())
+            {
+                foreach (var selectedCard in _selectedCards)
+                {
+                    var vm = (LectureCardViewModel)selectedCard.DataContext;
+                    vm.IsSelected = false;
+                }
+                _selectedCards.Clear();
+            }
+            _selectedCards.Add(lc);
+            var lcvm = (LectureCardViewModel)lc.DataContext;
+            lcvm.IsSelected = true;
         }
 
         private TimeCard TimeToTimeCard(int timeLineIndex)
@@ -243,5 +260,16 @@ namespace Editor.ViewModels
             return ScheduleRepository.TimeLineLength + TitleRowsCount;
         }
 
+        #region Commands
+
+        //public ICommand SetEditModeCommand { get { return new DelegateCommand(OnSetEditMode, CanExecuteSetEditMode); } }
+        //public ICommand SetViewModeCommand { get { return new DelegateCommand(OnSetViewMode, CanExecuteSetViewMode); } }
+
+        #endregion
+
+        #region Command Handlers
+
+
+        #endregion
     }
 }

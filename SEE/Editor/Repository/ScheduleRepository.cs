@@ -69,7 +69,8 @@ namespace Editor.Repository
                     {
                         Group = Subgroups[c],
                         Lecturer = new Lecturer { Name = RandomLecturerName() },
-                        Subject = new Subject { Name = RandomSubjectNames() }
+                        Subject = new Subject { Name = RandomSubjectNames() },
+                        Room = new Room { Name = RandomRoomNumber() }
                     };
                     Table[r][c] = lecture;
                 }
@@ -115,6 +116,14 @@ namespace Editor.Repository
         {
             int i = rnd.Next(SubjectNames.Count() - 1);
             return SubjectNames[i];
+        }
+
+        private static string RandomRoomNumber()
+        {
+            const int minRoomNumber = 1000;
+            const int maxRoomNumber = 3007;
+            int num = rnd.Next(minRoomNumber, maxRoomNumber);
+            return num.ToString();
         }
 
         public static int RowCount()
