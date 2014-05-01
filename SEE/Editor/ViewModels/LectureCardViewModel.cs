@@ -22,12 +22,12 @@ namespace Editor.ViewModels
 
         public string Subject
         {
-            get { return _lecture.Subject.Name; }
+            get { return _class.Subject.Name; }
             set
             {
-                if (_lecture.Subject.Name != value)
+                if (_class.Subject.Name != value)
                 {
-                    _lecture.Subject.Name = value;
+                    _class.Subject.Name = value;
                     RaisePropertyChanged(() => Subject);
                 }
             }
@@ -39,12 +39,12 @@ namespace Editor.ViewModels
 
         public string Lecturer
         {
-            get { return  _lecture.Lecturer.Name; }
+            get { return  _class.Lecturer.Name; }
             set
             {
-                if ( _lecture.Lecturer.Name != value)
+                if ( _class.Lecturer.Name != value)
                 {
-                     _lecture.Lecturer.Name = value;
+                     _class.Lecturer.Name = value;
                     RaisePropertyChanged(() => Lecturer);
                 }
             }
@@ -56,12 +56,12 @@ namespace Editor.ViewModels
 
         public string Group
         {
-            get { return  _lecture.Group.Name; }
+            get { return  _class.Group.Name; }
             set
             {
-                if ( _lecture.Group.Name != value)
+                if ( _class.Group.Name != value)
                 {
-                    _lecture.Group.Name = value;
+                    _class.Group.Name = value;
                     RaisePropertyChanged(() => Group);
                 }
             }
@@ -73,12 +73,12 @@ namespace Editor.ViewModels
 
         public string Room
         {
-            get { return _lecture.Room.Name; }
+            get { return _class.Classroom.Name; }
             set
             {
-                if (_lecture.Room.Name != value)
+                if (_class.Classroom.Name != value)
                 {
-                    _lecture.Room.Name = value;
+                    _class.Classroom.Name = value;
                     RaisePropertyChanged(() => Room);
                 }
             }
@@ -138,11 +138,11 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        private ILecture _lecture;
+        private IClass _class;
 
-        public LectureCardViewModel(ILecture lecture)
+        public LectureCardViewModel(IClass @class)
         {
-            _lecture = lecture;
+            _class = @class;
             IsEditing = false;
             IsSelected = false;
         }

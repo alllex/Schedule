@@ -16,12 +16,12 @@ namespace Editor.ViewModels
 
         public string Address
         {
-            get { return _room.Address; }
+            get { return _classroom.Address; }
             set
             {
-                if (_room.Address != value)
+                if (_classroom.Address != value)
                 {
-                    _room.Address = value;
+                    _classroom.Address = value;
                     RaisePropertyChanged(() => Address);
                 }
             }
@@ -33,12 +33,12 @@ namespace Editor.ViewModels
 
         public string Name
         {
-            get { return _room.Name; }
+            get { return _classroom.Name; }
             set
             {
-                if (_room.Name != value)
+                if (_classroom.Name != value)
                 {
-                    _room.Name = value;
+                    _classroom.Name = value;
                     RaisePropertyChanged(() => Name);
                 }
             }
@@ -50,10 +50,10 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        private IRoom _room;
-        public RoomEditPanelViewModel(IRoom room)
+        private IClassroom _classroom;
+        public RoomEditPanelViewModel(IClassroom classroom)
         {
-            _room = room;
+            _classroom = classroom;
         }
 
         #endregion

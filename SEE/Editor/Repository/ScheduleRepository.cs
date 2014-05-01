@@ -12,6 +12,7 @@ namespace Editor.Repository
 {
     class ScheduleRepository
     {
+        /*
         private static Random rnd = new Random();
 
         public static int LecturesPerDay = 3;
@@ -135,5 +136,6 @@ namespace Editor.Repository
         {
             return SubtitleCount;
         }
+         */
     }
 }

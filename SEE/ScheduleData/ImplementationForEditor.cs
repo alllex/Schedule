@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ImplementationData;
+﻿
 
-namespace Data
+using ScheduleData.Interfaces;
+
+namespace ScheduleData.Editor
 {
-    public class LectureTime : ILectureTime
+
+    public class ClassTime : IClassTime
     {
-        public LectureTime(WeekType week, Weekdays day, Time begin, Time end)
+        public ClassTime(WeekType week, Weekdays day, Time begin, Time end)
         {
             Week = week;
             Day = day;
@@ -21,6 +19,7 @@ namespace Data
         public Time Begin { get; set; }
         public Time End { get; set; }
     }
+
     public class Subject : ISubject
     {
         public Subject(string name)
@@ -28,15 +27,20 @@ namespace Data
             Name = name;
         }
         public string Name { get; set; }
+        public ClassType ClassType { get; set; }
     }
-    public class Room : IRoom
+
+    public class Classroom : IClassroom
     {
-        public Room(string name)
+        public Classroom(string name)
         {
             Name = name;
         }
+
         public string Name { get; set; }
+        public string Address { get; set; }
     }
+
     public class Lecturer : ILecturer
     {
         public Lecturer(string name)
@@ -44,93 +48,103 @@ namespace Data
             Name = name;
         }
         public string Name { get; set; }
+        public string Degree { get; set; }
+        public IDepartment Department { get; set; }
     }
-    public class Course : ICourse
+
+    public class YearOfStudy : IYearOfStudy
     {
-        public Course(string name)
+        public YearOfStudy(string name)
         {
             Name = name;
         }
         public string Name { get; set; }
     }
-    public class Direction : IDirection
+
+    public class Specialization : ISpecialization
     {
-        public Direction(string name)
+        public Specialization(string name)
         {
             Name = name;
         }
         public string Name { get; set; }
     }
+
     public class Group : IGroup
     {
-        public Group(string name, ICourse course, IDirection direction)
+        public Group(string name, IYearOfStudy yearOfStudy, ISpecialization specialization)
         {
             Name = name;
-            Course = course;
-            Direction = direction;
+            YearOfStudy = yearOfStudy;
+            Specialization = specialization;
         }
+
         public string Name { get; set; }
-        public ICourse Course { get; set; }
-        public IDirection Direction { get; set; }
+        public IYearOfStudy YearOfStudy { get; set; }
+        public ISpecialization Specialization { get; set; }
     }
-    public class Lecture : ILecture
+
+    public class Class : IClass
     {
-        public Lecture(ISubject subject, IGroup group, ILecturer lecturer, IRoom room, ILectureTime time)
+        public Class(ISubject subject, IGroup group, ILecturer lecturer, IClassroom classroom, IClassTime time)
         {
             Subject = subject;
             Group = group;
             Lecturer = lecturer;
-            Room = room;
+            Classroom = classroom;
             Time = time;
         }
+
         public ISubject Subject { get; set; }
         public IGroup Group { get; set; }
         public ILecturer Lecturer { get; set; }
-        public IRoom Room { get; set; }
-        public ILectureTime Time { get; set; }
+        public IClassroom Classroom { get; set; }
+        public IClassTime Time { get; set; }
     }
+
     public class Schedule : ISchedule
     {
-        ILectureTimeCollection timeLine = new LectureTimeCollection();
-        IRoomCollection rooms = new RoomCollection();
-        ISubjectCollection subjects = new SubjectCollection();
-        ILecturerCollection lecturers = new LecturerCollection();
-        ICourseCollection courses = new CourseCollection();
-        IDirectionCollection directions = new DirectionCollection();
-        IGroupCollection groups = new GroupCollection();
-        ILectureCollection lectures = new LectureCollection();
+        readonly IClassTimeCollection _timeLine = new ClassTimeCollection();
+        readonly IClassroomCollection _classrooms = new ClassroomCollection();
+        readonly ISubjectCollection _subjects = new SubjectCollection();
+        readonly ILecturerCollection _lecturers = new LecturerCollection();
+        readonly IYearOfStudyCollection _yearOfStudies = new YearOfStudyCollection();
+        readonly ISpecializationCollection _specializations = new SpecializationCollection();
+        readonly IGroupCollection _groups = new GroupCollection();
+        readonly IClassCollection _classes = new ClassCollection();
 
-        public ILectureTimeCollection TimeLine
+        public IClassTimeCollection TimeLine
         {
-            get { return timeLine; }
+            get { return _timeLine; }
         }
-        public IRoomCollection Rooms
+        public IClassroomCollection Classrooms
         {
-            get { return rooms; }
+            get { return _classrooms; }
         }
         public ISubjectCollection Subjects
         {
-            get { return subjects; }
+            get { return _subjects; }
         }
         public ILecturerCollection Lecturers
         {
-            get { return lecturers; }
+            get { return _lecturers; }
         }
-        public ICourseCollection Courses
+        public IYearOfStudyCollection YearOfStudies
         {
-            get { return courses; }
+            get { return _yearOfStudies; }
         }
-        public IDirectionCollection Directions
+        public ISpecializationCollection Specializations
         {
-            get { return directions; }
+            get { return _specializations; }
         }
         public IGroupCollection Groups
         {
-            get { return groups; }
+            get { return _groups; }
         }
-        public ILectureCollection Lectures
+        public IClassCollection Classes
         {
-            get { return lectures; }
+            get { return _classes; }
         }
     }
+
 }
