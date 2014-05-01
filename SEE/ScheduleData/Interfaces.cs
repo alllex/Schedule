@@ -6,13 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScheduleData
+namespace Data
 {
     public enum WeekType
     {
-        Odd,
-        Even,
-        Both
+        Odd, Even, Both
     }
 
     public enum Weekdays
@@ -20,8 +18,13 @@ namespace ScheduleData
         Monday, Tuesday, Wednesday, Thursday, Friday, Saturday //, Sunday
     }
 
-    public class Time
+    public class Time : ICloneable
     {
+        public Time(int hours, int minutes)
+        {
+            Hours = hours;
+            Minutes = minutes;
+        }
         public int Hours { get; set; }
         public int Minutes { get; set; }
         public override string ToString()
@@ -31,6 +34,10 @@ namespace ScheduleData
             string m = Minutes.ToString(CultureInfo.InvariantCulture);
             if (Minutes < 10) m = "0" + m;
             return String.Format("{0}:{1}", h, m);
+        }
+        public object Clone()
+        {
+            return new Time(Hours, Minutes);
         }
     }
 
@@ -63,10 +70,18 @@ namespace ScheduleData
     {
     }
 
+    public interface ICourse : IHavingName
+    {
+    }
+
+    public interface IDirection : IHavingName
+    {
+    }
+
     public interface IGroup : IHavingName
     {
-        IGroup Overgroup { get; set; } 
-        IList<IGroup> Subgroups { get; set; } 
+        ICourse Course { get; set; }
+        IDirection Direction { get; set; }
     }
 
     public interface ILecture
@@ -78,15 +93,43 @@ namespace ScheduleData
         ILectureTime Time { get; set; }
     }
 
-    public interface IObjectCollection<T> 
+    public interface IObjectCollection<Object>
     {
-        T Add(T t);         // add and return added value
-        bool Remove(T t);      
-        bool Submit(T t);
-        IEnumerable<T> GetAll();
+        Object Add(Object subject); // add and return added value
+        bool Remove(Object subject);
+        bool Submit(Object subject);
+        IEnumerable<Object> GetAll();
     }
 
-    public interface ILectures : IObjectCollection<ILecture>
+    public interface IRoomCollection : IObjectCollection<IRoom>
+    {
+    }
+
+    public interface ISubjectCollection : IObjectCollection<ISubject>
+    {
+    }
+
+    public interface ILecturerCollection : IObjectCollection<ILecturer>
+    {
+    }
+
+    public interface ICourseCollection : IObjectCollection<ICourse>
+    {
+    }
+
+    public interface IDirectionCollection : IObjectCollection<IDirection>
+    {
+    }
+
+    public interface IGroupCollection : IObjectCollection<IGroup>
+    {
+    }
+
+    public interface ILectureTimeCollection : IObjectCollection<ILectureTime>
+    {
+    }
+
+    public interface ILectureCollection : IObjectCollection<ILecture>
     {
         ILecture Get(IGroup group, ILectureTime lectureTime);
         ILecture Get(ILecturer lecturer, ILectureTime lectureTime);
@@ -95,10 +138,13 @@ namespace ScheduleData
 
     public interface ISchedule
     {
-        IObjectCollection<ILectureTime> TimeLine { get; }
-        IObjectCollection<IGroup> Groups { get; }
-        IObjectCollection<ILecturer> Lecturers { get; }
-        IObjectCollection<IRoom> Rooms { get; } 
-        ILectures Lectures { get; }
+        ILectureTimeCollection TimeLine { get; }
+        IRoomCollection Rooms { get; }
+        ISubjectCollection Subjects { get; }
+        ILecturerCollection Lecturers { get; }
+        ICourseCollection Courses { get; }
+        IDirectionCollection Directions { get; }
+        IGroupCollection Groups { get; }
+        ILectureCollection Lectures { get; }
     }
 }
