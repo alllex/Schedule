@@ -28,24 +28,6 @@ namespace Editor.ViewModels
 
         #endregion
 
-        #region PersonsCollection
-
-        private ObservableCollection<Person> _personsCollection;
-        public ObservableCollection<Person> PersonsCollection
-        {
-            get { return _personsCollection; }
-            set
-            {
-                if (_personsCollection != value)
-                {
-                    _personsCollection = value;
-                    RaisePropertyChanged(() => PersonsCollection);
-                }
-            }
-        }
-
-        #endregion
-
         #endregion
 
         #region Commands
@@ -88,7 +70,6 @@ namespace Editor.ViewModels
 
         private void RandomizeData()
         {
-            PersonsCollection = new ObservableCollection<Person>();
 
         }
     }

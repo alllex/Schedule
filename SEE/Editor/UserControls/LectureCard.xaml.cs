@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Editor.ViewModels;
 
 namespace Editor.UserControls
 {
@@ -20,6 +21,21 @@ namespace Editor.UserControls
     /// </summary>
     public partial class LectureCard : UserControl
     {
+
+        #region RoutedEvents
+
+        public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
+            "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(LectureCard));
+
+
+        public event RoutedEventHandler Click
+        {
+            add { AddHandler(ClickEvent, value); }
+            remove { RemoveHandler(ClickEvent, value); }
+        }
+
+        #endregion
+
         public LectureCard()
         {
             InitializeComponent();

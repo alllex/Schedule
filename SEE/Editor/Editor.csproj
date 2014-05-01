@@ -132,7 +132,11 @@
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
-    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\LecturesTable.cs" />
+    <Compile Include="Models\SpanedItem.cs" />
+    <Compile Include="Models\TableItem.cs" />
+    <Compile Include="Models\TimeLineMarkup.cs" />
+    <Compile Include="Models\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
     <Compile Include="UserControls\DayCard.xaml.cs">
       <DependentUpon>DayCard.xaml</DependentUpon>

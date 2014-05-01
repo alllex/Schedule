@@ -50,7 +50,7 @@ namespace ScheduleData
     public interface IGroup : IHavingName
     {
         IGroup Overgroup { get; set; } 
-        IList<IGroup> Subgroups { get; set; } 
+        IList<IGroup> Subgroups { get; set; }
     }
 
     public interface ILecture
