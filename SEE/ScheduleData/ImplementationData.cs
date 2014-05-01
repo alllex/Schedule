@@ -173,21 +173,21 @@ namespace ScheduleData
         Dictionary<Ident, Lecturer> dictionary = new Dictionary<Ident, Lecturer>();
         Ident _count = 0;
 
-        public ILecturer Add(ILecturer classTime)
+        public ILecturer Add(ILecturer lecturer)
         {
             _count++;
-            Lecturer newLecturer = new Lecturer(_count, classTime.Name);
+            Lecturer newLecturer = new Lecturer(_count, lecturer.Name);
             dictionary.Add(_count, newLecturer);
             return (ILecturer)newLecturer.Clone();
         }
-        public bool Remove(ILecturer classTime)
+        public bool Remove(ILecturer lecturer)
         {
-            bool wasRemoved = dictionary.Remove(((Lecturer)classTime).ID);
+            bool wasRemoved = dictionary.Remove(((Lecturer)lecturer).ID);
             return wasRemoved;
         }
-        public bool Submit(ILecturer classTime)
+        public bool Submit(ILecturer lecturer)
         {
-            Lecturer newLecturer = (Lecturer)classTime;
+            Lecturer newLecturer = (Lecturer)lecturer;
             Lecturer oldLecturer;
             bool exists = dictionary.TryGetValue(newLecturer.ID, out oldLecturer);
             if (exists) dictionary[newLecturer.ID] = (Lecturer)newLecturer.Clone();
@@ -426,7 +426,7 @@ namespace ScheduleData
             Tuple<Ident, Ident> key = new Tuple<Ident, Ident>(groupID, timeID);
             bool exists = dictGroup.TryGetValue(key, out @class);
             if (exists) return (IClass)@class.Clone();
-            else return null;
+            return null;
         }
         public IClass Get(ILecturer lecturer, IClassTime classTime)
         {

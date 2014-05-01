@@ -108,7 +108,7 @@ namespace ScheduleData.Editor
         readonly IClassroomCollection _classrooms = new ClassroomCollection();
         readonly ISubjectCollection _subjects = new SubjectCollection();
         readonly ILecturerCollection _lecturers = new LecturerCollection();
-        readonly IYearOfStudyCollection _yearOfStudies = new YearOfStudyCollection();
+        readonly IYearOfStudyCollection _yearsOfStudy = new YearOfStudyCollection();
         readonly ISpecializationCollection _specializations = new SpecializationCollection();
         readonly IGroupCollection _groups = new GroupCollection();
         readonly IClassCollection _classes = new ClassCollection();
@@ -129,9 +129,9 @@ namespace ScheduleData.Editor
         {
             get { return _lecturers; }
         }
-        public IYearOfStudyCollection YearOfStudies
+        public IYearOfStudyCollection YearsOfStudy
         {
-            get { return _yearOfStudies; }
+            get { return _yearsOfStudy; }
         }
         public ISpecializationCollection Specializations
         {

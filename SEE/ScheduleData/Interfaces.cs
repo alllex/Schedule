@@ -109,9 +109,9 @@ namespace ScheduleData.Interfaces
 
     public interface IObjectCollection<T>
     {
-        T Add(T classTime); // add and return added value
-        bool Remove(T classTime);
-        bool Submit(T classTime);
+        T Add(T t); // add and return added value
+        bool Remove(T t);
+        bool Submit(T t);
         IEnumerable<T> GetAll();
     }
 
@@ -156,7 +156,7 @@ namespace ScheduleData.Interfaces
         IClassroomCollection Classrooms { get; }
         ISubjectCollection Subjects { get; }
         ILecturerCollection Lecturers { get; }
-        IYearOfStudyCollection YearOfStudies { get; }
+        IYearOfStudyCollection YearsOfStudy { get; }
         ISpecializationCollection Specializations { get; }
         IGroupCollection Groups { get; }
         IClassCollection Classes { get; }
