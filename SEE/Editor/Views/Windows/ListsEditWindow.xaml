@@ -1,0 +1,38 @@
+﻿<Window x:Class="Editor.Views.ListsEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:userControls="clr-namespace:Editor.UserControls"
+        xmlns:converters="clr-namespace:Editor.Converters"
+        Title="ListsEditWindow" Height="500" Width="700"
+        WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <TabControl x:Name="SectionsTabControl"
+                    SelectedIndex="{Binding ActiveTab, Converter={converters:ListsEditorTabToIntConverter}}">
+            <TabItem Header="Группы">
+                <DockPanel>
+                    <ListBox DockPanel.Dock="Left"
+                             ItemsSource="{Binding GroupsList}"
+                             MinWidth="150"/>
+                    <userControls:GroupEditPanel/>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Преподаватели">
+                <DockPanel>
+                    <ListBox DockPanel.Dock="Left"
+                             ItemsSource="{Binding LecturersList}"
+                             MinWidth="150"/>
+                    <userControls:LecturerEditPanel/>
+                </DockPanel>
+
+            </TabItem>
+            <TabItem Header="Аудитории">
+                <DockPanel>
+                    <ListBox DockPanel.Dock="Left"
+                             ItemsSource="{Binding RoomsList}"
+                             MinWidth="150"/>
+                    <userControls:RoomEditPanel/>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>

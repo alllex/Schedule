@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ScheduleData
+namespace ScheduleData.Interfaces
 {
+
     public enum WeekType
     {
-        Odd,
-        Even,
-        Both
+        Odd, Even, Both
     }
 
     public enum Weekdays
@@ -20,10 +15,34 @@ namespace ScheduleData
         Monday, Tuesday, Wednesday, Thursday, Friday, Saturday //, Sunday
     }
 
-    public class Time
+    public enum ClassType
     {
+        Lecture, Practice
+    }
+
+    public class Time : ICloneable, IComparable
+    {
+
+        public Time(int hours, int minutes)
+        {
+            Hours = hours;
+            Minutes = minutes;
+        }
+
         public int Hours { get; set; }
         public int Minutes { get; set; }
+
+        public int CompareTo(object t)
+        {
+            var other = (Time) t;
+            if (other == null) return 1;
+            if (Hours == other.Hours)
+            {
+                return Minutes.CompareTo(other.Minutes);
+            }
+            return Hours.CompareTo(other.Hours);
+        }
+
         public override string ToString()
         {
             string h = Hours.ToString(CultureInfo.InvariantCulture);
@@ -32,16 +51,21 @@ namespace ScheduleData
             if (Minutes < 10) m = "0" + m;
             return String.Format("{0}:{1}", h, m);
         }
+
+        public object Clone()
+        {
+            return new Time(Hours, Minutes);
+        }
     }
 
-    public interface ITimeInterval
+    public interface ITimeInterval : IComparable
     {
         Weekdays Day { get; set; }
         Time Begin { get; set; }
         Time End { get; set; }
     }
 
-    public interface ILectureTime : ITimeInterval
+    public interface IClassTime : ITimeInterval
     {
         WeekType Week { get; set; }
     }
@@ -53,52 +77,99 @@ namespace ScheduleData
 
     public interface ISubject : IHavingName
     {
+        ClassType ClassType { get; set; }
     }
 
-    public interface IRoom : IHavingName
+    public interface IClassroom : IHavingName
     {
+        string Address { get; set; }
     }
 
     public interface ILecturer : IHavingName
+    {
+        string Degree { get; set; }
+        IDepartment Department { get; set; }
+    }
+
+    public interface IDepartment : IHavingName
+    {
+    }
+
+    public interface IYearOfStudy : IHavingName
+    {
+    }
+
+    public interface ISpecialization : IHavingName
     {
     }
 
     public interface IGroup : IHavingName
     {
-        IGroup Overgroup { get; set; } 
-        IList<IGroup> Subgroups { get; set; } 
+        IYearOfStudy YearOfStudy { get; set; }
+        ISpecialization Specialization { get; set; }
     }
 
-    public interface ILecture
+    public interface IClass
     {
         ISubject Subject { get; set; }
         IGroup Group { get; set; }
         ILecturer Lecturer { get; set; }
-        IRoom Room { get; set; }
-        ILectureTime Time { get; set; }
+        IClassroom Classroom { get; set; }
+        IClassTime Time { get; set; }
     }
 
-    public interface IObjectCollection<T> 
+    public interface IObjectCollection<T>
     {
-        T Add(T t);         // add and return added value
-        bool Remove(T t);      
-        bool Submit(T t);
+        T Add(T lecturer); // add and return added value
+        bool Remove(T subject);
+        bool Submit(T subject);
         IEnumerable<T> GetAll();
     }
 
-    public interface ILectures : IObjectCollection<ILecture>
+    public interface IClassroomCollection : IObjectCollection<IClassroom>
     {
-        ILecture Get(IGroup group, ILectureTime lectureTime);
-        ILecture Get(ILecturer lecturer, ILectureTime lectureTime);
-        ILecture Get(IRoom room, ILectureTime lectureTime);
+    }
+
+    public interface ISubjectCollection : IObjectCollection<ISubject>
+    {
+    }
+
+    public interface ILecturerCollection : IObjectCollection<ILecturer>
+    {
+    }
+
+    public interface IYearOfStudyCollection : IObjectCollection<IYearOfStudy>
+    {
+    }
+
+    public interface ISpecializationCollection : IObjectCollection<ISpecialization>
+    {
+    }
+
+    public interface IGroupCollection : IObjectCollection<IGroup>
+    {
+    }
+
+    public interface IClassTimeCollection : IObjectCollection<IClassTime>
+    {
+    }
+
+    public interface IClassCollection : IObjectCollection<IClass>
+    {
+        IClass Get(IGroup group, IClassTime classTime);
+        IClass Get(ILecturer lecturer, IClassTime classTime);
+        IClass Get(IClassroom classroom, IClassTime classTime);
     }
 
     public interface ISchedule
     {
-        IObjectCollection<ILectureTime> TimeLine { get; }
-        IObjectCollection<IGroup> Groups { get; }
-        IObjectCollection<ILecturer> Lecturers { get; }
-        IObjectCollection<IRoom> Rooms { get; } 
-        ILectures Lectures { get; }
+        IClassTimeCollection TimeLine { get; }
+        IClassroomCollection Classrooms { get; }
+        ISubjectCollection Subjects { get; }
+        ILecturerCollection Lecturers { get; }
+        IYearOfStudyCollection YearsOfStudy { get; }
+        ISpecializationCollection Specializations { get; }
+        IGroupCollection Groups { get; }
+        IClassCollection Classes { get; }
     }
 }

@@ -37,8 +37,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -47,6 +52,8 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -68,35 +75,51 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\DayCard.xaml">
+    <Page Include="Views\Cards\DayCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\LectureCard.xaml">
+    <Page Include="Views\Panels\GroupEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\SubtitleCard.xaml">
+    <Page Include="Views\Cards\ClassCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Table.xaml">
+    <Page Include="Views\Panels\LecturerEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\TimeCard.xaml">
+    <Page Include="Views\Panels\RoomEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\TitleCard.xaml">
+    <Page Include="Views\Cards\SubtitleCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditorWindow.xaml">
+    <Page Include="Views\Controls\Table.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainWindow.xaml">
+    <Page Include="Views\Cards\TimeCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\TitleCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\ListsEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -105,42 +128,63 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\BaseConverter.cs" />
+    <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
-    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\ClassesTable.cs" />
+    <Compile Include="Models\SpanedItem.cs" />
+    <Compile Include="Models\TableItem.cs" />
+    <Compile Include="Models\TimeLineMarkup.cs" />
+    <Compile Include="Models\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
-    <Compile Include="UserControls\DayCard.xaml.cs">
+    <Compile Include="Views\Cards\DayCard.xaml.cs">
       <DependentUpon>DayCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\LectureCard.xaml.cs">
-      <DependentUpon>LectureCard.xaml</DependentUpon>
+    <Compile Include="Views\Panels\GroupEditPanel.xaml.cs">
+      <DependentUpon>GroupEditPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\SubtitleCard.xaml.cs">
+    <Compile Include="Views\Cards\ClassCard.xaml.cs">
+      <DependentUpon>ClassCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\LecturerEditPanel.xaml.cs">
+      <DependentUpon>LecturerEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\RoomEditPanel.xaml.cs">
+      <DependentUpon>RoomEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\SubtitleCard.xaml.cs">
       <DependentUpon>SubtitleCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Table.xaml.cs">
+    <Compile Include="Views\Controls\Table.xaml.cs">
       <DependentUpon>Table.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\TimeCard.xaml.cs">
+    <Compile Include="Views\Cards\TimeCard.xaml.cs">
       <DependentUpon>TimeCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\TitleCard.xaml.cs">
+    <Compile Include="Views\Cards\TitleCard.xaml.cs">
       <DependentUpon>TitleCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\DayCardViewModel.cs" />
-    <Compile Include="ViewModels\EditorWindowViewModel.cs" />
-    <Compile Include="ViewModels\LectureCardViewModel.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\SubtitleCardViewModel.cs" />
-    <Compile Include="ViewModels\TableViewModel.cs" />
-    <Compile Include="ViewModels\TimeCardViewModel.cs" />
-    <Compile Include="ViewModels\TitleCardViewModel.cs" />
-    <Compile Include="Views\EditorWindow.xaml.cs">
+    <Compile Include="ViewModels\Cards\DayCardViewModel.cs" />
+    <Compile Include="ViewModels\Windows\EditorWindowViewModel.cs" />
+    <Compile Include="ViewModels\Panels\GroupEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Cards\ClassCardViewModel.cs" />
+    <Compile Include="ViewModels\Panels\LecturerEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Windows\ListsEditWindowViewModel.cs" />
+    <Compile Include="ViewModels\Windows\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\Panels\ClassroomEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Cards\SubtitleCardViewModel.cs" />
+    <Compile Include="ViewModels\Controls\TableViewModel.cs" />
+    <Compile Include="ViewModels\Cards\TimeCardViewModel.cs" />
+    <Compile Include="ViewModels\Cards\TitleCardViewModel.cs" />
+    <Compile Include="Views\Windows\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
+    <Compile Include="Views\Windows\ListsEditWindow.xaml.cs">
+      <DependentUpon>ListsEditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -176,6 +220,7 @@
       <Name>ScheduleData</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
