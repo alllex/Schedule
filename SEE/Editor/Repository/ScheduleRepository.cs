@@ -39,13 +39,17 @@ namespace Editor.Repository
 
         private static void InitTimeLine()
         {
-            for (int i = 0; i < WeekdaysCount; i++)
+            var wds = Enum.GetValues(typeof(Weekdays));
+            var wts = Enum.GetValues(typeof(WeekType));
+            foreach (var weekday in wds)
             {
-                var day = (Weekdays)i;
-                Schedule.TimeLine.Add(new ClassTime(WeekType.Both, day, new Time(9, 30), new Time(11, 05)));
-                Schedule.TimeLine.Add(new ClassTime(WeekType.Both, day, new Time(11, 15), new Time(12, 50)));
-                Schedule.TimeLine.Add(new ClassTime(WeekType.Both, day, new Time(13, 40), new Time(15, 15)));
-                Schedule.TimeLine.Add(new ClassTime(WeekType.Both, day, new Time(15, 25), new Time(17, 00)));
+                foreach (var wt in wts)
+                {
+                    Schedule.TimeLine.Add(new ClassTime((WeekType)wt, (Weekdays)weekday, new Time(9, 30),  new Time(11, 05)));
+                    Schedule.TimeLine.Add(new ClassTime((WeekType)wt, (Weekdays)weekday, new Time(11, 15), new Time(12, 50)));
+                    Schedule.TimeLine.Add(new ClassTime((WeekType)wt, (Weekdays)weekday, new Time(13, 40), new Time(15, 15)));
+                    Schedule.TimeLine.Add(new ClassTime((WeekType)wt, (Weekdays)weekday, new Time(15, 25), new Time(17, 00)));
+                }
             }
         }
 
@@ -58,7 +62,7 @@ namespace Editor.Repository
             for (int i = 0; i < classroomsCount; i++)
             {
                 int num = Rnd.Next(minRoomNumber, maxRoomNumber);
-                Schedule.Classrooms.Add(new Classroom(num.ToString(CultureInfo.InvariantCulture)));
+                Schedule.Classrooms.Add(new Classroom(num.ToString(CultureInfo.InvariantCulture)){Address = "Seasam street"});
             }
         }
 
@@ -84,8 +88,8 @@ namespace Editor.Repository
 
         private static void InitYearsOfStudy()
         {
-            const int yearsCount = 5;
-            for (int i = 1; i < yearsCount; i++)
+            const int yearsCount = 1;
+            for (int i = 1; i <= yearsCount; i++)
             {
                 Schedule.YearsOfStudy.Add(new YearOfStudy(i.ToString(CultureInfo.InvariantCulture)));
             }
@@ -109,7 +113,10 @@ namespace Editor.Repository
             var specs = Schedule.Specializations.GetAll().ToArray();
             for (int i = 0; i < groupCount; i++)
             {
-                Schedule.Groups.Add(new Group(groupNames[i], years[0], specs[Rnd.Next(specs.Length - 1)]));
+                var g = groupNames[i];
+                var y = years[0];
+                var s = specs[Rnd.Next(specs.Length - 1)];
+                Schedule.Groups.Add(new Group(g, y, s));
             }
         }
 
@@ -125,17 +132,23 @@ namespace Editor.Repository
             for (int i = 0; i < classCount; i++)
             {
                 var s = subjs[Rnd.Next(subjs.Length - 1)];
-                var l = lectr[Rnd.Next(lectr.Length - 1)];
-                var r = rooms[Rnd.Next(rooms.Length - 1)];
 
-                IGroup g = groups[Rnd.Next(groups.Length - 1)];
                 IClassTime t = times[Rnd.Next(times.Length - 1)];
+                IGroup g = groups[Rnd.Next(groups.Length - 1)];
+                ILecturer l = lectr[Rnd.Next(lectr.Length - 1)];
+                IClassroom r = rooms[Rnd.Next(rooms.Length - 1)];
                 int helper = 0;
-                while (Schedule.Classes.Get(g, t) != null)
+                while (Schedule.Classes.Get(g, t) != null || Schedule.Classes.Get(r, t) != null || Schedule.Classes.Get(l, t) != null)
                 {
                     g = groups[Rnd.Next(groups.Length - 1)];
                     t = times[Rnd.Next(times.Length - 1)];
-                    if (helper++ > 1000000) break;
+                    l = lectr[Rnd.Next(lectr.Length - 1)];
+                    r = rooms[Rnd.Next(rooms.Length - 1)];
+                    if (helper++ > 1000000)
+                    {
+                        MessageBox.Show("Helper");
+                        break;
+                    }
                 }
                 Schedule.Classes.Add(new Class(s, g, l, r, t));
             }

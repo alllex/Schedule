@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
 using ScheduleData;
+using ScheduleData.Interfaces;
 
 namespace Editor.ViewModels
 {

@@ -1,9 +1,34 @@
 ﻿
 
+using System;
 using ScheduleData.Interfaces;
 
 namespace ScheduleData.Editor
 {
+
+    public class TimeInterval : ITimeInterval
+    {
+        public TimeInterval(ITimeInterval t)
+        {
+            Day = t.Day;
+            Begin = t.Begin;
+            End = t.End;
+        }
+        public Weekdays Day { get; set; }
+        public Time Begin { get; set; }
+        public Time End { get; set; }
+
+        public int CompareTo(object t)
+        {
+            var other = (ITimeInterval)t;
+            if (other == null) return 1;
+            if (Day == other.Day)
+            {
+                return Begin.CompareTo(other.Begin);
+            }
+            return Day.CompareTo(other.Day);
+        }
+    }
 
     public class ClassTime : IClassTime
     {
@@ -18,6 +43,18 @@ namespace ScheduleData.Editor
         public Weekdays Day { get; set; }
         public Time Begin { get; set; }
         public Time End { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0}({1}-{2}) {3}", Day, Begin, End, Week);
+        }
+
+        public int CompareTo(object t)
+        {
+            var other = (ITimeInterval)t;
+            if (other == null) return 1;
+            return ((ITimeInterval) this).CompareTo(other);
+        }
     }
 
     public class Subject : ISubject
@@ -35,6 +72,7 @@ namespace ScheduleData.Editor
         public Classroom(string name)
         {
             Name = name;
+            Address = "";
         }
 
         public string Name { get; set; }

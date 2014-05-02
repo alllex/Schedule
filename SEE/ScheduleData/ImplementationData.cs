@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 using ScheduleData.Interfaces;
 
 namespace ScheduleData
@@ -14,7 +16,7 @@ namespace ScheduleData
             ID = id;
         }
 
-        public uint ID { get; private set; }
+        public Ident ID { get; private set; }
     }
 
     internal abstract class HavingNameAndID : HavingID, IHavingName
@@ -50,6 +52,13 @@ namespace ScheduleData
         public object Clone()
         {
             return new ClassTime(ID, Week, Day, (Time)Begin.Clone(), (Time)End.Clone());
+        }
+
+        public int CompareTo(object t)
+        {
+            var other = (Time)t;
+            if (other == null) return 1;
+            return ((ITimeInterval)this).CompareTo(other);
         }
     }
 
@@ -170,243 +179,251 @@ namespace ScheduleData
 
     internal class LecturerCollection : ILecturerCollection
     {
-        Dictionary<Ident, Lecturer> dictionary = new Dictionary<Ident, Lecturer>();
+        readonly Dictionary<Ident, Lecturer> _dictionary = new Dictionary<Ident, Lecturer>();
         Ident _count = 0;
 
         public ILecturer Add(ILecturer lecturer)
         {
             _count++;
-            Lecturer newLecturer = new Lecturer(_count, lecturer.Name);
-            dictionary.Add(_count, newLecturer);
+            var newLecturer = new Lecturer(_count, lecturer.Name);
+            _dictionary.Add(_count, newLecturer);
             return (ILecturer)newLecturer.Clone();
         }
-        public bool Remove(ILecturer lecturer)
+
+        public bool Remove(ILecturer lecture)
         {
-            bool wasRemoved = dictionary.Remove(((Lecturer)lecturer).ID);
-            return wasRemoved;
+            var l = (Lecturer) lecture;
+            return l != null && _dictionary.Remove(l.ID);
         }
-        public bool Submit(ILecturer lecturer)
+
+        public bool Submit(ILecturer lecture)
         {
-            Lecturer newLecturer = (Lecturer)lecturer;
+            var newLecturer = (Lecturer)lecture;
+            if (newLecturer == null) return false;
             Lecturer oldLecturer;
-            bool exists = dictionary.TryGetValue(newLecturer.ID, out oldLecturer);
-            if (exists) dictionary[newLecturer.ID] = (Lecturer)newLecturer.Clone();
+            var exists = _dictionary.TryGetValue(newLecturer.ID, out oldLecturer);
+            if (exists) _dictionary[newLecturer.ID] = (Lecturer)newLecturer.Clone();
             return exists;
         }
+
         public IEnumerable<ILecturer> GetAll()
         {
-            IEnumerable<Lecturer> collection = dictionary.Values;
-            List<ILecturer> cloneCollection = new List<ILecturer>(dictionary.Count);
-            foreach (Lecturer lecturer in collection) cloneCollection.Add((ILecturer)lecturer.Clone());
+            var cloneCollection = new List<ILecturer>();
+            cloneCollection.AddRange(_dictionary.Values.Select(lecturer => (ILecturer) lecturer.Clone()));
             return cloneCollection;
         }
     }
 
     internal class SubjectCollection : ISubjectCollection
     {
-        Dictionary<Ident, Subject> dictionary = new Dictionary<Ident, Subject>();
+        readonly Dictionary<Ident, Subject> _dictionary = new Dictionary<Ident, Subject>();
         Ident _count = 0;
 
-        public ISubject Add(ISubject classTime)
+        public ISubject Add(ISubject lecturer)
         {
             _count++;
-            Subject newSubject = new Subject(_count, classTime.Name);
-            dictionary.Add(_count, newSubject);
+            var newSubject = new Subject(_count, lecturer.Name);
+            _dictionary.Add(_count, newSubject);
             return (ISubject)newSubject.Clone();
         }
-        public bool Remove(ISubject classTime)
+
+        public bool Remove(ISubject subject)
         {
-            bool wasRemoved = dictionary.Remove(((Subject)classTime).ID);
-            return wasRemoved;
+            var ct = (Subject) subject;
+            return ct != null && _dictionary.Remove(((Subject)subject).ID);
         }
-        public bool Submit(ISubject classTime)
+
+        public bool Submit(ISubject subject)
         {
-            Subject newSubject = (Subject)classTime;
+            var newSubject = (Subject)subject;
+            if (newSubject == null) return false;
             Subject oldSubject;
-            bool exists = dictionary.TryGetValue(newSubject.ID, out oldSubject);
-            if (exists) oldSubject = (Subject)newSubject.Clone();
+            var exists = _dictionary.TryGetValue(newSubject.ID, out oldSubject);
+            if (exists) _dictionary[newSubject.ID] = (Subject)newSubject.Clone();
             return exists;
         }
+
         public IEnumerable<ISubject> GetAll()
         {
-            IEnumerable<Subject> collection = dictionary.Values;
-            List<ISubject> cloneCollection = new List<ISubject>(dictionary.Count);
-            foreach (Subject subject in collection) cloneCollection.Add((ISubject)subject.Clone());
+            var cloneCollection = new List<ISubject>();
+            cloneCollection.AddRange(_dictionary.Values.Select(subject => (ISubject)subject.Clone()));
             return cloneCollection;
         }
     }
 
     internal class GroupCollection : IGroupCollection
     {
-        Dictionary<Ident, Group> dictionary = new Dictionary<Ident, Group>();
+        readonly Dictionary<Ident, Group> _dictionary = new Dictionary<Ident, Group>();
         Ident _count = 0;
 
-        public IGroup Add(IGroup classTime)
+        public IGroup Add(IGroup @group)
         {
             _count++;
-            Group newGroup = new Group(_count, classTime.Name, classTime.YearOfStudy, classTime.Specialization);
-            dictionary.Add(_count, newGroup);
+            var newGroup = new Group(_count, @group.Name, @group.YearOfStudy, @group.Specialization);
+            _dictionary.Add(_count, newGroup);
             return (IGroup)newGroup.Clone();
         }
-        public bool Remove(IGroup classTime)
+
+        public bool Remove(IGroup @group)
         {
-            bool wasRemoved = dictionary.Remove(((Group)classTime).ID);
-            if (wasRemoved) _count--;
-            return wasRemoved;
+            var g = (Group) @group;
+            return g != null && _dictionary.Remove(g.ID);
         }
-        public bool Submit(IGroup classTime)
+
+        public bool Submit(IGroup @group)
         {
-            Group newGroup = (Group)classTime;
+            var newGroup = (Group)@group;
+            if (newGroup == null) return false;
             Group oldGroup;
-            bool exists = dictionary.TryGetValue(newGroup.ID, out oldGroup);
-            if (exists) oldGroup = (Group)newGroup.Clone();
+            var exists = _dictionary.TryGetValue(newGroup.ID, out oldGroup);
+            if (exists) _dictionary[newGroup.ID] = (Group)newGroup.Clone();
             return exists;
         }
+
         public IEnumerable<IGroup> GetAll()
         {
-            IEnumerable<Group> collection = dictionary.Values;
-            List<IGroup> cloneCollection = new List<IGroup>(dictionary.Count);
-            foreach (Group group in collection) cloneCollection.Add((IGroup)group.Clone());
+            var cloneCollection = new List<IGroup>();
+            cloneCollection.AddRange(_dictionary.Values.Select(@group => (IGroup) @group.Clone()));
             return cloneCollection;
         }
     }
 
     internal class ClassroomCollection : IClassroomCollection
     {
-        Dictionary<Ident, Classroom> dictionary = new Dictionary<Ident, Classroom>();
+        readonly Dictionary<Ident, Classroom> _dictionary = new Dictionary<Ident, Classroom>();
         Ident _count = 0;
 
-        public IClassroom Add(IClassroom classTime)
+        public IClassroom Add(IClassroom classroom)
         {
             _count++;
-            Classroom newClassroom = new Classroom(_count, classTime.Name);
-            dictionary.Add(_count, newClassroom);
+            Classroom newClassroom = new Classroom(_count, classroom.Name);
+            _dictionary.Add(_count, newClassroom);
             return (IClassroom)newClassroom.Clone();
         }
-        public bool Remove(IClassroom classTime)
+
+        public bool Remove(IClassroom classroom)
         {
-            bool wasRemoved = dictionary.Remove(((Classroom)classTime).ID);
-            return wasRemoved;
+            var c = (Classroom) classroom;
+            return c != null && _dictionary.Remove(((Classroom)classroom).ID);
         }
-        public bool Submit(IClassroom classTime)
+
+        public bool Submit(IClassroom classroom)
         {
-            Classroom newClassroom = (Classroom)classTime;
+            var newClassroom = (Classroom)classroom;
+            if (newClassroom == null) return false;
             Classroom oldClassroom;
-            bool exists = dictionary.TryGetValue(newClassroom.ID, out oldClassroom);
-            if (exists) oldClassroom = (Classroom)newClassroom.Clone();
+            bool exists = _dictionary.TryGetValue(newClassroom.ID, out oldClassroom);
+            if (exists) _dictionary[newClassroom.ID] = (Classroom)newClassroom.Clone();
             return exists;
         }
+
         public IEnumerable<IClassroom> GetAll()
         {
-            IEnumerable<Classroom> collection = dictionary.Values;
-            List<IClassroom> cloneCollection = new List<IClassroom>(dictionary.Count);
-            foreach (Classroom room in collection) cloneCollection.Add((IClassroom)room.Clone());
+            var cloneCollection = new List<IClassroom>();
+            cloneCollection.AddRange(_dictionary.Values.Select(room => (IClassroom) room.Clone()));
             return cloneCollection;
         }
     }
 
     internal class YearOfStudyCollection : IYearOfStudyCollection
     {
-        Dictionary<Ident, YearOfStudy> dictionary = new Dictionary<Ident, YearOfStudy>();
+        readonly Dictionary<Ident, YearOfStudy> _dictionary = new Dictionary<Ident, YearOfStudy>();
         Ident _count = 0;
 
-        public IYearOfStudy Add(IYearOfStudy classTime)
+        public IYearOfStudy Add(IYearOfStudy year)
         {
             _count++;
-            YearOfStudy newYearOfStudy = new YearOfStudy(_count, classTime.Name);
-            dictionary.Add(_count, newYearOfStudy);
+            YearOfStudy newYearOfStudy = new YearOfStudy(_count, year.Name);
+            _dictionary.Add(_count, newYearOfStudy);
             return (IYearOfStudy)newYearOfStudy.Clone();
         }
-        public bool Remove(IYearOfStudy classTime)
+        public bool Remove(IYearOfStudy year)
         {
-            bool wasRemoved = dictionary.Remove(((YearOfStudy)classTime).ID);
+            bool wasRemoved = _dictionary.Remove(((YearOfStudy)year).ID);
             return wasRemoved;
         }
-        public bool Submit(IYearOfStudy classTime)
+        public bool Submit(IYearOfStudy year)
         {
-            YearOfStudy newYearOfStudy = (YearOfStudy)classTime;
+            YearOfStudy newYearOfStudy = (YearOfStudy)year;
             YearOfStudy oldYearOfStudy;
-            bool exists = dictionary.TryGetValue(newYearOfStudy.ID, out oldYearOfStudy);
-            if (exists) oldYearOfStudy = (YearOfStudy)newYearOfStudy.Clone();
+            bool exists = _dictionary.TryGetValue(newYearOfStudy.ID, out oldYearOfStudy);
+            if (exists) _dictionary[newYearOfStudy.ID] = (YearOfStudy)newYearOfStudy.Clone();
             return exists;
         }
         public IEnumerable<IYearOfStudy> GetAll()
         {
-            IEnumerable<YearOfStudy> collection = dictionary.Values;
-            List<IYearOfStudy> cloneCollection = new List<IYearOfStudy>(dictionary.Count);
-            foreach (YearOfStudy course in collection) cloneCollection.Add((IYearOfStudy)course.Clone());
+            var cloneCollection = new List<IYearOfStudy>();
+            cloneCollection.AddRange(_dictionary.Values.Select(year => (IYearOfStudy)year.Clone()));
             return cloneCollection;
         }
     }
 
     internal class SpecializationCollection : ISpecializationCollection
     {
-        Dictionary<Ident, Specialization> dictionary = new Dictionary<Ident, Specialization>();
+        readonly Dictionary<Ident, Specialization> _dictionary = new Dictionary<Ident, Specialization>();
         Ident _count = 0;
 
-        public ISpecialization Add(ISpecialization classTime)
+        public ISpecialization Add(ISpecialization lecturer)
         {
             _count++;
-            Specialization newSpecialization = new Specialization(_count, classTime.Name);
-            dictionary.Add(_count, newSpecialization);
+            Specialization newSpecialization = new Specialization(_count, lecturer.Name);
+            _dictionary.Add(_count, newSpecialization);
             return (ISpecialization)newSpecialization.Clone();
         }
-        public bool Remove(ISpecialization classTime)
+        public bool Remove(ISpecialization subject)
         {
-            bool wasRemoved = dictionary.Remove(((Specialization)classTime).ID);
+            bool wasRemoved = _dictionary.Remove(((Specialization)subject).ID);
             return wasRemoved;
         }
-        public bool Submit(ISpecialization classTime)
+        public bool Submit(ISpecialization subject)
         {
-            Specialization newSpecialization = (Specialization)classTime;
+            Specialization newSpecialization = (Specialization)subject;
             Specialization oldSpecialization;
-            bool exists = dictionary.TryGetValue(newSpecialization.ID, out oldSpecialization);
-            if (exists) oldSpecialization = (Specialization)newSpecialization.Clone();
+            bool exists = _dictionary.TryGetValue(newSpecialization.ID, out oldSpecialization);
+            if (exists) _dictionary[newSpecialization.ID] = (Specialization)newSpecialization.Clone();
             return exists;
         }
         public IEnumerable<ISpecialization> GetAll()
         {
-            IEnumerable<Specialization> collection = dictionary.Values;
-            List<ISpecialization> cloneCollection = new List<ISpecialization>(dictionary.Count);
-            foreach (Specialization direction in collection) cloneCollection.Add((ISpecialization)direction.Clone());
+            var cloneCollection = new List<ISpecialization>();
+            cloneCollection.AddRange(_dictionary.Values.Select(spec => (ISpecialization)spec.Clone()));
             return cloneCollection;
         }
     }
 
     internal class ClassTimeCollection : IClassTimeCollection
     {
-        Dictionary<Ident, ClassTime> dictionary = new Dictionary<Ident, ClassTime>();
+        readonly Dictionary<Ident, ClassTime> _dictionary = new Dictionary<Ident, ClassTime>();
         Ident _count = 0;
 
-        public IClassTime Add(IClassTime classTime)
+        public IClassTime Add(IClassTime lecturer)
         {
             _count++;
             ClassTime newClassTime = new ClassTime(_count,
-                                                         classTime.Week,
-                                                         classTime.Day,
-                                                         (Time)classTime.Begin.Clone(),
-                                                         (Time)classTime.End.Clone());
-            dictionary.Add(_count, newClassTime);
+                                                         lecturer.Week,
+                                                         lecturer.Day,
+                                                         (Time)lecturer.Begin.Clone(),
+                                                         (Time)lecturer.End.Clone());
+            _dictionary.Add(_count, newClassTime);
             return (IClassTime)newClassTime.Clone();
         }
-        public bool Remove(IClassTime classTime)
+        public bool Remove(IClassTime subject)
         {
-            bool wasRemoved = dictionary.Remove(((ClassTime)classTime).ID);
+            bool wasRemoved = _dictionary.Remove(((ClassTime)subject).ID);
             return wasRemoved;
         }
-        public bool Submit(IClassTime classTime)
+        public bool Submit(IClassTime subject)
         {
-            ClassTime newClassTime = (ClassTime)classTime;
+            ClassTime newClassTime = (ClassTime)subject;
             ClassTime oldClassTime;
-            bool exists = dictionary.TryGetValue(newClassTime.ID, out oldClassTime);
-            if (exists) oldClassTime = (ClassTime)newClassTime.Clone();
+            bool exists = _dictionary.TryGetValue(newClassTime.ID, out oldClassTime);
+            if (exists) _dictionary[newClassTime.ID] = (ClassTime)newClassTime.Clone();
             return exists;
         }
         public IEnumerable<IClassTime> GetAll()
         {
-            IEnumerable<ClassTime> collection = dictionary.Values;
-            List<IClassTime> cloneCollection = new List<IClassTime>(dictionary.Count);
-            foreach (ClassTime time in collection) cloneCollection.Add((IClassTime)time.Clone());
+            var cloneCollection = new List<IClassTime>();
+            cloneCollection.AddRange(_dictionary.Values.Select(t => (IClassTime)t.Clone()));
             return cloneCollection;
         }
     }
@@ -414,9 +431,9 @@ namespace ScheduleData
     internal class ClassCollection : IClassCollection
     {
         Ident _count = 0;
-        Dictionary<Tuple<Ident, Ident>, Class> dictGroup = new Dictionary<Tuple<Ident, Ident>, Class>();
-        Dictionary<Tuple<Ident, Ident>, Class> dictLecturer = new Dictionary<Tuple<Ident, Ident>, Class>();
-        Dictionary<Tuple<Ident, Ident>, Class> dictRoom = new Dictionary<Tuple<Ident, Ident>, Class>();
+        readonly Dictionary<Tuple<Ident, Ident>, Class> _dictGroup = new Dictionary<Tuple<Ident, Ident>, Class>();
+        readonly Dictionary<Tuple<Ident, Ident>, Class> _dictLecturer = new Dictionary<Tuple<Ident, Ident>, Class>();
+        readonly Dictionary<Tuple<Ident, Ident>, Class> _dictRoom = new Dictionary<Tuple<Ident, Ident>, Class>();
 
         public IClass Get(IGroup group, IClassTime classTime)
         {
@@ -424,7 +441,7 @@ namespace ScheduleData
             Ident groupID = ((Group)group).ID;
             Ident timeID = ((ClassTime)classTime).ID;
             Tuple<Ident, Ident> key = new Tuple<Ident, Ident>(groupID, timeID);
-            bool exists = dictGroup.TryGetValue(key, out @class);
+            bool exists = _dictGroup.TryGetValue(key, out @class);
             if (exists) return (IClass)@class.Clone();
             return null;
         }
@@ -434,7 +451,7 @@ namespace ScheduleData
             Ident identLecturer = ((Lecturer)lecturer).ID;
             Ident identTime = ((ClassTime)classTime).ID;
             Tuple<Ident, Ident> key = new Tuple<Ident, Ident>(identLecturer, identTime);
-            bool exists = dictGroup.TryGetValue(key, out @class);
+            bool exists = _dictLecturer.TryGetValue(key, out @class);
             if (exists) return (IClass)@class.Clone();
             else return null;
         }
@@ -444,67 +461,69 @@ namespace ScheduleData
             Ident identRoom = ((Classroom)classroom).ID;
             Ident identTime = ((ClassTime)classTime).ID;
             Tuple<Ident, Ident> key = new Tuple<Ident, Ident>(identRoom, identTime);
-            bool exists = dictGroup.TryGetValue(key, out @class);
+            bool exists = _dictRoom.TryGetValue(key, out @class);
             if (exists) return (IClass)@class.Clone();
             else return null;
         }
-        public IClass Add(IClass classTime)
+        public IClass Add(IClass @class)
         {
             _count++;
             Class newClass = new Class(_count,
-                                             (ISubject)((Subject)classTime.Subject).Clone(),
-                                             (IGroup)((Group)classTime.Group).Clone(),
-                                             (ILecturer)((Lecturer)classTime.Lecturer).Clone(),
-                                             (IClassroom)((Classroom)classTime.Classroom).Clone(),
-                                             (IClassTime)((ClassTime)classTime.Time).Clone());
+                                             (ISubject)((Subject)@class.Subject).Clone(),
+                                             (IGroup)((Group)@class.Group).Clone(),
+                                             (ILecturer)((Lecturer)@class.Lecturer).Clone(),
+                                             (IClassroom)((Classroom)@class.Classroom).Clone(),
+                                             (IClassTime)((ClassTime)@class.Time).Clone());
 
-            Ident identGroup = ((Group)classTime.Group).ID,
-                  identLecturer = ((Lecturer)classTime.Lecturer).ID,
-                  identRoom = ((Classroom)classTime.Classroom).ID,
-                  identTime = ((ClassTime)classTime.Time).ID;
+            Ident identGroup = ((Group)@class.Group).ID,
+                  identLecturer = ((Lecturer)@class.Lecturer).ID,
+                  identRoom = ((Classroom)@class.Classroom).ID,
+                  identTime = ((ClassTime)@class.Time).ID;
 
             Tuple<Ident, Ident> keyGroup = new Tuple<Ident, Ident>(identGroup, identTime),
                                 keyLecturer = new Tuple<Ident, Ident>(identLecturer, identTime),
                                 keyRoom = new Tuple<Ident, Ident>(identRoom, identTime);
 
-            dictGroup.Add(keyGroup, newClass);
-            dictLecturer.Add(keyLecturer, newClass);
-            dictRoom.Add(keyRoom, newClass);
+            _dictGroup.Add(keyGroup, newClass);
+            _dictLecturer.Add(keyLecturer, newClass);
+            _dictRoom.Add(keyRoom, newClass);
 
             return (IClass)newClass.Clone();
         }
-        public bool Remove(IClass classTime)
+
+        public bool Remove(IClass @class)
         {
-            Ident identGroup = ((Group)classTime.Group).ID,
-                  identLecturer = ((Lecturer)classTime.Lecturer).ID,
-                  identRoom = ((Classroom)classTime.Classroom).ID,
-                  identTime = ((ClassTime)classTime.Time).ID;
+            Ident identGroup = ((Group)@class.Group).ID,
+                  identLecturer = ((Lecturer)@class.Lecturer).ID,
+                  identRoom = ((Classroom)@class.Classroom).ID,
+                  identTime = ((ClassTime)@class.Time).ID;
 
             Tuple<Ident, Ident> keyGroup = new Tuple<Ident, Ident>(identGroup, identTime),
                                 keyLecturer = new Tuple<Ident, Ident>(identLecturer, identTime),
                                 keyRoom = new Tuple<Ident, Ident>(identRoom, identTime);
 
-            bool wasRemoved = dictGroup.Remove(keyGroup);
-            dictLecturer.Remove(keyLecturer);
-            dictRoom.Remove(keyRoom);
+            bool wasRemoved = _dictGroup.Remove(keyGroup);
+            _dictLecturer.Remove(keyLecturer);
+            _dictRoom.Remove(keyRoom);
 
             return wasRemoved;
         }
-        public bool Submit(IClass classTime)
+
+        public bool Submit(IClass @class)
         {
-            Ident identGroup = ((Group)classTime.Group).ID,
-                  identTime = ((ClassTime)classTime.Time).ID;
+            Ident identGroup = ((Group)@class.Group).ID,
+                  identTime = ((ClassTime)@class.Time).ID;
             Tuple<Ident, Ident> keyGroup = new Tuple<Ident, Ident>(identGroup, identTime);
             Class classOfDictGroup;
-            bool exists = dictGroup.TryGetValue(keyGroup, out classOfDictGroup);
-            if (exists) classOfDictGroup = (Class)((Class)classTime).Clone();
+            bool exists = _dictGroup.TryGetValue(keyGroup, out classOfDictGroup);
+            if (exists) classOfDictGroup = (Class)((Class)@class).Clone();
             return exists;
         }
+
         public IEnumerable<IClass> GetAll()
         {
-            IEnumerable<Class> collection = dictGroup.Values;
-            List<IClass> cloneCollection = new List<IClass>(dictGroup.Count);
-            foreach (Class lecture in collection) cloneCollection.Add((IClass)lecture.Clone());
+            var cloneCollection = new List<IClass>();
+            cloneCollection.AddRange(_dictGroup.Values.Select(t => (IClass)t.Clone()));
             return cloneCollection;
         }
     }

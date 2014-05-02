@@ -20,7 +20,7 @@ namespace ScheduleData.Interfaces
         Lecture, Practice
     }
 
-    public class Time : ICloneable
+    public class Time : ICloneable, IComparable
     {
 
         public Time(int hours, int minutes)
@@ -31,6 +31,17 @@ namespace ScheduleData.Interfaces
 
         public int Hours { get; set; }
         public int Minutes { get; set; }
+
+        public int CompareTo(object t)
+        {
+            var other = (Time) t;
+            if (other == null) return 1;
+            if (Hours == other.Hours)
+            {
+                return Minutes.CompareTo(other.Minutes);
+            }
+            return Hours.CompareTo(other.Hours);
+        }
 
         public override string ToString()
         {
@@ -47,7 +58,7 @@ namespace ScheduleData.Interfaces
         }
     }
 
-    public interface ITimeInterval
+    public interface ITimeInterval : IComparable
     {
         Weekdays Day { get; set; }
         Time Begin { get; set; }
@@ -109,9 +120,9 @@ namespace ScheduleData.Interfaces
 
     public interface IObjectCollection<T>
     {
-        T Add(T t); // add and return added value
-        bool Remove(T t);
-        bool Submit(T t);
+        T Add(T lecturer); // add and return added value
+        bool Remove(T subject);
+        bool Submit(T subject);
         IEnumerable<T> GetAll();
     }
 

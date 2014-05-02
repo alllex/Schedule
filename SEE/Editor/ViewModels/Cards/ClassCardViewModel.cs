@@ -10,24 +10,30 @@ using Editor.Helpers;
 using Editor.Models;
 using Editor.UserControls;
 using ScheduleData;
+using ScheduleData.Interfaces;
 
 namespace Editor.ViewModels
 {
-    class LectureCardViewModel : BaseViewModel
+    class ClassCardViewModel : BaseViewModel
     {
 
         #region Properties
 
         #region Subject
 
+        private string _subject = "";
         public string Subject
         {
-            get { return _class.Subject.Name; }
+            get { return _subject; }
             set
             {
-                if (_class.Subject.Name != value)
+                if (_subject != value)
                 {
-                    _class.Subject.Name = value;
+                    _subject = value;
+                    foreach (var @class in _classes)
+                    {
+                        @class.Subject.Name = value;
+                    }
                     RaisePropertyChanged(() => Subject);
                 }
             }
@@ -37,14 +43,19 @@ namespace Editor.ViewModels
 
         #region Lecturer
 
+        private string _lecturer = "";
         public string Lecturer
         {
-            get { return  _class.Lecturer.Name; }
+            get { return _lecturer; }
             set
             {
-                if ( _class.Lecturer.Name != value)
+                if (_lecturer != value)
                 {
-                     _class.Lecturer.Name = value;
+                    _lecturer = value;
+                    foreach (var @class in _classes)
+                    {
+                        @class.Lecturer.Name = value;
+                    }
                     RaisePropertyChanged(() => Lecturer);
                 }
             }
@@ -54,14 +65,19 @@ namespace Editor.ViewModels
 
         #region Group
 
+        private string _group = "";
         public string Group
         {
-            get { return  _class.Group.Name; }
+            get { return _group; }
             set
             {
-                if ( _class.Group.Name != value)
+                if (_group != value)
                 {
-                    _class.Group.Name = value;
+                    _group = value;
+                    foreach (var @class in _classes)
+                    {
+                        @class.Group.Name = value;
+                    }
                     RaisePropertyChanged(() => Group);
                 }
             }
@@ -69,17 +85,22 @@ namespace Editor.ViewModels
 
         #endregion
 
-        #region Room
+        #region Classroom
 
-        public string Room
+        private string _classroom = "";
+        public string Classroom
         {
-            get { return _class.Classroom.Name; }
+            get { return _classroom; }
             set
             {
-                if (_class.Classroom.Name != value)
+                if (_classroom != value)
                 {
-                    _class.Classroom.Name = value;
-                    RaisePropertyChanged(() => Room);
+                    _classroom = value;
+                    foreach (var @class in _classes)
+                    {
+                        @class.Classroom.Name = value;
+                    }
+                    RaisePropertyChanged(() => Classroom);
                 }
             }
         }
@@ -94,7 +115,7 @@ namespace Editor.ViewModels
             get { return _isEditing; }
             set
             {
-                if (_isEditing != value)
+                if (_isEditing != value)    
                 {
                     _isEditing = value;
                     RaisePropertyChanged(() => IsEditing);
@@ -138,11 +159,11 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        private IClass _class;
+        private List<IClass> _classes;
 
-        public LectureCardViewModel(IClass @class)
+        public ClassCardViewModel(List<IClass> classes)
         {
-            _class = @class;
+            _classes = classes;
             IsEditing = false;
             IsSelected = false;
         }
@@ -179,7 +200,7 @@ namespace Editor.ViewModels
                 MessageBox.Show("Cannot cast to UIElement");
                 return;
             }
-            ui.RaiseEvent(new RoutedEventArgs(LectureCard.ClickEvent));
+            ui.RaiseEvent(new RoutedEventArgs(ClassCard.ClickEvent));
         }
 
 

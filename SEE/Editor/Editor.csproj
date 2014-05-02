@@ -83,7 +83,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Cards\LectureCard.xaml">
+    <Page Include="Views\Cards\ClassCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -132,7 +132,7 @@
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
-    <Compile Include="Models\LecturesTable.cs" />
+    <Compile Include="Models\ClassesTable.cs" />
     <Compile Include="Models\SpanedItem.cs" />
     <Compile Include="Models\TableItem.cs" />
     <Compile Include="Models\TimeLineMarkup.cs" />
@@ -144,8 +144,8 @@
     <Compile Include="Views\Panels\GroupEditPanel.xaml.cs">
       <DependentUpon>GroupEditPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Cards\LectureCard.xaml.cs">
-      <DependentUpon>LectureCard.xaml</DependentUpon>
+    <Compile Include="Views\Cards\ClassCard.xaml.cs">
+      <DependentUpon>ClassCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Panels\LecturerEditPanel.xaml.cs">
       <DependentUpon>LecturerEditPanel.xaml</DependentUpon>
@@ -169,11 +169,11 @@
     <Compile Include="ViewModels\Cards\DayCardViewModel.cs" />
     <Compile Include="ViewModels\Windows\EditorWindowViewModel.cs" />
     <Compile Include="ViewModels\Panels\GroupEditPanelViewModel.cs" />
-    <Compile Include="ViewModels\Cards\LectureCardViewModel.cs" />
+    <Compile Include="ViewModels\Cards\ClassCardViewModel.cs" />
     <Compile Include="ViewModels\Panels\LecturerEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\ListsEditWindowViewModel.cs" />
     <Compile Include="ViewModels\Windows\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\Panels\RoomEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Panels\ClassroomEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Cards\SubtitleCardViewModel.cs" />
     <Compile Include="ViewModels\Controls\TableViewModel.cs" />
     <Compile Include="ViewModels\Cards\TimeCardViewModel.cs" />

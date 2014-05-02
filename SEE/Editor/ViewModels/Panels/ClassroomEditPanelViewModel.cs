@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ScheduleData;
+using ScheduleData.Interfaces;
 
 namespace Editor.ViewModels
 {
-    class RoomEditPanelViewModel : BaseViewModel
+    class ClassroomEditPanelViewModel : BaseViewModel
     {
 
         #region Properties
@@ -51,7 +52,7 @@ namespace Editor.ViewModels
         #region Ctor
 
         private IClassroom _classroom;
-        public RoomEditPanelViewModel(IClassroom classroom)
+        public ClassroomEditPanelViewModel(IClassroom classroom)
         {
             _classroom = classroom;
         }

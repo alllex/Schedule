@@ -6,11 +6,14 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using Editor.Helpers;
 using Editor.Models;
 using Editor.Repository;
 using Editor.UserControls;
 using ScheduleData;
+using ScheduleData.Editor;
+using ScheduleData.Interfaces;
 
 namespace Editor.ViewModels
 {
@@ -20,25 +23,21 @@ namespace Editor.ViewModels
 
         public static int TimeColumnsCount = 2;
         public static int TitleRowsCount = 2;
-        public static int TimeColumn = 1;
-        public static int DayColumn = 0;
-        public static int TitleRow = 0;
-        public static int SubtitleRow = 1;
 
         #region Properties
 
         #region Lectures
 
-        private ObservableCollection<UIElement> _lecturesCards;
-        public ObservableCollection<UIElement> LectureCards
+        private ObservableCollection<UIElement> _classesCards;
+        public ObservableCollection<UIElement> ClassCards
         {
-            get { return _lecturesCards; }
+            get { return _classesCards; }
             set
             {
-                if (_lecturesCards != value)
+                if (_classesCards != value)
                 {
-                    _lecturesCards = value;
-                    RaisePropertyChanged(() => LectureCards);
+                    _classesCards = value;
+                    RaisePropertyChanged(() => ClassCards);
                 }
             }
         }
@@ -47,16 +46,16 @@ namespace Editor.ViewModels
 
         #region TimeLine
 
-        private ObservableCollection<UIElement> _timeLine;
-        public ObservableCollection<UIElement> TimeLine
+        private ObservableCollection<UIElement> _timeIntervals;
+        public ObservableCollection<UIElement> TimeIntervals
         {
-            get { return _timeLine; }
+            get { return _timeIntervals; }
             set
             {
-                if (_timeLine != value)
+                if (_timeIntervals != value)
                 {
-                    _timeLine = value;
-                    RaisePropertyChanged(() => TimeLine);
+                    _timeIntervals = value;
+                    RaisePropertyChanged(() => TimeIntervals);
                 }
             }
         }
@@ -99,165 +98,109 @@ namespace Editor.ViewModels
 
         #endregion
 
-        #region Subtitles
-
-        private ObservableCollection<UIElement> _subtitles;
-        public ObservableCollection<UIElement> Subtitles
-        {
-            get { return _subtitles; }
-            set
-            {
-                if (_subtitles != value)
-                {
-                    _subtitles = value;
-                    RaisePropertyChanged(() => Subtitles);
-                }
-            }
-        }
-
         #endregion
 
-        #endregion
+        private ClassesTable _classTable;
+        private TimeLineMarkup _timeLineMarkup;
+        private TitlesMarkup _titlesMarkup;
 
-        private LecturesTable _lectureTable;
-        private List<LectureCard> _selectedCards = new List<LectureCard>();
+        private List<ClassCard> _selectedCards = new List<ClassCard>();
 
-        public TableViewModel()
+        public TableViewModel(ISchedule schedule, IYearOfStudy year)
         {
-            InitializeLectureCards();
-            InitializeTimeLine();
-            InitializeDayLine();
+            _classTable = new ClassesTable(schedule, year);
+            _timeLineMarkup = new TimeLineMarkup(_classTable.TimeIntervals);
+            _titlesMarkup = new TitlesMarkup(_classTable.Groups);
+            InitDayLine();
+            InitTimeIntervalLine();
             InitializeTitles();
-            InitializeSubTitles();
+            InitLectureCards();
         }
 
-        private void InitializeSubTitles()
-        {
-            Subtitles = new ObservableCollection<UIElement>();
-            int col = TimeColumnsCount;
-            foreach (var subgroup in ScheduleRepository.Subgroups)
-            {
-                Subtitles.Add(havingNameToSubtitleCard(subgroup, col++));
-            }
-        }
+        //private void InitializeSubTitles()
+        //{
+        //    Subtitles = new ObservableCollection<UIElement>();
+        //    int col = TimeColumnsCount;
+        //    foreach (var subgroup in ScheduleRepository.Subgroups)
+        //    {
+        //        Subtitles.Add(havingNameToSubtitleCard(subgroup, col++));
+        //    }
+        //}
 
         private void InitializeTitles()
         {
             Titles = new ObservableCollection<UIElement>();
-            int col = TimeColumnsCount;
-            foreach (var group in ScheduleRepository.Groups)
+            foreach (var title in _titlesMarkup.Titles)
             {
-                Titles.Add(havingNameToTitleCard(group, col));
-                int shift = group.Subgroups.Count();
-                col += shift == 0 ? 1 : shift;
+                var tvm = new TitleCardViewModel(title.Item);
+                var tc = new TitleCard { DataContext = tvm };
+                Grid.SetRow(tc, title.Row);
+                Grid.SetColumn(tc, title.Column);
+                Grid.SetRowSpan(tc, title.RowSpan);
+                Grid.SetColumnSpan(tc, title.ColumnSpan);
+                Titles.Add(tc);
             }
         }
 
-        private void InitializeDayLine()
+        private void InitDayLine()
         {
             DayLine = new ObservableCollection<UIElement>();
-            for (int i = 0; i < ScheduleRepository.WeekdaysCount; i++)
+            foreach (var day in _timeLineMarkup.Days)
             {
-                DayLine.Add(WeekdaysToDayCard(i));
+                var dvm = new DayCardViewModel(day.Item);
+                var dc = new DayCard { DataContext = dvm };
+                Grid.SetRow(dc, TitleRowsCount + day.Row);
+                Grid.SetColumn(dc, day.Column);
+                Grid.SetRowSpan(dc, day.RowSpan);
+                Grid.SetColumnSpan(dc, day.ColumnSpan);
+                DayLine.Add(dc);
             }
         }
 
-        private void InitializeTimeLine()
+        private void InitTimeIntervalLine()
         {
-            TimeLine = new ObservableCollection<UIElement>();
-            for (int i = 0; i < ScheduleRepository.TimeLineLength; i++)
+            TimeIntervals = new ObservableCollection<UIElement>();
+            foreach (var classInterval in _timeLineMarkup.ClassIntervals)
             {
-                TimeLine.Add(TimeToTimeCard(i));
+                var tvm = new TimeCardViewModel(classInterval.Item);
+                var tc = new TimeCard { DataContext = tvm };
+                Grid.SetRow(tc, TitleRowsCount + classInterval.Row);
+                Grid.SetColumn(tc, classInterval.Column);
+                Grid.SetRowSpan(tc, classInterval.RowSpan);
+                Grid.SetColumnSpan(tc, classInterval.ColumnSpan);
+                TimeIntervals.Add(tc);
             }
         }
 
-        private void InitializeLectureCards()
+        private void InitLectureCards()
         {
-            LectureCards = new ObservableCollection<UIElement>();  
-            for (int row = 0; row < ScheduleRepository.RowCount(); row++)
+            ClassCards = new ObservableCollection<UIElement>();  
+
+            for (int row = 0; row < _classTable.RowsCount(); row++)
             {
-                for (int col = 0; col < ScheduleRepository.ColCount(); col++)
+                for (int col = 0; col < _classTable.ColumnsCount(); col++)
                 {
-                    LectureCards.Add(LectureToLectureCard(row, col));
+                    var l = _classTable.Table[row][col];
+                    var lvm = new ClassCardViewModel(new List<IClass> {l.Item});
+                    var lc = new ClassCard { DataContext = lvm };
+                    Grid.SetRow(lc, row + TitleRowsCount);
+                    Grid.SetColumn(lc, col + TimeColumnsCount);
+                    Grid.SetRowSpan(lc, l.RowSpan);
+                    Grid.SetColumnSpan(lc, l.ColumnSpan);
+                    lc.Click += LectureCardOnClick;
+                    ClassCards.Add(lc);
                 }
-            }
-        }
-
-        private LectureCard LectureToLectureCard(int row, int col)
-        {
-            var lvm = new LectureCardViewModel(ScheduleRepository.Table[row][col]);
-            var lc = new LectureCard {DataContext = lvm};
-            Grid.SetRow(lc, row + TitleRowsCount);
-            Grid.SetColumn(lc, col + TimeColumnsCount);
-            lc.Click += LectureCardOnClick;
-            return lc;
-        }
-
-        private void LectureCardOnClick(object sender, RoutedEventArgs routedEventArgs)
-        {
-            var lc = (LectureCard) sender;
-            if (_selectedCards.Any())
-            {
-                foreach (var selectedCard in _selectedCards)
-                {
-                    var vm = (LectureCardViewModel)selectedCard.DataContext;
-                    vm.IsSelected = false;
-                }
-                _selectedCards.Clear();
-            }
-            _selectedCards.Add(lc);
-            var lcvm = (LectureCardViewModel)lc.DataContext;
-            lcvm.IsSelected = true;
-        }
-
-        private TimeCard TimeToTimeCard(int timeLineIndex)
-        {
-            var tvm = new TimeCardViewModel(ScheduleRepository.TimeLine[timeLineIndex]);
-            var tc = new TimeCard {DataContext = tvm};
-            Grid.SetRow(tc, timeLineIndex + TitleRowsCount);
-            Grid.SetColumn(tc, TimeColumn);
-            return tc;
-        }
-
-        private DayCard WeekdaysToDayCard(int dayIndex)
-        {
-            var dvm = new DayCardViewModel((Weekdays) dayIndex);
-            var dc = new DayCard {DataContext = dvm};
-            Grid.SetRow(dc, TitleRowsCount + dayIndex * ScheduleRepository.LecturesPerDay);
-            Grid.SetColumn(dc, DayColumn);
-            Grid.SetRowSpan(dc, ScheduleRepository.LecturesPerDay);
-            return dc;
-        }
-
-        private TitleCard havingNameToTitleCard(IGroup group, int col)
-        {
-            var tvm = new TitleCardViewModel(group);
-            var tc = new TitleCard{DataContext = tvm};
-            Grid.SetRow(tc, TitleRow);
-            Grid.SetColumn(tc, col);
-            int span = group.Subgroups.Count();
-            if (span > 0)
-                Grid.SetColumnSpan(tc, span);
-            return tc;
-        }
-
-        private SubtitleCard havingNameToSubtitleCard(IGroup group, int col)
-        {
-            var stvm = new SubtitleCardViewModel(group);
-            var stc = new SubtitleCard { DataContext = stvm };
-            Grid.SetRow(stc, SubtitleRow);
-            Grid.SetColumn(stc, col);
-            return stc;
+            }    
         }
 
         public int TableWidth()
         {
-            return ScheduleRepository.SubtitleCount + TimeColumnsCount;
+            return TimeColumnsCount + _classTable.ColumnsCount();
         }
 
         public int TableHeight()
         {
-            return ScheduleRepository.TimeLineLength + TitleRowsCount;
+            return TitleRowsCount + _classTable.RowsCount();
         }
 
         #region Commands
@@ -269,6 +212,27 @@ namespace Editor.ViewModels
 
         #region Command Handlers
 
+
+        #endregion
+
+        #region Event Handlers
+
+        private void LectureCardOnClick(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var lc = (ClassCard)sender;
+            if (_selectedCards.Any())
+            {
+                foreach (var selectedCard in _selectedCards)
+                {
+                    var vm = (ClassCardViewModel)selectedCard.DataContext;
+                    vm.IsSelected = false;
+                }
+                _selectedCards.Clear();
+            }
+            _selectedCards.Add(lc);
+            var lcvm = (ClassCardViewModel)lc.DataContext;
+            lcvm.IsSelected = true;
+        }
 
         #endregion
     }

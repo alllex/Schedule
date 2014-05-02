@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Editor.Helpers;
+using Editor.Repository;
 using Editor.ViewModels;
 using Editor.Views;
 
@@ -25,7 +26,7 @@ namespace Editor.UserControls
     public partial class Table : UserControl
     {
 
-        TableViewModel tableViewModel = new TableViewModel();
+        TableViewModel tableViewModel = new TableViewModel(ScheduleRepository.Schedule, ScheduleRepository.Schedule.YearsOfStudy.GetAll().ToArray()[0]);
 
         public Table()
         {
@@ -37,11 +38,11 @@ namespace Editor.UserControls
         {
             ResizeGrid(tableViewModel.TableHeight(), tableViewModel.TableWidth());
             tableGrid.Children.Clear();
-            foreach (var lecture in tableViewModel.LectureCards)
+            foreach (var lecture in tableViewModel.ClassCards)
             {
                 tableGrid.Children.Add(lecture);
             }
-            foreach (var time in tableViewModel.TimeLine)
+            foreach (var time in tableViewModel.TimeIntervals)
             {
                 tableGrid.Children.Add(time);
             }
@@ -52,10 +53,6 @@ namespace Editor.UserControls
             foreach (var title in tableViewModel.Titles)
             {
                 tableGrid.Children.Add(title);
-            }
-            foreach (var subtitle in tableViewModel.Subtitles)
-            {
-                tableGrid.Children.Add(subtitle);
             }
         }
 
@@ -71,8 +68,6 @@ namespace Editor.UserControls
                 tableGrid.ColumnDefinitions.Add(new ColumnDefinition{Width = GridLength.Auto});
             }
         }
-         
-
-
+             
     }
 }

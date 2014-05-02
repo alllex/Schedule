@@ -19,13 +19,13 @@ namespace Editor.UserControls
     /// <summary>
     /// Interaction logic for LectureCard.xaml
     /// </summary>
-    public partial class LectureCard : UserControl
+    public partial class ClassCard : UserControl
     {
 
         #region RoutedEvents
 
         public static readonly RoutedEvent ClickEvent = EventManager.RegisterRoutedEvent(
-            "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(LectureCard));
+            "Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ClassCard));
 
 
         public event RoutedEventHandler Click
@@ -36,7 +36,7 @@ namespace Editor.UserControls
 
         #endregion
 
-        public LectureCard()
+        public ClassCard()
         {
             InitializeComponent();
         }
