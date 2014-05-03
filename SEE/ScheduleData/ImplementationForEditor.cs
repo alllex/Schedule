@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Runtime.Serialization.Formatters;
 using ScheduleData.Interfaces;
 
 namespace ScheduleData.Editor
@@ -32,6 +33,7 @@ namespace ScheduleData.Editor
 
     public class ClassTime : IClassTime
     {
+
         public ClassTime(WeekType week, Weekdays day, Time begin, Time end)
         {
             Week = week;
@@ -65,6 +67,11 @@ namespace ScheduleData.Editor
         }
         public string Name { get; set; }
         public ClassType ClassType { get; set; }
+        public int CompareTo(object obj)
+        {
+            var t = (IHavingName) obj;
+            return t == null ? 1 : String.Compare(Name, t.Name, StringComparison.Ordinal);
+        }
     }
 
     public class Classroom : IClassroom
@@ -77,6 +84,11 @@ namespace ScheduleData.Editor
 
         public string Name { get; set; }
         public string Address { get; set; }
+        public int CompareTo(object obj)
+        {
+            var t = (IHavingName)obj;
+            return t == null ? 1 : String.Compare(Name, t.Name, StringComparison.Ordinal);
+        }
     }
 
     public class Lecturer : ILecturer
@@ -88,6 +100,11 @@ namespace ScheduleData.Editor
         public string Name { get; set; }
         public string Degree { get; set; }
         public IDepartment Department { get; set; }
+        public int CompareTo(object obj)
+        {
+            var t = (IHavingName)obj;
+            return t == null ? 1 : String.Compare(Name, t.Name, StringComparison.Ordinal);
+        }
     }
 
     public class YearOfStudy : IYearOfStudy
@@ -97,6 +114,11 @@ namespace ScheduleData.Editor
             Name = name;
         }
         public string Name { get; set; }
+        public int CompareTo(object obj)
+        {
+            var t = (IHavingName)obj;
+            return t == null ? 1 : String.Compare(Name, t.Name, StringComparison.Ordinal);
+        }
     }
 
     public class Specialization : ISpecialization
@@ -106,6 +128,11 @@ namespace ScheduleData.Editor
             Name = name;
         }
         public string Name { get; set; }
+        public int CompareTo(object obj)
+        {
+            var t = (IHavingName)obj;
+            return t == null ? 1 : String.Compare(Name, t.Name, StringComparison.Ordinal);
+        }
     }
 
     public class Group : IGroup
@@ -120,6 +147,11 @@ namespace ScheduleData.Editor
         public string Name { get; set; }
         public IYearOfStudy YearOfStudy { get; set; }
         public ISpecialization Specialization { get; set; }
+        public int CompareTo(object obj)
+        {
+            var t = (IHavingName)obj;
+            return t == null ? 1 : String.Compare(Name, t.Name, StringComparison.Ordinal);
+        }
     }
 
     public class Class : IClass
@@ -138,6 +170,12 @@ namespace ScheduleData.Editor
         public ILecturer Lecturer { get; set; }
         public IClassroom Classroom { get; set; }
         public IClassTime Time { get; set; }
+
+        public int CompareTo(object obj)
+        {
+            var t = (IClass)obj;
+            return t == null ? 1 : Subject.CompareTo(t.Subject);
+        }
     }
 
     public class Schedule : ISchedule

@@ -22,6 +22,18 @@ namespace ScheduleData.Interfaces
 
     public class Time : ICloneable, IComparable
     {
+        protected bool Equals(Time other)
+        {
+            return Hours == other.Hours && Minutes == other.Minutes;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Hours*397) ^ Minutes;
+            }
+        }
 
         public Time(int hours, int minutes)
         {
@@ -56,6 +68,14 @@ namespace ScheduleData.Interfaces
         {
             return new Time(Hours, Minutes);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Time) obj);
+        }
     }
 
     public interface ITimeInterval : IComparable
@@ -70,7 +90,7 @@ namespace ScheduleData.Interfaces
         WeekType Week { get; set; }
     }
 
-    public interface IHavingName
+    public interface IHavingName : IComparable
     {
         string Name { get; set; }
     }
@@ -109,7 +129,7 @@ namespace ScheduleData.Interfaces
         ISpecialization Specialization { get; set; }
     }
 
-    public interface IClass
+    public interface IClass : IComparable
     {
         ISubject Subject { get; set; }
         IGroup Group { get; set; }

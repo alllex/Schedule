@@ -21,10 +21,6 @@ namespace Editor.Repository
 
         public static ISchedule Schedule = new Schedule();
 
-        //public static int LecturesPerDay = 3;
-        //public static int WeekdaysCount = 6;
-        //public static int TimeLineLength = LecturesPerDay*WeekdaysCount;
-
         static ScheduleRepository()
         {
             InitTimeLine();
@@ -115,7 +111,7 @@ namespace Editor.Repository
             {
                 var g = groupNames[i];
                 var y = years[0];
-                var s = specs[Rnd.Next(specs.Length - 1)];
+                var s = specs[Rnd.Next(specs.Length)];
                 Schedule.Groups.Add(new Group(g, y, s));
             }
         }
@@ -133,17 +129,17 @@ namespace Editor.Repository
             {
                 var s = subjs[Rnd.Next(subjs.Length - 1)];
 
-                IClassTime t = times[Rnd.Next(times.Length - 1)];
-                IGroup g = groups[Rnd.Next(groups.Length - 1)];
-                ILecturer l = lectr[Rnd.Next(lectr.Length - 1)];
-                IClassroom r = rooms[Rnd.Next(rooms.Length - 1)];
+                IClassTime t = times[Rnd.Next(times.Length)];
+                IGroup g = groups[Rnd.Next(groups.Length)];
+                ILecturer l = lectr[Rnd.Next(lectr.Length)];
+                IClassroom r = rooms[Rnd.Next(rooms.Length)];
                 int helper = 0;
                 while (Schedule.Classes.Get(g, t) != null || Schedule.Classes.Get(r, t) != null || Schedule.Classes.Get(l, t) != null)
                 {
-                    g = groups[Rnd.Next(groups.Length - 1)];
-                    t = times[Rnd.Next(times.Length - 1)];
-                    l = lectr[Rnd.Next(lectr.Length - 1)];
-                    r = rooms[Rnd.Next(rooms.Length - 1)];
+                    g = groups[Rnd.Next(groups.Length)];
+                    t = times[Rnd.Next(times.Length)];
+                    l = lectr[Rnd.Next(lectr.Length)];
+                    r = rooms[Rnd.Next(rooms.Length)];
                     if (helper++ > 1000000)
                     {
                         MessageBox.Show("Helper");

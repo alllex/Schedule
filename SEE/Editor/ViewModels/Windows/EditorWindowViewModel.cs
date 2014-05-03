@@ -41,7 +41,6 @@ namespace Editor.ViewModels
             OpenListsEditorHelper(ListsEditorTab.Groups);
         }
 
-
         private void OnOpenLecturersEditor()
         {
             OpenListsEditorHelper(ListsEditorTab.Lecturers);
@@ -60,7 +59,7 @@ namespace Editor.ViewModels
         private void OpenListsEditorHelper(ListsEditorTab initTab = ListsEditorTab.Groups)
         {
             var vm = new ListsEditWindowViewModel(initTab);
-            var window = new ListsEditWindow { DataContext = vm, Owner = _window };
+            var window = new ListsEditWindow { DataContext = vm, Owner = _window};
             window.ShowDialog();
         }
 

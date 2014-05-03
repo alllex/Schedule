@@ -63,7 +63,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Аудитория:"
                            HorizontalAlignment="Left"/>
-                        <TextBox Text="{Binding Room, Mode=TwoWay}"
+                        <TextBox Text="{Binding Classroom, Mode=TwoWay}"
                                  />
                     </StackPanel>
                     <Button Content="OK" Command="{Binding SetViewModeCommand}"
@@ -95,7 +95,7 @@
                                FontWeight="Bold" />
                     <TextBlock Text="{Binding Lecturer}"
                                FontStyle="Italic" />
-                    <TextBlock Text="{Binding Room}"
+                    <TextBlock Text="{Binding Classroom}"
                                Margin="3,3,10,3" />
                 </StackPanel></Border>
         </DataTemplate>

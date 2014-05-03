@@ -8,13 +8,10 @@ namespace Editor.Views
     /// </summary>
     public partial class EditorWindow : Window
     {
-
-        private EditorWindowViewModel viewModel;
-
         public EditorWindow()
         {
             InitializeComponent();
-            viewModel = new EditorWindowViewModel(this);
+            var viewModel = new EditorWindowViewModel(this);
             DataContext = viewModel;
         }
     }

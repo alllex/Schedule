@@ -39,7 +39,7 @@ namespace Editor.ViewModels
 
         public TimeCardViewModel(ITimeInterval time)
         {
-            Time = time.ToString();
+            Time = time.Begin + "-\n" + time.End;
         }
 
         #endregion

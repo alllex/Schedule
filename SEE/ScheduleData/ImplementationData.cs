@@ -31,10 +31,32 @@ namespace ScheduleData
         {
             return Name;
         }
+        public int CompareTo(object obj)
+        {
+            var t = (IHavingName)obj;
+            return t == null ? 1 : String.Compare(Name, t.Name, StringComparison.Ordinal);
+        }
     }
 
     internal class ClassTime : HavingID, IClassTime, ICloneable
     {
+        protected bool Equals(ClassTime other)
+        {
+            return Week == other.Week && Day == other.Day && Equals(Begin, other.Begin) && Equals(End, other.End);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = (int) Week;
+                hashCode = (hashCode*397) ^ (int) Day;
+                hashCode = (hashCode*397) ^ (Begin != null ? Begin.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (End != null ? End.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
         public ClassTime(Ident id, WeekType week, Weekdays day, Time begin, Time end)
             : base(id)
         {
@@ -59,6 +81,14 @@ namespace ScheduleData
             var other = (Time)t;
             if (other == null) return 1;
             return ((ITimeInterval)this).CompareTo(other);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ClassTime) obj);
         }
     }
 
@@ -174,6 +204,11 @@ namespace ScheduleData
                                (ILecturer)((Lecturer)Lecturer).Clone(),
                                (IClassroom)((Classroom)Classroom).Clone(),
                                (IClassTime)((ClassTime)Time).Clone());
+        }
+        public int CompareTo(object obj)
+        {
+            var t = (IClass)obj;
+            return t == null ? 1 : Subject.CompareTo(t.Subject);
         }
     }
 

@@ -147,6 +147,15 @@ namespace Editor.ViewModels
 
         #endregion
 
+        #region IsEmpty
+
+        public bool IsEmpty
+        {
+            get { return _classes.Any(); }
+        }
+
+        #endregion
+
         #endregion
 
         #region Commands
@@ -161,9 +170,16 @@ namespace Editor.ViewModels
 
         private List<IClass> _classes;
 
-        public ClassCardViewModel(List<IClass> classes)
+        public ClassCardViewModel(IClass @class)
         {
-            _classes = classes;
+            if (@class != null)
+            {
+                _classes = new List<IClass> { @class };
+                Subject = @class.Subject.Name;
+                Lecturer = @class.Lecturer.Name;
+                Group = @class.Group.Name;
+                Classroom = @class.Classroom.Name;
+            }
             IsEditing = false;
             IsSelected = false;
         }

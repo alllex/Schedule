@@ -135,7 +135,7 @@ namespace Editor.ViewModels
                 var tvm = new TitleCardViewModel(title.Item);
                 var tc = new TitleCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
-                Grid.SetColumn(tc, title.Column);
+                Grid.SetColumn(tc, TitleRowsCount + title.Column);
                 Grid.SetRowSpan(tc, title.RowSpan);
                 Grid.SetColumnSpan(tc, title.ColumnSpan);
                 Titles.Add(tc);
@@ -181,7 +181,7 @@ namespace Editor.ViewModels
                 for (int col = 0; col < _classTable.ColumnsCount(); col++)
                 {
                     var l = _classTable.Table[row][col];
-                    var lvm = new ClassCardViewModel(new List<IClass> {l.Item});
+                    var lvm = new ClassCardViewModel(l.Item);
                     var lc = new ClassCard { DataContext = lvm };
                     Grid.SetRow(lc, row + TitleRowsCount);
                     Grid.SetColumn(lc, col + TimeColumnsCount);
