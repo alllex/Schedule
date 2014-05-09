@@ -1,20 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Cryptography;
-using ScheduleData.Interfaces;
+using Editor.Helpers;
 
 namespace Editor.Models
 {
     class TimeLineMarkup
     {
 
-        public List<TableItem<Weekdays>> Days = new List<TableItem<Weekdays>>();
-        public List<TableItem<ITimeInterval>> ClassIntervals = new List<TableItem<ITimeInterval>>();
+        public Collection<TableItem<Weekdays>> Days = new Collection<TableItem<Weekdays>>();
+        public Collection<TableItem<TimeInterval>> ClassesIntervals = new Collection<TableItem<TimeInterval>>();
 
-        public TimeLineMarkup(IEnumerable<ITimeInterval> timeLine)
+        public TimeLineMarkup(ClassesSchedule classesSchedule)
         {
+            var cts =
+                (from t in classesSchedule.TimeLine
+                 group t by t.Week into bd
+                 select bd).First();
+            var timeLine = cts.Cast<TimeInterval>().ToArray();
             int currectRow = 0;
             var days =
                 (from t in timeLine
@@ -31,7 +33,7 @@ namespace Editor.Models
                 Days.Add(new TableItem<Weekdays>(day){Row = currectRow, Column = 0, RowSpan = d});
                 foreach (var timeInterval in ls)
                 {
-                    ClassIntervals.Add(new TableItem<ITimeInterval>(timeInterval){Row = currectRow, Column = 1});
+                    ClassesIntervals.Add(new TableItem<TimeInterval>(timeInterval){Row = currectRow, Column = 1});
                     currectRow++;
                 }
             }

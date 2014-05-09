@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScheduleData;
-using ScheduleData.Interfaces;
+﻿using Editor.Models;
 
 namespace Editor.ViewModels
 {
@@ -35,11 +29,16 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        public SubtitleCardViewModel(IHavingName name)
+        public SubtitleCardViewModel(HavingName name)
         {
             Subtitle = name.Name;
         }
 
         #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }

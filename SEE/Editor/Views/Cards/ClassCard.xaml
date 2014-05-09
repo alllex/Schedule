@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:viewModels="clr-namespace:Editor.ViewModels"
-             xmlns:converters="clr-namespace:Editor.Converters"
              xmlns:userControls="clr-namespace:Editor.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
@@ -53,18 +51,29 @@
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Предмет: "
                            HorizontalAlignment="Left"/>
-                        <TextBox Text="{Binding Subject, Mode=TwoWay}"/>
+                        <ComboBox ItemsSource="{Binding ClassesSchedule.Subjects}"
+                                  SelectedItem="{Binding SelectedSubject}"
+                                  DisplayMemberPath="Name"
+                                 >
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Преподаватель: "
                            HorizontalAlignment="Left"/>
-                        <TextBox Text="{Binding Lecturer, Mode=TwoWay}"/>
+                        <ComboBox ItemsSource="{Binding ClassesSchedule.Lecturers}"
+                                  SelectedItem="{Binding SelectedLecturer}"
+                                  DisplayMemberPath="Name"
+                                 >
+                        </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Аудитория:"
                            HorizontalAlignment="Left"/>
-                        <TextBox Text="{Binding Classroom, Mode=TwoWay}"
-                                 />
+                        <ComboBox ItemsSource="{Binding ClassesSchedule.Classrooms}"
+                                  SelectedItem="{Binding SelectedClassroom}"
+                                  DisplayMemberPath="Name"
+                                 >
+                        </ComboBox>
                     </StackPanel>
                     <Button Content="OK" Command="{Binding SetViewModeCommand}"
                             HorizontalAlignment="Right"

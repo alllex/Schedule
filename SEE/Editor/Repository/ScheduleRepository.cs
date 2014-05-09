@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Documents;
-using Microsoft.Win32;
-using ScheduleData;
-using ScheduleData.Editor;
-using ScheduleData.Interfaces;
+using Editor.Models;
 
 namespace Editor.Repository
 {
@@ -19,9 +10,9 @@ namespace Editor.Repository
 
         private static readonly Random Rnd = new Random();
 
-        public static ISchedule Schedule = new Schedule();
+        public ClassesSchedule Schedule = new ClassesSchedule();
 
-        static ScheduleRepository()
+        public ScheduleRepository()
         {
             InitTimeLine();
             InitClassrooms();
@@ -33,7 +24,7 @@ namespace Editor.Repository
             InitClasses();
         }
 
-        private static void InitTimeLine()
+        private void InitTimeLine()
         {
             var wds = Enum.GetValues(typeof(Weekdays));
             var wts = Enum.GetValues(typeof(WeekType));
@@ -41,112 +32,106 @@ namespace Editor.Repository
             {
                 foreach (var wt in wts)
                 {
-                    Schedule.TimeLine.Add(new ClassTime((WeekType)wt, (Weekdays)weekday, new Time(9, 30),  new Time(11, 05)));
-                    Schedule.TimeLine.Add(new ClassTime((WeekType)wt, (Weekdays)weekday, new Time(11, 15), new Time(12, 50)));
-                    Schedule.TimeLine.Add(new ClassTime((WeekType)wt, (Weekdays)weekday, new Time(13, 40), new Time(15, 15)));
-                    Schedule.TimeLine.Add(new ClassTime((WeekType)wt, (Weekdays)weekday, new Time(15, 25), new Time(17, 00)));
+                    Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(9, 00), EndTime = new Time(10, 00) });
+                    Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(11, 00), EndTime = new Time(12, 00) });
+                    Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(13, 00), EndTime = new Time(14, 00) });
+                    Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(15, 00), EndTime = new Time(16, 00) });
                 }
             }
         }
 
-        private static void InitClassrooms()
+        private void InitClassrooms()
         {
-            const int classroomsCount = 50;
+            const int classroomsCount = 20;
             const int minRoomNumber = 1000;
             const int maxRoomNumber = 3007;
 
             for (int i = 0; i < classroomsCount; i++)
             {
                 int num = Rnd.Next(minRoomNumber, maxRoomNumber);
-                Schedule.Classrooms.Add(new Classroom(num.ToString(CultureInfo.InvariantCulture)){Address = "Seasam street"});
+                Schedule.Classrooms.Add(new Classroom{Name = num.ToString(CultureInfo.InvariantCulture), Address = "Seasam street"});
             }
         }
 
-        private static void InitSubjects()
+        private void InitSubjects()
         {
             string[] subjectNames = { "Matan", "Algebra", "Programming", "Diffirence Equations", "Math Logic", "Algorithms", "Functional Analisys" };
             int subjectsCount = subjectNames.Length;
             for (int i = 0; i < subjectsCount; i++)
             {
-                Schedule.Subjects.Add(new Subject(subjectNames[i]));
+                Schedule.Subjects.Add(new Subject{Name = subjectNames[i]});
             }
         }
 
-        private static void InitLecturers()
+        private void InitLecturers()
         {
             string[] lecturerNames = { "Ivanov", "Petrov", "Baranov", "Semenov", "Kirilenko", "Polozov", "Luciv" };
             int lecturersCount = lecturerNames.Length;
             for (int i = 0; i < lecturersCount; i++)
             {
-                Schedule.Lecturers.Add(new Lecturer(lecturerNames[i]));
+                Schedule.Lecturers.Add(new Lecturer{Name = lecturerNames[i]});
             }
         }
 
-        private static void InitYearsOfStudy()
+        private void InitYearsOfStudy()
         {
             const int yearsCount = 1;
             for (int i = 1; i <= yearsCount; i++)
             {
-                Schedule.YearsOfStudy.Add(new YearOfStudy(i.ToString(CultureInfo.InvariantCulture)));
+                Schedule.YearsOfStudy.Add(new YearOfStudy{Name = i.ToString(CultureInfo.InvariantCulture)});
             }
         }
 
-        private static void InitSpecializations()
+        private void InitSpecializations()
         {
             string[] specializationNames = { "Primat", "Matobess", "PI", "Pure math", "Mechanics", "Astronoms", "Kids" };
             int specializationCount = specializationNames.Length;
             for (int i = 0; i < specializationCount; i++)
             {
-                Schedule.Specializations.Add(new Specialization(specializationNames[i]));
+                Schedule.Specializations.Add(new Specialization{Name = specializationNames[i]});
             }
         }
 
-        private static void InitGroups()
+        private void InitGroups()
         {
-            string[] groupNames = { "111", "112", "221", "223", "242", "271", "42" };
+            string[] groupNames = { "A", "B", "C", "D", "E", "F", "G", "H" };
             int groupCount = groupNames.Length;
-            var years = Schedule.YearsOfStudy.GetAll().ToArray();
-            var specs = Schedule.Specializations.GetAll().ToArray();
             for (int i = 0; i < groupCount; i++)
             {
                 var g = groupNames[i];
-                var y = years[0];
-                var s = specs[Rnd.Next(specs.Length)];
-                Schedule.Groups.Add(new Group(g, y, s));
+                var y = Schedule.YearsOfStudy[Rnd.Next(Schedule.YearsOfStudy.Count)];
+                var s = Schedule.Specializations[Rnd.Next(Schedule.Specializations.Count)];
+                Schedule.Groups.Add(new Group{Name = g, YearOfStudy = y, Specialization = s});
             }
         }
 
-        private static void InitClasses()
+        private void InitClasses()
         {
-            var subjs = Schedule.Subjects.GetAll().ToArray();
-            var lectr = Schedule.Lecturers.GetAll().ToArray();
-            var groups = Schedule.Groups.GetAll().ToArray();
-            var times = Schedule.TimeLine.GetAll().ToArray();
-            var rooms = Schedule.Classrooms.GetAll().ToArray();
-
-            int classCount = groups.Length*times.Length/2;
+            int classCount = Schedule.Groups.Count*Schedule.TimeLine.Count * 3 / 5;
             for (int i = 0; i < classCount; i++)
             {
-                var s = subjs[Rnd.Next(subjs.Length - 1)];
-
-                IClassTime t = times[Rnd.Next(times.Length)];
-                IGroup g = groups[Rnd.Next(groups.Length)];
-                ILecturer l = lectr[Rnd.Next(lectr.Length)];
-                IClassroom r = rooms[Rnd.Next(rooms.Length)];
+                Subject s = Schedule.Subjects[Rnd.Next(Schedule.Subjects.Count)];
+                ClassTime t = Schedule.TimeLine[Rnd.Next(Schedule.TimeLine.Count)];
+                Group g = Schedule.Groups[Rnd.Next(Schedule.Groups.Count)];
+                Lecturer l = Schedule.Lecturers[Rnd.Next(Schedule.Lecturers.Count)];
+                Classroom c = Schedule.Classrooms[Rnd.Next(Schedule.Classrooms.Count)];
                 int helper = 0;
-                while (Schedule.Classes.Get(g, t) != null || Schedule.Classes.Get(r, t) != null || Schedule.Classes.Get(l, t) != null)
+                var @class = new Class {Classroom = c, ClassTime = t, Group = g, Lecturer = l, Subject = s};
+                while (Schedule.Classes.Contains(@class))
                 {
-                    g = groups[Rnd.Next(groups.Length)];
-                    t = times[Rnd.Next(times.Length)];
-                    l = lectr[Rnd.Next(lectr.Length)];
-                    r = rooms[Rnd.Next(rooms.Length)];
-                    if (helper++ > 1000000)
+                    s = Schedule.Subjects[Rnd.Next(Schedule.Subjects.Count)];
+                    t = Schedule.TimeLine[Rnd.Next(Schedule.TimeLine.Count)];
+                    g = Schedule.Groups[Rnd.Next(Schedule.Groups.Count)];
+                    l = Schedule.Lecturers[Rnd.Next(Schedule.Lecturers.Count)];
+                    c = Schedule.Classrooms[Rnd.Next(Schedule.Classrooms.Count)];
+                    @class = new Class { Classroom = c, ClassTime = t, Group = g, Lecturer = l, Subject = s };
+                    if (helper++ > 20)
                     {
                         MessageBox.Show("Helper");
                         break;
                     }
                 }
-                Schedule.Classes.Add(new Class(s, g, l, r, t));
+                Schedule.Classes.Add(@class);
             }
         }
         

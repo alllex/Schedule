@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.Animation;
-using Editor.Helpers;
 using Editor.Models;
-using Editor.Repository;
 using Editor.UserControls;
-using ScheduleData;
-using ScheduleData.Editor;
-using ScheduleData.Interfaces;
+using Editor.ViewModels.Cards;
 
 namespace Editor.ViewModels
 {
-
-    class TableViewModel : BaseViewModel
+    public class TableViewModel : BaseViewModel
     {
 
         public static int TimeColumnsCount = 2;
@@ -26,7 +18,62 @@ namespace Editor.ViewModels
 
         #region Properties
 
-        #region Lectures
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            _timeLineMarkup = new TimeLineMarkup(ClassesSchedule);
+            InitDayLine();
+            InitTimeIntervalLine();
+        }
+
+        #region YearOfStudy
+
+        private YearOfStudy _yearOfStudy;
+
+        public YearOfStudy YearOfStudy
+        {
+            get { return _yearOfStudy; }
+            set
+            {
+                if (_yearOfStudy != value)
+                {
+                    _yearOfStudy = value;
+                    YearOfStudyOnPropertyChanged();
+                    RaisePropertyChanged(() => YearOfStudy);
+                }
+            }
+        }
+
+        private void YearOfStudyOnPropertyChanged()
+        {
+            TableHeader = YearOfStudy.ToString();
+            _classesTable = new ClassesTable(ClassesSchedule, YearOfStudy);
+            _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
+            InitializeTitles();
+            InitLectureCards();
+        }
+
+        #endregion
+
+        #region TableHeader
+
+        private string _tableHeader;
+
+        public string TableHeader
+        {
+            get { return _tableHeader; }
+            set
+            {
+                if (_tableHeader != value)
+                {
+                    _tableHeader = value;
+                    RaisePropertyChanged(() => TableHeader);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Classes
 
         private ObservableCollection<UIElement> _classesCards;
         public ObservableCollection<UIElement> ClassCards
@@ -100,32 +147,16 @@ namespace Editor.ViewModels
 
         #endregion
 
-        private ClassesTable _classTable;
+        private ClassesTable _classesTable;
         private TimeLineMarkup _timeLineMarkup;
         private TitlesMarkup _titlesMarkup;
 
         private List<ClassCard> _selectedCards = new List<ClassCard>();
 
-        public TableViewModel(ISchedule schedule, IYearOfStudy year)
+        public TableViewModel()
         {
-            _classTable = new ClassesTable(schedule, year);
-            _timeLineMarkup = new TimeLineMarkup(_classTable.TimeIntervals);
-            _titlesMarkup = new TitlesMarkup(_classTable.Groups);
-            InitDayLine();
-            InitTimeIntervalLine();
-            InitializeTitles();
-            InitLectureCards();
+            Debug.WriteLine(GetType() + " created");
         }
-
-        //private void InitializeSubTitles()
-        //{
-        //    Subtitles = new ObservableCollection<UIElement>();
-        //    int col = TimeColumnsCount;
-        //    foreach (var subgroup in ScheduleRepository.Subgroups)
-        //    {
-        //        Subtitles.Add(havingNameToSubtitleCard(subgroup, col++));
-        //    }
-        //}
 
         private void InitializeTitles()
         {
@@ -160,7 +191,7 @@ namespace Editor.ViewModels
         private void InitTimeIntervalLine()
         {
             TimeIntervals = new ObservableCollection<UIElement>();
-            foreach (var classInterval in _timeLineMarkup.ClassIntervals)
+            foreach (var classInterval in _timeLineMarkup.ClassesIntervals)
             {
                 var tvm = new TimeCardViewModel(classInterval.Item);
                 var tc = new TimeCard { DataContext = tvm };
@@ -176,12 +207,12 @@ namespace Editor.ViewModels
         {
             ClassCards = new ObservableCollection<UIElement>();  
 
-            for (int row = 0; row < _classTable.RowsCount(); row++)
+            for (int row = 0; row < _classesTable.RowsCount(); row++)
             {
-                for (int col = 0; col < _classTable.ColumnsCount(); col++)
+                for (int col = 0; col < _classesTable.ColumnsCount(); col++)
                 {
-                    var l = _classTable.Table[row][col];
-                    var lvm = new ClassCardViewModel(l.Item);
+                    var l = _classesTable.Table[row][col];
+                    var lvm = new ClassCardViewModel(ClassesSchedule, l.Item);
                     var lc = new ClassCard { DataContext = lvm };
                     Grid.SetRow(lc, row + TitleRowsCount);
                     Grid.SetColumn(lc, col + TimeColumnsCount);
@@ -195,18 +226,16 @@ namespace Editor.ViewModels
 
         public int TableWidth()
         {
-            return TimeColumnsCount + _classTable.ColumnsCount();
+            return TimeColumnsCount + _classesTable.ColumnsCount();
         }
 
         public int TableHeight()
         {
-            return TitleRowsCount + _classTable.RowsCount();
+            return TitleRowsCount + _classesTable.RowsCount();
         }
 
         #region Commands
 
-        //public ICommand SetEditModeCommand { get { return new DelegateCommand(OnSetEditMode, CanExecuteSetEditMode); } }
-        //public ICommand SetViewModeCommand { get { return new DelegateCommand(OnSetViewMode, CanExecuteSetViewMode); } }
 
         #endregion
 

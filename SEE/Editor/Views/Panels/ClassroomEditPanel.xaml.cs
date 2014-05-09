@@ -12,15 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Editor.ViewModels;
 
 namespace Editor.UserControls
 {
     /// <summary>
     /// Interaction logic for RoomEditPanel.xaml
     /// </summary>
-    public partial class RoomEditPanel : UserControl
+    public partial class ClassroomEditPanel : UserControl
     {
-        public RoomEditPanel()
+        public ClassroomEditPanel()
         {
             InitializeComponent();
         }

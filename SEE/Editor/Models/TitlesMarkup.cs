@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScheduleData.Interfaces;
+﻿using System.Collections.Generic;
+using Editor.Helpers;
 
 namespace Editor.Models
 {
     class TitlesMarkup
     {
-        public List<TableItem<IHavingName>> Titles = new List<TableItem<IHavingName>>();
+        public List<TableItem<HavingName>> Titles = new List<TableItem<HavingName>>();
 
-        public TitlesMarkup(IEnumerable<IHavingName> titles)
+        public TitlesMarkup(IEnumerable<HavingName> titles)
         {
             int currectCol = 0;
             foreach (var title in titles)
             {
-                Titles.Add(new TableItem<IHavingName>(title){Row = 0, Column = currectCol});
+                Titles.Add(new TableItem<HavingName>(title){Row = 0, Column = currectCol});
                 currectCol++;
             }
         }

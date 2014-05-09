@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.SymbolStore;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
 using Editor.UserControls;
-using ScheduleData;
-using ScheduleData.Interfaces;
 
 namespace Editor.ViewModels
 {
@@ -107,6 +102,69 @@ namespace Editor.ViewModels
 
         #endregion
 
+        #region SelectedClassroom
+
+        public Classroom SelectedClassroom
+        {
+            get
+            {
+                var cs = ClassesSchedule.Classrooms.Where(classroom => classroom.Name == Classroom);
+                var classrooms = cs as IList<Classroom> ?? cs.ToList();
+                return classrooms.Any() ? classrooms.First() : null;
+            }
+            set
+            {
+                if (value != null && value.Name != Classroom)
+                {
+                    Classroom = value.Name;
+                }
+            }
+        }
+
+        #endregion
+
+        #region SelectedLecturer
+
+        public Lecturer SelectedLecturer
+        {
+            get
+            {
+                var cs = ClassesSchedule.Lecturers.Where(lecturer => lecturer.Name == Lecturer);
+                var lecturers = cs as IList<Lecturer> ?? cs.ToList();
+                return lecturers.Any() ? lecturers.First() : null;
+            }
+            set
+            {
+                if (value != null && value.Name != Lecturer)
+                {
+                    Lecturer = value.Name;
+                }
+            }
+        }
+
+        #endregion
+
+        #region SelectedSubject
+
+        public Subject SelectedSubject
+        {
+            get
+            {
+                var cs = ClassesSchedule.Subjects.Where(s => s.Name == Subject);
+                var subjects = cs as IList<Subject> ?? cs.ToList();
+                return subjects.Any() ? subjects.First() : null;
+            }
+            set
+            {
+                if (value != null && value.Name != Subject)
+                {
+                    Subject = value.Name;
+                }
+            }
+        }
+
+        #endregion
+
         #region IsEditing
 
         private bool _isEditing;
@@ -168,13 +226,14 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        private List<IClass> _classes;
+        private List<Class> _classes;
 
-        public ClassCardViewModel(IClass @class)
+        public ClassCardViewModel(ClassesSchedule classesSchedule, Class @class)
         {
+            ClassesSchedule = classesSchedule;
             if (@class != null)
             {
-                _classes = new List<IClass> { @class };
+                _classes = new List<Class> { @class };
                 Subject = @class.Subject.Name;
                 Lecturer = @class.Lecturer.Name;
                 Group = @class.Group.Name;
@@ -221,5 +280,10 @@ namespace Editor.ViewModels
 
 
         #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }

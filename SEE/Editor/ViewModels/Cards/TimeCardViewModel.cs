@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Editor.Helpers;
-using Editor.Models;
-using ScheduleData;
-using ScheduleData.Interfaces;
+﻿using Editor.Models;
 
 namespace Editor.ViewModels
 {
@@ -37,12 +28,16 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        public TimeCardViewModel(ITimeInterval time)
+        public TimeCardViewModel(TimeInterval time)
         {
-            Time = time.Begin + "-\n" + time.End;
+            Time = time.BeginTime + "-\n" + time.EndTime;
         }
 
         #endregion
 
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }

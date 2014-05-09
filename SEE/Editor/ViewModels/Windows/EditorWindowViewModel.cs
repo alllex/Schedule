@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Diagnostics;
 using System.Windows.Input;
 using Editor.Helpers;
+using Editor.Models;
+using Editor.Repository;
+using Editor.ViewModels.Controls;
 using Editor.Views;
 
 namespace Editor.ViewModels
@@ -14,13 +12,59 @@ namespace Editor.ViewModels
     class EditorWindowViewModel : BaseViewModel
     {
 
+        #region Properties
+
+        #region HasActiveProject
+
+        private bool _hasActiveProject;
+
+        public bool HasActiveProject
+        {
+            get { return _hasActiveProject; }
+            set
+            {
+                if (_hasActiveProject != value)
+                {
+                    _hasActiveProject = value;
+                    RaisePropertyChanged(() => HasActiveProject);
+                }
+            }
+        }
+
+        #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            TablesControllerDataContext = new TablesControllerViewModel {ClassesSchedule = ClassesSchedule};
+            HasActiveProject = ClassesSchedule != null;
+        }
+
+        #region TablesControllerDataContext
+
+        private TablesControllerViewModel _tableControllerDataContext;
+
+        public TablesControllerViewModel TablesControllerDataContext
+        {
+            get { return _tableControllerDataContext; }
+            set
+            {
+                if (_tableControllerDataContext != value)
+                {
+                    _tableControllerDataContext = value;
+                    RaisePropertyChanged(() => TablesControllerDataContext);
+                }
+            }
+        }
+
+        #endregion
+
+        #endregion
+
         #region Ctor
 
-        private Window _window;
-
-        public EditorWindowViewModel(Window window)
+        public EditorWindowViewModel()
         {
-            _window = window;
+            Debug.WriteLine(GetType() + " created");
         }
 
         #endregion
@@ -31,10 +75,16 @@ namespace Editor.ViewModels
         public ICommand OpenGroupsEditorCommand { get { return new DelegateCommand(OnOpenGroupsEditor); } }
         public ICommand OpenLecturersEditorCommand { get { return new DelegateCommand(OnOpenLecturersEditor); } }
         public ICommand OpenRoomsEditorCommand { get { return new DelegateCommand(OnOpenRoomsEditor); } }
+        public ICommand LoadDataCommand { get { return new DelegateCommand(OnLoadData);}}
 
         #endregion
 
         #region Command Handlers
+
+        private void OnLoadData()
+        {
+            ClassesSchedule = new ScheduleRepository().Schedule;
+        }
 
         private void OnOpenGroupsEditor()
         {
@@ -58,8 +108,8 @@ namespace Editor.ViewModels
 
         private void OpenListsEditorHelper(ListsEditorTab initTab = ListsEditorTab.Groups)
         {
-            var vm = new ListsEditWindowViewModel(initTab);
-            var window = new ListsEditWindow { DataContext = vm, Owner = _window};
+            var vm = new ListsEditWindowViewModel(ClassesSchedule, initTab);
+            var window = new ListsEditWindow { DataContext = vm };
             window.ShowDialog();
         }
 

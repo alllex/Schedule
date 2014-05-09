@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScheduleData;
-using ScheduleData.Interfaces;
+﻿using Editor.Models;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Cards
 {
     class TitleCardViewModel : BaseViewModel
     {
@@ -34,11 +28,16 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        public TitleCardViewModel(IHavingName name)
+        public TitleCardViewModel(HavingName name)
         {
             Title = name.Name;
         }
 
         #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }

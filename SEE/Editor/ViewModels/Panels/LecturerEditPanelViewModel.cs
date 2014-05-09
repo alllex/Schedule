@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScheduleData;
-using ScheduleData.Interfaces;
+using Editor.Models;
 
 namespace Editor.ViewModels
 {
@@ -13,50 +9,20 @@ namespace Editor.ViewModels
 
         #region Properties
 
-        #region Degree
-
-        public string Degree
-        {
-            get { return _lecturer.Degree; }
-            set
-            {
-                if (_lecturer.Degree != value)
-                {
-                    _lecturer.Degree = value;
-                    RaisePropertyChanged(() => Degree);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Name
-
-        public string Name
-        {
-            get { return _lecturer.Name; }
-            set
-            {
-                if (_lecturer.Name != value)
-                {
-                    _lecturer.Name = value;
-                    RaisePropertyChanged(() => Name);
-                }
-            }
-        }
-
-        #endregion
-
         #endregion
 
         #region Ctor
 
-        private ILecturer _lecturer;
-        public LecturerEditPanelViewModel(ILecturer lecturer)
+        public LecturerEditPanelViewModel(ClassesSchedule classesSchedule)
         {
-            _lecturer = lecturer;
+            ClassesSchedule = classesSchedule;
         }
 
         #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }

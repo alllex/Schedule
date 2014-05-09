@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,17 +11,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Editor.ViewModels;
 
-namespace Editor.Views
+namespace Editor.Views.Controls
 {
     /// <summary>
-    /// Interaction logic for LecturersEditWindow.xaml
+    /// Interaction logic for TablesController.xaml
     /// </summary>
-    public partial class ListsEditWindow : Window
+    public partial class TablesController : UserControl
     {
-        public ListsEditWindow()
+        public TablesController()
         {
             InitializeComponent();
             DataContextChanged += OnDataContextChanged;
@@ -28,13 +29,7 @@ namespace Editor.Views
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var model = DataContext as ListsEditWindowViewModel;
-            if (model != null)
-            {
-                ClassroomEditPanel.DataContext = new ClassroomEditPanelViewModel(model.ClassesSchedule);
-                GroupEditPanel.DataContext = new GroupEditPanelViewModel(model.ClassesSchedule);
-                LecturerEditPanel.DataContext = new LecturerEditPanelViewModel(model.ClassesSchedule);
-            }
+            Debug.WriteLine(GetType() + @": new DC = " + (DataContext == null ? "null" : DataContext.GetType().ToString()));
         }
     }
 }

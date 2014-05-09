@@ -9,29 +9,13 @@
         <TabControl x:Name="SectionsTabControl"
                     SelectedIndex="{Binding ActiveTab, Converter={converters:ListsEditorTabToIntConverter}}">
             <TabItem Header="Группы">
-                <DockPanel>
-                    <ListBox DockPanel.Dock="Left"
-                             ItemsSource="{Binding GroupsList}"
-                             MinWidth="150"/>
-                    <userControls:GroupEditPanel/>
-                </DockPanel>
+                    <userControls:GroupEditPanel x:Name="GroupEditPanel"/>
             </TabItem>
             <TabItem Header="Преподаватели">
-                <DockPanel>
-                    <ListBox DockPanel.Dock="Left"
-                             ItemsSource="{Binding LecturersList}"
-                             MinWidth="150"/>
-                    <userControls:LecturerEditPanel/>
-                </DockPanel>
-
+                <userControls:LecturerEditPanel  x:Name="LecturerEditPanel"/>
             </TabItem>
             <TabItem Header="Аудитории">
-                <DockPanel>
-                    <ListBox DockPanel.Dock="Left"
-                             ItemsSource="{Binding RoomsList}"
-                             MinWidth="150"/>
-                    <userControls:RoomEditPanel/>
-                </DockPanel>
+                <userControls:ClassroomEditPanel x:Name="ClassroomEditPanel"/>
             </TabItem>
         </TabControl>
     </DockPanel>

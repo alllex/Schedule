@@ -1,22 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ScheduleData.Editor;
-using ScheduleData.Interfaces;
 
 namespace Editor.Models
 {
     class ClassesTable
     {
 
-        private readonly ISchedule _schedule;
+        private readonly ClassesSchedule _schedule;
         private readonly IYearOfStudy _year;
         private Dictionary<ITimeInterval, int> _timeIndex;
 
-        public IGroup[] Groups;
-        public ITimeInterval[] TimeIntervals;
-        public SpanedItem<IClass>[][] Table;
+        public Group[] Groups;
+        public TimeInterval[] TimeIntervals;
+        public SpanedItem<Class>[][] Table;
 
-        public ClassesTable(ISchedule schedule, IYearOfStudy year)
+        public ClassesTable(ClassesSchedule schedule, YearOfStudy year)
         {
             _schedule = schedule;
             _year = year;
@@ -43,7 +41,7 @@ namespace Editor.Models
         private void SetGroups()
         {
             var gps = 
-                from g in _schedule.Groups.GetAll().ToArray()
+                from g in _schedule.Groups
                 where g.YearOfStudy.Name == _year.Name
                 orderby g.Specialization, g.Name
                 select g;
@@ -53,29 +51,32 @@ namespace Editor.Models
         private void SetTimeIntervals()
         {
             var cts =
-                (from t in _schedule.TimeLine.GetAll()
-                  orderby t.Day, t.Begin, t.End
+                (from t in _schedule.TimeLine
                   group t by t.Week into bd
                   select bd).First();
-            TimeIntervals = cts.Cast<ITimeInterval>().ToArray();
+            TimeIntervals = cts.Cast<TimeInterval>().ToArray();
         }
 
         private void CreateTable()
         {
             int rowsCount = TimeIntervals.Count();
             int colsCount = Groups.Count();
-            Table = new SpanedItem<IClass>[rowsCount][];
+            Table = new SpanedItem<Class>[rowsCount][];
             for (int i = 0; i < rowsCount; i++)
             {
-                Table[i] = new SpanedItem<IClass>[colsCount];
+                Table[i] = new SpanedItem<Class>[colsCount];
             }
-            foreach (var classTime in _schedule.TimeLine.GetAll())
+            foreach (var classTime in _schedule.TimeLine)
             {
+                ClassTime time = classTime;
                 int row;
                 if (!_timeIndex.TryGetValue(classTime, out row)) continue;
                 for (int col = 0; col < colsCount; col++)
                 {
-                    Table[row][col] = new SpanedItem<IClass>(_schedule.Classes.Get(Groups[col], classTime));
+                    var cs =
+                        _schedule.Classes.Where(@class => @class.ClassTime.Equals(time) && @class.Group.Equals(Groups[col]));
+                    var enumerable = cs as IList<Class> ?? cs.ToList();
+                    Table[row][col] = new SpanedItem<Class>(enumerable.Any() ? enumerable.First() : null);
                 }
             }
         }

@@ -1,22 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Editor.Helpers;
 using Editor.Repository;
 using Editor.ViewModels;
-using Editor.Views;
 
 namespace Editor.UserControls
 {
@@ -26,46 +14,52 @@ namespace Editor.UserControls
     public partial class Table : UserControl
     {
 
-        TableViewModel tableViewModel = new TableViewModel(ScheduleRepository.Schedule, ScheduleRepository.Schedule.YearsOfStudy.GetAll().ToArray()[0]);
-
         public Table()
         {
             InitializeComponent();
-            tableGrid.Loaded += TableGridOnLoaded;
+            DataContextChanged += OnDataContextChanged;
         }
-        
-        private void TableGridOnLoaded(object sender, RoutedEventArgs routedEventArgs)
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            Debug.WriteLine(GetType() + @": new DC = " + (DataContext == null ? "null" : DataContext.GetType().ToString()));
+            var tableViewModel = DataContext as TableViewModel;
+            if (tableViewModel == null) return;
+            ReorganizeChildren(tableViewModel);
+        }
+
+        private void ReorganizeChildren(TableViewModel tableViewModel)
         {
             ResizeGrid(tableViewModel.TableHeight(), tableViewModel.TableWidth());
-            tableGrid.Children.Clear();
+            TableGrid.Children.Clear();
             foreach (var lecture in tableViewModel.ClassCards)
             {
-                tableGrid.Children.Add(lecture);
+                TableGrid.Children.Add(lecture);
             }
             foreach (var time in tableViewModel.TimeIntervals)
             {
-                tableGrid.Children.Add(time);
+                TableGrid.Children.Add(time);
             }
             foreach (var day in tableViewModel.DayLine)
             {
-                tableGrid.Children.Add(day);
+                TableGrid.Children.Add(day);
             }
             foreach (var title in tableViewModel.Titles)
             {
-                tableGrid.Children.Add(title);
+                TableGrid.Children.Add(title);
             }
         }
-
+        
         private void ResizeGrid(int rowCount, int colCount)
         {
-            tableGrid.RowDefinitions.Clear();
+            TableGrid.RowDefinitions.Clear();
             for (int i = 0; i < rowCount; i++)
             {
-                tableGrid.RowDefinitions.Add(new RowDefinition{Height = GridLength.Auto});
+                TableGrid.RowDefinitions.Add(new RowDefinition{Height = GridLength.Auto});
             }
             for (int i = 0; i < colCount; i++)
             {
-                tableGrid.ColumnDefinitions.Add(new ColumnDefinition{Width = GridLength.Auto});
+                TableGrid.ColumnDefinitions.Add(new ColumnDefinition{Width = GridLength.Auto});
             }
         }
              
