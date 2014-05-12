@@ -74,8 +74,10 @@ namespace Editor.ViewModels
         public ICommand OpenListsEditorCommand { get { return new DelegateCommand(OnOpenListsEditor); } }
         public ICommand OpenGroupsEditorCommand { get { return new DelegateCommand(OnOpenGroupsEditor); } }
         public ICommand OpenLecturersEditorCommand { get { return new DelegateCommand(OnOpenLecturersEditor); } }
-        public ICommand OpenRoomsEditorCommand { get { return new DelegateCommand(OnOpenRoomsEditor); } }
-        public ICommand LoadDataCommand { get { return new DelegateCommand(OnLoadData);}}
+        public ICommand OpenClassroomsEditorCommand { get { return new DelegateCommand(OnOpenClassroomsEditor); } }
+        public ICommand OpenSpecializationsEditorCommand { get { return new DelegateCommand(OnOpenSpecializationEditor); } }
+        public ICommand OpenYearsOfStudyEditorCommand { get { return new DelegateCommand(OnOpenYearsOfStudyEditor); } }
+        public ICommand LoadDataCommand { get { return new DelegateCommand(OnLoadData); } }
 
         #endregion
 
@@ -96,9 +98,19 @@ namespace Editor.ViewModels
             OpenListsEditorHelper(ListsEditorTab.Lecturers);
         }
 
-        private void OnOpenRoomsEditor()
+        private void OnOpenClassroomsEditor()
         {
             OpenListsEditorHelper(ListsEditorTab.Classrooms);
+        }
+
+        private void OnOpenSpecializationEditor()
+        {
+            OpenListsEditorHelper(ListsEditorTab.Specializations);
+        }
+
+        private void OnOpenYearsOfStudyEditor()
+        {
+            OpenListsEditorHelper(ListsEditorTab.YearsOfStudy);
         }
 
         private void OnOpenListsEditor()

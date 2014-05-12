@@ -78,27 +78,21 @@
                            HorizontalAlignment="Left"/>
                         <ComboBox ItemsSource="{Binding Source={StaticResource SortedSubjects}}"
                                   SelectedItem="{Binding Class.Subject}"
-                                  DisplayMemberPath="Name"
-                                 >
-                        </ComboBox>
+                                  DisplayMemberPath="Name" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Преподаватель: "
                            HorizontalAlignment="Left"/>
                         <ComboBox ItemsSource="{Binding Source={StaticResource SortedLectures}}"
                                   SelectedItem="{Binding Class.Lecturer}"
-                                  DisplayMemberPath="Name"
-                                 >
-                        </ComboBox>
+                                  DisplayMemberPath="Name" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Аудитория:"
                            HorizontalAlignment="Left"/>
                         <ComboBox ItemsSource="{Binding Source={StaticResource SortedClassrooms}}"
                                   SelectedItem="{Binding Class.Classroom}"
-                                  DisplayMemberPath="Name"
-                                 >
-                        </ComboBox>
+                                  DisplayMemberPath="Name" />
                     </StackPanel>
                     <Button Content="OK" Command="{Binding SetViewModeCommand}"
                             HorizontalAlignment="Right"

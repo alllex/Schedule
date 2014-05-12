@@ -31,7 +31,15 @@
                           IsEnabled="{Binding HasActiveProject, Mode=OneWay}"
                           />
                 <MenuItem Header="Аудитории"
-                          Command="{Binding OpenRoomsEditorCommand}"
+                          Command="{Binding OpenClassroomsEditorCommand}"
+                          IsEnabled="{Binding HasActiveProject, Mode=OneWay}"
+                          />
+                <MenuItem Header="Специальности"
+                          Command="{Binding OpenSpecializationsEditorCommand}"
+                          IsEnabled="{Binding HasActiveProject, Mode=OneWay}"
+                          />
+                <MenuItem Header="Курсы"
+                          Command="{Binding OpenYearsOfStudyEditorCommand}"
                           IsEnabled="{Binding HasActiveProject, Mode=OneWay}"
                           />
             </MenuItem>

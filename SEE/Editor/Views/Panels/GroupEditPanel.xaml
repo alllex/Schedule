@@ -13,6 +13,18 @@
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
+
+        <CollectionViewSource x:Key="SortedSpecializations" Source="{Binding ClassesSchedule.Specializations}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="Name" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <CollectionViewSource x:Key="SortedYearsOfStudy" Source="{Binding ClassesSchedule.YearsOfStudy}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="Name" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
     
     <DockPanel>
@@ -26,10 +38,18 @@
         <StackPanel Margin="5" DataContext="{Binding ElementName=ListBox, Path=SelectedItem}">
             <Label Content="Название"/>
             <TextBox Text="{Binding Name}"/>
-            <Label Content="Специальность"/>
-            <TextBox Text="{Binding Specialization.Name}"/>
-            <Label Content="Курс"/>
-            <TextBox Text="{Binding YearOfStudy.Name}"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Специальность"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource SortedSpecializations}}"
+                      SelectedItem="{Binding Specialization}"
+                      DisplayMemberPath="Name" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Курс"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource SortedYearsOfStudy}}"
+                      SelectedItem="{Binding YearOfStudy}"
+                      DisplayMemberPath="Name" />
+            </StackPanel>
         </StackPanel>
     </DockPanel>
 </UserControl>
