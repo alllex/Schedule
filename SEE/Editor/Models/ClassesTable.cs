@@ -7,8 +7,8 @@ namespace Editor.Models
     {
 
         private readonly ClassesSchedule _schedule;
-        private readonly IYearOfStudy _year;
-        private Dictionary<ITimeInterval, int> _timeIndex;
+        private readonly YearOfStudy _year;
+        private Dictionary<TimeInterval, int> _timeIndex;
 
         public Group[] Groups;
         public TimeInterval[] TimeIntervals;
@@ -31,7 +31,7 @@ namespace Editor.Models
 
         private void SetTimeIndex()
         {
-            _timeIndex = new Dictionary<ITimeInterval, int>();
+            _timeIndex = new Dictionary<TimeInterval, int>();
             for (int i = 0; i < TimeIntervals.Length; i++)
             {
                 _timeIndex.Add(TimeIntervals[i], i);
@@ -71,10 +71,9 @@ namespace Editor.Models
                 ClassTime time = classTime;
                 int row;
                 if (!_timeIndex.TryGetValue(classTime, out row)) continue;
-                for (int col = 0; col < colsCount; col++)
+                for (var col = 0; col < colsCount; col++)
                 {
-                    var cs =
-                        _schedule.Classes.Where(@class => @class.ClassTime.Equals(time) && @class.Group.Equals(Groups[col]));
+                    var cs = _schedule.Classes.Where(@class => @class.ClassTime.Equals(time) && @class.Group.Equals(Groups[col]));
                     var enumerable = cs as IList<Class> ?? cs.ToList();
                     Table[row][col] = new SpanedItem<Class>(enumerable.Any() ? enumerable.First() : null);
                 }

@@ -23,7 +23,7 @@ namespace Editor.Models
         Lecture, Practice
     }
 
-    public abstract class HavingName : NotificationObject, IHavingName
+    public abstract class HavingName : NotificationObject, IComparable
     {
         protected bool Equals(HavingName other)
         {
@@ -37,7 +37,7 @@ namespace Editor.Models
 
         public int CompareTo(object obj)
         {
-            var hn = obj as IHavingName;
+            var hn = obj as HavingName;
             if (hn == null) return -1;
             return String.Compare(_name, hn.Name, StringComparison.Ordinal);
         }
@@ -60,15 +60,9 @@ namespace Editor.Models
 
         #endregion
 
-        protected HavingName(IHavingName havingName)
-        {
-            Name = havingName.Name;
-        }
-
-        protected HavingName(){}
     }
 
-    public class Time : NotificationObject, ITime
+    public class Time : NotificationObject
     {
         protected bool Equals(Time other)
         {
@@ -118,13 +112,7 @@ namespace Editor.Models
         }
 
         #endregion
-
-        public Time(ITime itime)
-        {
-            Hours = itime.Hours;
-            Minutes = itime.Minutes;
-        }
-
+        
         public Time(int hours, int minutes)
         {
             Hours = hours;
@@ -142,7 +130,7 @@ namespace Editor.Models
         
     }
 
-    public class TimeInterval : NotificationObject, ITimeInterval
+    public class TimeInterval : NotificationObject
     {
         protected bool Equals(TimeInterval other)
         {
@@ -180,8 +168,8 @@ namespace Editor.Models
 
         #region BeginTime
 
-        private ITime _beginTime;
-        public ITime BeginTime
+        private Time _beginTime;
+        public Time BeginTime
         {
             get { return _beginTime; }
             set
@@ -198,9 +186,9 @@ namespace Editor.Models
 
         #region EndTime
 
-        private ITime _endTime;
+        private Time _endTime;
 
-        public ITime EndTime
+        public Time EndTime
         {
             get { return _endTime; }
             set
@@ -214,19 +202,10 @@ namespace Editor.Models
         }
 
         #endregion
-        
-        public TimeInterval(ITimeInterval ti)
-        {
-            Day = ti.Day;
-            BeginTime = new Time(ti.BeginTime);
-            EndTime = new Time(ti.EndTime);
-        }
-
-        public TimeInterval() {}
 
     }
 
-    public class ClassTime : TimeInterval, IClassTime
+    public class ClassTime : TimeInterval
     {
         protected bool Equals(ClassTime other)
         {
@@ -258,16 +237,9 @@ namespace Editor.Models
         }
 
         #endregion
-        
-        public ClassTime(IClassTime ct) : base(ct)
-        {
-            Week = ct.Week;
-        }
-
-        public ClassTime(){}
     }
 
-    public class Subject : HavingName, ISubject
+    public class Subject : HavingName
     {
         protected bool Equals(Subject other)
         {
@@ -300,31 +272,14 @@ namespace Editor.Models
 
         #endregion
 
-        public Subject(ISubject subject)
-            : base(subject)
-        {
-            ClassType = subject.ClassType;
-        }
-
-        public Subject(){}
     }
 
-    public class Specialization : HavingName, ISpecialization
+    public class Specialization : HavingName
     {
-
-        public Specialization(ISpecialization spec) : base(spec)
-        {
-        }
-        public Specialization(){}
     }
 
-    public class YearOfStudy : HavingName, IYearOfStudy
+    public class YearOfStudy : HavingName
     {
-        public YearOfStudy(IYearOfStudy year)
-            : base(year)
-        {
-        }
-        public YearOfStudy(){}
 
         public override string ToString()
         {
@@ -332,16 +287,12 @@ namespace Editor.Models
         }
     }
 
-    public class Department : HavingName, IDepartment
+    public class Department : HavingName
     {
-        public Department(IDepartment dep)
-            : base(dep)
-        {
-        }
-        public Department(){}
+
     }
 
-    public class Group : HavingName, IGroup
+    public class Group : HavingName
     {
         protected bool Equals(Group other)
         {
@@ -361,8 +312,8 @@ namespace Editor.Models
 
         #region Specialization
 
-        private ISpecialization _specialization;
-        public ISpecialization Specialization
+        private Specialization _specialization;
+        public Specialization Specialization
         {
             get { return _specialization; }
             set
@@ -379,9 +330,9 @@ namespace Editor.Models
 
         #region YearOfStudy
 
-        private IYearOfStudy _yearOfStudy;
+        private YearOfStudy _yearOfStudy;
 
-        public IYearOfStudy YearOfStudy
+        public YearOfStudy YearOfStudy
         {
             get { return _yearOfStudy; }
             set
@@ -396,17 +347,9 @@ namespace Editor.Models
 
         #endregion
 
-        public Group(IGroup group)
-            : base(group)
-        {
-            Specialization = group.Specialization;
-            YearOfStudy = group.YearOfStudy;
-        }
-
-        public Group(){}
     }
 
-    public class Lecturer : HavingName, ILecturer
+    public class Lecturer : HavingName
     {
         #region Degree
 
@@ -429,9 +372,9 @@ namespace Editor.Models
 
         #region Department
 
-        private IDepartment _department;
+        private Department _department;
 
-        public IDepartment Department
+        public Department Department
         {
             get { return _department; }
             set
@@ -446,17 +389,9 @@ namespace Editor.Models
 
         #endregion
 
-        public Lecturer(ILecturer lecturer)
-            : base(lecturer)
-        {
-            Degree = lecturer.Degree;
-            Department = lecturer.Department;
-        }
-        
-        public Lecturer(){}
     }
 
-    public class Classroom : HavingName, IClassroom
+    public class Classroom : HavingName
     {
         protected bool Equals(Classroom other)
         {
@@ -490,16 +425,9 @@ namespace Editor.Models
 
         #endregion
 
-        public Classroom(IClassroom classroom)
-            : base(classroom)
-        {
-            Address = classroom.Address;
-        }
-
-        public Classroom(){}
     }
 
-    public class Class : HavingName, IClass
+    public class Class : HavingName
     {
         protected bool Equals(Class other)
         {
@@ -522,9 +450,9 @@ namespace Editor.Models
 
         #region Subject
 
-        private ISubject _subject;
+        private Subject _subject;
 
-        public ISubject Subject
+        public Subject Subject
         {
             get { return _subject; }
             set
@@ -541,9 +469,9 @@ namespace Editor.Models
 
         #region Group
 
-        private IGroup _group;
+        private Group _group;
 
-        public IGroup Group
+        public Group Group
         {
             get { return _group; }
             set
@@ -560,9 +488,9 @@ namespace Editor.Models
 
         #region Lecturer
 
-        private ILecturer _lecturer;
+        private Lecturer _lecturer;
 
-        public ILecturer Lecturer
+        public Lecturer Lecturer
         {
             get { return _lecturer; }
             set
@@ -579,9 +507,9 @@ namespace Editor.Models
 
         #region Classroom
 
-        private IClassroom _classroom;
+        private Classroom _classroom;
 
-        public IClassroom Classroom
+        public Classroom Classroom
         {
             get { return _classroom; }
             set
@@ -598,9 +526,9 @@ namespace Editor.Models
 
         #region ClassTime
 
-        private IClassTime _classTime;
+        private ClassTime _classTime;
 
-        public IClassTime ClassTime
+        public ClassTime ClassTime
         {
             get { return _classTime; }
             set
@@ -614,18 +542,6 @@ namespace Editor.Models
         }
 
         #endregion
-
-        public Class(IClass @class)
-            : base(@class.Subject)
-        {
-            Subject = @class.Subject;
-            Group = @class.Group;
-            Lecturer = @class.Lecturer;
-            Classroom = @class.Classroom;
-            ClassTime = @class.ClassTime;
-        }
-
-        public Class(){}
     }
 
     public class ClassesSchedule : NotificationObject
