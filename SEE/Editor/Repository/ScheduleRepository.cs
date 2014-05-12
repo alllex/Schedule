@@ -84,7 +84,7 @@ namespace Editor.Repository
 
         private void InitSpecializations()
         {
-            string[] specializationNames = { "Primat", "Matobess", "PI", "Pure math", "Mechanics", "Astronoms", "Kids" };
+            string[] specializationNames = { "Primat", "Matobess", "PI", "Pure math" };
             int specializationCount = specializationNames.Length;
             for (int i = 0; i < specializationCount; i++)
             {
@@ -94,7 +94,7 @@ namespace Editor.Repository
 
         private void InitGroups()
         {
-            string[] groupNames = { "A", "B", "C", "D", "E", "F", "G", "H" };
+            string[] groupNames = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N" };
             int groupCount = groupNames.Length;
             for (int i = 0; i < groupCount; i++)
             {

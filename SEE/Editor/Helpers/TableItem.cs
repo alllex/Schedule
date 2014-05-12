@@ -13,5 +13,11 @@ namespace Editor.Helpers
             Row = 0;
             Column = 0;
         }
+
+        public TableItem()
+        {
+            Row = 0;
+            Column = 0;
+        } 
     }
 }

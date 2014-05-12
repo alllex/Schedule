@@ -20,6 +20,12 @@ namespace Editor.Models
             ColumnSpan = 1;
         }
 
+        public SpanedItem()
+        {
+            RowSpan = 1;
+            ColumnSpan = 1;
+        } 
+
         public bool IsSpaned()
         {
             return RowSpan != 1 || ColumnSpan != 1;
