@@ -14,12 +14,8 @@ namespace Editor.UserControls
     public partial class Table : UserControl
     {
 
-        private static int amount = 0;
-        private int num;
-
         public Table()
         {
-            num = amount++;
             InitializeComponent();
             DataContextChanged += OnDataContextChanged;
             UpdateDataContext();

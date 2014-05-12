@@ -24,12 +24,6 @@ namespace Editor.Views.Controls
         public TablesController()
         {
             InitializeComponent();
-            Init();
-        }
-
-        private void Init()
-        {
-            
         }
     }
 }

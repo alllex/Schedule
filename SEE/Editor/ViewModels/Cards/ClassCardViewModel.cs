@@ -14,156 +14,174 @@ namespace Editor.ViewModels
 
         #region Properties
 
-        #region Subject
+        #region Class
 
-        private string _subject = "";
-        public string Subject
+        private Class _class;
+        public Class Class
         {
-            get { return _subject; }
+            get { return _class; }
             set
             {
-                if (_subject != value)
+                if (_class != value)
                 {
-                    _subject = value;
-                    foreach (var @class in _classes)
-                    {
-                        @class.Subject.Name = value;
-                    }
-                    RaisePropertyChanged(() => Subject);
+                    _class = value;
+                    RaisePropertyChanged(() => Class);
                 }
             }
         }
 
         #endregion
 
-        #region Lecturer
+        //#region Subject
 
-        private string _lecturer = "";
-        public string Lecturer
-        {
-            get { return _lecturer; }
-            set
-            {
-                if (_lecturer != value)
-                {
-                    _lecturer = value;
-                    foreach (var @class in _classes)
-                    {
-                        @class.Lecturer.Name = value;
-                    }
-                    RaisePropertyChanged(() => Lecturer);
-                }
-            }
-        }
+        //private string _subject = "";
+        //public string Subject
+        //{
+        //    get { return _subject; }
+        //    set
+        //    {
+        //        if (_subject != value)
+        //        {
+        //            _subject = value;
+        //            foreach (var @class in _classes)
+        //            {
+        //                @class.Subject.Name = value;
+        //            }
+        //            RaisePropertyChanged(() => Subject);
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region Group
+        //#region Lecturer
 
-        private string _group = "";
-        public string Group
-        {
-            get { return _group; }
-            set
-            {
-                if (_group != value)
-                {
-                    _group = value;
-                    foreach (var @class in _classes)
-                    {
-                        @class.Group.Name = value;
-                    }
-                    RaisePropertyChanged(() => Group);
-                }
-            }
-        }
+        //private string _lecturer = "";
+        //public string Lecturer
+        //{
+        //    get { return _lecturer; }
+        //    set
+        //    {
+        //        if (_lecturer != value)
+        //        {
+        //            _lecturer = value;
+        //            foreach (var @class in _classes)
+        //            {
+        //                @class.Lecturer.Name = value;
+        //            }
+        //            RaisePropertyChanged(() => Lecturer);
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region Classroom
+        //#region Group
 
-        private string _classroom = "";
-        public string Classroom
-        {
-            get { return _classroom; }
-            set
-            {
-                if (_classroom != value)
-                {
-                    _classroom = value;
-                    foreach (var @class in _classes)
-                    {
-                        @class.Classroom.Name = value;
-                    }
-                    RaisePropertyChanged(() => Classroom);
-                }
-            }
-        }
+        //private string _group = "";
+        //public string Group
+        //{
+        //    get { return _group; }
+        //    set
+        //    {
+        //        if (_group != value)
+        //        {
+        //            _group = value;
+        //            foreach (var @class in _classes)
+        //            {
+        //                @class.Group.Name = value;
+        //            }
+        //            RaisePropertyChanged(() => Group);
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region SelectedClassroom
+        //#region Classroom
 
-        public Classroom SelectedClassroom
-        {
-            get
-            {
-                var cs = ClassesSchedule.Classrooms.Where(classroom => classroom.Name == Classroom);
-                var classrooms = cs as IList<Classroom> ?? cs.ToList();
-                return classrooms.Any() ? classrooms.First() : null;
-            }
-            set
-            {
-                if (value != null && value.Name != Classroom)
-                {
-                    Classroom = value.Name;
-                }
-            }
-        }
+        //private string _classroom = "";
+        //public string Classroom
+        //{
+        //    get { return _classroom; }
+        //    set
+        //    {
+        //        if (_classroom != value)
+        //        {
+        //            _classroom = value;
+        //            foreach (var @class in _classes)
+        //            {
+        //                @class.Classroom.Name = value;
+        //            }
+        //            RaisePropertyChanged(() => Classroom);
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region SelectedLecturer
+        //#region SelectedClassroom
 
-        public Lecturer SelectedLecturer
-        {
-            get
-            {
-                var cs = ClassesSchedule.Lecturers.Where(lecturer => lecturer.Name == Lecturer);
-                var lecturers = cs as IList<Lecturer> ?? cs.ToList();
-                return lecturers.Any() ? lecturers.First() : null;
-            }
-            set
-            {
-                if (value != null && value.Name != Lecturer)
-                {
-                    Lecturer = value.Name;
-                }
-            }
-        }
+        //public Classroom SelectedClassroom
+        //{
+        //    get
+        //    {
+        //        var cs = ClassesSchedule.Classrooms.Where(classroom => classroom.Name == Classroom);
+        //        var classrooms = cs as IList<Classroom> ?? cs.ToList();
+        //        return classrooms.Any() ? classrooms.First() : null;
+        //    }
+        //    set
+        //    {
+        //        if (value != null && value.Name != Classroom)
+        //        {
+        //            Classroom = value.Name;
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region SelectedSubject
+        //#region SelectedLecturer
 
-        public Subject SelectedSubject
-        {
-            get
-            {
-                var cs = ClassesSchedule.Subjects.Where(s => s.Name == Subject);
-                var subjects = cs as IList<Subject> ?? cs.ToList();
-                return subjects.Any() ? subjects.First() : null;
-            }
-            set
-            {
-                if (value != null && value.Name != Subject)
-                {
-                    Subject = value.Name;
-                }
-            }
-        }
+        //public Lecturer SelectedLecturer
+        //{
+        //    get
+        //    {
+        //        var cs = ClassesSchedule.Lecturers.Where(lecturer => lecturer.Name == Lecturer);
+        //        var lecturers = cs as IList<Lecturer> ?? cs.ToList();
+        //        return lecturers.Any() ? lecturers.First() : null;
+        //    }
+        //    set
+        //    {
+        //        if (value != null && value.Name != Lecturer)
+        //        {
+        //            Lecturer = value.Name;
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
+
+        //#region SelectedSubject
+
+        //public Subject SelectedSubject
+        //{
+        //    get
+        //    {
+        //        var cs = ClassesSchedule.Subjects.Where(s => s.Name == Subject);
+        //        var subjects = cs as IList<Subject> ?? cs.ToList();
+        //        return subjects.Any() ? subjects.First() : null;
+        //    }
+        //    set
+        //    {
+        //        if (value != null && value.Name != Subject)
+        //        {
+        //            Subject = value.Name;
+        //        }
+        //    }
+        //}
+
+        //#endregion
 
         #region IsEditing
 
@@ -205,15 +223,6 @@ namespace Editor.ViewModels
 
         #endregion
 
-        #region IsEmpty
-
-        public bool IsEmpty
-        {
-            get { return _classes.Any(); }
-        }
-
-        #endregion
-
         #endregion
 
         #region Commands
@@ -226,22 +235,24 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        private List<Class> _classes;
+        //private List<Class> _classes;
 
-        public ClassCardViewModel(ClassesSchedule classesSchedule, Class @class)
+        public ClassCardViewModel(Class @class)
         {
-            ClassesSchedule = classesSchedule;
-            if (@class != null)
-            {
-                _classes = new List<Class> { @class };
-                Subject = @class.Subject.Name;
-                Lecturer = @class.Lecturer.Name;
-                Group = @class.Group.Name;
-                Classroom = @class.Classroom.Name;
-            }
+            Class = @class;
+            //if (@class != null)
+            //{
+            //    _classes = new List<Class> { @class };
+            //    Subject = @class.Subject.Name;
+            //    Lecturer = @class.Lecturer.Name;
+            //    Group = @class.Group.Name;
+            //    Classroom = @class.Classroom.Name;
+            //}
             IsEditing = false;
             IsSelected = false;
         }
+
+        public ClassCardViewModel(){}
 
         #endregion
 

@@ -52,11 +52,6 @@ namespace Editor.ViewModels
             InitLectureCards();
         }
 
-        public override string ToString()
-        {
-            return "TableViewModel #" + num + "\n" + _classesTable.Groups.Length;
-        }
-
         #endregion
 
         #region TableHeader
@@ -158,13 +153,8 @@ namespace Editor.ViewModels
 
         private readonly List<ClassCard> _selectedCards = new List<ClassCard>();
 
-        private static int amount = 0;
-        private int num;
-
         public TableViewModel()
         {
-            num = amount++;
-            Debug.WriteLine(GetType() + " created");
         }
 
         private void InitializeTitles()
@@ -221,7 +211,7 @@ namespace Editor.ViewModels
                 for (int col = 0; col < _classesTable.ColumnsCount(); col++)
                 {
                     var l = _classesTable.Table[row][col];
-                    var lvm = new ClassCardViewModel(ClassesSchedule, l.Item);
+                    var lvm = new ClassCardViewModel(l.Item){ClassesSchedule = ClassesSchedule};
                     var lc = new ClassCard { DataContext = lvm };
                     Grid.SetRow(lc, row + TitleRowsCount);
                     Grid.SetColumn(lc, col + TimeColumnsCount);
