@@ -98,7 +98,7 @@ namespace Editor.ViewModels
 
         private void OnOpenRoomsEditor()
         {
-            OpenListsEditorHelper(ListsEditorTab.Rooms);
+            OpenListsEditorHelper(ListsEditorTab.Classrooms);
         }
 
         private void OnOpenListsEditor()

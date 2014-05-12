@@ -17,6 +17,12 @@
             <TabItem Header="Аудитории">
                 <userControls:ClassroomEditPanel x:Name="ClassroomEditPanel"/>
             </TabItem>
+            <TabItem Header="Специальности">
+                <userControls:SpecializationEditPanel x:Name="SpecializationEditPanel"/>
+            </TabItem>
+            <TabItem Header="Курсы">
+                <userControls:YearOfStudyEditPanel x:Name="YearOfStudyEditPanel"/>
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>

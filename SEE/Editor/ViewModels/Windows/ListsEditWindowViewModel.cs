@@ -6,7 +6,9 @@ namespace Editor.ViewModels
     {
         Groups,
         Lecturers,
-        Rooms
+        Classrooms,
+        Specializations,
+        YearsOfStudy
     }
 
     class ListsEditWindowViewModel : BaseViewModel

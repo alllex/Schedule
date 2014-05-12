@@ -82,6 +82,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Panels\YearOfStudyEditPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Panels\SpecializationEditPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Panels\GroupEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -141,11 +149,19 @@
     <Compile Include="Repository\ScheduleRepository.cs" />
     <Compile Include="Repository\ScheduleRepositoryOld.cs" />
     <Compile Include="ViewModels\Controls\TablesControllerViewModel.cs" />
+    <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />
     <Compile Include="Views\Cards\DayCard.xaml.cs">
       <DependentUpon>DayCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\TablesController.xaml.cs">
       <DependentUpon>TablesController.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\YearOfStudyEditPanel.xaml.cs">
+      <DependentUpon>YearOfStudyEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\SpecializationEditPanel.xaml.cs">
+      <DependentUpon>SpecializationEditPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Panels\GroupEditPanel.xaml.cs">
       <DependentUpon>GroupEditPanel.xaml</DependentUpon>
