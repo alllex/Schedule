@@ -4,6 +4,7 @@
 		xmlns:userControls="clr-namespace:Editor.UserControls"
 		xmlns:viewModels="clr-namespace:Editor.ViewModels"
 		xmlns:controls="clr-namespace:Editor.Views.Controls"
+		xmlns:models="clr-namespace:Editor.Models"
 		Title="EditorWindow" Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"

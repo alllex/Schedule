@@ -75,7 +75,7 @@ namespace Editor.Repository
 
         private void InitYearsOfStudy()
         {
-            const int yearsCount = 1;
+            const int yearsCount = 2;
             for (int i = 1; i <= yearsCount; i++)
             {
                 Schedule.YearsOfStudy.Add(new YearOfStudy{Name = i.ToString(CultureInfo.InvariantCulture)});

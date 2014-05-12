@@ -14,15 +14,24 @@ namespace Editor.UserControls
     public partial class Table : UserControl
     {
 
+        private static int amount = 0;
+        private int num;
+
         public Table()
         {
+            num = amount++;
             InitializeComponent();
             DataContextChanged += OnDataContextChanged;
+            UpdateDataContext();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            Debug.WriteLine(GetType() + @": new DC = " + (DataContext == null ? "null" : DataContext.GetType().ToString()));
+            UpdateDataContext();
+        }
+
+        private void UpdateDataContext()
+        {
             var tableViewModel = DataContext as TableViewModel;
             if (tableViewModel == null) return;
             ReorganizeChildren(tableViewModel);

@@ -13,11 +13,6 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        public GroupEditPanelViewModel(ClassesSchedule classesSchedule)
-        {
-            ClassesSchedule = classesSchedule;
-        }
-
         #endregion
 
         protected override void ClassesScheduleOnPropertyChanged()

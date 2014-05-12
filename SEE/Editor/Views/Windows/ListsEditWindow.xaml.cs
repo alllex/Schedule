@@ -31,9 +31,9 @@ namespace Editor.Views
             var model = DataContext as ListsEditWindowViewModel;
             if (model != null)
             {
-                ClassroomEditPanel.DataContext = new ClassroomEditPanelViewModel(model.ClassesSchedule);
-                GroupEditPanel.DataContext = new GroupEditPanelViewModel(model.ClassesSchedule);
-                LecturerEditPanel.DataContext = new LecturerEditPanelViewModel(model.ClassesSchedule);
+                ClassroomEditPanel.DataContext = new ClassroomEditPanelViewModel{ ClassesSchedule = model.ClassesSchedule };
+                GroupEditPanel.DataContext = new GroupEditPanelViewModel { ClassesSchedule = model.ClassesSchedule };
+                LecturerEditPanel.DataContext = new LecturerEditPanelViewModel { ClassesSchedule = model.ClassesSchedule };
             }
         }
     }

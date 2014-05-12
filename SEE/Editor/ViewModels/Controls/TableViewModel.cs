@@ -52,6 +52,11 @@ namespace Editor.ViewModels
             InitLectureCards();
         }
 
+        public override string ToString()
+        {
+            return "TableViewModel #" + num + "\n" + _classesTable.Groups.Length;
+        }
+
         #endregion
 
         #region TableHeader
@@ -75,7 +80,7 @@ namespace Editor.ViewModels
 
         #region Classes
 
-        private ObservableCollection<UIElement> _classesCards;
+        private ObservableCollection<UIElement> _classesCards = new ObservableCollection<UIElement>();
         public ObservableCollection<UIElement> ClassCards
         {
             get { return _classesCards; }
@@ -93,7 +98,7 @@ namespace Editor.ViewModels
 
         #region TimeLine
 
-        private ObservableCollection<UIElement> _timeIntervals;
+        private ObservableCollection<UIElement> _timeIntervals = new ObservableCollection<UIElement>();
         public ObservableCollection<UIElement> TimeIntervals
         {
             get { return _timeIntervals; }
@@ -111,7 +116,7 @@ namespace Editor.ViewModels
 
         #region DayLine
 
-        private ObservableCollection<UIElement> _dayLine;
+        private ObservableCollection<UIElement> _dayLine = new ObservableCollection<UIElement>();
         public ObservableCollection<UIElement> DayLine
         {
             get { return _dayLine; }
@@ -129,7 +134,7 @@ namespace Editor.ViewModels
 
         #region Titles
 
-        private ObservableCollection<UIElement> _titles;
+        private ObservableCollection<UIElement> _titles = new ObservableCollection<UIElement>();
         public ObservableCollection<UIElement> Titles
         {
             get { return _titles; }
@@ -151,10 +156,14 @@ namespace Editor.ViewModels
         private TimeLineMarkup _timeLineMarkup;
         private TitlesMarkup _titlesMarkup;
 
-        private List<ClassCard> _selectedCards = new List<ClassCard>();
+        private readonly List<ClassCard> _selectedCards = new List<ClassCard>();
+
+        private static int amount = 0;
+        private int num;
 
         public TableViewModel()
         {
+            num = amount++;
             Debug.WriteLine(GetType() + " created");
         }
 
@@ -226,12 +235,12 @@ namespace Editor.ViewModels
 
         public int TableWidth()
         {
-            return TimeColumnsCount + _classesTable.ColumnsCount();
+            return TimeColumnsCount + (_classesTable != null ? _classesTable.ColumnsCount() : 0);
         }
 
         public int TableHeight()
         {
-            return TitleRowsCount + _classesTable.RowsCount();
+            return TitleRowsCount + (_classesTable != null ? _classesTable.RowsCount() : 0);
         }
 
         #region Commands

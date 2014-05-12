@@ -24,12 +24,12 @@ namespace Editor.Views.Controls
         public TablesController()
         {
             InitializeComponent();
-            DataContextChanged += OnDataContextChanged;
+            Init();
         }
 
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private void Init()
         {
-            Debug.WriteLine(GetType() + @": new DC = " + (DataContext == null ? "null" : DataContext.GetType().ToString()));
+            
         }
     }
 }

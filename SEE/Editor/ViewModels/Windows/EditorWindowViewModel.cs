@@ -110,7 +110,7 @@ namespace Editor.ViewModels
         {
             var vm = new ListsEditWindowViewModel(ClassesSchedule, initTab);
             var window = new ListsEditWindow { DataContext = vm };
-            window.ShowDialog();
+            window.Show();
         }
 
         #endregion
