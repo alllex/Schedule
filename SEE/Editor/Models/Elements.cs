@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Globalization;
 using Editor.Helpers;
 
@@ -69,6 +67,10 @@ namespace Editor.Models
 
         #endregion
 
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public class Time : HavingId
@@ -310,6 +312,10 @@ namespace Editor.Models
 
         #endregion
 
+        public override string ToString()
+        {
+            return String.Format("Группа {0}\nСпециальность: {1}\nКурс: {2}", Name, Specialization, YearOfStudy);
+        }
     }
 
     public class Lecturer : HavingName
@@ -490,9 +496,9 @@ namespace Editor.Models
 
         #region TimeLine
 
-        private ObservableCollection<ClassTime> _timeLine = new ObservableCollection<ClassTime>();
+        private ObservableCollectionEx<ClassTime> _timeLine = new ObservableCollectionEx<ClassTime>();
 
-        public ObservableCollection<ClassTime> TimeLine
+        public ObservableCollectionEx<ClassTime> TimeLine
         {
             get { return _timeLine; }
             set
@@ -509,9 +515,9 @@ namespace Editor.Models
 
         #region Groups
 
-        private ObservableCollection<Group> _groups = new ObservableCollection<Group>();
+        private ObservableCollectionEx<Group> _groups = new ObservableCollectionEx<Group>();
 
-        public ObservableCollection<Group> Groups
+        public ObservableCollectionEx<Group> Groups
         {
             get { return _groups; }
             set
@@ -528,9 +534,9 @@ namespace Editor.Models
 
         #region Lecturers
 
-        private ObservableCollection<Lecturer> _lecturers = new ObservableCollection<Lecturer>();
+        private ObservableCollectionEx<Lecturer> _lecturers = new ObservableCollectionEx<Lecturer>();
 
-        public ObservableCollection<Lecturer> Lecturers
+        public ObservableCollectionEx<Lecturer> Lecturers
         {
             get { return _lecturers; }
             set
@@ -547,9 +553,9 @@ namespace Editor.Models
 
         #region Classrooms
 
-        private ObservableCollection<Classroom> _classrooms = new ObservableCollection<Classroom>();
+        private ObservableCollectionEx<Classroom> _classrooms = new ObservableCollectionEx<Classroom>();
 
-        public ObservableCollection<Classroom> Classrooms
+        public ObservableCollectionEx<Classroom> Classrooms
         {
             get { return _classrooms; }
             set
@@ -566,9 +572,9 @@ namespace Editor.Models
 
         #region Subjects
 
-        private ObservableCollection<Subject> _subjects = new ObservableCollection<Subject>();
+        private ObservableCollectionEx<Subject> _subjects = new ObservableCollectionEx<Subject>();
 
-        public ObservableCollection<Subject> Subjects
+        public ObservableCollectionEx<Subject> Subjects
         {
             get { return _subjects; }
             set
@@ -585,9 +591,9 @@ namespace Editor.Models
 
         #region Specializations
 
-        private ObservableCollection<Specialization> _specializations = new ObservableCollection<Specialization>();
+        private ObservableCollectionEx<Specialization> _specializations = new ObservableCollectionEx<Specialization>();
 
-        public ObservableCollection<Specialization> Specializations
+        public ObservableCollectionEx<Specialization> Specializations
         {
             get { return _specializations; }
             set
@@ -604,9 +610,9 @@ namespace Editor.Models
 
         #region YearsOfStudy
 
-        private ObservableCollection<YearOfStudy> _yearsOfStudy = new ObservableCollection<YearOfStudy>();
+        private ObservableCollectionEx<YearOfStudy> _yearsOfStudy = new ObservableCollectionEx<YearOfStudy>();
 
-        public ObservableCollection<YearOfStudy> YearsOfStudy
+        public ObservableCollectionEx<YearOfStudy> YearsOfStudy
         {
             get { return _yearsOfStudy; }
             set
@@ -623,9 +629,9 @@ namespace Editor.Models
 
         #region Classes
 
-        private ObservableCollection<Class> _classes = new ObservableCollection<Class>();
+        private ObservableCollectionEx<Class> _classes = new ObservableCollectionEx<Class>();
 
-        public ObservableCollection<Class> Classes
+        public ObservableCollectionEx<Class> Classes
         {
             get { return _classes; }
             set
@@ -639,7 +645,29 @@ namespace Editor.Models
         }
 
         #endregion
-        
+
+        public ClassesSchedule()
+        {
+            TimeLine.CollectionChanged += OnSomeCollectionChanged;
+            Groups.CollectionChanged += OnSomeCollectionChanged;
+            Lecturers.CollectionChanged += OnSomeCollectionChanged;
+            Classrooms.CollectionChanged += OnSomeCollectionChanged;
+            Subjects.CollectionChanged += OnSomeCollectionChanged;
+            Specializations.CollectionChanged += OnSomeCollectionChanged;
+            YearsOfStudy.CollectionChanged += OnSomeCollectionChanged;
+            Classes.CollectionChanged += OnSomeCollectionChanged;
+        }
+
+        private void OnSomeCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        {
+            if (ItemChangedProperty != null)
+            {
+                ItemChangedProperty();
+            }
+        }
+
+        public delegate void ItemChanged();
+        public ItemChanged ItemChangedProperty { get; set; }
     }
 
 }

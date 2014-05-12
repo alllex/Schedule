@@ -252,7 +252,11 @@ namespace Editor.ViewModels
             IsSelected = false;
         }
 
-        public ClassCardViewModel(){}
+        public ClassCardViewModel()
+        {
+            IsEditing = false;
+            IsSelected = false;
+        }
 
         #endregion
 

@@ -138,6 +138,7 @@
     <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
+    <Compile Include="Helpers\ExObservableCollection.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
     <Compile Include="Models\ClassesTable.cs" />
     <Compile Include="Models\Elements.cs" />

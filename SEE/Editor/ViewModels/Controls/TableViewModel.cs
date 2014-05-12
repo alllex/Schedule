@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -23,6 +25,11 @@ namespace Editor.ViewModels
             _timeLineMarkup = new TimeLineMarkup(ClassesSchedule);
             InitDayLine();
             InitTimeIntervalLine();
+
+            if (YearOfStudy != null)
+            {
+                YearOfStudyOnPropertyChanged();
+            }
         }
 
         #region YearOfStudy

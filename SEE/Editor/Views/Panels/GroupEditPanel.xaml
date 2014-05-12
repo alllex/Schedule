@@ -31,9 +31,15 @@
         <ListBox x:Name="ListBox"
                  DockPanel.Dock="Left"
                  ItemsSource="{Binding Source={StaticResource SortedList}}"
-                 DisplayMemberPath="Name"
                  SelectedIndex="0"
                  MinWidth="150">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}"
+                               ToolTip="{Binding}"/>
+
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Margin="5" DataContext="{Binding ElementName=ListBox, Path=SelectedItem}">
             <Label Content="Название"/>
@@ -41,13 +47,13 @@
             <StackPanel Orientation="Horizontal">
                 <Label Content="Специальность"/>
                 <ComboBox ItemsSource="{Binding Source={StaticResource SortedSpecializations}}"
-                      SelectedItem="{Binding Specialization}"
+                      SelectedItem="{Binding Specialization, Mode=TwoWay}"
                       DisplayMemberPath="Name" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Курс"/>
                 <ComboBox ItemsSource="{Binding Source={StaticResource SortedYearsOfStudy}}"
-                      SelectedItem="{Binding YearOfStudy}"
+                      SelectedItem="{Binding YearOfStudy, Mode=TwoWay}"
                       DisplayMemberPath="Name" />
             </StackPanel>
         </StackPanel>

@@ -35,7 +35,10 @@ namespace Editor.ViewModels
 
         protected override void ClassesScheduleOnPropertyChanged()
         {
-            TablesControllerDataContext = new TablesControllerViewModel {ClassesSchedule = ClassesSchedule};
+            if (TablesControllerDataContext == null)
+            {
+                TablesControllerDataContext = new TablesControllerViewModel { ClassesSchedule = ClassesSchedule };
+            }
             HasActiveProject = ClassesSchedule != null;
         }
 
@@ -122,7 +125,7 @@ namespace Editor.ViewModels
         {
             var vm = new ListsEditWindowViewModel(ClassesSchedule, initTab);
             var window = new ListsEditWindow { DataContext = vm };
-            window.Show();
+            window.ShowDialog();
         }
 
         #endregion

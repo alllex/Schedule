@@ -16,7 +16,15 @@ namespace Editor.ViewModels
             {
                 if (_classesSchedule != value)
                 {
+                    if (_classesSchedule != null && _classesSchedule.ItemChangedProperty != null)
+                    {
+                        _classesSchedule.ItemChangedProperty -= RaiseClassesScheduleChanged;
+                    }
                     _classesSchedule = value;
+                    if (_classesSchedule != null)
+                    {
+                        _classesSchedule.ItemChangedProperty += RaiseClassesScheduleChanged;
+                    }
                     ClassesScheduleOnPropertyChanged();
                     RaisePropertyChanged(() => ClassesSchedule);
                 }
@@ -24,6 +32,11 @@ namespace Editor.ViewModels
         }
 
         #endregion
+
+        private void RaiseClassesScheduleChanged()
+        {
+            ClassesScheduleOnPropertyChanged();
+        }
 
         protected abstract void ClassesScheduleOnPropertyChanged();
     }
