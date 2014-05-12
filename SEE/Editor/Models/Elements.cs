@@ -23,17 +23,26 @@ namespace Editor.Models
         Lecture, Practice
     }
 
-    public abstract class HavingName : NotificationObject, IComparable
+    public class HavingId : NotificationObject
+    {
+        private static int _count = 0;
+        private readonly int _id = _count++;
+
+        public override int GetHashCode()
+        {
+            return _id;
+        }
+
+    }
+
+    public abstract class HavingName : HavingId, IComparable
     {
         protected bool Equals(HavingName other)
         {
             return string.Equals(_name, other._name);
         }
 
-        public override int GetHashCode()
-        {
-            return (_name != null ? _name.GetHashCode() : 0);
-        }
+        
 
         public int CompareTo(object obj)
         {
@@ -62,21 +71,13 @@ namespace Editor.Models
 
     }
 
-    public class Time : NotificationObject
+    public class Time : HavingId
     {
         protected bool Equals(Time other)
         {
             return _hours == other._hours && _minutes == other._minutes;
         }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (_hours*397) ^ _minutes;
-            }
-        }
-
+        
         #region Hours
 
         private int _hours;
@@ -130,24 +131,13 @@ namespace Editor.Models
         
     }
 
-    public class TimeInterval : NotificationObject
+    public class TimeInterval : HavingId
     {
         protected bool Equals(TimeInterval other)
         {
             return _day == other._day && Equals(_beginTime, other._beginTime) && Equals(_endTime, other._endTime);
         }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = (int) _day;
-                hashCode = (hashCode*397) ^ (_beginTime != null ? _beginTime.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (_endTime != null ? _endTime.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
+        
         #region Day
 
         private Weekdays _day;
@@ -212,14 +202,6 @@ namespace Editor.Models
             return _week == other._week;
         }
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (base.GetHashCode()*397) ^ (int) _week;
-            }
-        }
-
         #region Week
 
         private WeekType _week;
@@ -245,15 +227,7 @@ namespace Editor.Models
         {
             return _classType == other._classType;
         }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (base.GetHashCode()*397) ^ (int) _classType;
-            }
-        }
-
+        
         #region ClassType
 
         private ClassType _classType;
@@ -298,18 +272,7 @@ namespace Editor.Models
         {
             return Equals(_specialization, other._specialization) && Equals(_yearOfStudy, other._yearOfStudy);
         }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = base.GetHashCode();
-                hashCode = (hashCode*397) ^ (_specialization != null ? _specialization.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (_yearOfStudy != null ? _yearOfStudy.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
+        
         #region Specialization
 
         private Specialization _specialization;
@@ -397,15 +360,7 @@ namespace Editor.Models
         {
             return string.Equals(_address, other._address);
         }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (base.GetHashCode()*397) ^ (_address != null ? _address.GetHashCode() : 0);
-            }
-        }
-
+        
         #region Address
 
         private string _address;
@@ -433,21 +388,7 @@ namespace Editor.Models
         {
             return Equals(_subject, other._subject) && Equals(_group, other._group) && Equals(_lecturer, other._lecturer) && Equals(_classroom, other._classroom) && Equals(_classTime, other._classTime);
         }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = base.GetHashCode();
-                hashCode = (hashCode*397) ^ (_subject != null ? _subject.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (_group != null ? _group.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (_lecturer != null ? _lecturer.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (_classroom != null ? _classroom.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (_classTime != null ? _classTime.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
-
+        
         #region Subject
 
         private Subject _subject;
@@ -544,7 +485,7 @@ namespace Editor.Models
         #endregion
     }
 
-    public class ClassesSchedule : NotificationObject
+    public class ClassesSchedule : HavingId
     {
 
         #region TimeLine

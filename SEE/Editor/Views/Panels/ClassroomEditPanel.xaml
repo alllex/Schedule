@@ -6,15 +6,24 @@
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="SortedList" Source="{Binding ClassesSchedule.Classrooms}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="Name" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
+    
     <DockPanel>
         <ListBox x:Name="ListBox"
                  DockPanel.Dock="Left"
-                 ItemsSource="{Binding ClassesSchedule.Classrooms}"
+                 ItemsSource="{Binding Source={StaticResource SortedList}}"
                  DisplayMemberPath="Name"
-                 SelectedIndex="0"
                  MinWidth="150">
         </ListBox>
-        <StackPanel Margin="5" DataContext="{Binding ElementName=ListBox, Path=SelectedItem}">
+        <StackPanel Margin="5" DataContext="{Binding ElementName=ListBox, Path=SelectedItem}"
+                    >
             <Label Content="Название"/>
             <TextBox Text="{Binding Name}"/>
             <Label Content="Адрес"/>

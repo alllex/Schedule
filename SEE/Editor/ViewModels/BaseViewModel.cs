@@ -27,4 +27,5 @@ namespace Editor.ViewModels
 
         protected abstract void ClassesScheduleOnPropertyChanged();
     }
+
 }
