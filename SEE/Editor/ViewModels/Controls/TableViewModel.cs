@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Editor.Models;
 using Editor.UserControls;
 using Editor.ViewModels.Cards;
@@ -80,18 +81,20 @@ namespace Editor.ViewModels
 
         #endregion
 
-        #region Classes
+        #region ClassesCards
 
         private ObservableCollection<UIElement> _classesCards = new ObservableCollection<UIElement>();
-        public ObservableCollection<UIElement> ClassCards
+        public ObservableCollection<UIElement> ClassesCards
         {
             get { return _classesCards; }
             set
             {
                 if (_classesCards != value)
                 {
+                    //UnhandleMouseEvents();
                     _classesCards = value;
-                    RaisePropertyChanged(() => ClassCards);
+                    //HandleMouseEvents();
+                    RaisePropertyChanged(() => ClassesCards);
                 }
             }
         }
@@ -157,12 +160,10 @@ namespace Editor.ViewModels
         private ClassesTable _classesTable;
         private TimeLineMarkup _timeLineMarkup;
         private TitlesMarkup _titlesMarkup;
+        private Selection _selection;
+        private Collection<ClassCardViewModel> _selectedCards = new Collection<ClassCardViewModel>();
 
-        private readonly List<ClassCard> _selectedCards = new List<ClassCard>();
-
-        public TableViewModel()
-        {
-        }
+        public TableViewModel(){}
 
         private void InitializeTitles()
         {
@@ -211,21 +212,25 @@ namespace Editor.ViewModels
 
         private void InitLectureCards()
         {
-            ClassCards = new ObservableCollection<UIElement>();  
-
+            ClassesCards = new ObservableCollection<UIElement>();  
             for (int row = 0; row < _classesTable.RowsCount(); row++)
             {
                 for (int col = 0; col < _classesTable.ColumnsCount(); col++)
                 {
-                    var l = _classesTable.Table[row][col];
-                    var lvm = new ClassCardViewModel(l.Item){ClassesSchedule = ClassesSchedule};
-                    var lc = new ClassCard { DataContext = lvm };
-                    Grid.SetRow(lc, row + TitleRowsCount);
-                    Grid.SetColumn(lc, col + TimeColumnsCount);
-                    Grid.SetRowSpan(lc, l.RowSpan);
-                    Grid.SetColumnSpan(lc, l.ColumnSpan);
-                    lc.Click += LectureCardOnClick;
-                    ClassCards.Add(lc);
+                    var spanned = _classesTable.Table[row][col];
+                    var classCard = new ClassCard { DataContext = spanned.Item };
+                    Grid.SetRow(classCard, row + TitleRowsCount);
+                    Grid.SetColumn(classCard, col + TimeColumnsCount);
+                    Grid.SetRowSpan(classCard, spanned.RowSpan);
+                    Grid.SetColumnSpan(classCard, spanned.ColumnSpan);
+                    //lc.Click += LectureCardOnClick;
+
+                    classCard.MouseLeftButtonDown += ClassCardOnMouseLeftButtonDown;
+                    classCard.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
+                    classCard.MouseEnter += ClassCardOnMouseEnter;
+                    classCard.MouseLeave += ClassCardOnMouseLeave;
+
+                    ClassesCards.Add(classCard);
                 }
             }    
         }
@@ -259,16 +264,133 @@ namespace Editor.ViewModels
             {
                 foreach (var selectedCard in _selectedCards)
                 {
-                    var vm = (ClassCardViewModel)selectedCard.DataContext;
-                    vm.IsSelected = false;
+                    selectedCard.IsSelected = false;
                 }
                 _selectedCards.Clear();
             }
-            _selectedCards.Add(lc);
+            //_selectedCards.Add(lc);
             var lcvm = (ClassCardViewModel)lc.DataContext;
             lcvm.IsSelected = true;
         }
 
+        private void UnhandleMouseEvents()
+        {
+            foreach (var classCard in _classesCards)
+            {
+                classCard.MouseLeftButtonDown -= ClassCardOnMouseLeftButtonDown;
+                classCard.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
+                classCard.MouseEnter -= ClassCardOnMouseEnter;
+                classCard.MouseLeave -= ClassCardOnMouseLeave;
+            }
+        }
+
+        private void HandleMouseEvents()
+        {
+            foreach (var classCard in _classesCards)
+            {
+                classCard.MouseLeftButtonDown += ClassCardOnMouseLeftButtonDown;
+                classCard.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
+                classCard.MouseEnter += ClassCardOnMouseEnter;
+                classCard.MouseLeave += ClassCardOnMouseLeave;
+            }
+        }
+
+        private void ClassCardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            var classCard = sender as ClassCard;
+            if (classCard == null) return;
+            CreateSelection(classCard);
+        }
+
+        private void ClassCardOnMouseLeftButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            //var classCard = sender as ClassCard;
+            //if (classCard == null) return;
+            //FixSelection(classCard);
+        }
+
+        private void ClassCardOnMouseEnter(object sender, MouseEventArgs mouseEventArgs)
+        {
+            if (mouseEventArgs.LeftButton != MouseButtonState.Pressed) return;
+            var classCard = sender as ClassCard;
+            if (classCard == null) return;
+            UpdateSelection(classCard);
+        }
+
+        private void ClassCardOnMouseLeave(object sender, MouseEventArgs mouseEventArgs)
+        {
+            //if (!selection.IsSelecting) return;
+        }
+
+        private void DropSelected()
+        {
+            foreach (var selectedCard in _selectedCards)
+            {
+                if (selectedCard == null) continue;
+                selectedCard.IsSelected = false;
+                selectedCard.IsEditing = false;
+            }
+            _selectedCards.Clear();
+        }
+
+        private void CreateSelection(ClassCard cc)
+        {
+            var model = cc.DataContext as ClassCardViewModel;
+            if (model == null) return;
+            var row = Grid.GetRow(cc) - TitleRowsCount;
+            var col = Grid.GetColumn(cc) - TimeColumnsCount;
+            _selection = new Selection(row, col);
+            DropSelected();
+            UpdateSelection(cc);
+        }
+
+        private void UpdateSelection(ClassCard card)
+        {
+            var row = Grid.GetRow(card) - TitleRowsCount;
+            var col = Grid.GetColumn(card) - TimeColumnsCount;
+            _selection.UpdateEnd(row, col);
+            DropSelected();
+            for (int r = _selection.Top; r <= _selection.Bottom; r++)
+            {
+                for (int c = _selection.Left; c <= _selection.Right; c++)
+                {
+                    var spanned = _classesTable.Table[r][c];
+                    var @class = spanned.Item;
+                    @class.IsSelected = true;
+                    _selectedCards.Add(@class);
+                }
+            }
+        }
+
+
+
         #endregion
+    }
+
+    class Selection
+    {
+        
+        public int StartRow { get; set; }
+        public int StartColumn { get; set; }
+        public int EndRow { get; set; }
+        public int EndColumn { get; set; }
+        public int Top { get { return Math.Min(StartRow, EndRow); } }
+        public int Bottom { get { return Math.Max(StartRow, EndRow); } }
+        public int Left { get { return Math.Min(StartColumn, EndColumn); } }
+        public int Right { get { return Math.Max(StartColumn, EndColumn); } }
+
+        public Selection(int row, int column)
+        {
+            StartRow = row;
+            StartColumn = column;
+            EndRow = row;
+            EndColumn = column;
+        }
+
+        public void UpdateEnd(int row, int col)
+        {
+            EndRow = row;
+            EndColumn = col;
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace Editor.UserControls
         {
             ResizeGrid(tableViewModel.TableHeight(), tableViewModel.TableWidth());
             TableGrid.Children.Clear();
-            foreach (var lecture in tableViewModel.ClassCards)
+            foreach (var lecture in tableViewModel.ClassesCards)
             {
                 TableGrid.Children.Add(lecture);
             }

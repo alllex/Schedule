@@ -32,6 +32,25 @@ namespace Editor.ViewModels
 
         #endregion
 
+        //#region TableItem
+
+        //private TableItem<Class> _tableItem;
+        //public TableItem<Class> TableItem
+        //{
+        //    get { return _tableItem; }
+        //    set
+        //    {
+        //        if (!_tableItem.Equals(value))
+        //        {
+        //            _tableItem = value;
+        //            Class = _tableItem.Item;
+        //            RaisePropertyChanged(() => TableItem);
+        //        }
+        //    }
+        //}
+
+        //#endregion
+
         //#region Subject
 
         //private string _subject = "";
@@ -235,19 +254,9 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        //private List<Class> _classes;
-
         public ClassCardViewModel(Class @class)
         {
             Class = @class;
-            //if (@class != null)
-            //{
-            //    _classes = new List<Class> { @class };
-            //    Subject = @class.Subject.Name;
-            //    Lecturer = @class.Lecturer.Name;
-            //    Group = @class.Group.Name;
-            //    Classroom = @class.Classroom.Name;
-            //}
             IsEditing = false;
             IsSelected = false;
         }

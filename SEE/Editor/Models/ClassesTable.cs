@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Editor.Helpers;
+using Editor.ViewModels;
 
 namespace Editor.Models
 {
@@ -12,7 +14,7 @@ namespace Editor.Models
 
         public Group[] Groups;
         public TimeInterval[] TimeIntervals;
-        public SpanedItem<Class>[][] Table;
+        public SpannedItem<ClassCardViewModel>[][] Table;
 
         public ClassesTable(ClassesSchedule schedule, YearOfStudy year)
         {
@@ -61,10 +63,10 @@ namespace Editor.Models
         {
             int rowsCount = TimeIntervals.Count();
             int colsCount = Groups.Count();
-            Table = new SpanedItem<Class>[rowsCount][];
+            Table = new SpannedItem<ClassCardViewModel>[rowsCount][];
             for (int i = 0; i < rowsCount; i++)
             {
-                Table[i] = new SpanedItem<Class>[colsCount];
+                Table[i] = new SpannedItem<ClassCardViewModel>[colsCount];
             }
             foreach (var classTime in _schedule.TimeLine)
             {
@@ -75,7 +77,8 @@ namespace Editor.Models
                 {
                     var cs = _schedule.Classes.Where(@class => @class.ClassTime.Equals(time) && @class.Group.Equals(Groups[col]));
                     var enumerable = cs as IList<Class> ?? cs.ToList();
-                    Table[row][col] = new SpanedItem<Class>(enumerable.Any() ? enumerable.First() : null);
+                    var vm = new ClassCardViewModel(enumerable.Any() ? enumerable.First() : null){ClassesSchedule = _schedule};
+                    Table[row][col] = new SpannedItem<ClassCardViewModel>(vm);
                 }
             }
         }

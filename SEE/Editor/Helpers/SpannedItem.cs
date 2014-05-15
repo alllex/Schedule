@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Editor.Models
 {
-    class SpanedItem<T>
+    class SpannedItem<T>
     {
 
         public int RowSpan { get; set; }
         public int ColumnSpan { get; set; }
         public T Item { get; set; }
 
-        public SpanedItem(T t)
+        public SpannedItem(T t)
         {
             Item = t;
             RowSpan = 1;
             ColumnSpan = 1;
         }
 
-        public SpanedItem()
+        public SpannedItem()
         {
             RowSpan = 1;
             ColumnSpan = 1;
@@ -33,7 +33,7 @@ namespace Editor.Models
 
         public override bool Equals(object obj)
         {
-            var t = (SpanedItem<T>)obj;
+            var t = (SpannedItem<T>)obj;
             if (t == null) return false;
             return Item.Equals(t.Item);
         }

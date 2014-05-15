@@ -2,7 +2,7 @@
 
 namespace Editor.Helpers
 {
-    class TableItem<T> : SpanedItem<T>
+    class TableItem<T> : SpannedItem<T>
     {
 
         public int Row { get; set; }

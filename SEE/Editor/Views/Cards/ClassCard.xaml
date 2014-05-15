@@ -12,13 +12,17 @@
     <UserControl.DataContext>
         <viewModels:ClassCardViewModel />
     </UserControl.DataContext>
-    <UserControl.InputBindings>
+    <!--<UserControl.InputBindings>
         <MouseBinding Gesture="LeftClick" Command="{Binding ClickCommand}" 
                       CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type userControls:ClassCard}}}"
                       />
-    </UserControl.InputBindings>
+    </UserControl.InputBindings>-->
     
     <UserControl.Resources>
+        
+        <Style TargetType="Border">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
 
         <CollectionViewSource x:Key="SortedSubjects" Source="{Binding ClassesSchedule.Subjects}">
             <CollectionViewSource.SortDescriptions>

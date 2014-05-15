@@ -67,7 +67,7 @@ namespace Editor.ViewModels
 
         public EditorWindowViewModel()
         {
-            Debug.WriteLine(GetType() + " created");
+            OnLoadData();
         }
 
         #endregion
