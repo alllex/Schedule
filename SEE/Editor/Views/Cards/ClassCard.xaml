@@ -68,8 +68,7 @@
         <DataTemplate x:Key="CardEditModeDataTemplate">
             <Border Style="{StaticResource BorderStyle}"
                     CornerRadius="3"
-                    MinWidth="150"
-                    MaxWidth="250">
+                    MinWidth="150">
                 <StackPanel Margin="3">
                     <StackPanel.Resources>
                     <Style TargetType="TextBox">
@@ -109,7 +108,6 @@
         <DataTemplate x:Key="CardViewModeDataTemplate">
             <Border CornerRadius="3"
                     MinWidth="150"
-                    MaxWidth="250"
                     Style="{StaticResource BorderStyle}"
                     >
                 <Border.InputBindings>

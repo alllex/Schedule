@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Editor.Helpers;
 using Editor.Models;
 using Editor.UserControls;
 using Editor.ViewModels.Cards;
@@ -216,15 +217,20 @@ namespace Editor.ViewModels
             {
                 for (int col = 0; col < _classesTable.ColumnsCount(); col++)
                 {
-                    var spanned = _classesTable.Table[row][col];
-                    var classCard = new ClassCard { DataContext = spanned.Item };
-                    Grid.SetRow(classCard, row + TitleRowsCount);
-                    Grid.SetColumn(classCard, col + TimeColumnsCount);
-                    Grid.SetRowSpan(classCard, spanned.RowSpan);
-                    Grid.SetColumnSpan(classCard, spanned.ColumnSpan);
-                    ClassesCards.Add(classCard);
+                    ClassesCards.Add(CreateClassCard(row, col));
                 }
             }    
+        }
+
+        private ClassCard CreateClassCard(int row, int column)
+        {
+            var spanned = _classesTable.Table[row][column];
+            var classCard = new ClassCard { DataContext = spanned.Item };
+            Grid.SetRow(classCard, row + TitleRowsCount);
+            Grid.SetColumn(classCard, column + TimeColumnsCount);
+            Grid.SetRowSpan(classCard, spanned.RowSpan);
+            Grid.SetColumnSpan(classCard, spanned.ColumnSpan);
+            return classCard;
         }
 
         public int TableWidth()
@@ -239,11 +245,34 @@ namespace Editor.ViewModels
 
         #region Commands
 
-
+        public ICommand JoinClassesCommand { get { return new DelegateCommand(OnJoinClassesCommand, CanExecuteJoinClasses); } }
+        
         #endregion
 
         #region Command Handlers
 
+        private bool CanExecuteJoinClasses()
+        {
+            return _selectedCards.Count() > 1;
+        }
+
+        private void OnJoinClassesCommand()
+        {
+            var mainClass = _classesTable.Table[_selection.Top][_selection.Left];
+            var row = _selection.Top;
+            var col = _selection.Left;
+            mainClass.RowSpan = _selection.Bottom - _selection.Top + 1;
+            mainClass.ColumnSpan = _selection.Right - _selection.Left + 1;
+            ClassesCards.RemoveAt(row * _classesTable.ColumnsCount() + col);
+            ClassesCards.Add(CreateClassCard(row, col));
+            if (ClassesJoinedDelegate != null)
+            {
+                ClassesJoinedDelegate(this);
+            }
+        }
+
+        public delegate void ClassesJoined(TableViewModel t);
+        public ClassesJoined ClassesJoinedDelegate { get; set; }
 
         #endregion
 
@@ -251,29 +280,32 @@ namespace Editor.ViewModels
         
         private void ClassesCardsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Remove)
+            switch (e.Action)
             {
-                foreach (ClassCard classCard in e.NewItems)
-                {
-                    //Removed items
-                    classCard.MouseLeftButtonDown -= ClassCardOnMouseLeftButtonDown;
-                    classCard.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
-                    classCard.MouseEnter -= ClassCardOnMouseEnter;
-                    classCard.MouseLeave -= ClassCardOnMouseLeave;
-                    classCard.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
-                }
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (ClassCard classCard in e.NewItems)
-                {
-                    //Added items
-                    classCard.MouseLeftButtonDown += ClassCardOnMouseLeftButtonDown;
-                    classCard.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
-                    classCard.MouseEnter += ClassCardOnMouseEnter;
-                    classCard.MouseLeave += ClassCardOnMouseLeave;
-                    classCard.MouseRightButtonUp += ClassCardOnMouseRightButtonUp;
-                }
+                case NotifyCollectionChangedAction.Remove:
+                    if (e.NewItems == null) return;
+                    foreach (ClassCard classCard in e.NewItems)
+                    {
+                        //Removed items
+                        classCard.MouseLeftButtonDown -= ClassCardOnMouseLeftButtonDown;
+                        classCard.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
+                        classCard.MouseEnter -= ClassCardOnMouseEnter;
+                        classCard.MouseLeave -= ClassCardOnMouseLeave;
+                        classCard.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                    if (e.NewItems == null) return;
+                    foreach (ClassCard classCard in e.NewItems)
+                    {
+                        //Added items
+                        classCard.MouseLeftButtonDown += ClassCardOnMouseLeftButtonDown;
+                        classCard.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
+                        classCard.MouseEnter += ClassCardOnMouseEnter;
+                        classCard.MouseLeave += ClassCardOnMouseLeave;
+                        classCard.MouseRightButtonUp += ClassCardOnMouseRightButtonUp;
+                    }
+                    break;
             }
         }
 
@@ -350,8 +382,7 @@ namespace Editor.ViewModels
                 }
             }
         }
-
-
+        
         private void OpenContextMenu(ClassCard classCard)
         {
             var model = classCard.DataContext as ClassCardViewModel;
@@ -361,7 +392,7 @@ namespace Editor.ViewModels
                 CreateSelection(classCard);
             }
             var cm = new ContextMenu();
-            cm.Items.Add(new MenuItem { Header = "Selected: " + _selectedCards.Count() });
+            cm.Items.Add(new MenuItem { Header = "Объединить", Command = JoinClassesCommand});
             cm.IsOpen = true;
         }
 

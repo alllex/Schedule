@@ -21,7 +21,7 @@ namespace Editor.UserControls
             UpdateDataContext();
         }
 
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             UpdateDataContext();
         }
@@ -30,6 +30,12 @@ namespace Editor.UserControls
         {
             var tableViewModel = DataContext as TableViewModel;
             if (tableViewModel == null) return;
+            ReorganizeChildren(tableViewModel);
+            tableViewModel.ClassesJoinedDelegate += ClassesJoinedDelegate;
+        }
+
+        private void ClassesJoinedDelegate(TableViewModel tableViewModel)
+        {
             ReorganizeChildren(tableViewModel);
         }
 
