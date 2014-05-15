@@ -35,16 +35,13 @@ namespace Editor.ViewModels
 
         protected override void ClassesScheduleOnPropertyChanged()
         {
-            if (TablesControllerDataContext == null)
-            {
-                TablesControllerDataContext = new TablesControllerViewModel { ClassesSchedule = ClassesSchedule };
-            }
+            TablesControllerDataContext.ClassesSchedule = ClassesSchedule;
             HasActiveProject = ClassesSchedule != null;
         }
 
         #region TablesControllerDataContext
 
-        private TablesControllerViewModel _tableControllerDataContext;
+        private TablesControllerViewModel _tableControllerDataContext = new TablesControllerViewModel();
 
         public TablesControllerViewModel TablesControllerDataContext
         {

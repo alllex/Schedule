@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -91,9 +89,7 @@ namespace Editor.ViewModels
             {
                 if (_classesCards != value)
                 {
-                    //UnhandleMouseEvents();
                     _classesCards = value;
-                    //HandleMouseEvents();
                     RaisePropertyChanged(() => ClassesCards);
                 }
             }
@@ -163,7 +159,10 @@ namespace Editor.ViewModels
         private Selection _selection;
         private Collection<ClassCardViewModel> _selectedCards = new Collection<ClassCardViewModel>();
 
-        public TableViewModel(){}
+        public TableViewModel()
+        {
+            ClassesCards.CollectionChanged += ClassesCardsOnCollectionChanged;
+        }
 
         private void InitializeTitles()
         {
@@ -212,7 +211,7 @@ namespace Editor.ViewModels
 
         private void InitLectureCards()
         {
-            ClassesCards = new ObservableCollection<UIElement>();  
+            ClassesCards.Clear();  
             for (int row = 0; row < _classesTable.RowsCount(); row++)
             {
                 for (int col = 0; col < _classesTable.ColumnsCount(); col++)
@@ -223,13 +222,6 @@ namespace Editor.ViewModels
                     Grid.SetColumn(classCard, col + TimeColumnsCount);
                     Grid.SetRowSpan(classCard, spanned.RowSpan);
                     Grid.SetColumnSpan(classCard, spanned.ColumnSpan);
-                    //lc.Click += LectureCardOnClick;
-
-                    classCard.MouseLeftButtonDown += ClassCardOnMouseLeftButtonDown;
-                    classCard.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
-                    classCard.MouseEnter += ClassCardOnMouseEnter;
-                    classCard.MouseLeave += ClassCardOnMouseLeave;
-
                     ClassesCards.Add(classCard);
                 }
             }    
@@ -256,43 +248,40 @@ namespace Editor.ViewModels
         #endregion
 
         #region Event Handlers
-
-        private void LectureCardOnClick(object sender, RoutedEventArgs routedEventArgs)
+        
+        private void ClassesCardsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var lc = (ClassCard)sender;
-            if (_selectedCards.Any())
+            if (e.Action == NotifyCollectionChangedAction.Remove)
             {
-                foreach (var selectedCard in _selectedCards)
+                foreach (ClassCard classCard in e.NewItems)
                 {
-                    selectedCard.IsSelected = false;
+                    //Removed items
+                    classCard.MouseLeftButtonDown -= ClassCardOnMouseLeftButtonDown;
+                    classCard.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
+                    classCard.MouseEnter -= ClassCardOnMouseEnter;
+                    classCard.MouseLeave -= ClassCardOnMouseLeave;
+                    classCard.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
                 }
-                _selectedCards.Clear();
             }
-            //_selectedCards.Add(lc);
-            var lcvm = (ClassCardViewModel)lc.DataContext;
-            lcvm.IsSelected = true;
-        }
-
-        private void UnhandleMouseEvents()
-        {
-            foreach (var classCard in _classesCards)
+            else if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                classCard.MouseLeftButtonDown -= ClassCardOnMouseLeftButtonDown;
-                classCard.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
-                classCard.MouseEnter -= ClassCardOnMouseEnter;
-                classCard.MouseLeave -= ClassCardOnMouseLeave;
+                foreach (ClassCard classCard in e.NewItems)
+                {
+                    //Added items
+                    classCard.MouseLeftButtonDown += ClassCardOnMouseLeftButtonDown;
+                    classCard.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
+                    classCard.MouseEnter += ClassCardOnMouseEnter;
+                    classCard.MouseLeave += ClassCardOnMouseLeave;
+                    classCard.MouseRightButtonUp += ClassCardOnMouseRightButtonUp;
+                }
             }
         }
 
-        private void HandleMouseEvents()
+        private void ClassCardOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            foreach (var classCard in _classesCards)
-            {
-                classCard.MouseLeftButtonDown += ClassCardOnMouseLeftButtonDown;
-                classCard.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
-                classCard.MouseEnter += ClassCardOnMouseEnter;
-                classCard.MouseLeave += ClassCardOnMouseLeave;
-            }
+            var classCard = sender as ClassCard;
+            if (classCard == null) return;
+            OpenContextMenu(classCard);
         }
 
         private void ClassCardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
@@ -362,6 +351,19 @@ namespace Editor.ViewModels
             }
         }
 
+
+        private void OpenContextMenu(ClassCard classCard)
+        {
+            var model = classCard.DataContext as ClassCardViewModel;
+            if (model == null) return;
+            if (!_selectedCards.Contains(model))
+            {
+                CreateSelection(classCard);
+            }
+            var cm = new ContextMenu();
+            cm.Items.Add(new MenuItem { Header = "Selected: " + _selectedCards.Count() });
+            cm.IsOpen = true;
+        }
 
 
         #endregion
