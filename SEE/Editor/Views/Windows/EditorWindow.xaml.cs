@@ -1,4 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
+using Editor.Models;
+using Editor.Repository;
 using Editor.ViewModels;
 
 namespace Editor.Views
@@ -8,14 +13,15 @@ namespace Editor.Views
     /// </summary>
     public partial class EditorWindow : Window
     {
-
-        private EditorWindowViewModel viewModel;
-
         public EditorWindow()
         {
             InitializeComponent();
-            viewModel = new EditorWindowViewModel(this);
-            DataContext = viewModel;
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            Debug.WriteLine(GetType() + @": new DC = " + (DataContext == null ? "null" : DataContext.GetType().ToString()));
         }
     }
 }

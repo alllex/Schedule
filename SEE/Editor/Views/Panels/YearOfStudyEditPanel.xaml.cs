@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Editor.UserControls
 {
     /// <summary>
-    /// Interaction logic for RoomEditPanel.xaml
+    /// Interaction logic for GroupEditorPanel.xaml
     /// </summary>
-    public partial class RoomEditPanel : UserControl
+    public partial class YearOfStudyEditPanel : UserControl
     {
-        public RoomEditPanel()
+        public YearOfStudyEditPanel()
         {
             InitializeComponent();
         }

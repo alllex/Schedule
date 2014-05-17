@@ -1,23 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ScheduleData.Editor;
-using ScheduleData.Interfaces;
+using Editor.Helpers;
+using Editor.ViewModels;
 
 namespace Editor.Models
 {
     class ClassesTable
     {
 
-        private readonly ISchedule _schedule;
-        private readonly IYearOfStudy _year;
-        private Dictionary<ITimeInterval, int> _timeIndex;
-        private Dictionary<IGroup, int> _groupIndex;
+        private readonly ClassesSchedule _schedule;
+        private readonly YearOfStudy _year;
+        private Dictionary<TimeInterval, int> _timeIndex;
 
-        public IGroup[] Groups;
-        public ITimeInterval[] TimeIntervals;
-        public SpanedItem<IClass>[][] Table;
+        public Group[] Groups;
+        public TimeInterval[] TimeIntervals;
+        public SpannedItem<ClassCardViewModel>[][] Table;
 
-        public ClassesTable(ISchedule schedule, IYearOfStudy year)
+        public ClassesTable(ClassesSchedule schedule, YearOfStudy year)
         {
             _schedule = schedule;
             _year = year;
@@ -30,32 +29,22 @@ namespace Editor.Models
         private void SetIndexes()
         {
             SetTimeIndex();
-            SetGroupIndex();
         }
 
         private void SetTimeIndex()
         {
-            _timeIndex = new Dictionary<ITimeInterval, int>();
+            _timeIndex = new Dictionary<TimeInterval, int>();
             for (int i = 0; i < TimeIntervals.Length; i++)
             {
                 _timeIndex.Add(TimeIntervals[i], i);
             }
         }
 
-        private void SetGroupIndex()
-        {
-            _groupIndex = new Dictionary<IGroup, int>();
-            for (int i = 0; i < Groups.Length; i++)
-            {
-                _groupIndex.Add(Groups[i], i);
-            }
-        }
-
         private void SetGroups()
         {
             var gps = 
-                from g in _schedule.Groups.GetAll().ToArray()
-                where g.YearOfStudy == _year 
+                from g in _schedule.Groups
+                where g.YearOfStudy.Name == _year.Name
                 orderby g.Specialization, g.Name
                 select g;
             Groups = gps.ToArray();
@@ -64,33 +53,32 @@ namespace Editor.Models
         private void SetTimeIntervals()
         {
             var cts =
-                (from t in _schedule.TimeLine.GetAll()
-                 orderby t.Day, t.Begin, t.End
-                 select (ITimeInterval)(new TimeInterval(t))).Distinct();
-            int i = 0;
-            TimeIntervals = new ITimeInterval[cts.Count()];
-            foreach (var timeInterval in cts)
-            {
-                TimeIntervals[i++] = timeInterval;
-            }
+                (from t in _schedule.TimeLine
+                  group t by t.Week into bd
+                  select bd).First();
+            TimeIntervals = cts.Cast<TimeInterval>().ToArray();
         }
 
         private void CreateTable()
         {
             int rowsCount = TimeIntervals.Count();
             int colsCount = Groups.Count();
-            Table = new SpanedItem<IClass>[rowsCount][];
+            Table = new SpannedItem<ClassCardViewModel>[rowsCount][];
             for (int i = 0; i < rowsCount; i++)
             {
-                Table[i] = new SpanedItem<IClass>[colsCount];
+                Table[i] = new SpannedItem<ClassCardViewModel>[colsCount];
             }
-            foreach (var classTime in _schedule.TimeLine.GetAll())
+            foreach (var classTime in _schedule.TimeLine)
             {
+                ClassTime time = classTime;
                 int row;
-                _timeIndex.TryGetValue(new TimeInterval(classTime), out row);
-                for (int col = 0; col < colsCount; col++)
+                if (!_timeIndex.TryGetValue(classTime, out row)) continue;
+                for (var col = 0; col < colsCount; col++)
                 {
-                    Table[row][col] = new SpanedItem<IClass>(_schedule.Classes.Get(Groups[col], classTime));
+                    var cs = _schedule.Classes.Where(@class => @class.ClassTime.Equals(time) && @class.Group.Equals(Groups[col]));
+                    var enumerable = cs as IList<Class> ?? cs.ToList();
+                    var vm = new ClassCardViewModel(enumerable.Any() ? enumerable.First() : null){ClassesSchedule = _schedule};
+                    Table[row][col] = new SpannedItem<ClassCardViewModel>(vm);
                 }
             }
         }

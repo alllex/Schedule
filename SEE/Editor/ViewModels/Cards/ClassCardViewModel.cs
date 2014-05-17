@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.SymbolStore;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
 using Editor.UserControls;
-using ScheduleData;
-using ScheduleData.Interfaces;
 
 namespace Editor.ViewModels
 {
@@ -19,93 +14,193 @@ namespace Editor.ViewModels
 
         #region Properties
 
-        #region Subject
+        #region Class
 
-        private string _subject = "";
-        public string Subject
+        private Class _class;
+        public Class Class
         {
-            get { return _subject; }
+            get { return _class; }
             set
             {
-                if (_subject != value)
+                if (_class != value)
                 {
-                    _subject = value;
-                    foreach (var @class in _classes)
-                    {
-                        @class.Subject.Name = value;
-                    }
-                    RaisePropertyChanged(() => Subject);
+                    _class = value;
+                    RaisePropertyChanged(() => Class);
                 }
             }
         }
 
         #endregion
 
-        #region Lecturer
+        //#region TableItem
 
-        private string _lecturer = "";
-        public string Lecturer
-        {
-            get { return _lecturer; }
-            set
-            {
-                if (_lecturer != value)
-                {
-                    _lecturer = value;
-                    foreach (var @class in _classes)
-                    {
-                        @class.Lecturer.Name = value;
-                    }
-                    RaisePropertyChanged(() => Lecturer);
-                }
-            }
-        }
+        //private TableItem<Class> _tableItem;
+        //public TableItem<Class> TableItem
+        //{
+        //    get { return _tableItem; }
+        //    set
+        //    {
+        //        if (!_tableItem.Equals(value))
+        //        {
+        //            _tableItem = value;
+        //            Class = _tableItem.Item;
+        //            RaisePropertyChanged(() => TableItem);
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region Group
+        //#region Subject
 
-        private string _group = "";
-        public string Group
-        {
-            get { return _group; }
-            set
-            {
-                if (_group != value)
-                {
-                    _group = value;
-                    foreach (var @class in _classes)
-                    {
-                        @class.Group.Name = value;
-                    }
-                    RaisePropertyChanged(() => Group);
-                }
-            }
-        }
+        //private string _subject = "";
+        //public string Subject
+        //{
+        //    get { return _subject; }
+        //    set
+        //    {
+        //        if (_subject != value)
+        //        {
+        //            _subject = value;
+        //            foreach (var @class in _classes)
+        //            {
+        //                @class.Subject.Name = value;
+        //            }
+        //            RaisePropertyChanged(() => Subject);
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
-        #region Classroom
+        //#region Lecturer
 
-        private string _classroom = "";
-        public string Classroom
-        {
-            get { return _classroom; }
-            set
-            {
-                if (_classroom != value)
-                {
-                    _classroom = value;
-                    foreach (var @class in _classes)
-                    {
-                        @class.Classroom.Name = value;
-                    }
-                    RaisePropertyChanged(() => Classroom);
-                }
-            }
-        }
+        //private string _lecturer = "";
+        //public string Lecturer
+        //{
+        //    get { return _lecturer; }
+        //    set
+        //    {
+        //        if (_lecturer != value)
+        //        {
+        //            _lecturer = value;
+        //            foreach (var @class in _classes)
+        //            {
+        //                @class.Lecturer.Name = value;
+        //            }
+        //            RaisePropertyChanged(() => Lecturer);
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
+
+        //#region Group
+
+        //private string _group = "";
+        //public string Group
+        //{
+        //    get { return _group; }
+        //    set
+        //    {
+        //        if (_group != value)
+        //        {
+        //            _group = value;
+        //            foreach (var @class in _classes)
+        //            {
+        //                @class.Group.Name = value;
+        //            }
+        //            RaisePropertyChanged(() => Group);
+        //        }
+        //    }
+        //}
+
+        //#endregion
+
+        //#region Classroom
+
+        //private string _classroom = "";
+        //public string Classroom
+        //{
+        //    get { return _classroom; }
+        //    set
+        //    {
+        //        if (_classroom != value)
+        //        {
+        //            _classroom = value;
+        //            foreach (var @class in _classes)
+        //            {
+        //                @class.Classroom.Name = value;
+        //            }
+        //            RaisePropertyChanged(() => Classroom);
+        //        }
+        //    }
+        //}
+
+        //#endregion
+
+        //#region SelectedClassroom
+
+        //public Classroom SelectedClassroom
+        //{
+        //    get
+        //    {
+        //        var cs = ClassesSchedule.Classrooms.Where(classroom => classroom.Name == Classroom);
+        //        var classrooms = cs as IList<Classroom> ?? cs.ToList();
+        //        return classrooms.Any() ? classrooms.First() : null;
+        //    }
+        //    set
+        //    {
+        //        if (value != null && value.Name != Classroom)
+        //        {
+        //            Classroom = value.Name;
+        //        }
+        //    }
+        //}
+
+        //#endregion
+
+        //#region SelectedLecturer
+
+        //public Lecturer SelectedLecturer
+        //{
+        //    get
+        //    {
+        //        var cs = ClassesSchedule.Lecturers.Where(lecturer => lecturer.Name == Lecturer);
+        //        var lecturers = cs as IList<Lecturer> ?? cs.ToList();
+        //        return lecturers.Any() ? lecturers.First() : null;
+        //    }
+        //    set
+        //    {
+        //        if (value != null && value.Name != Lecturer)
+        //        {
+        //            Lecturer = value.Name;
+        //        }
+        //    }
+        //}
+
+        //#endregion
+
+        //#region SelectedSubject
+
+        //public Subject SelectedSubject
+        //{
+        //    get
+        //    {
+        //        var cs = ClassesSchedule.Subjects.Where(s => s.Name == Subject);
+        //        var subjects = cs as IList<Subject> ?? cs.ToList();
+        //        return subjects.Any() ? subjects.First() : null;
+        //    }
+        //    set
+        //    {
+        //        if (value != null && value.Name != Subject)
+        //        {
+        //            Subject = value.Name;
+        //        }
+        //    }
+        //}
+
+        //#endregion
 
         #region IsEditing
 
@@ -159,11 +254,15 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        private List<IClass> _classes;
-
-        public ClassCardViewModel(List<IClass> classes)
+        public ClassCardViewModel(Class @class)
         {
-            _classes = classes;
+            Class = @class;
+            IsEditing = false;
+            IsSelected = false;
+        }
+
+        public ClassCardViewModel()
+        {
             IsEditing = false;
             IsSelected = false;
         }
@@ -205,5 +304,10 @@ namespace Editor.ViewModels
 
 
         #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }

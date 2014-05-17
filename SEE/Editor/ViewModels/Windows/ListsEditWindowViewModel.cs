@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Editor.Helpers;
-using ScheduleData;
+﻿using Editor.Models;
 
 namespace Editor.ViewModels
 {
@@ -13,7 +6,9 @@ namespace Editor.ViewModels
     {
         Groups,
         Lecturers,
-        Rooms
+        Classrooms,
+        Specializations,
+        YearsOfStudy
     }
 
     class ListsEditWindowViewModel : BaseViewModel
@@ -41,32 +36,19 @@ namespace Editor.ViewModels
 
         #endregion
 
-        #region Commands
-
-        //public ICommand SetEditModeCommand { get { return new DelegateCommand(OnSetEditMode, CanExecuteSetEditMode); } }
-        //public ICommand SetViewModeCommand { get { return new DelegateCommand(OnSetViewMode, CanExecuteSetViewMode); } }
-
-        #endregion
-
         #region Ctor
 
-        public ListsEditWindowViewModel()
+        public ListsEditWindowViewModel(ClassesSchedule classesSchedule, ListsEditorTab initTab = ListsEditorTab.Groups)
         {
-            ActiveTab = ListsEditorTab.Groups;
-        }
-
-        public ListsEditWindowViewModel(ListsEditorTab initTab)
-        {
+            ClassesSchedule = classesSchedule;
             ActiveTab = initTab;
         }
 
         #endregion
 
-        #region Command Handlers
-
-        
-
-        #endregion
-
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }

@@ -1,24 +1,18 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
 using Editor.Helpers;
 using Editor.Models;
-using Editor.Repository;
 using Editor.UserControls;
-using ScheduleData;
-using ScheduleData.Editor;
-using ScheduleData.Interfaces;
+using Editor.ViewModels.Cards;
 
 namespace Editor.ViewModels
 {
-
-    class TableViewModel : BaseViewModel
+    public class TableViewModel : BaseViewModel
     {
 
         public static int TimeColumnsCount = 2;
@@ -26,10 +20,70 @@ namespace Editor.ViewModels
 
         #region Properties
 
-        #region Lectures
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            _timeLineMarkup = new TimeLineMarkup(ClassesSchedule);
+            InitDayLine();
+            InitTimeIntervalLine();
 
-        private ObservableCollection<UIElement> _classesCards;
-        public ObservableCollection<UIElement> ClassCards
+            if (YearOfStudy != null)
+            {
+                YearOfStudyOnPropertyChanged();
+            }
+        }
+
+        #region YearOfStudy
+
+        private YearOfStudy _yearOfStudy;
+
+        public YearOfStudy YearOfStudy
+        {
+            get { return _yearOfStudy; }
+            set
+            {
+                if (_yearOfStudy != value)
+                {
+                    _yearOfStudy = value;
+                    YearOfStudyOnPropertyChanged();
+                    RaisePropertyChanged(() => YearOfStudy);
+                }
+            }
+        }
+
+        private void YearOfStudyOnPropertyChanged()
+        {
+            TableHeader = YearOfStudy.ToString();
+            _classesTable = new ClassesTable(ClassesSchedule, YearOfStudy);
+            _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
+            InitializeTitles();
+            InitLectureCards();
+        }
+
+        #endregion
+
+        #region TableHeader
+
+        private string _tableHeader;
+
+        public string TableHeader
+        {
+            get { return _tableHeader; }
+            set
+            {
+                if (_tableHeader != value)
+                {
+                    _tableHeader = value;
+                    RaisePropertyChanged(() => TableHeader);
+                }
+            }
+        }
+
+        #endregion
+
+        #region ClassesCards
+
+        private ObservableCollection<UIElement> _classesCards = new ObservableCollection<UIElement>();
+        public ObservableCollection<UIElement> ClassesCards
         {
             get { return _classesCards; }
             set
@@ -37,7 +91,7 @@ namespace Editor.ViewModels
                 if (_classesCards != value)
                 {
                     _classesCards = value;
-                    RaisePropertyChanged(() => ClassCards);
+                    RaisePropertyChanged(() => ClassesCards);
                 }
             }
         }
@@ -46,7 +100,7 @@ namespace Editor.ViewModels
 
         #region TimeLine
 
-        private ObservableCollection<UIElement> _timeIntervals;
+        private ObservableCollection<UIElement> _timeIntervals = new ObservableCollection<UIElement>();
         public ObservableCollection<UIElement> TimeIntervals
         {
             get { return _timeIntervals; }
@@ -64,7 +118,7 @@ namespace Editor.ViewModels
 
         #region DayLine
 
-        private ObservableCollection<UIElement> _dayLine;
+        private ObservableCollection<UIElement> _dayLine = new ObservableCollection<UIElement>();
         public ObservableCollection<UIElement> DayLine
         {
             get { return _dayLine; }
@@ -82,7 +136,7 @@ namespace Editor.ViewModels
 
         #region Titles
 
-        private ObservableCollection<UIElement> _titles;
+        private ObservableCollection<UIElement> _titles = new ObservableCollection<UIElement>();
         public ObservableCollection<UIElement> Titles
         {
             get { return _titles; }
@@ -100,32 +154,16 @@ namespace Editor.ViewModels
 
         #endregion
 
-        private ClassesTable _classTable;
+        private ClassesTable _classesTable;
         private TimeLineMarkup _timeLineMarkup;
         private TitlesMarkup _titlesMarkup;
+        private Selection _selection;
+        private Collection<ClassCardViewModel> _selectedCards = new Collection<ClassCardViewModel>();
 
-        private List<ClassCard> _selectedCards = new List<ClassCard>();
-
-        public TableViewModel(ISchedule schedule, IYearOfStudy year)
+        public TableViewModel()
         {
-            _classTable = new ClassesTable(schedule, year);
-            _timeLineMarkup = new TimeLineMarkup(_classTable.TimeIntervals);
-            _titlesMarkup = new TitlesMarkup(_classTable.Groups);
-            InitDayLine();
-            InitTimeIntervalLine();
-            InitializeTitles();
-            InitLectureCards();
+            ClassesCards.CollectionChanged += ClassesCardsOnCollectionChanged;
         }
-
-        //private void InitializeSubTitles()
-        //{
-        //    Subtitles = new ObservableCollection<UIElement>();
-        //    int col = TimeColumnsCount;
-        //    foreach (var subgroup in ScheduleRepository.Subgroups)
-        //    {
-        //        Subtitles.Add(havingNameToSubtitleCard(subgroup, col++));
-        //    }
-        //}
 
         private void InitializeTitles()
         {
@@ -135,7 +173,7 @@ namespace Editor.ViewModels
                 var tvm = new TitleCardViewModel(title.Item);
                 var tc = new TitleCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
-                Grid.SetColumn(tc, title.Column);
+                Grid.SetColumn(tc, TitleRowsCount + title.Column);
                 Grid.SetRowSpan(tc, title.RowSpan);
                 Grid.SetColumnSpan(tc, title.ColumnSpan);
                 Titles.Add(tc);
@@ -160,7 +198,7 @@ namespace Editor.ViewModels
         private void InitTimeIntervalLine()
         {
             TimeIntervals = new ObservableCollection<UIElement>();
-            foreach (var classInterval in _timeLineMarkup.ClassIntervals)
+            foreach (var classInterval in _timeLineMarkup.ClassesIntervals)
             {
                 var tvm = new TimeCardViewModel(classInterval.Item);
                 var tc = new TimeCard { DataContext = tvm };
@@ -174,66 +212,218 @@ namespace Editor.ViewModels
 
         private void InitLectureCards()
         {
-            ClassCards = new ObservableCollection<UIElement>();  
-
-            for (int row = 0; row < _classTable.RowsCount(); row++)
+            ClassesCards.Clear();  
+            for (int row = 0; row < _classesTable.RowsCount(); row++)
             {
-                for (int col = 0; col < _classTable.ColumnsCount(); col++)
+                for (int col = 0; col < _classesTable.ColumnsCount(); col++)
                 {
-                    var l = _classTable.Table[row][col];
-                    var lvm = new ClassCardViewModel(new List<IClass> {l.Item});
-                    var lc = new ClassCard { DataContext = lvm };
-                    Grid.SetRow(lc, row + TitleRowsCount);
-                    Grid.SetColumn(lc, col + TimeColumnsCount);
-                    Grid.SetRowSpan(lc, l.RowSpan);
-                    Grid.SetColumnSpan(lc, l.ColumnSpan);
-                    lc.Click += LectureCardOnClick;
-                    ClassCards.Add(lc);
+                    ClassesCards.Add(CreateClassCard(row, col));
                 }
             }    
         }
 
+        private ClassCard CreateClassCard(int row, int column)
+        {
+            var spanned = _classesTable.Table[row][column];
+            var classCard = new ClassCard { DataContext = spanned.Item };
+            Grid.SetRow(classCard, row + TitleRowsCount);
+            Grid.SetColumn(classCard, column + TimeColumnsCount);
+            Grid.SetRowSpan(classCard, spanned.RowSpan);
+            Grid.SetColumnSpan(classCard, spanned.ColumnSpan);
+            return classCard;
+        }
+
         public int TableWidth()
         {
-            return TimeColumnsCount + _classTable.ColumnsCount();
+            return TimeColumnsCount + (_classesTable != null ? _classesTable.ColumnsCount() : 0);
         }
 
         public int TableHeight()
         {
-            return TitleRowsCount + _classTable.RowsCount();
+            return TitleRowsCount + (_classesTable != null ? _classesTable.RowsCount() : 0);
         }
 
         #region Commands
 
-        //public ICommand SetEditModeCommand { get { return new DelegateCommand(OnSetEditMode, CanExecuteSetEditMode); } }
-        //public ICommand SetViewModeCommand { get { return new DelegateCommand(OnSetViewMode, CanExecuteSetViewMode); } }
-
+        public ICommand JoinClassesCommand { get { return new DelegateCommand(OnJoinClassesCommand, CanExecuteJoinClasses); } }
+        
         #endregion
 
         #region Command Handlers
 
+        private bool CanExecuteJoinClasses()
+        {
+            return _selectedCards.Count() > 1;
+        }
+
+        private void OnJoinClassesCommand()
+        {
+            var mainClass = _classesTable.Table[_selection.Top][_selection.Left];
+            var row = _selection.Top;
+            var col = _selection.Left;
+            mainClass.RowSpan = _selection.Bottom - _selection.Top + 1;
+            mainClass.ColumnSpan = _selection.Right - _selection.Left + 1;
+            ClassesCards.RemoveAt(row * _classesTable.ColumnsCount() + col);
+            ClassesCards.Add(CreateClassCard(row, col));
+            if (ClassesJoinedDelegate != null)
+            {
+                ClassesJoinedDelegate(this);
+            }
+        }
+
+        public delegate void ClassesJoined(TableViewModel t);
+        public ClassesJoined ClassesJoinedDelegate { get; set; }
 
         #endregion
 
         #region Event Handlers
-
-        private void LectureCardOnClick(object sender, RoutedEventArgs routedEventArgs)
+        
+        private void ClassesCardsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var lc = (ClassCard)sender;
-            if (_selectedCards.Any())
+            switch (e.Action)
             {
-                foreach (var selectedCard in _selectedCards)
-                {
-                    var vm = (ClassCardViewModel)selectedCard.DataContext;
-                    vm.IsSelected = false;
-                }
-                _selectedCards.Clear();
+                case NotifyCollectionChangedAction.Remove:
+                    if (e.NewItems == null) return;
+                    foreach (ClassCard classCard in e.NewItems)
+                    {
+                        //Removed items
+                        classCard.MouseLeftButtonDown -= ClassCardOnMouseLeftButtonDown;
+                        classCard.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
+                        classCard.MouseEnter -= ClassCardOnMouseEnter;
+                        classCard.MouseLeave -= ClassCardOnMouseLeave;
+                        classCard.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                    if (e.NewItems == null) return;
+                    foreach (ClassCard classCard in e.NewItems)
+                    {
+                        //Added items
+                        classCard.MouseLeftButtonDown += ClassCardOnMouseLeftButtonDown;
+                        classCard.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
+                        classCard.MouseEnter += ClassCardOnMouseEnter;
+                        classCard.MouseLeave += ClassCardOnMouseLeave;
+                        classCard.MouseRightButtonUp += ClassCardOnMouseRightButtonUp;
+                    }
+                    break;
             }
-            _selectedCards.Add(lc);
-            var lcvm = (ClassCardViewModel)lc.DataContext;
-            lcvm.IsSelected = true;
         }
 
+        private void ClassCardOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            var classCard = sender as ClassCard;
+            if (classCard == null) return;
+            OpenContextMenu(classCard);
+        }
+
+        private void ClassCardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            var classCard = sender as ClassCard;
+            if (classCard == null) return;
+            CreateSelection(classCard);
+        }
+
+        private void ClassCardOnMouseLeftButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            //var classCard = sender as ClassCard;
+            //if (classCard == null) return;
+            //FixSelection(classCard);
+        }
+
+        private void ClassCardOnMouseEnter(object sender, MouseEventArgs mouseEventArgs)
+        {
+            if (mouseEventArgs.LeftButton != MouseButtonState.Pressed) return;
+            var classCard = sender as ClassCard;
+            if (classCard == null) return;
+            UpdateSelection(classCard);
+        }
+
+        private void ClassCardOnMouseLeave(object sender, MouseEventArgs mouseEventArgs)
+        {
+            //if (!selection.IsSelecting) return;
+        }
+
+        private void DropSelected()
+        {
+            foreach (var selectedCard in _selectedCards)
+            {
+                if (selectedCard == null) continue;
+                selectedCard.IsSelected = false;
+                selectedCard.IsEditing = false;
+            }
+            _selectedCards.Clear();
+        }
+
+        private void CreateSelection(ClassCard cc)
+        {
+            var model = cc.DataContext as ClassCardViewModel;
+            if (model == null) return;
+            var row = Grid.GetRow(cc) - TitleRowsCount;
+            var col = Grid.GetColumn(cc) - TimeColumnsCount;
+            _selection = new Selection(row, col);
+            DropSelected();
+            UpdateSelection(cc);
+        }
+
+        private void UpdateSelection(ClassCard card)
+        {
+            var row = Grid.GetRow(card) - TitleRowsCount;
+            var col = Grid.GetColumn(card) - TimeColumnsCount;
+            _selection.UpdateEnd(row, col);
+            DropSelected();
+            for (int r = _selection.Top; r <= _selection.Bottom; r++)
+            {
+                for (int c = _selection.Left; c <= _selection.Right; c++)
+                {
+                    var spanned = _classesTable.Table[r][c];
+                    var @class = spanned.Item;
+                    @class.IsSelected = true;
+                    _selectedCards.Add(@class);
+                }
+            }
+        }
+        
+        private void OpenContextMenu(ClassCard classCard)
+        {
+            var model = classCard.DataContext as ClassCardViewModel;
+            if (model == null) return;
+            if (!_selectedCards.Contains(model))
+            {
+                CreateSelection(classCard);
+            }
+            var cm = new ContextMenu();
+            cm.Items.Add(new MenuItem { Header = "Объединить", Command = JoinClassesCommand});
+            cm.IsOpen = true;
+        }
+
+
         #endregion
+    }
+
+    class Selection
+    {
+        
+        public int StartRow { get; set; }
+        public int StartColumn { get; set; }
+        public int EndRow { get; set; }
+        public int EndColumn { get; set; }
+        public int Top { get { return Math.Min(StartRow, EndRow); } }
+        public int Bottom { get { return Math.Max(StartRow, EndRow); } }
+        public int Left { get { return Math.Min(StartColumn, EndColumn); } }
+        public int Right { get { return Math.Max(StartColumn, EndColumn); } }
+
+        public Selection(int row, int column)
+        {
+            StartRow = row;
+            StartColumn = column;
+            EndRow = row;
+            EndColumn = column;
+        }
+
+        public void UpdateEnd(int row, int col)
+        {
+            EndRow = row;
+            EndColumn = col;
+        }
     }
 }

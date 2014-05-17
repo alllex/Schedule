@@ -1,29 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScheduleData;
-using ScheduleData.Interfaces;
+﻿using Editor.Models;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Cards
 {
     class TitleCardViewModel : BaseViewModel
     {
         #region Properties
 
-        #region Title
+        #region Item
 
-        private string _title;
-        public string Title
+        private HavingName _item;
+        public HavingName Item
         {
-            get { return _title; }
+            get { return _item; }
             set
             {
-                if (_title != value)
+                if (_item != value)
                 {
-                    _title = value;
-                    RaisePropertyChanged(() => Title);
+                    _item = value;
+                    RaisePropertyChanged(() => Item);
                 }
             }
         }
@@ -34,11 +28,17 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        public TitleCardViewModel(IHavingName name)
+
+        public TitleCardViewModel(HavingName name)
         {
-            Title = name.Name;
+            _item = name;
         }
 
         #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }

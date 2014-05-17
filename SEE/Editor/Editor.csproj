@@ -41,7 +41,6 @@
     <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Printing" />
     <Reference Include="System.Xml" />
@@ -79,6 +78,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Controls\TablesController.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Panels\YearOfStudyEditPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Panels\SpecializationEditPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\Panels\GroupEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,7 +102,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Panels\RoomEditPanel.xaml">
+    <Page Include="Views\Panels\ClassroomEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -119,10 +130,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Windows\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -131,15 +138,31 @@
     <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
+    <Compile Include="Helpers\ExObservableCollection.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
     <Compile Include="Models\ClassesTable.cs" />
-    <Compile Include="Models\SpanedItem.cs" />
-    <Compile Include="Models\TableItem.cs" />
+    <Compile Include="Models\Elements.cs" />
+    <Compile Include="Models\Interfaces.cs" />
+    <Compile Include="Helpers\SpannedItem.cs" />
+    <Compile Include="Helpers\TableItem.cs" />
     <Compile Include="Models\TimeLineMarkup.cs" />
     <Compile Include="Models\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
+    <Compile Include="Repository\ScheduleRepositoryOld.cs" />
+    <Compile Include="ViewModels\Controls\TablesControllerViewModel.cs" />
+    <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />
     <Compile Include="Views\Cards\DayCard.xaml.cs">
       <DependentUpon>DayCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TablesController.xaml.cs">
+      <DependentUpon>TablesController.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\YearOfStudyEditPanel.xaml.cs">
+      <DependentUpon>YearOfStudyEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\SpecializationEditPanel.xaml.cs">
+      <DependentUpon>SpecializationEditPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Panels\GroupEditPanel.xaml.cs">
       <DependentUpon>GroupEditPanel.xaml</DependentUpon>
@@ -150,8 +173,8 @@
     <Compile Include="Views\Panels\LecturerEditPanel.xaml.cs">
       <DependentUpon>LecturerEditPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Panels\RoomEditPanel.xaml.cs">
-      <DependentUpon>RoomEditPanel.xaml</DependentUpon>
+    <Compile Include="Views\Panels\ClassroomEditPanel.xaml.cs">
+      <DependentUpon>ClassroomEditPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Cards\SubtitleCard.xaml.cs">
       <DependentUpon>SubtitleCard.xaml</DependentUpon>
@@ -172,7 +195,6 @@
     <Compile Include="ViewModels\Cards\ClassCardViewModel.cs" />
     <Compile Include="ViewModels\Panels\LecturerEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\ListsEditWindowViewModel.cs" />
-    <Compile Include="ViewModels\Windows\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\Panels\ClassroomEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Cards\SubtitleCardViewModel.cs" />
     <Compile Include="ViewModels\Controls\TableViewModel.cs" />
@@ -183,10 +205,6 @@
     </Compile>
     <Compile Include="Views\Windows\ListsEditWindow.xaml.cs">
       <DependentUpon>ListsEditWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Windows\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -213,12 +231,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ScheduleData\ScheduleData.csproj">
-      <Project>{038bb399-cf52-47bd-9ff3-8b43a016e070}</Project>
-      <Name>ScheduleData</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

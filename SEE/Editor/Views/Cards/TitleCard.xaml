@@ -10,7 +10,7 @@
                 BorderBrush="Black"
                 Background="White"
                 CornerRadius="3">
-            <TextBlock Text="{Binding Title, Mode=OneTime}"
+            <TextBlock Text="{Binding Item.Name}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Margin="5">

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Editor.Models;
 
-namespace Editor.Models
+namespace Editor.Helpers
 {
-    class TableItem<T> : SpanedItem<T>
+    class TableItem<T> : SpannedItem<T>
     {
 
         public int Row { get; set; }
@@ -17,5 +13,11 @@ namespace Editor.Models
             Row = 0;
             Column = 0;
         }
+
+        public TableItem()
+        {
+            Row = 0;
+            Column = 0;
+        } 
     }
 }

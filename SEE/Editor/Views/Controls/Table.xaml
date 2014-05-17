@@ -8,9 +8,12 @@
              xmlns:helpers="clr-namespace:Editor.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
-    <Grid x:Name="tableGrid"
-          Margin="10"
-          HorizontalAlignment="Stretch">
-            
-    </Grid>
+    <DockPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto">
+            <Grid x:Name="TableGrid"
+                  Margin="10">
+
+            </Grid>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>

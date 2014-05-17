@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScheduleData;
-using ScheduleData.Interfaces;
+using Editor.Models;
 
 namespace Editor.ViewModels
 {
@@ -13,33 +9,15 @@ namespace Editor.ViewModels
 
         #region Properties
 
-        #region Name
-
-        public string Name
-        {
-            get { return _group.Name; }
-            set
-            {
-                if (_group.Name != value)
-                {
-                    _group.Name = value;
-                    RaisePropertyChanged(() => Name);
-                }
-            }
-        }
-
-        #endregion
-
         #endregion
 
         #region Ctor
 
-        private IGroup _group;
-        public GroupEditPanelViewModel(IGroup group)
-        {
-            _group = group;
-        }
-
         #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }

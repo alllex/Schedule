@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ScheduleData;
-using ScheduleData.Interfaces;
+﻿using Editor.Models;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Cards
 {
     class DayCardViewModel : BaseViewModel
     {
@@ -40,5 +34,10 @@ namespace Editor.ViewModels
         }
 
         #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            
+        }
     }
 }
