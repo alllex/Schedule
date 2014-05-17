@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Editor.Helpers;
-using Editor.Models;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
 using Editor.Views;
@@ -35,28 +33,30 @@ namespace Editor.ViewModels
 
         protected override void ClassesScheduleOnPropertyChanged()
         {
-            TablesControllerDataContext.ClassesSchedule = ClassesSchedule;
+            TablesControllerDataContext = new TablesControllerViewModel {ClassesSchedule = ClassesSchedule};
             HasActiveProject = ClassesSchedule != null;
         }
 
         #region TablesControllerDataContext
 
-        private TablesControllerViewModel _tableControllerDataContext = new TablesControllerViewModel();
+        private TablesControllerViewModel _tablesControllerDataContext;
 
         public TablesControllerViewModel TablesControllerDataContext
         {
-            get { return _tableControllerDataContext; }
+            get { return _tablesControllerDataContext; }
             set
             {
-                if (_tableControllerDataContext != value)
+                if (_tablesControllerDataContext != value)
                 {
-                    _tableControllerDataContext = value;
+                    _tablesControllerDataContext = value;
                     RaisePropertyChanged(() => TablesControllerDataContext);
                 }
             }
         }
 
         #endregion
+
+        
 
         #endregion
 

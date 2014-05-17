@@ -5,6 +5,7 @@ using System.Windows;
 using Editor.Models;
 using Editor.Repository;
 using Editor.ViewModels;
+using Editor.ViewModels.Controls;
 
 namespace Editor.Views
 {
@@ -16,12 +17,6 @@ namespace Editor.Views
         public EditorWindow()
         {
             InitializeComponent();
-            DataContextChanged += OnDataContextChanged;
-        }
-
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
-        {
-            Debug.WriteLine(GetType() + @": new DC = " + (DataContext == null ? "null" : DataContext.GetType().ToString()));
         }
     }
 }

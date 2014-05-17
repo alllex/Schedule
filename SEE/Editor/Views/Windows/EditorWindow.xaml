@@ -51,9 +51,10 @@
                   Header="Cards pool">
             
         </Expander>
-        <controls:TablesController  DockPanel.Dock="Left"
-                                    DataContext="{Binding TablesControllerDataContext}"
-                                    
+        <controls:TablesController  
+            x:Name="TablesController"    
+            DockPanel.Dock="Left"
+            DataContext="{Binding TablesControllerDataContext}"
                                     />
         
     </DockPanel>
