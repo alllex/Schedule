@@ -14,7 +14,7 @@ using Editor.Views.Cards;
 
 namespace Editor.ViewModels
 {
-    public class TableViewModel : BaseViewModel
+    public class TableViewModel : ScheduleListenerViewModel
     {
 
         public static int TimeColumnsCount = 2;
@@ -343,32 +343,5 @@ namespace Editor.ViewModels
 
 
         #endregion
-    }
-
-    class Selection
-    {
-        
-        public int StartRow { get; set; }
-        public int StartColumn { get; set; }
-        public int EndRow { get; set; }
-        public int EndColumn { get; set; }
-        public int Top { get { return Math.Min(StartRow, EndRow); } }
-        public int Bottom { get { return Math.Max(StartRow, EndRow); } }
-        public int Left { get { return Math.Min(StartColumn, EndColumn); } }
-        public int Right { get { return Math.Max(StartColumn, EndColumn); } }
-
-        public Selection(int row, int column)
-        {
-            StartRow = row;
-            StartColumn = column;
-            EndRow = row;
-            EndColumn = column;
-        }
-
-        public void UpdateEnd(int row, int col)
-        {
-            EndRow = row;
-            EndColumn = col;
-        }
     }
 }

@@ -1,63 +1,29 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 
 namespace Editor.Helpers
 {
-    public class ClipboardService
+    public static class ClipboardService
     {
+        private static readonly Dictionary<string, object> Clipboard = new Dictionary<string, object>();  
 
-        public static bool ContainsData<T>() where T:class
+        public static bool ContainsData<T>()
         {
-            return Clipboard.ContainsData(typeof(T).ToString());
+            return Clipboard.ContainsKey(typeof(T).ToString());
         }
 
-        public static void SetData<T>(T data) where T:class
+        public static void SetData<T>(T data)
         {
-            try
-            {
-                Clipboard.Clear();
-                Clipboard.SetData(typeof(T).ToString(), data);
-            }
-            catch (System.Runtime.InteropServices.COMException)
-            {
-                System.Threading.Thread.Sleep(0);
-                try
-                {
-                    Clipboard.Clear();
-                    Clipboard.SetData(typeof(T).ToString(), data);
-                }
-                catch (System.Runtime.InteropServices.COMException)
-                {
-                    MessageBox.Show("Can't Access Clipboard");
-                }
-            }
+            string key = typeof (T).ToString();
+            Clipboard[key] = data;
         }
 
         public static T GetData<T>() where T : class
         {
-            try
-            {
-                if (ContainsData<T>())
-                {
-                    var x = Clipboard.GetData(typeof (T).ToString());
-                    return x as T;
-                }
-            }
-            catch (System.Runtime.InteropServices.COMException)
-            {
-                System.Threading.Thread.Sleep(0);
-                try
-                {
-                    if (ContainsData<T>())
-                    {
-                        return Clipboard.GetData(typeof(T).ToString()) as T;
-                    }
-                }
-                catch (System.Runtime.InteropServices.COMException)
-                {
-                    MessageBox.Show("Can't Access Clipboard");
-                }
-            }
-            return null;
+            string key = typeof(T).ToString();
+            object value;
+            var found = Clipboard.TryGetValue(key, out value);
+            return found ? value as T : null;
         }
     }
 

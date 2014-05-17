@@ -9,7 +9,7 @@ using Editor.Views;
 namespace Editor.ViewModels
 {
 
-    class EditorWindowViewModel : BaseViewModel
+    class EditorWindowViewModel : ScheduleListenerViewModel
     {
 
         #region Properties

@@ -4,7 +4,7 @@ using Editor.Models;
 
 namespace Editor.ViewModels
 {
-    class ClassroomEditPanelViewModel : BaseViewModel
+    class ClassroomEditPanelViewModel : ScheduleListenerViewModel
     {
 
         #region Properties

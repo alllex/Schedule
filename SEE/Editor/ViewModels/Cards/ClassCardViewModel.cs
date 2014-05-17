@@ -11,7 +11,7 @@ using Editor.UserControls;
 
 namespace Editor.ViewModels
 {
-    class ClassCardViewModel : BaseViewModel
+    class ClassCardViewModel : ScheduleListenerViewModel
     {
 
         #region Properties
@@ -56,8 +56,6 @@ namespace Editor.ViewModels
 
         #region Commands
 
-        //public ICommand SetEditModeCommand { get { return new DelegateCommand(OnSetEditMode, CanExecuteSetEditMode); } }
-        //public ICommand SetViewModeCommand { get { return new DelegateCommand(OnSetViewMode, CanExecuteSetViewMode); } }
         public ICommand CopyClassCommand { get { return new DelegateCommand(OnCopyClassCommand); } }
         public ICommand PasteClassCommand { get { return new DelegateCommand(OnPasteClassCommand); } }
 
@@ -70,8 +68,8 @@ namespace Editor.ViewModels
         private void OnCopyClassCommand()
         {
             var @class = new Class();
-            Class.Copy(Class, @class);
-            ClipboardService.SetData(@class.ClassTime);
+            Class.CopySLC(Class, @class);
+            ClipboardService.SetData(@class);
         }
 
         #endregion
@@ -80,17 +78,15 @@ namespace Editor.ViewModels
 
         private void OnPasteClassCommand()
         {
-            var cliped = ClipboardService.GetData<ClassTime>();
-            MessageBox.Show(cliped.ToString());
+            var cliped = ClipboardService.GetData<Class>();
+            Class.CopySLC(cliped, Class);
         }
 
 
         #endregion
 
         #endregion
-
-        private ObservableCollectionEx<Class> _classes = new ObservableCollectionEx<Class>();
-
+        
         #region Ctor
 
         public ClassCardViewModel(Class @class)
@@ -107,9 +103,5 @@ namespace Editor.ViewModels
 
         #endregion
 
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            
-        }
     }
 }

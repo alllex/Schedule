@@ -4,7 +4,7 @@ using Editor.Models;
 
 namespace Editor.ViewModels
 {
-    class YearOfStudyEditPanelViewModel : BaseViewModel
+    class YearOfStudyEditPanelViewModel : ScheduleListenerViewModel
     {
 
         #region Properties
@@ -14,10 +14,5 @@ namespace Editor.ViewModels
         #region Ctor
 
         #endregion
-
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            
-        }
     }
 }

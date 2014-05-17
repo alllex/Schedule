@@ -4,7 +4,7 @@ using Editor.Models;
 
 namespace Editor.ViewModels
 {
-    class GroupEditPanelViewModel : BaseViewModel
+    class GroupEditPanelViewModel : ScheduleListenerViewModel
     {
 
         #region Properties

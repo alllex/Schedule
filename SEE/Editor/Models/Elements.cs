@@ -531,6 +531,19 @@ namespace Editor.Models
             to.Classroom = from.Classroom;
             to.ClassTime = from.ClassTime;
         }
+
+        /// <summary>
+        /// Copies Subject, Lecturer and Classroom fields
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        public static void CopySLC(Class from, Class to)
+        {
+            if (from == null || to == null) return;
+            to.Subject = from.Subject;
+            to.Lecturer = from.Lecturer;
+            to.Classroom = from.Classroom;
+        }
     }
 
     [Serializable]
@@ -699,7 +712,7 @@ namespace Editor.Models
             //Classes.CollectionChanged += OnSomeCollectionChanged;
         }
 
-        private void OnSomeCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+        private void OnSomeCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (ItemChangedProperty != null)
             {

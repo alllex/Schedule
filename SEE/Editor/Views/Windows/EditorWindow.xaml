@@ -44,6 +44,17 @@
                           />
             </MenuItem>
         </Menu>
-        <controls:TablesController DataContext="{Binding TablesControllerDataContext}"/>
+        <Expander DockPanel.Dock="Left"
+                  HorizontalAlignment="Left"
+                  ExpandDirection="Right"
+                  IsExpanded="False"
+                  Header="Cards pool">
+            
+        </Expander>
+        <controls:TablesController  DockPanel.Dock="Left"
+                                    DataContext="{Binding TablesControllerDataContext}"
+                                    
+                                    />
+        
     </DockPanel>
 </Window>

@@ -2,7 +2,7 @@
 
 namespace Editor.ViewModels.Cards
 {
-    class TitleCardViewModel : BaseViewModel
+    class TitleCardViewModel : ScheduleListenerViewModel
     {
         #region Properties
 

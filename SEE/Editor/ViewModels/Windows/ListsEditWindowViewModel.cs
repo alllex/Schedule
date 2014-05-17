@@ -11,7 +11,7 @@ namespace Editor.ViewModels
         YearsOfStudy
     }
 
-    class ListsEditWindowViewModel : BaseViewModel
+    class ListsEditWindowViewModel : ScheduleListenerViewModel
     {
 
         #region Properties

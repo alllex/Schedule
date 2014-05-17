@@ -1,9 +1,8 @@
-using Editor.Helpers;
-using Editor.Models;
+﻿using Editor.Models;
 
 namespace Editor.ViewModels
 {
-    public abstract class BaseViewModel : NotificationObject
+    public abstract class ScheduleListenerViewModel : BaseViewModel
     {
         #region ClassesSchedule
 
@@ -38,7 +37,6 @@ namespace Editor.ViewModels
             ClassesScheduleOnPropertyChanged();
         }
 
-        protected abstract void ClassesScheduleOnPropertyChanged();
+        protected virtual void ClassesScheduleOnPropertyChanged(){}
     }
-
 }
