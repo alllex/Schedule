@@ -74,6 +74,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Cards\ClassCardEditMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Cards\DayCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -94,7 +98,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Cards\ClassCard.xaml">
+    <Page Include="Views\Cards\ClassCardViewMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,6 +156,9 @@
     <Compile Include="ViewModels\Controls\TablesControllerViewModel.cs" />
     <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />
+    <Compile Include="Views\Cards\ClassCardEditMode.xaml.cs">
+      <DependentUpon>ClassCardEditMode.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Cards\DayCard.xaml.cs">
       <DependentUpon>DayCard.xaml</DependentUpon>
     </Compile>
@@ -167,8 +174,8 @@
     <Compile Include="Views\Panels\GroupEditPanel.xaml.cs">
       <DependentUpon>GroupEditPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Cards\ClassCard.xaml.cs">
-      <DependentUpon>ClassCard.xaml</DependentUpon>
+    <Compile Include="Views\Cards\ClassCardViewMode.xaml.cs">
+      <DependentUpon>ClassCardViewMode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Panels\LecturerEditPanel.xaml.cs">
       <DependentUpon>LecturerEditPanel.xaml</DependentUpon>

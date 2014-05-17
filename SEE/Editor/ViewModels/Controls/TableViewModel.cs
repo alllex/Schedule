@@ -10,6 +10,7 @@ using Editor.Helpers;
 using Editor.Models;
 using Editor.UserControls;
 using Editor.ViewModels.Cards;
+using Editor.Views.Cards;
 
 namespace Editor.ViewModels
 {
@@ -139,7 +140,7 @@ namespace Editor.ViewModels
 
         public int ClassesRowsCount;
         public int ClassesColumnsCount;
-        public ClassCard[][] ClassesCards;
+        public ClassCardViewMode[][] ClassesCards;
         private ClassesTable _classesTable;
         private TimeLineMarkup _timeLineMarkup;
         private TitlesMarkup _titlesMarkup;
@@ -200,10 +201,10 @@ namespace Editor.ViewModels
         {
             ClassesRowsCount = _classesTable.RowsCount();
             ClassesColumnsCount = _classesTable.ColumnsCount();
-            ClassesCards = new ClassCard[ClassesRowsCount][];
+            ClassesCards = new ClassCardViewMode[ClassesRowsCount][];
             for (var row = 0; row < ClassesRowsCount; row++)
             {
-                ClassesCards[row] = new ClassCard[ClassesColumnsCount];
+                ClassesCards[row] = new ClassCardViewMode[ClassesColumnsCount];
                 for (var col = 0; col < ClassesColumnsCount; col++)
                 {
                     ClassesCards[row][col] = CreateClassCard(row, col);
@@ -211,10 +212,10 @@ namespace Editor.ViewModels
             }    
         }
 
-        private ClassCard CreateClassCard(int row, int column)
+        private ClassCardViewMode CreateClassCard(int row, int column)
         {
             var spanned = _classesTable.Table[row][column];
-            var classCard = new ClassCard { DataContext = spanned.Item };
+            var classCard = new ClassCardViewMode { DataContext = spanned.Item };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
             Grid.SetRowSpan(classCard, spanned.RowSpan);
@@ -245,7 +246,7 @@ namespace Editor.ViewModels
 
         #region Event Handlers
 
-        private void AddClassCardHandlers(ClassCard card)
+        private void AddClassCardHandlers(ClassCardViewMode card)
         {
             card.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
             card.MouseRightButtonUp += ClassCardOnMouseRightButtonUp;
@@ -254,23 +255,39 @@ namespace Editor.ViewModels
             card.MouseRightButtonDown += CardOnMouseRightButtonDown;
         }
 
-        private void RemoveClassCardHandlers(ClassCard classCard)
+        private void RemoveClassCardHandlers(ClassCardViewMode classCard)
         {
             classCard.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
             classCard.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
         }
 
-        private void CardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void CardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var classCard = sender as ClassCard;
+            var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
             DropSelected();
             UpdateSelection(classCard);
+            if (e.ClickCount == 2)
+            {
+                OpenCardEditor(classCard);
+            }
+        }
+
+        private void OpenCardEditor(ClassCardViewMode card)
+        {
+            var row = Grid.GetRow(card) - TitleRowsCount;
+            var col = Grid.GetColumn(card) - TimeColumnsCount;
+            var @class = _classesTable.Table[row][col].Item;
+            Point position = card.PointToScreen(new Point(0d, 0d));
+            var centerY = position.Y + (card.ActualHeight) / 2;
+            var centerX = position.X + (card.ActualWidth) / 2; 
+            var edit = new ClassCardEditMode(centerX, centerY) {DataContext = @class};
+            edit.ShowDialog();
         }
 
         private void CardOnMouseRightButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            var classCard = sender as ClassCard;
+            var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
             DropSelected();
             UpdateSelection(classCard);
@@ -279,23 +296,23 @@ namespace Editor.ViewModels
         private void CardOnMouseEnter(object sender, MouseEventArgs e)
         {
             if (e.LeftButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed) return;
-            var classCard = sender as ClassCard;
+            var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
             DropSelected();
             UpdateSelection(classCard);
         }
+
+        private void ClassCardOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+        }
         
         private void ClassCardOnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var classCard = sender as ClassCard;
+            var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
             OpenContextMenu(classCard);
         }
 
-        private void ClassCardOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-
-        }
         
         private void DropSelected()
         {
@@ -305,7 +322,7 @@ namespace Editor.ViewModels
             }
         }
         
-        private void UpdateSelection(ClassCard card)
+        private void UpdateSelection(ClassCardViewMode card)
         {
             var row = Grid.GetRow(card) - TitleRowsCount;
             var col = Grid.GetColumn(card) - TimeColumnsCount;
@@ -313,7 +330,7 @@ namespace Editor.ViewModels
             _selectedCard.IsSelected = true;
         }
         
-        private void OpenContextMenu(ClassCard classCard)
+        private void OpenContextMenu(ClassCardViewMode classCard)
         {
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
