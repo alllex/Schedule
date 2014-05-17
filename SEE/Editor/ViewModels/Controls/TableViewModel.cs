@@ -255,10 +255,13 @@ namespace Editor.ViewModels
             card.MouseRightButtonDown += CardOnMouseRightButtonDown;
         }
 
-        private void RemoveClassCardHandlers(ClassCardViewMode classCard)
+        private void RemoveClassCardHandlers(ClassCardViewMode card)
         {
-            classCard.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
-            classCard.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
+            card.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
+            card.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
+            card.MouseEnter -= CardOnMouseEnter;
+            card.MouseLeftButtonDown -= CardOnMouseLeftButtonDown;
+            card.MouseRightButtonDown -= CardOnMouseRightButtonDown;
         }
 
         private void CardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -312,7 +315,6 @@ namespace Editor.ViewModels
             if (classCard == null) return;
             OpenContextMenu(classCard);
         }
-
         
         private void DropSelected()
         {
@@ -334,9 +336,9 @@ namespace Editor.ViewModels
         {
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
-            var cm = new ContextMenu();
-            cm.Items.Add(new MenuItem { Header = "Action"});
-            cm.IsOpen = true;
+//            var cm = new ContextMenu();
+//            cm.Items.Add(new MenuItem { Header = "Action", Command = });
+//            cm.IsOpen = true;
         }
 
 

@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using Editor.Helpers;
 
 namespace Editor.Models
 {
 
+    [Serializable]
     public enum WeekType
     {
         Odd, Even, Both
     }
 
+    [Serializable]
     public enum Weekdays
     {
         Monday, Tuesday, Wednesday, //Thursday, Friday, Saturday //, Sunday
     }
 
+    [Serializable]
     public enum ClassType
     {
         Lecture, Practice
@@ -24,7 +29,7 @@ namespace Editor.Models
     [Serializable]
     public class HavingId : NotificationObject
     {
-        private static int _count = 0;
+        private static int _count;
         private readonly int _id = _count++;
 
         public override int GetHashCode()
@@ -517,10 +522,11 @@ namespace Editor.Models
 
         #endregion
 
-        public static void CopyWithoutGroup(Class from, Class to)
+        public static void Copy(Class from, Class to)
         {
             if (from == null || to == null) return;
             to.Subject = from.Subject;
+            to.Group = from.Group;
             to.Lecturer = from.Lecturer;
             to.Classroom = from.Classroom;
             to.ClassTime = from.ClassTime;

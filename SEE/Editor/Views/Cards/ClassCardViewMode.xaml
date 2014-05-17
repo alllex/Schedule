@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:userControls="clr-namespace:Editor.UserControls"
              xmlns:viewModels="clr-namespace:Editor.ViewModels"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
@@ -12,6 +11,13 @@
     <UserControl.DataContext>
         <viewModels:ClassCardViewModel />
     </UserControl.DataContext>
+
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Скопировать" Command="{Binding CopyClassCommand}"/>
+            <MenuItem Header="Вставить" Command="{Binding PasteClassCommand}"/>
+        </ContextMenu>
+    </UserControl.ContextMenu>
     
     <UserControl.Resources>
         
@@ -61,6 +67,7 @@
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
     </UserControl.Resources>
+    
     <DockPanel>
         <Border CornerRadius="3"
                     MinWidth="150"

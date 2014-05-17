@@ -141,6 +141,7 @@
     <Compile Include="Converters\BaseConverter.cs" />
     <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
+    <Compile Include="Helpers\ClipboardService.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\ExObservableCollection.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
