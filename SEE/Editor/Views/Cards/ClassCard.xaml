@@ -109,11 +109,15 @@
             <Border CornerRadius="3"
                     MinWidth="150"
                     Style="{StaticResource BorderStyle}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
                     >
                 <Border.InputBindings>
                     <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SetEditModeCommand}" />
                 </Border.InputBindings>
-                <StackPanel Margin="3">
+                <StackPanel Margin="3"
+                            VerticalAlignment="Center"
+                            >
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -127,7 +131,8 @@
                                FontStyle="Italic" />
                     <TextBlock Text="{Binding Class.Classroom.Name}"
                                Margin="3,3,10,3" />
-                </StackPanel></Border>
+                </StackPanel>
+            </Border>
         </DataTemplate>
     </UserControl.Resources>
         <ContentControl Content="{Binding}">

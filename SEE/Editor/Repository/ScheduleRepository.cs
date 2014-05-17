@@ -34,8 +34,8 @@ namespace Editor.Repository
                 {
                     Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(9, 00), EndTime = new Time(10, 00) });
                     Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(11, 00), EndTime = new Time(12, 00) });
-                    Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(13, 00), EndTime = new Time(14, 00) });
-                    Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(15, 00), EndTime = new Time(16, 00) });
+                    //Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(13, 00), EndTime = new Time(14, 00) });
+                    //Schedule.TimeLine.Add(new ClassTime { Week = (WeekType)wt, Day = (Weekdays)weekday, BeginTime = new Time(15, 00), EndTime = new Time(16, 00) });
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace Editor.Repository
 
         private void InitYearsOfStudy()
         {
-            const int yearsCount = 2;
+            const int yearsCount = 1;
             for (int i = 1; i <= yearsCount; i++)
             {
                 Schedule.YearsOfStudy.Add(new YearOfStudy{Name = i.ToString(CultureInfo.InvariantCulture)});
@@ -94,7 +94,7 @@ namespace Editor.Repository
 
         private void InitGroups()
         {
-            string[] groupNames = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N" };
+            string[] groupNames = { "A", "B", "C", "D"/*, "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"*/ };
             int groupCount = groupNames.Length;
             for (int i = 0; i < groupCount; i++)
             {

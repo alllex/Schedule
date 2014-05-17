@@ -31,33 +31,32 @@ namespace Editor.UserControls
             var tableViewModel = DataContext as TableViewModel;
             if (tableViewModel == null) return;
             ReorganizeChildren(tableViewModel);
-            tableViewModel.ClassesJoinedDelegate += ClassesJoinedDelegate;
         }
 
-        private void ClassesJoinedDelegate(TableViewModel tableViewModel)
+        private void ReorganizeChildren(TableViewModel model)
         {
-            ReorganizeChildren(tableViewModel);
-        }
-
-        private void ReorganizeChildren(TableViewModel tableViewModel)
-        {
-            ResizeGrid(tableViewModel.TableHeight(), tableViewModel.TableWidth());
+            ResizeGrid(model.TableHeight(), model.TableWidth());
             TableGrid.Children.Clear();
-            foreach (var lecture in tableViewModel.ClassesCards)
-            {
-                TableGrid.Children.Add(lecture);
-            }
-            foreach (var time in tableViewModel.TimeIntervals)
+            foreach (var time in model.TimeIntervals)
             {
                 TableGrid.Children.Add(time);
             }
-            foreach (var day in tableViewModel.DayLine)
+            foreach (var day in model.DayLine)
             {
                 TableGrid.Children.Add(day);
             }
-            foreach (var title in tableViewModel.Titles)
+            foreach (var title in model.Titles)
             {
                 TableGrid.Children.Add(title);
+            }
+            for (int row = 0; row < model.ClassesRowsCount; row++)
+            {
+                for (int col = 0; col < model.ClassesColumnsCount; col++)
+                {
+                    var card = model.ClassesCards[row][col];
+                    if (card != null)
+                        TableGrid.Children.Add(card);
+                }
             }
         }
         

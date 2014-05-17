@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -25,6 +27,7 @@ namespace Editor.ViewModels
                 if (_class != value)
                 {
                     _class = value;
+                    UpdateMirrorClasses();
                     RaisePropertyChanged(() => Class);
                 }
             }
@@ -248,9 +251,10 @@ namespace Editor.ViewModels
 
         public ICommand SetEditModeCommand { get { return new DelegateCommand(OnSetEditMode, CanExecuteSetEditMode); } }
         public ICommand SetViewModeCommand { get { return new DelegateCommand(OnSetViewMode, CanExecuteSetViewMode); } }
-        public ICommand ClickCommand { get { return new DelegateCommand(OnClick); } }
 
         #endregion
+
+        private ObservableCollectionEx<Class> _classes = new ObservableCollectionEx<Class>();
 
         #region Ctor
 
@@ -267,7 +271,31 @@ namespace Editor.ViewModels
             IsSelected = false;
         }
 
+
         #endregion
+
+        private void UpdateMirrorClasses()
+        {
+            foreach (var @class in _classes)
+            {
+                Class.CopyWithoutGroup(Class, @class);
+            }
+        }
+
+        public void SetClasses(IEnumerable<Class> classes)
+        {
+            _classes.Clear();
+            foreach (var @class in classes)
+            {
+                if (@class != null)
+                {
+                    _classes.Add(@class);
+                }
+            }
+            if (!_classes.Any()) return;
+            Class = _classes.First();
+            UpdateMirrorClasses();
+        }
 
         #region Command Handlers
 
@@ -290,18 +318,6 @@ namespace Editor.ViewModels
         {
             return IsEditing;
         }
-
-        private void OnClick(object parameter)
-        {
-            var ui = (UIElement) parameter;
-            if (ui == null)
-            {
-                MessageBox.Show("Cannot cast to UIElement");
-                return;
-            }
-            ui.RaiseEvent(new RoutedEventArgs(ClassCard.ClickEvent));
-        }
-
 
         #endregion
 

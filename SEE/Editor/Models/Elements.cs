@@ -13,7 +13,7 @@ namespace Editor.Models
 
     public enum Weekdays
     {
-        Monday, Tuesday, Wednesday, Thursday, Friday, Saturday //, Sunday
+        Monday, Tuesday, Wednesday, //Thursday, Friday, Saturday //, Sunday
     }
 
     public enum ClassType
@@ -221,6 +221,19 @@ namespace Editor.Models
         }
 
         #endregion
+
+        public ClassTime()
+        {
+            
+        }
+
+        public ClassTime(TimeInterval ti)
+        {
+            Day = ti.Day;
+            BeginTime = ti.BeginTime;
+            EndTime = ti.EndTime;
+            Week = WeekType.Both;
+        }
     }
 
     public class Subject : HavingName
@@ -314,7 +327,8 @@ namespace Editor.Models
 
         public override string ToString()
         {
-            return String.Format("Группа {0}\nСпециальность: {1}\nКурс: {2}", Name, Specialization, YearOfStudy);
+            return String.Format("Группа {0}; \nСпециальность: {1}; " +
+                                 "\nКурс: {2}", Name, Specialization, YearOfStudy);
         }
     }
 
@@ -489,6 +503,15 @@ namespace Editor.Models
         }
 
         #endregion
+
+        public static void CopyWithoutGroup(Class from, Class to)
+        {
+            if (from == null || to == null) return;
+            to.Subject = from.Subject;
+            to.Lecturer = from.Lecturer;
+            to.Classroom = from.Classroom;
+            to.ClassTime = from.ClassTime;
+        }
     }
 
     public class ClassesSchedule : HavingId
@@ -554,7 +577,6 @@ namespace Editor.Models
         #region Classrooms
 
         private ObservableCollectionEx<Classroom> _classrooms = new ObservableCollectionEx<Classroom>();
-
         public ObservableCollectionEx<Classroom> Classrooms
         {
             get { return _classrooms; }
@@ -630,7 +652,6 @@ namespace Editor.Models
         #region Classes
 
         private ObservableCollectionEx<Class> _classes = new ObservableCollectionEx<Class>();
-
         public ObservableCollectionEx<Class> Classes
         {
             get { return _classes; }
@@ -655,7 +676,7 @@ namespace Editor.Models
             Subjects.CollectionChanged += OnSomeCollectionChanged;
             Specializations.CollectionChanged += OnSomeCollectionChanged;
             YearsOfStudy.CollectionChanged += OnSomeCollectionChanged;
-            Classes.CollectionChanged += OnSomeCollectionChanged;
+            //Classes.CollectionChanged += OnSomeCollectionChanged;
         }
 
         private void OnSomeCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
