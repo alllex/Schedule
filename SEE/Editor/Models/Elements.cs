@@ -21,6 +21,7 @@ namespace Editor.Models
         Lecture, Practice
     }
 
+    [Serializable]
     public class HavingId : NotificationObject
     {
         private static int _count = 0;
@@ -33,6 +34,7 @@ namespace Editor.Models
 
     }
 
+    [Serializable]
     public abstract class HavingName : HavingId, IComparable
     {
         protected bool Equals(HavingName other)
@@ -73,6 +75,7 @@ namespace Editor.Models
         }
     }
 
+    [Serializable]
     public class Time : HavingId
     {
         protected bool Equals(Time other)
@@ -133,6 +136,7 @@ namespace Editor.Models
         
     }
 
+    [Serializable]
     public class TimeInterval : HavingId
     {
         protected bool Equals(TimeInterval other)
@@ -197,6 +201,7 @@ namespace Editor.Models
 
     }
 
+    [Serializable]
     public class ClassTime : TimeInterval
     {
         protected bool Equals(ClassTime other)
@@ -236,6 +241,7 @@ namespace Editor.Models
         }
     }
 
+    [Serializable]
     public class Subject : HavingName
     {
         protected bool Equals(Subject other)
@@ -263,10 +269,12 @@ namespace Editor.Models
 
     }
 
+    [Serializable]
     public class Specialization : HavingName
     {
     }
 
+    [Serializable]
     public class YearOfStudy : HavingName
     {
 
@@ -276,11 +284,13 @@ namespace Editor.Models
         }
     }
 
+    [Serializable]
     public class Department : HavingName
     {
 
     }
 
+    [Serializable]
     public class Group : HavingName
     {
         protected bool Equals(Group other)
@@ -332,6 +342,7 @@ namespace Editor.Models
         }
     }
 
+    [Serializable]
     public class Lecturer : HavingName
     {
         #region Degree
@@ -374,6 +385,7 @@ namespace Editor.Models
 
     }
 
+    [Serializable]
     public class Classroom : HavingName
     {
         protected bool Equals(Classroom other)
@@ -402,6 +414,7 @@ namespace Editor.Models
 
     }
 
+    [Serializable]
     public class Class : HavingName
     {
         protected bool Equals(Class other)
@@ -514,6 +527,7 @@ namespace Editor.Models
         }
     }
 
+    [Serializable]
     public class ClassesSchedule : HavingId
     {
 
