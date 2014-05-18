@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using Editor.Models;
 
 namespace Editor.Models.SerializableModels
@@ -184,6 +187,8 @@ namespace Editor.Models.SerializableModels
         public Dictionary<int, sYearOfStudy> YearsOfStudy;
         public Dictionary<int, sClassesTable> Tables;
 
+        # region Copy
+
         public sClassesSchedule(ClassesSchedule schedule) : base(schedule.GetHashCode())
         {
             CopySubjects(schedule);
@@ -252,5 +257,35 @@ namespace Editor.Models.SerializableModels
             foreach (var table in schedule.Tables)
                 Tables.Add(table.YearOfStudy.GetHashCode(), new sClassesTable(table, this));
         }
+
+        # endregion
+
+        # region Serialize
+
+        public static void Save(sClassesSchedule schedule, string path)
+        {
+            FileStream streamSave = new FileStream(path, FileMode.Create, FileAccess.Write);
+            BinaryFormatter serializer = new BinaryFormatter();
+
+            serializer.Serialize(streamSave, schedule);
+            streamSave.Close();
+        }
+
+        public static sClassesSchedule Load(string path)
+        {
+            FileStream streamLoad = new FileStream(path, FileMode.Open, FileAccess.Read);
+            BinaryFormatter deserializer = new BinaryFormatter();
+
+            var schedule = (sClassesSchedule)deserializer.Deserialize(streamLoad);
+            streamLoad.Close();
+            return schedule;
+        }
+
+        public void Save(string path)
+        {
+            sClassesSchedule.Save(this, path);
+        }
+
+        # endregion
     }
 }
