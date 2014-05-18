@@ -159,7 +159,6 @@
     <Compile Include="ViewModels\Helpers\TimeLineMarkup.cs" />
     <Compile Include="ViewModels\Helpers\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
-    <Compile Include="Repository\ScheduleRepositoryOld.cs" />
     <Compile Include="ViewModels\Controls\CardsPoolViewModel.cs" />
     <Compile Include="ViewModels\Controls\TablesControllerViewModel.cs" />
     <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
