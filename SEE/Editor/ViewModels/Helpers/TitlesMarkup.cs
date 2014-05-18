@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Media.Animation;
 using Editor.Helpers;
+using Editor.Models;
 
-namespace Editor.Models
+namespace Editor.ViewModels.Helpers
 {
     class TitlesMarkup
     {

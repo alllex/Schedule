@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Editor.Helpers;
+using Editor.Models;
 
-namespace Editor.Models
+namespace Editor.ViewModels.Helpers
 {
     class TimeLineMarkup
     {
