@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Editor.ViewModels;
 using Editor.ViewModels.Panels;
+using Editor.ViewModels.Windows;
 
 namespace Editor.Views.Windows
 {

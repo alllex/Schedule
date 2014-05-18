@@ -5,13 +5,14 @@
 		xmlns:viewModels="clr-namespace:Editor.ViewModels"
 		xmlns:controls="clr-namespace:Editor.Views.Controls"
 		xmlns:models="clr-namespace:Editor.Models"
+		xmlns:windows="clr-namespace:Editor.ViewModels.Windows"
 		Title="EditorWindow" Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         x:Name="Window">
     
     <Window.DataContext>
-        <viewModels:EditorWindowViewModel />
+        <windows:EditorWindowViewModel />
     </Window.DataContext>
     
     <DockPanel>

@@ -1,6 +1,6 @@
 ﻿using Editor.Models;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Windows
 {
     enum ListsEditorTab
     {
@@ -38,17 +38,11 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        public ListsEditWindowViewModel(ClassesSchedule classesSchedule, ListsEditorTab initTab = ListsEditorTab.Groups)
+        public ListsEditWindowViewModel(ListsEditorTab initTab = ListsEditorTab.Groups)
         {
-            ClassesSchedule = classesSchedule;
             ActiveTab = initTab;
         }
 
         #endregion
-
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            
-        }
     }
 }

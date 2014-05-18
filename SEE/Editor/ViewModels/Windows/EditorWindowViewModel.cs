@@ -2,10 +2,9 @@
 using Editor.Helpers;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
-using Editor.Views;
 using Editor.Views.Windows;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Windows
 {
 
     class EditorWindowViewModel : HasClassesScheduleProperty
@@ -56,8 +55,6 @@ namespace Editor.ViewModels
         }
 
         #endregion
-
-        
 
         #endregion
 
@@ -121,7 +118,7 @@ namespace Editor.ViewModels
 
         private void OpenListsEditorHelper(ListsEditorTab initTab = ListsEditorTab.Groups)
         {
-            var vm = new ListsEditWindowViewModel(ClassesSchedule, initTab);
+            var vm = new ListsEditWindowViewModel(initTab){ClassesSchedule = ClassesSchedule};
             var window = new ListsEditWindow { DataContext = vm };
             window.ShowDialog();
         }
