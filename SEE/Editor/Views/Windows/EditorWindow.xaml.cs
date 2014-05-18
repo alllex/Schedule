@@ -1,13 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
-using Editor.Models;
-using Editor.Repository;
-using Editor.ViewModels;
-using Editor.ViewModels.Controls;
+﻿using System.Windows;
 
-namespace Editor.Views
+namespace Editor.Views.Windows
 {
     /// <summary>
     /// Interaction logic for EditorWindow.xaml
