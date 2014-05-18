@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using Editor.Helpers;
 
@@ -215,16 +216,43 @@ namespace Editor.Models
 
         #endregion
 
+        #region Tables
+
+        private ObservableCollection<ClassesTable> _tables = new ObservableCollection<ClassesTable>();
+
+        public ObservableCollection<ClassesTable> Tables
+        {
+            get { return _tables; }
+            set
+            {
+                if (_tables != value)
+                {
+                    _tables = value;
+                    RaisePropertyChanged(() => Tables);
+                }
+            }
+        }
+
+        #endregion
+        
         public ClassesSchedule()
         {
-            TimeLine.CollectionChanged += OnSomeCollectionChanged;
-            Groups.CollectionChanged += OnSomeCollectionChanged;
-            Lecturers.CollectionChanged += OnSomeCollectionChanged;
-            Classrooms.CollectionChanged += OnSomeCollectionChanged;
-            Subjects.CollectionChanged += OnSomeCollectionChanged;
-            Specializations.CollectionChanged += OnSomeCollectionChanged;
-            YearsOfStudy.CollectionChanged += OnSomeCollectionChanged;
-            //Classes.CollectionChanged += OnSomeCollectionChanged;
+//            TimeLine.CollectionChanged += OnSomeCollectionChanged;
+//            Groups.CollectionChanged += OnSomeCollectionChanged;
+//            Lecturers.CollectionChanged += OnSomeCollectionChanged;
+//            Classrooms.CollectionChanged += OnSomeCollectionChanged;
+//            Subjects.CollectionChanged += OnSomeCollectionChanged;
+//            Specializations.CollectionChanged += OnSomeCollectionChanged;
+//            YearsOfStudy.CollectionChanged += OnSomeCollectionChanged;
+        }
+
+        public void UpdateTables()
+        {
+            Tables.Clear();
+            foreach (var yearOfStudy in YearsOfStudy)
+            {
+                Tables.Add(new ClassesTable(this, yearOfStudy));
+            }
         }
 
         private void OnSomeCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
