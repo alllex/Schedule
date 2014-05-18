@@ -5,9 +5,9 @@ namespace Editor.Views.Controls
     /// <summary>
     /// Interaction logic for CardsPool.xaml
     /// </summary>
-    public partial class CardsPool : UserControl
+    public partial class CardClipboard : UserControl
     {
-        public CardsPool()
+        public CardClipboard()
         {
             InitializeComponent();
         }

@@ -82,7 +82,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\CardsPool.xaml">
+    <Page Include="Views\Controls\CardClipboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,8 +170,8 @@
     <Compile Include="Views\Cards\DayCard.xaml.cs">
       <DependentUpon>DayCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\CardsPool.xaml.cs">
-      <DependentUpon>CardsPool.xaml</DependentUpon>
+    <Compile Include="Views\Controls\CardClipboard.xaml.cs">
+      <DependentUpon>CardClipboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\TablesController.xaml.cs">
       <DependentUpon>TablesController.xaml</DependentUpon>
