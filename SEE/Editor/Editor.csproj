@@ -143,6 +143,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\BaseConverter.cs" />
+    <Compile Include="Converters\ClassRecordToClassCardViewModelConverter.cs" />
     <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\ClipboardService.cs" />
@@ -166,7 +167,7 @@
     <Compile Include="ViewModels\Helpers\TimeLineMarkup.cs" />
     <Compile Include="ViewModels\Helpers\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
-    <Compile Include="ViewModels\Controls\CardsPoolViewModel.cs" />
+    <Compile Include="ViewModels\Controls\CardClipboardViewModel.cs" />
     <Compile Include="ViewModels\Controls\TablesControllerViewModel.cs" />
     <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />

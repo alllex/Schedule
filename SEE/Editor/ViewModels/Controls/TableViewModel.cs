@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Editor.Helpers;
 using Editor.Models;
 using Editor.ViewModels.Cards;
 using Editor.ViewModels.Helpers;
@@ -139,11 +140,17 @@ namespace Editor.ViewModels.Controls
         private ClassesTable _classesTable;
         private TimeLineMarkup _timeLineMarkup;
         private TitlesMarkup _titlesMarkup;
+
         private ClassCardViewModel _selectedCard;
+        private int _selectedRow, _selectedColumn;
+        private ScheduleProject _project;
 
         #region Ctor
 
-        public TableViewModel() { }
+        public TableViewModel(ScheduleProject project)
+        {
+            _project = project;
+        }
         
         #endregion
 
@@ -229,11 +236,50 @@ namespace Editor.ViewModels.Controls
 
         #region Commands
 
+        public ICommand CopyClassCommand { get { return new DelegateCommand(OnCopyClassCommand); } }
+        public ICommand PasteClassCommand { get { return new DelegateCommand(OnPasteClassCommand); } }
+        public ICommand SendToCardClipboardCommand { get { return new DelegateCommand(OnSendToCardClipboard); } }
         
         #endregion
 
         #region Command Handlers
 
+        #region Copy
+
+        private void OnCopyClassCommand()
+        {
+            if (_selectedCard == null || _selectedCard.Class == null) return;
+            var @class = new ClassRecord();
+            ClassRecord.Copy(_selectedCard.Class, @class);
+            ClipboardService.SetData(@class);
+        }
+
+        #endregion
+
+        #region Paste
+
+        private void OnPasteClassCommand()
+        {
+            if (_selectedCard == null) return;
+            if (_selectedCard.Class == null)
+            {
+                _classesTable.Table[_selectedRow][_selectedColumn] = new ClassRecord();
+                _selectedCard.Class = _classesTable.Table[_selectedRow][_selectedColumn];
+            }
+            var cliped = ClipboardService.GetData<ClassRecord>();
+            ClassRecord.Copy(cliped, _selectedCard.Class);
+            //ClassesCards[_selectedRow][_selectedColumn].DataContext = _selectedCard;
+        }
+
+        #endregion
+
+
+        private void OnSendToCardClipboard()
+        {
+            if (_selectedCard == null || _selectedCard.Class == null) return;
+            var model = new ClassCardViewModel(_selectedCard.Class);
+            _project.CardClipboard.Add(model);
+        }
 
         #endregion
 
@@ -268,21 +314,7 @@ namespace Editor.ViewModels.Controls
                 OpenCardEditor(classCard);
             }
         }
-
-        private void OpenCardEditor(ClassCardViewMode card)
-        {
-            Point position = card.PointToScreen(new Point(0d, 0d));
-            var centerY = position.Y + (card.ActualHeight) / 2;
-            var centerX = position.X + (card.ActualWidth) / 2;
-
-            var row = Grid.GetRow(card) - TitleRowsCount;
-            var col = Grid.GetColumn(card) - TimeColumnsCount;
-            var @class = _classesTable.Table[row][col];
-            var edit = new ClassCardEditMode(centerX, centerY) {DataContext = @class};
-
-            edit.ShowDialog();
-        }
-
+        
         private void CardOnMouseRightButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             var classCard = sender as ClassCardViewMode;
@@ -315,7 +347,9 @@ namespace Editor.ViewModels.Controls
         {
             if (_selectedCard != null)
             {
-                _selectedCard.IsSelected = false;    
+                _selectedCard.IsSelected = false;
+                _selectedRow = 0;
+                _selectedColumn = 0;
             }
         }
         
@@ -323,19 +357,48 @@ namespace Editor.ViewModels.Controls
         {
             var row = Grid.GetRow(card) - TitleRowsCount;
             var col = Grid.GetColumn(card) - TimeColumnsCount;
+            _selectedRow = row;
+            _selectedColumn = col;
             _selectedCard = ClassesCards[row][col].DataContext as ClassCardViewModel;
             if (_selectedCard == null) return;
             _selectedCard.IsSelected = true;
+        }
+
+        private void OpenCardEditor(ClassCardViewMode card)
+        {
+            Point position = card.PointToScreen(new Point(0d, 0d));
+            var centerY = position.Y + (card.ActualHeight) / 2;
+            var centerX = position.X + (card.ActualWidth) / 2;
+
+            var row = Grid.GetRow(card) - TitleRowsCount;
+            var col = Grid.GetColumn(card) - TimeColumnsCount;
+            var @class = _classesTable.Table[row][col];
+            if (@class == null)
+            {
+                _classesTable.Table[row][col] = new ClassRecord();
+
+            }
+            var model = new ClassCardViewModel(@class){ClassesSchedule = ClassesSchedule};
+            var edit = new ClassCardEditMode(centerX, centerY) { DataContext = model };
+
+            edit.ShowDialog();
         }
         
         private void OpenContextMenu(ClassCardViewMode classCard)
         {
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
-//            var cm = new ContextMenu();
-//            cm.Items.Add(new MenuItem { Header = "Action", Command = });
-//            cm.IsOpen = true;
+            var cm = new ContextMenu();
+            cm.Items.Add(new MenuItem { Header = "Copy", Command = CopyClassCommand });
+            cm.Items.Add(new MenuItem { Header = "Paste", Command = PasteClassCommand });
+            cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });
+            cm.IsOpen = true;
         }
+
+        #endregion
+
+        #region Delegate
+
 
 
         #endregion

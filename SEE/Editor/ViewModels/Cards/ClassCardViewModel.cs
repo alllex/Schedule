@@ -4,7 +4,7 @@ using Editor.Models;
 
 namespace Editor.ViewModels.Cards
 {
-    class ClassCardViewModel : HasClassesScheduleProperty
+    public class ClassCardViewModel : HasClassesScheduleProperty
     {
 
         #region Properties
@@ -49,34 +49,11 @@ namespace Editor.ViewModels.Cards
 
         #region Commands
 
-        public ICommand CopyClassCommand { get { return new DelegateCommand(OnCopyClassCommand); } }
-        public ICommand PasteClassCommand { get { return new DelegateCommand(OnPasteClassCommand); } }
-
         #endregion
 
         #region Command Handlers
 
-        #region Copy
-
-        private void OnCopyClassCommand()
-        {
-            var @class = new ClassRecord();
-            ClassRecord.Copy(Class, @class);
-            ClipboardService.SetData(@class);
-        }
-
-        #endregion
-
-        #region Paste
-
-        private void OnPasteClassCommand()
-        {
-            var cliped = ClipboardService.GetData<ClassRecord>();
-            ClassRecord.Copy(cliped, Class);
-        }
-
-
-        #endregion
+        
 
         #endregion
         

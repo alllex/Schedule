@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using Editor.Models;
 
 namespace Editor.ViewModels.Controls
 {
@@ -12,7 +13,7 @@ namespace Editor.ViewModels.Controls
 
         #region Tables
 
-        private ObservableCollection<TableViewModel> _tables;
+        private ObservableCollection<TableViewModel> _tables = new ObservableCollection<TableViewModel>();
 
         public ObservableCollection<TableViewModel> Tables
         {
@@ -29,12 +30,28 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
+        #region Fields
+
+        private readonly ScheduleProject _project;
+
+        #endregion
+
+        #region Ctor
+
+        public TablesControllerViewModel(ScheduleProject project)
+        {
+            _project = project;
+            ClassesSchedule = project.ClassesSchedule;
+        }
+
+        #endregion
+
         private void SetTables()
         {
             Tables = new ObservableCollection<TableViewModel>();
             foreach (var yearOfStudy in ClassesSchedule.YearsOfStudy)
             {
-                Tables.Add(new TableViewModel {ClassesSchedule = ClassesSchedule, YearOfStudy = yearOfStudy});
+                Tables.Add(new TableViewModel(_project){ClassesSchedule = ClassesSchedule, YearOfStudy = yearOfStudy});
             }
         }
     }

@@ -2,15 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:controls="clr-namespace:Editor.Views.Controls"
-		xmlns:windows="clr-namespace:Editor.ViewModels.Windows"
 		Title="EditorWindow" Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         x:Name="Window">
-    
-    <Window.DataContext>
-        <windows:EditorWindowViewModel />
-    </Window.DataContext>
     
     <DockPanel>
         <Menu Height="20"
@@ -42,18 +37,19 @@
                           />
             </MenuItem>
         </Menu>
+        
         <Expander DockPanel.Dock="Left"
                   HorizontalAlignment="Left"
                   ExpandDirection="Right"
                   IsExpanded="False"
                   Header="Cards pool">
-            
+            <controls:CardClipboard x:Name="CardClipboard"/>
         </Expander>
+        
         <controls:TablesController  
             x:Name="TablesController"    
-            DockPanel.Dock="Left"
-            DataContext="{Binding TablesControllerDataContext}"
-                                    />
+            DockPanel.Dock="Left" />
         
     </DockPanel>
 </Window>
+    

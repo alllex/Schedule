@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using Editor.Helpers;
+using Editor.Models;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
 using Editor.Views.Windows;
@@ -31,30 +32,54 @@ namespace Editor.ViewModels.Windows
 
         #endregion
 
-        protected override void ClassesScheduleOnPropertyChanged()
+        #region Project
+
+        private ScheduleProject _project;
+
+        public ScheduleProject Project
         {
-            TablesControllerDataContext = new TablesControllerViewModel {ClassesSchedule = ClassesSchedule};
-            HasActiveProject = ClassesSchedule != null;
-        }
-
-        #region TablesControllerDataContext
-
-        private TablesControllerViewModel _tablesControllerDataContext;
-
-        public TablesControllerViewModel TablesControllerDataContext
-        {
-            get { return _tablesControllerDataContext; }
+            get { return _project; }
             set
             {
-                if (_tablesControllerDataContext != value)
+                if (_project != value)
                 {
-                    _tablesControllerDataContext = value;
-                    RaisePropertyChanged(() => TablesControllerDataContext);
+                    _project = value;
+                    RaisePropertyChanged(() => Project);
                 }
             }
         }
 
         #endregion
+
+        protected override void ClassesScheduleOnPropertyChanged()
+        {
+            //new TablesControllerViewModel(_project) {ClassesSchedule = ClassesSchedule};
+            HasActiveProject = ClassesSchedule != null;
+        }
+
+//        #region TablesControllerDataContext
+//
+//        private TablesControllerViewModel _tablesControllerDataContext;
+//
+//        public TablesControllerViewModel TablesControllerDataContext
+//        {
+//            get { return _tablesControllerDataContext; }
+//            set
+//            {
+//                if (_tablesControllerDataContext != value)
+//                {
+//                    _tablesControllerDataContext = value;
+//                    RaisePropertyChanged(() => TablesControllerDataContext);
+//                }
+//            }
+//        }
+//
+//        #endregion
+
+        #endregion
+
+        #region Fields
+
 
         #endregion
 
@@ -83,7 +108,8 @@ namespace Editor.ViewModels.Windows
 
         private void OnLoadData()
         {
-            ClassesSchedule = new ScheduleRepository().Schedule;
+            Project = new ScheduleProject{ClassesSchedule = new ScheduleRepository().Schedule};
+            ClassesSchedule = _project.ClassesSchedule;
         }
 
         private void OnOpenGroupsEditor()

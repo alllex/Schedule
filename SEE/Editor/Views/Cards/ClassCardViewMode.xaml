@@ -3,21 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:cards="clr-namespace:Editor.ViewModels.Cards"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
+             
+             
              >
-    <UserControl.DataContext>
-        <cards:ClassCardViewModel />
-    </UserControl.DataContext>
-
-    <UserControl.ContextMenu>
-        <ContextMenu>
-            <MenuItem Header="Скопировать" Command="{Binding CopyClassCommand}"/>
-            <MenuItem Header="Вставить" Command="{Binding PasteClassCommand}"/>
-        </ContextMenu>
-    </UserControl.ContextMenu>
     
     <UserControl.Resources>
         
@@ -50,7 +40,7 @@
         </Style>
     </UserControl.Resources>
     
-    <DockPanel>
+    <DockPanel x:Name="DockPanel">
         <Border CornerRadius="3"
                     MinWidth="150"
                     Style="{StaticResource BorderStyle}"
