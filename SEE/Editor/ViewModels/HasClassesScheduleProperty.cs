@@ -2,7 +2,7 @@
 
 namespace Editor.ViewModels
 {
-    public abstract class ScheduleListenerViewModel : BaseViewModel
+    public abstract class HasClassesScheduleProperty : BaseViewModel
     {
         #region ClassesSchedule
 

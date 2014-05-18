@@ -2,7 +2,7 @@
 
 namespace Editor.ViewModels.Cards
 {
-    class DayCardViewModel : ScheduleListenerViewModel
+    class DayCardViewModel : HasClassesScheduleProperty
     {
         #region Properties
 

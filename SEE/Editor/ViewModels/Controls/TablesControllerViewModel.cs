@@ -11,7 +11,7 @@ using Editor.UserControls;
 
 namespace Editor.ViewModels.Controls
 {
-    class TablesControllerViewModel : ScheduleListenerViewModel
+    class TablesControllerViewModel : HasClassesScheduleProperty
     {
 
         protected override void ClassesScheduleOnPropertyChanged()

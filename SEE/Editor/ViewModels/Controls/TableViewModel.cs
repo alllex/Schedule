@@ -14,7 +14,7 @@ using Editor.Views.Cards;
 
 namespace Editor.ViewModels
 {
-    public class TableViewModel : ScheduleListenerViewModel
+    public class TableViewModel : HasClassesScheduleProperty
     {
 
         public static int TimeColumnsCount = 2;

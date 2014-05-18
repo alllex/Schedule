@@ -149,11 +149,13 @@
     <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\ExObservableCollection.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
+    <Compile Include="Models\ClassesSchedule.cs" />
     <Compile Include="Models\ClassesTable.cs" />
     <Compile Include="Models\Elements.cs" />
     <Compile Include="Models\Interfaces.cs" />
     <Compile Include="Helpers\SpannedItem.cs" />
     <Compile Include="Helpers\TableItem.cs" />
+    <Compile Include="Models\ScheduleProject.cs" />
     <Compile Include="Models\TimeLineMarkup.cs" />
     <Compile Include="Models\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
@@ -162,7 +164,7 @@
     <Compile Include="ViewModels\Controls\TablesControllerViewModel.cs" />
     <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />
-    <Compile Include="ViewModels\ScheduleListenerViewModel.cs" />
+    <Compile Include="ViewModels\HasClassesScheduleProperty.cs" />
     <Compile Include="Views\Cards\ClassCardEditMode.xaml.cs">
       <DependentUpon>ClassCardEditMode.xaml</DependentUpon>
     </Compile>

@@ -11,7 +11,7 @@ using Editor.UserControls;
 
 namespace Editor.ViewModels
 {
-    class ClassCardViewModel : ScheduleListenerViewModel
+    class ClassCardViewModel : HasClassesScheduleProperty
     {
 
         #region Properties
