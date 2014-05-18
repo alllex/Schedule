@@ -3,6 +3,7 @@ using Editor.Helpers;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
 using Editor.Views;
+using Editor.Views.Windows;
 
 namespace Editor.ViewModels
 {
