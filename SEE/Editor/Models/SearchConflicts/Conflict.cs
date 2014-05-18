@@ -12,9 +12,9 @@ namespace Editor.Models.SearchConflicts
     {
         public String Message;
         public ConflictType ConflictType;
-        public IEnumerable<Class> ConflictingClasses;
+        public IEnumerable<FullClassRecord> ConflictingClasses;
 
-        public Conflict(String message, ConflictType conflictType, IEnumerable<Class> conflictingClasses)
+        public Conflict(String message, ConflictType conflictType, IEnumerable<FullClassRecord> conflictingClasses)
         {
             Message = message;
             ConflictType = conflictType;
