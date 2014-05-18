@@ -162,8 +162,6 @@
     <Compile Include="Helpers\TableItem.cs" />
     <Compile Include="Models\SearchConflicts\Conflict.cs" />
     <Compile Include="Models\SearchConflicts\SearchConflicts.cs" />
-    <Compile Include="Models\TimeLineMarkup.cs" />
-    <Compile Include="Models\TitlesMarkup.cs" />
     <Compile Include="Models\ScheduleProject.cs" />
     <Compile Include="ViewModels\Helpers\TimeLineMarkup.cs" />
     <Compile Include="ViewModels\Helpers\TitlesMarkup.cs" />
