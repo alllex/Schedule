@@ -7,7 +7,6 @@ using Editor.Helpers;
 namespace Editor.Models
 {
 
-    [Serializable]
     public class ClassRecord : HavingId
     {
         protected bool Equals(ClassRecord other)
@@ -81,7 +80,6 @@ namespace Editor.Models
         }
     }
 
-    [Serializable]
     public class ClassesSchedule : HavingId
     {
 
