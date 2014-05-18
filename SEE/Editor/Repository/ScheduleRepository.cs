@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Windows;
 using Editor.Models;
 
 namespace Editor.Repository
@@ -32,14 +31,14 @@ namespace Editor.Repository
             {
                 for (int i = 0; i < ClassTime.ClassIntervals.Count(); i++)
                 {
-                    Schedule.TimeLine.Add(new ClassTime { Day = (Weekdays)weekday, Number = i + 1});
+                    Schedule.TimeLine.Add(new ClassTime { Day = (Weekdays)weekday, Number = i});
                 }
             }
         }
 
         private void InitClassrooms()
         {
-            const int classroomsCount = 50;
+            const int classroomsCount = 20;
             const int minRoomNumber = 1000;
             const int maxRoomNumber = 2001;
 
@@ -81,7 +80,7 @@ namespace Editor.Repository
 
         private void InitSpecializations()
         {
-            string[] specializationNames = { "Primat", "Matobess", "PI", "Pure math" };
+            string[] specializationNames = { "Primat", "Matobess", /*"PI", "Pure math"*/ };
             int specializationCount = specializationNames.Length;
             for (int i = 0; i < specializationCount; i++)
             {
@@ -91,7 +90,7 @@ namespace Editor.Repository
 
         private void InitGroups()
         {
-            string[] groupNames = { "A", "B", "C", "D"/*, "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"*/ };
+            string[] groupNames = { "A", "B", "C", /*"D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"*/ };
             int groupCount = groupNames.Length;
             for (int i = 0; i < groupCount; i++)
             {

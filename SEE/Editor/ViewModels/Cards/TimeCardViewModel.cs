@@ -32,7 +32,8 @@ namespace Editor.ViewModels.Cards
 
         public TimeCardViewModel(ClassTime time)
         {
-            Time = time.Number > ClassTime.ClassIntervals.Count() || time.Number < 0 ? "Whenever" : ClassTime.ClassIntervals[time.Number];
+            var i = time.Number;
+            Time = i > ClassTime.ClassIntervals.Count() || i < 0 ? "Whenever" : ClassTime.ClassIntervals[time.Number];
         }
 
         #endregion

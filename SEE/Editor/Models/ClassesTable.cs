@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Editor.Models
 {
@@ -8,7 +9,9 @@ namespace Editor.Models
         public readonly YearOfStudy YearOfStudy;
 
         public Group[] Groups;
+        public Dictionary<Group, int> GroupIndexes = new Dictionary<Group, int>(); 
         public ClassRecord[][] Table;
+       
 
         public ClassesTable(ClassesSchedule schedule, YearOfStudy yearOfStudy)
         {
@@ -26,6 +29,10 @@ namespace Editor.Models
                 orderby g.Specialization, g.Name
                 select g;
             Groups = gps.ToArray();
+            for (int i = 0; i < Groups.Count(); i++)
+            {
+                GroupIndexes.Add(Groups[i], i);
+            }
         }
 
         private void CreateTable()
