@@ -1,8 +1,10 @@
-﻿using Editor.Models;
+﻿using System.Linq;
+using Editor.Helpers;
+using Editor.Models;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Cards
 {
-    class TimeCardViewModel : HasClassesScheduleProperty
+    class TimeCardViewModel : NotificationObject
     {
         #region Properties
 
@@ -28,16 +30,11 @@ namespace Editor.ViewModels
 
         #region Ctor
 
-        public TimeCardViewModel(TimeInterval time)
+        public TimeCardViewModel(ClassTime time)
         {
-            Time = time.BeginTime + "-\n" + time.EndTime;
+            Time = time.Number > ClassTime.ClassIntervals.Count() || time.Number < 0 ? "Whenever" : ClassTime.ClassIntervals[time.Number];
         }
 
         #endregion
-
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            
-        }
     }
 }

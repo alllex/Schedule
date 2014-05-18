@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
-using Editor.UserControls;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Cards
 {
     class ClassCardViewModel : HasClassesScheduleProperty
     {
@@ -18,8 +11,8 @@ namespace Editor.ViewModels
 
         #region Class
 
-        private Class _class;
-        public Class Class
+        private ClassRecord _class;
+        public ClassRecord Class
         {
             get { return _class; }
             set
@@ -67,8 +60,8 @@ namespace Editor.ViewModels
 
         private void OnCopyClassCommand()
         {
-            var @class = new Class();
-            Class.CopySLC(Class, @class);
+            var @class = new ClassRecord();
+            ClassRecord.Copy(Class, @class);
             ClipboardService.SetData(@class);
         }
 
@@ -78,8 +71,8 @@ namespace Editor.ViewModels
 
         private void OnPasteClassCommand()
         {
-            var cliped = ClipboardService.GetData<Class>();
-            Class.CopySLC(cliped, Class);
+            var cliped = ClipboardService.GetData<ClassRecord>();
+            ClassRecord.Copy(cliped, Class);
         }
 
 
@@ -89,7 +82,7 @@ namespace Editor.ViewModels
         
         #region Ctor
 
-        public ClassCardViewModel(Class @class)
+        public ClassCardViewModel(ClassRecord @class)
         {
             Class = @class;
             IsSelected = false;

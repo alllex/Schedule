@@ -1,8 +1,9 @@
-﻿using Editor.Models;
+﻿using Editor.Helpers;
+using Editor.Models;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Cards
 {
-    internal class SubtitleCardViewModel : HasClassesScheduleProperty
+    internal class SubtitleCardViewModel : NotificationObject
     {
         #region Properties
 
@@ -35,10 +36,5 @@ namespace Editor.ViewModels
         }
 
         #endregion
-
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            
-        }
     }
 }

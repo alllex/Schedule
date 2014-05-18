@@ -84,8 +84,6 @@ namespace Editor.Models
     public class ClassesSchedule : HavingId
     {
 
-        public static string[] ClassIntervals = {"09:00-10:00", "10:00-11:00", "11:00-12:00"};
-
         #region TimeLine
 
         private ObservableCollectionEx<ClassTime> _timeLine = new ObservableCollectionEx<ClassTime>();

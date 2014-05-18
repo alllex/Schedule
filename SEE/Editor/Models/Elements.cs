@@ -206,6 +206,8 @@ namespace Editor.Models
     [Serializable]
     public class ClassTime : HavingId
     {
+        public static string[] ClassIntervals = { "09:00-\n10:00", "10:00-\n11:00", "11:00-\n12:00" };
+
         protected bool Equals(ClassTime other)
         {
             return _number == other._number && _day == other._day;
@@ -247,7 +249,6 @@ namespace Editor.Models
         }
 
         #endregion
-        
     }
 
     [Serializable]
