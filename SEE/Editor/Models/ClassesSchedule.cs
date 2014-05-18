@@ -255,6 +255,12 @@ namespace Editor.Models
             }
         }
 
+        public ClassesTable GetClassesTable(YearOfStudy year)
+        {
+            var index = YearsOfStudy.IndexOf(year);
+            return Tables[index];
+        }
+
         private void OnSomeCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (ItemChangedProperty != null)

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Editor.Helpers;
 using Editor.Models;
 using Editor.UserControls;
 using Editor.ViewModels.Cards;
 using Editor.Views.Cards;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Controls
 {
     public class TableViewModel : HasClassesScheduleProperty
     {
@@ -55,7 +50,7 @@ namespace Editor.ViewModels
         private void YearOfStudyOnPropertyChanged()
         {
             TableHeader = YearOfStudy.ToString();
-            _classesTable = new ClassesTable(ClassesSchedule, YearOfStudy);
+            _classesTable = ClassesSchedule.GetClassesTable(YearOfStudy);
             _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
             InitializeTitles();
             InitLectureCards();
@@ -214,24 +209,22 @@ namespace Editor.ViewModels
 
         private ClassCardViewMode CreateClassCard(int row, int column)
         {
-            var spanned = _classesTable.Table[row][column];
-            var classCard = new ClassCardViewMode { DataContext = spanned.Item };
+            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]);
+            var classCard = new ClassCardViewMode { DataContext = viewModel };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
-            Grid.SetRowSpan(classCard, spanned.RowSpan);
-            Grid.SetColumnSpan(classCard, spanned.ColumnSpan);
             AddClassCardHandlers(classCard);
             return classCard;
         }
 
         public int TableWidth()
         {
-            return TimeColumnsCount + (_classesTable != null ? _classesTable.ColumnsCount() : 0);
+            return TimeColumnsCount + ClassesColumnsCount;
         }
 
         public int TableHeight()
         {
-            return TitleRowsCount + (_classesTable != null ? _classesTable.RowsCount() : 0);
+            return TitleRowsCount + ClassesRowsCount;
         }
 
         #region Commands
@@ -278,13 +271,15 @@ namespace Editor.ViewModels
 
         private void OpenCardEditor(ClassCardViewMode card)
         {
-            var row = Grid.GetRow(card) - TitleRowsCount;
-            var col = Grid.GetColumn(card) - TimeColumnsCount;
-            var @class = _classesTable.Table[row][col].Item;
             Point position = card.PointToScreen(new Point(0d, 0d));
             var centerY = position.Y + (card.ActualHeight) / 2;
-            var centerX = position.X + (card.ActualWidth) / 2; 
+            var centerX = position.X + (card.ActualWidth) / 2;
+
+            var row = Grid.GetRow(card) - TitleRowsCount;
+            var col = Grid.GetColumn(card) - TimeColumnsCount;
+            var @class = _classesTable.Table[row][col];
             var edit = new ClassCardEditMode(centerX, centerY) {DataContext = @class};
+
             edit.ShowDialog();
         }
 
@@ -328,7 +323,8 @@ namespace Editor.ViewModels
         {
             var row = Grid.GetRow(card) - TitleRowsCount;
             var col = Grid.GetColumn(card) - TimeColumnsCount;
-            _selectedCard = _classesTable.Table[row][col].Item;
+            _selectedCard = ClassesCards[row][col].DataContext as ClassCardViewModel;
+            if (_selectedCard == null) return;
             _selectedCard.IsSelected = true;
         }
         

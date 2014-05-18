@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Editor.UserControls;
+using Editor.ViewModels.Cards;
 
 namespace Editor.ViewModels.Controls
 {
@@ -7,9 +7,9 @@ namespace Editor.ViewModels.Controls
     {
         #region Cards
 
-        private ObservableCollection<ClassCardViewMode> _cards = new ObservableCollection<ClassCardViewMode>();
+        private ObservableCollection<ClassCardViewModel> _cards = new ObservableCollection<ClassCardViewModel>();
 
-        public ObservableCollection<ClassCardViewMode> Cards
+        public ObservableCollection<ClassCardViewModel> Cards
         {
             get { return _cards; }
             set

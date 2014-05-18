@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Editor.Repository;
 using Editor.ViewModels;
+using Editor.ViewModels.Controls;
 
 namespace Editor.UserControls
 {
