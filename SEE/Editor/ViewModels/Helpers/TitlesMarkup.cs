@@ -8,7 +8,6 @@ namespace Editor.Models
 {
     class TitlesMarkup
     {
-        //public List<TableItem<HavingName>> Headers = new List<TableItem<HavingName>>();
         public List<TableItem<HavingName>> Titles = new List<TableItem<HavingName>>();
 
         public TitlesMarkup(IEnumerable<Group> groups)

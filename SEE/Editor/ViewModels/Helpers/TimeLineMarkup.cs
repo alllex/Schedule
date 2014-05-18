@@ -8,24 +8,19 @@ namespace Editor.Models
     {
 
         public Collection<TableItem<Weekdays>> Days = new Collection<TableItem<Weekdays>>();
-        public Collection<TableItem<TimeInterval>> ClassesIntervals = new Collection<TableItem<TimeInterval>>();
+        public Collection<TableItem<ClassTime>> ClassesIntervals = new Collection<TableItem<ClassTime>>(); 
 
-        public TimeLineMarkup(ClassesSchedule classesSchedule)
+        public TimeLineMarkup(ClassesSchedule schedule)
         {
-            var cts =
-                (from t in classesSchedule.TimeLine
-                 group t by t.Week into bd
-                 select bd).First();
-            var timeLine = cts.Cast<TimeInterval>().ToArray();
             int currectRow = 0;
             var days =
-                (from t in timeLine
+                (from t in schedule.TimeLine
                  select t.Day).Distinct();
 
             foreach (var day in days)
             {
                 var ls =
-                    (from t in timeLine
+                    (from t in schedule.TimeLine
                      where t.Day == day
                      select t).ToList();
                 int d = ls.Count();
@@ -33,7 +28,7 @@ namespace Editor.Models
                 Days.Add(new TableItem<Weekdays>(day){Row = currectRow, Column = 0, RowSpan = d});
                 foreach (var timeInterval in ls)
                 {
-                    ClassesIntervals.Add(new TableItem<TimeInterval>(timeInterval){Row = currectRow, Column = 1});
+                    ClassesIntervals.Add(new TableItem<ClassTime>(timeInterval){Row = currectRow, Column = 1});
                     currectRow++;
                 }
             }
