@@ -151,11 +151,10 @@
     <Compile Include="Helpers\NotificationObject.cs" />
     <Compile Include="Models\ClassesSchedule.cs" />
     <Compile Include="Models\ClassesTable.cs" />
+    <Compile Include="Models\FullClassRecord.cs" />
     <Compile Include="Models\DataMining\Statistic.cs" />
     <Compile Include="Models\DataMining\DataMining.cs" />
-    <Compile Include="Models\DataMining\StatisticOfClassroom.cs" />
-    <Compile Include="Models\DataMining\StatisticOfGroup.cs" />
-    <Compile Include="Models\DataMining\StatisticOfLecturer.cs" />
+    <Compile Include="Models\DataMining\StatisticOf.cs" />
     <Compile Include="Models\Elements.cs" />
     <Compile Include="Models\Interfaces.cs" />
     <Compile Include="Helpers\SpannedItem.cs" />

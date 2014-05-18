@@ -24,7 +24,6 @@ namespace Editor.Models
         }
 
         #endregion
-
         
     }
 }
