@@ -119,6 +119,7 @@ namespace Editor.Repository
                 var @class = new Class {Classroom = c, ClassTime = t, Group = g, Lecturer = l, Subject = s};
                 while (Schedule.Classes.Contains(@class))
                 {
+                    
                     s = Schedule.Subjects[Rnd.Next(Schedule.Subjects.Count)];
                     t = Schedule.TimeLine[Rnd.Next(Schedule.TimeLine.Count)];
                     g = Schedule.Groups[Rnd.Next(Schedule.Groups.Count)];

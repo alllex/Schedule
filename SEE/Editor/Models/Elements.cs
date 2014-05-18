@@ -14,6 +14,7 @@ namespace Editor.Models
     public enum Weekdays
     {
         Monday, Tuesday, Wednesday, Thursday, Friday, Saturday //, Sunday
+
     }
 
     public enum ClassType
@@ -139,6 +140,11 @@ namespace Editor.Models
         {
             return _day == other._day && Equals(_beginTime, other._beginTime) && Equals(_endTime, other._endTime);
         }
+
+        public override string ToString()
+        {
+            return String.Format("{0}; {1} - {2}", _day, _beginTime, _endTime);
+        }
         
         #region Day
 
@@ -202,6 +208,11 @@ namespace Editor.Models
         protected bool Equals(ClassTime other)
         {
             return _week == other._week;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("{0}; {1}", _week, base.ToString());
         }
 
         #region Week

@@ -7,7 +7,6 @@ namespace Editor.Models
 {
     class ClassesTable
     {
-
         private readonly ClassesSchedule _schedule;
         private readonly YearOfStudy _year;
         private Dictionary<TimeInterval, int> _timeIndex;

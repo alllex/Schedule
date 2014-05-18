@@ -5,6 +5,8 @@ using Editor.Models;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
 using Editor.Views;
+using Editor.Models.DataMining;
+using Editor.Models.SearchConflicts;
 
 namespace Editor.ViewModels
 {
@@ -86,6 +88,10 @@ namespace Editor.ViewModels
         private void OnLoadData()
         {
             ClassesSchedule = new ScheduleRepository().Schedule;
+            var statistics1 = DataMining.StaticticOfGroup(ClassesSchedule, ClassesSchedule.Groups[0]);
+            var statistics2 = DataMining.StaticticOfLecturer(ClassesSchedule, ClassesSchedule.Lecturers[0]);
+            var statistics3 = DataMining.StaticticOfClassroom(ClassesSchedule, ClassesSchedule.Classrooms[0]);
+            var d = 5;
         }
 
         private void OnOpenGroupsEditor()
