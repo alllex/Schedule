@@ -4,7 +4,6 @@
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         Title="ClassCardEditMode" 
          
-        
         WindowStyle="None"
         ResizeMode="CanResize" 
         SizeToContent="WidthAndHeight"

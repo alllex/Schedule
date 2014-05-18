@@ -1,16 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 using Editor.Helpers;
+using Editor.ViewModels;
+using Editor.ViewModels.Cards;
 
 namespace Editor.Models
 {
-    class ScheduleProject : NotificationObject
+    public class ScheduleProject : HasClassesScheduleProperty
     {
 
         #region CardClipboard
 
-        private ObservableCollection<ClassRecord> _cardClipboard = new ObservableCollection<ClassRecord>();
+        private ObservableCollection<ClassCardViewModel> _cardClipboard = new ObservableCollection<ClassCardViewModel>();
 
-        public ObservableCollection<ClassRecord> CardClipboard
+        public ObservableCollection<ClassCardViewModel> CardClipboard
         {
             get { return _cardClipboard; }
             set
@@ -24,7 +26,6 @@ namespace Editor.Models
         }
 
         #endregion
-
         
     }
 }
