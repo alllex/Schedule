@@ -189,7 +189,12 @@ namespace Editor.Models.SerializableModels
 
         # region Copy
 
-        public sClassesSchedule(ClassesSchedule schedule) : base(schedule.GetHashCode())
+        public static sClassesSchedule Create(ClassesSchedule schedule)
+        {
+            return new sClassesSchedule(schedule);
+        }
+
+        private sClassesSchedule(ClassesSchedule schedule) : base(schedule.GetHashCode())
         {
             CopySubjects(schedule);
             CopySpecializations(schedule);
