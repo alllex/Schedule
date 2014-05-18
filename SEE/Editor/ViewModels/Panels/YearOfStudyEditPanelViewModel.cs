@@ -1,23 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using Editor.Models;
-
-namespace Editor.ViewModels
+﻿namespace Editor.ViewModels.Panels
 {
-    class YearOfStudyEditPanelViewModel : BaseViewModel
+    class YearOfStudyEditPanelViewModel : HasClassesScheduleProperty
     {
-
-        #region Properties
-
-        #endregion
-
-        #region Ctor
-
-        #endregion
-
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            
-        }
     }
 }

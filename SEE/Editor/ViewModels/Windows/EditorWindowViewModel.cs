@@ -1,15 +1,13 @@
-﻿using System.Diagnostics;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Editor.Helpers;
-using Editor.Models;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
-using Editor.Views;
+using Editor.Views.Windows;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Windows
 {
 
-    class EditorWindowViewModel : BaseViewModel
+    class EditorWindowViewModel : HasClassesScheduleProperty
     {
 
         #region Properties
@@ -35,22 +33,22 @@ namespace Editor.ViewModels
 
         protected override void ClassesScheduleOnPropertyChanged()
         {
-            TablesControllerDataContext.ClassesSchedule = ClassesSchedule;
+            TablesControllerDataContext = new TablesControllerViewModel {ClassesSchedule = ClassesSchedule};
             HasActiveProject = ClassesSchedule != null;
         }
 
         #region TablesControllerDataContext
 
-        private TablesControllerViewModel _tableControllerDataContext = new TablesControllerViewModel();
+        private TablesControllerViewModel _tablesControllerDataContext;
 
         public TablesControllerViewModel TablesControllerDataContext
         {
-            get { return _tableControllerDataContext; }
+            get { return _tablesControllerDataContext; }
             set
             {
-                if (_tableControllerDataContext != value)
+                if (_tablesControllerDataContext != value)
                 {
-                    _tableControllerDataContext = value;
+                    _tablesControllerDataContext = value;
                     RaisePropertyChanged(() => TablesControllerDataContext);
                 }
             }
@@ -120,7 +118,7 @@ namespace Editor.ViewModels
 
         private void OpenListsEditorHelper(ListsEditorTab initTab = ListsEditorTab.Groups)
         {
-            var vm = new ListsEditWindowViewModel(ClassesSchedule, initTab);
+            var vm = new ListsEditWindowViewModel(initTab){ClassesSchedule = ClassesSchedule};
             var window = new ListsEditWindow { DataContext = vm };
             window.ShowDialog();
         }

@@ -1,10 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using Editor.Models;
-
-namespace Editor.ViewModels
+﻿namespace Editor.ViewModels.Panels
 {
-    class GroupEditPanelViewModel : BaseViewModel
+    class GroupEditPanelViewModel : HasClassesScheduleProperty
     {
 
         #region Properties
@@ -15,9 +11,5 @@ namespace Editor.ViewModels
 
         #endregion
 
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            
-        }
     }
 }

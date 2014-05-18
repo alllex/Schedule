@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Editor.Models;
-using Editor.UserControls;
+﻿using System.Collections.ObjectModel;
 
 namespace Editor.ViewModels.Controls
 {
-    class TablesControllerViewModel : BaseViewModel
+    class TablesControllerViewModel : HasClassesScheduleProperty
     {
 
         protected override void ClassesScheduleOnPropertyChanged()
@@ -37,11 +28,6 @@ namespace Editor.ViewModels.Controls
         }
 
         #endregion
-
-        public TablesControllerViewModel()
-        {
-            Debug.WriteLine(GetType() + " created");
-        }
 
         private void SetTables()
         {

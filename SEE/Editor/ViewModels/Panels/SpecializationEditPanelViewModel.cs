@@ -1,10 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using Editor.Models;
-
-namespace Editor.ViewModels
+﻿namespace Editor.ViewModels.Panels
 {
-    class SpecializationEditPanelViewModel : BaseViewModel
+    class SpecializationEditPanelViewModel : HasClassesScheduleProperty
     {
 
         #region Properties
@@ -14,10 +10,5 @@ namespace Editor.ViewModels
         #region Ctor
 
         #endregion
-
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            
-        }
     }
 }

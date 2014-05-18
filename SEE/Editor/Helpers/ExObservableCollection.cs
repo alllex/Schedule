@@ -17,21 +17,25 @@ namespace Editor.Helpers
 
         void ObservableCollectionEx_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Remove)
+            if (e.NewItems == null) return;
+            switch (e.Action)
             {
-                foreach (T item in e.NewItems)
-                {
-                    //Removed items
-                    item.PropertyChanged -= EntityViewModelPropertyChanged;
-                }
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (T item in e.NewItems)
-                {
-                    //Added items
-                    item.PropertyChanged += EntityViewModelPropertyChanged;
-                }
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (T item in e.NewItems)
+                    {
+                        //Removed items
+                        if (item == null) continue;
+                        item.PropertyChanged -= EntityViewModelPropertyChanged;
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                    foreach (T item in e.NewItems)
+                    {
+                        //Added items
+                        if (item == null) continue;
+                        item.PropertyChanged += EntityViewModelPropertyChanged;
+                    }
+                    break;
             }
         }
 

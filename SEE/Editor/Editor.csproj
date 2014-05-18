@@ -74,7 +74,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Cards\ClassCardEditMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Cards\DayCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\CardsPool.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -94,7 +102,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Cards\ClassCard.xaml">
+    <Page Include="Views\Cards\ClassCardViewMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -137,9 +145,11 @@
     <Compile Include="Converters\BaseConverter.cs" />
     <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
+    <Compile Include="Helpers\ClipboardService.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\ExObservableCollection.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
+    <Compile Include="Models\ClassesSchedule.cs" />
     <Compile Include="Models\ClassesTable.cs" />
     <Compile Include="Models\DataMining\Statistic.cs" />
     <Compile Include="Models\DataMining\DataMining.cs" />
@@ -154,13 +164,23 @@
     <Compile Include="Models\SearchConflicts\SearchConflicts.cs" />
     <Compile Include="Models\TimeLineMarkup.cs" />
     <Compile Include="Models\TitlesMarkup.cs" />
+    <Compile Include="Models\ScheduleProject.cs" />
+    <Compile Include="ViewModels\Helpers\TimeLineMarkup.cs" />
+    <Compile Include="ViewModels\Helpers\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
-    <Compile Include="Repository\ScheduleRepositoryOld.cs" />
+    <Compile Include="ViewModels\Controls\CardsPoolViewModel.cs" />
     <Compile Include="ViewModels\Controls\TablesControllerViewModel.cs" />
     <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\HasClassesScheduleProperty.cs" />
+    <Compile Include="Views\Cards\ClassCardEditMode.xaml.cs">
+      <DependentUpon>ClassCardEditMode.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Cards\DayCard.xaml.cs">
       <DependentUpon>DayCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\CardsPool.xaml.cs">
+      <DependentUpon>CardsPool.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\TablesController.xaml.cs">
       <DependentUpon>TablesController.xaml</DependentUpon>
@@ -174,8 +194,8 @@
     <Compile Include="Views\Panels\GroupEditPanel.xaml.cs">
       <DependentUpon>GroupEditPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Cards\ClassCard.xaml.cs">
-      <DependentUpon>ClassCard.xaml</DependentUpon>
+    <Compile Include="Views\Cards\ClassCardViewMode.xaml.cs">
+      <DependentUpon>ClassCardViewMode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Panels\LecturerEditPanel.xaml.cs">
       <DependentUpon>LecturerEditPanel.xaml</DependentUpon>
@@ -195,7 +215,7 @@
     <Compile Include="Views\Cards\TitleCard.xaml.cs">
       <DependentUpon>TitleCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="Helpers\BaseViewModel.cs" />
     <Compile Include="ViewModels\Cards\DayCardViewModel.cs" />
     <Compile Include="ViewModels\Windows\EditorWindowViewModel.cs" />
     <Compile Include="ViewModels\Panels\GroupEditPanelViewModel.cs" />

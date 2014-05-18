@@ -3,13 +3,15 @@
 namespace Editor.Views.Cards
 {
     /// <summary>
-    /// Interaction logic for TitleCard.xaml
+    /// Interaction logic for LectureCard.xaml
     /// </summary>
-    public partial class TitleCard : UserControl
+    public partial class ClassCardViewMode : UserControl
     {
-        public TitleCard()
+
+        public ClassCardViewMode()
         {
             InitializeComponent();
         }
+
     }
 }

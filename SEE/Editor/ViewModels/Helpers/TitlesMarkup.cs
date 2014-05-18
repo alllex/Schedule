@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Media.Animation;
 using Editor.Helpers;
+using Editor.Models;
 
-namespace Editor.Models
+namespace Editor.ViewModels.Helpers
 {
     class TitlesMarkup
     {
-        //public List<TableItem<HavingName>> Headers = new List<TableItem<HavingName>>();
         public List<TableItem<HavingName>> Titles = new List<TableItem<HavingName>>();
 
         public TitlesMarkup(IEnumerable<Group> groups)

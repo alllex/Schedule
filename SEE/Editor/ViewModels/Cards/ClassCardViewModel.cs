@@ -1,23 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
-using Editor.UserControls;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Cards
 {
-    class ClassCardViewModel : BaseViewModel
+    class ClassCardViewModel : HasClassesScheduleProperty
     {
 
         #region Properties
 
         #region Class
 
-        private Class _class;
-        public Class Class
+        private ClassRecord _class;
+        public ClassRecord Class
         {
             get { return _class; }
             set
@@ -31,195 +26,7 @@ namespace Editor.ViewModels
         }
 
         #endregion
-
-        //#region TableItem
-
-        //private TableItem<Class> _tableItem;
-        //public TableItem<Class> TableItem
-        //{
-        //    get { return _tableItem; }
-        //    set
-        //    {
-        //        if (!_tableItem.Equals(value))
-        //        {
-        //            _tableItem = value;
-        //            Class = _tableItem.Item;
-        //            RaisePropertyChanged(() => TableItem);
-        //        }
-        //    }
-        //}
-
-        //#endregion
-
-        //#region Subject
-
-        //private string _subject = "";
-        //public string Subject
-        //{
-        //    get { return _subject; }
-        //    set
-        //    {
-        //        if (_subject != value)
-        //        {
-        //            _subject = value;
-        //            foreach (var @class in _classes)
-        //            {
-        //                @class.Subject.Name = value;
-        //            }
-        //            RaisePropertyChanged(() => Subject);
-        //        }
-        //    }
-        //}
-
-        //#endregion
-
-        //#region Lecturer
-
-        //private string _lecturer = "";
-        //public string Lecturer
-        //{
-        //    get { return _lecturer; }
-        //    set
-        //    {
-        //        if (_lecturer != value)
-        //        {
-        //            _lecturer = value;
-        //            foreach (var @class in _classes)
-        //            {
-        //                @class.Lecturer.Name = value;
-        //            }
-        //            RaisePropertyChanged(() => Lecturer);
-        //        }
-        //    }
-        //}
-
-        //#endregion
-
-        //#region Group
-
-        //private string _group = "";
-        //public string Group
-        //{
-        //    get { return _group; }
-        //    set
-        //    {
-        //        if (_group != value)
-        //        {
-        //            _group = value;
-        //            foreach (var @class in _classes)
-        //            {
-        //                @class.Group.Name = value;
-        //            }
-        //            RaisePropertyChanged(() => Group);
-        //        }
-        //    }
-        //}
-
-        //#endregion
-
-        //#region Classroom
-
-        //private string _classroom = "";
-        //public string Classroom
-        //{
-        //    get { return _classroom; }
-        //    set
-        //    {
-        //        if (_classroom != value)
-        //        {
-        //            _classroom = value;
-        //            foreach (var @class in _classes)
-        //            {
-        //                @class.Classroom.Name = value;
-        //            }
-        //            RaisePropertyChanged(() => Classroom);
-        //        }
-        //    }
-        //}
-
-        //#endregion
-
-        //#region SelectedClassroom
-
-        //public Classroom SelectedClassroom
-        //{
-        //    get
-        //    {
-        //        var cs = ClassesSchedule.Classrooms.Where(classroom => classroom.Name == Classroom);
-        //        var classrooms = cs as IList<Classroom> ?? cs.ToList();
-        //        return classrooms.Any() ? classrooms.First() : null;
-        //    }
-        //    set
-        //    {
-        //        if (value != null && value.Name != Classroom)
-        //        {
-        //            Classroom = value.Name;
-        //        }
-        //    }
-        //}
-
-        //#endregion
-
-        //#region SelectedLecturer
-
-        //public Lecturer SelectedLecturer
-        //{
-        //    get
-        //    {
-        //        var cs = ClassesSchedule.Lecturers.Where(lecturer => lecturer.Name == Lecturer);
-        //        var lecturers = cs as IList<Lecturer> ?? cs.ToList();
-        //        return lecturers.Any() ? lecturers.First() : null;
-        //    }
-        //    set
-        //    {
-        //        if (value != null && value.Name != Lecturer)
-        //        {
-        //            Lecturer = value.Name;
-        //        }
-        //    }
-        //}
-
-        //#endregion
-
-        //#region SelectedSubject
-
-        //public Subject SelectedSubject
-        //{
-        //    get
-        //    {
-        //        var cs = ClassesSchedule.Subjects.Where(s => s.Name == Subject);
-        //        var subjects = cs as IList<Subject> ?? cs.ToList();
-        //        return subjects.Any() ? subjects.First() : null;
-        //    }
-        //    set
-        //    {
-        //        if (value != null && value.Name != Subject)
-        //        {
-        //            Subject = value.Name;
-        //        }
-        //    }
-        //}
-
-        //#endregion
-
-        #region IsEditing
-
-        private bool _isEditing;
-        public bool IsEditing
-        {
-            get { return _isEditing; }
-            set
-            {
-                if (_isEditing != value)    
-                {
-                    _isEditing = value;
-                    RaisePropertyChanged(() => IsEditing);
-                }
-            }
-        }
-
-        #endregion
-
+        
         #region IsSelected
 
         private bool _isSelected;
@@ -230,10 +37,6 @@ namespace Editor.ViewModels
             {
                 if (_isSelected != value)
                 {
-                    if (!value)
-                    {
-                        IsEditing = false;
-                    }
                     _isSelected = value;
                     RaisePropertyChanged(() => IsSelected);
                 }
@@ -246,68 +49,52 @@ namespace Editor.ViewModels
 
         #region Commands
 
-        public ICommand SetEditModeCommand { get { return new DelegateCommand(OnSetEditMode, CanExecuteSetEditMode); } }
-        public ICommand SetViewModeCommand { get { return new DelegateCommand(OnSetViewMode, CanExecuteSetViewMode); } }
-        public ICommand ClickCommand { get { return new DelegateCommand(OnClick); } }
-
-        #endregion
-
-        #region Ctor
-
-        public ClassCardViewModel(Class @class)
-        {
-            Class = @class;
-            IsEditing = false;
-            IsSelected = false;
-        }
-
-        public ClassCardViewModel()
-        {
-            IsEditing = false;
-            IsSelected = false;
-        }
+        public ICommand CopyClassCommand { get { return new DelegateCommand(OnCopyClassCommand); } }
+        public ICommand PasteClassCommand { get { return new DelegateCommand(OnPasteClassCommand); } }
 
         #endregion
 
         #region Command Handlers
 
-        private void OnSetEditMode()
+        #region Copy
+
+        private void OnCopyClassCommand()
         {
-            IsEditing = true;
+            var @class = new ClassRecord();
+            ClassRecord.Copy(Class, @class);
+            ClipboardService.SetData(@class);
         }
 
-        private bool CanExecuteSetEditMode()
-        {
-            return !IsEditing;
-        }
+        #endregion
 
-        private void OnSetViewMode()
-        {
-            IsEditing = false;
-        }
+        #region Paste
 
-        private bool CanExecuteSetViewMode()
+        private void OnPasteClassCommand()
         {
-            return IsEditing;
-        }
-
-        private void OnClick(object parameter)
-        {
-            var ui = (UIElement) parameter;
-            if (ui == null)
-            {
-                MessageBox.Show("Cannot cast to UIElement");
-                return;
-            }
-            ui.RaiseEvent(new RoutedEventArgs(ClassCard.ClickEvent));
+            var cliped = ClipboardService.GetData<ClassRecord>();
+            ClassRecord.Copy(cliped, Class);
         }
 
 
         #endregion
 
-        protected override void ClassesScheduleOnPropertyChanged()
+        #endregion
+        
+        #region Ctor
+
+        public ClassCardViewModel(ClassRecord @class)
         {
-            
+            Class = @class;
+            IsSelected = false;
         }
+
+        public ClassCardViewModel()
+        {
+            IsSelected = false;
+        }
+
+
+        #endregion
+
     }
 }

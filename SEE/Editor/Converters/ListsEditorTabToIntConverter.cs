@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Windows.Data;
-using Editor.ViewModels;
+using Editor.ViewModels.Windows;
 
 namespace Editor.Converters
 {

@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Editor.Helpers;
 using Editor.Models;
-using Editor.UserControls;
 using Editor.ViewModels.Cards;
+using Editor.ViewModels.Helpers;
+using Editor.Views.Cards;
 
-namespace Editor.ViewModels
+namespace Editor.ViewModels.Controls
 {
-    public class TableViewModel : BaseViewModel
+    public class TableViewModel : HasClassesScheduleProperty
     {
 
         public static int TimeColumnsCount = 2;
@@ -53,7 +50,7 @@ namespace Editor.ViewModels
         private void YearOfStudyOnPropertyChanged()
         {
             TableHeader = YearOfStudy.ToString();
-            _classesTable = new ClassesTable(ClassesSchedule, YearOfStudy);
+            _classesTable = ClassesSchedule.GetClassesTable(YearOfStudy);
             _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
             InitializeTitles();
             InitLectureCards();
@@ -79,25 +76,7 @@ namespace Editor.ViewModels
         }
 
         #endregion
-
-        #region ClassesCards
-
-        private ObservableCollection<UIElement> _classesCards = new ObservableCollection<UIElement>();
-        public ObservableCollection<UIElement> ClassesCards
-        {
-            get { return _classesCards; }
-            set
-            {
-                if (_classesCards != value)
-                {
-                    _classesCards = value;
-                    RaisePropertyChanged(() => ClassesCards);
-                }
-            }
-        }
-
-        #endregion 
-
+        
         #region TimeLine
 
         private ObservableCollection<UIElement> _timeIntervals = new ObservableCollection<UIElement>();
@@ -154,16 +133,19 @@ namespace Editor.ViewModels
 
         #endregion
 
+        public int ClassesRowsCount;
+        public int ClassesColumnsCount;
+        public ClassCardViewMode[][] ClassesCards;
         private ClassesTable _classesTable;
         private TimeLineMarkup _timeLineMarkup;
         private TitlesMarkup _titlesMarkup;
-        private Selection _selection;
-        private Collection<ClassCardViewModel> _selectedCards = new Collection<ClassCardViewModel>();
+        private ClassCardViewModel _selectedCard;
 
-        public TableViewModel()
-        {
-            ClassesCards.CollectionChanged += ClassesCardsOnCollectionChanged;
-        }
+        #region Ctor
+
+        public TableViewModel() { }
+        
+        #endregion
 
         private void InitializeTitles()
         {
@@ -212,218 +194,150 @@ namespace Editor.ViewModels
 
         private void InitLectureCards()
         {
-            ClassesCards.Clear();  
-            for (int row = 0; row < _classesTable.RowsCount(); row++)
+            ClassesRowsCount = _classesTable.RowsCount();
+            ClassesColumnsCount = _classesTable.ColumnsCount();
+            ClassesCards = new ClassCardViewMode[ClassesRowsCount][];
+            for (var row = 0; row < ClassesRowsCount; row++)
             {
-                for (int col = 0; col < _classesTable.ColumnsCount(); col++)
+                ClassesCards[row] = new ClassCardViewMode[ClassesColumnsCount];
+                for (var col = 0; col < ClassesColumnsCount; col++)
                 {
-                    ClassesCards.Add(CreateClassCard(row, col));
+                    ClassesCards[row][col] = CreateClassCard(row, col);
                 }
             }    
         }
 
-        private ClassCard CreateClassCard(int row, int column)
+        private ClassCardViewMode CreateClassCard(int row, int column)
         {
-            var spanned = _classesTable.Table[row][column];
-            var classCard = new ClassCard { DataContext = spanned.Item };
+            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]);
+            var classCard = new ClassCardViewMode { DataContext = viewModel };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
-            Grid.SetRowSpan(classCard, spanned.RowSpan);
-            Grid.SetColumnSpan(classCard, spanned.ColumnSpan);
+            AddClassCardHandlers(classCard);
             return classCard;
         }
 
         public int TableWidth()
         {
-            return TimeColumnsCount + (_classesTable != null ? _classesTable.ColumnsCount() : 0);
+            return TimeColumnsCount + ClassesColumnsCount;
         }
 
         public int TableHeight()
         {
-            return TitleRowsCount + (_classesTable != null ? _classesTable.RowsCount() : 0);
+            return TitleRowsCount + ClassesRowsCount;
         }
 
         #region Commands
 
-        public ICommand JoinClassesCommand { get { return new DelegateCommand(OnJoinClassesCommand, CanExecuteJoinClasses); } }
         
         #endregion
 
         #region Command Handlers
 
-        private bool CanExecuteJoinClasses()
-        {
-            return _selectedCards.Count() > 1;
-        }
-
-        private void OnJoinClassesCommand()
-        {
-            var mainClass = _classesTable.Table[_selection.Top][_selection.Left];
-            var row = _selection.Top;
-            var col = _selection.Left;
-            mainClass.RowSpan = _selection.Bottom - _selection.Top + 1;
-            mainClass.ColumnSpan = _selection.Right - _selection.Left + 1;
-            ClassesCards.RemoveAt(row * _classesTable.ColumnsCount() + col);
-            ClassesCards.Add(CreateClassCard(row, col));
-            if (ClassesJoinedDelegate != null)
-            {
-                ClassesJoinedDelegate(this);
-            }
-        }
-
-        public delegate void ClassesJoined(TableViewModel t);
-        public ClassesJoined ClassesJoinedDelegate { get; set; }
 
         #endregion
 
         #region Event Handlers
-        
-        private void ClassesCardsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+
+        private void AddClassCardHandlers(ClassCardViewMode card)
         {
-            switch (e.Action)
+            card.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
+            card.MouseRightButtonUp += ClassCardOnMouseRightButtonUp;
+            card.MouseEnter += CardOnMouseEnter;
+            card.MouseLeftButtonDown += CardOnMouseLeftButtonDown;
+            card.MouseRightButtonDown += CardOnMouseRightButtonDown;
+        }
+
+        private void RemoveClassCardHandlers(ClassCardViewMode card)
+        {
+            card.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
+            card.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
+            card.MouseEnter -= CardOnMouseEnter;
+            card.MouseLeftButtonDown -= CardOnMouseLeftButtonDown;
+            card.MouseRightButtonDown -= CardOnMouseRightButtonDown;
+        }
+
+        private void CardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var classCard = sender as ClassCardViewMode;
+            if (classCard == null) return;
+            DropSelected();
+            UpdateSelection(classCard);
+            if (e.ClickCount == 2)
             {
-                case NotifyCollectionChangedAction.Remove:
-                    if (e.NewItems == null) return;
-                    foreach (ClassCard classCard in e.NewItems)
-                    {
-                        //Removed items
-                        classCard.MouseLeftButtonDown -= ClassCardOnMouseLeftButtonDown;
-                        classCard.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
-                        classCard.MouseEnter -= ClassCardOnMouseEnter;
-                        classCard.MouseLeave -= ClassCardOnMouseLeave;
-                        classCard.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Add:
-                    if (e.NewItems == null) return;
-                    foreach (ClassCard classCard in e.NewItems)
-                    {
-                        //Added items
-                        classCard.MouseLeftButtonDown += ClassCardOnMouseLeftButtonDown;
-                        classCard.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
-                        classCard.MouseEnter += ClassCardOnMouseEnter;
-                        classCard.MouseLeave += ClassCardOnMouseLeave;
-                        classCard.MouseRightButtonUp += ClassCardOnMouseRightButtonUp;
-                    }
-                    break;
+                OpenCardEditor(classCard);
             }
         }
 
-        private void ClassCardOnMouseRightButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void OpenCardEditor(ClassCardViewMode card)
         {
-            var classCard = sender as ClassCard;
-            if (classCard == null) return;
-            OpenContextMenu(classCard);
+            Point position = card.PointToScreen(new Point(0d, 0d));
+            var centerY = position.Y + (card.ActualHeight) / 2;
+            var centerX = position.X + (card.ActualWidth) / 2;
+
+            var row = Grid.GetRow(card) - TitleRowsCount;
+            var col = Grid.GetColumn(card) - TimeColumnsCount;
+            var @class = _classesTable.Table[row][col];
+            var edit = new ClassCardEditMode(centerX, centerY) {DataContext = @class};
+
+            edit.ShowDialog();
         }
 
-        private void ClassCardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        private void CardOnMouseRightButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
-            var classCard = sender as ClassCard;
+            var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
-            CreateSelection(classCard);
-        }
-
-        private void ClassCardOnMouseLeftButtonUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
-        {
-            //var classCard = sender as ClassCard;
-            //if (classCard == null) return;
-            //FixSelection(classCard);
-        }
-
-        private void ClassCardOnMouseEnter(object sender, MouseEventArgs mouseEventArgs)
-        {
-            if (mouseEventArgs.LeftButton != MouseButtonState.Pressed) return;
-            var classCard = sender as ClassCard;
-            if (classCard == null) return;
+            DropSelected();
             UpdateSelection(classCard);
         }
 
-        private void ClassCardOnMouseLeave(object sender, MouseEventArgs mouseEventArgs)
+        private void CardOnMouseEnter(object sender, MouseEventArgs e)
         {
-            //if (!selection.IsSelecting) return;
+            if (e.LeftButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed) return;
+            var classCard = sender as ClassCardViewMode;
+            if (classCard == null) return;
+            DropSelected();
+            UpdateSelection(classCard);
         }
 
+        private void ClassCardOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+        }
+        
+        private void ClassCardOnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var classCard = sender as ClassCardViewMode;
+            if (classCard == null) return;
+            OpenContextMenu(classCard);
+        }
+        
         private void DropSelected()
         {
-            foreach (var selectedCard in _selectedCards)
+            if (_selectedCard != null)
             {
-                if (selectedCard == null) continue;
-                selectedCard.IsSelected = false;
-                selectedCard.IsEditing = false;
-            }
-            _selectedCards.Clear();
-        }
-
-        private void CreateSelection(ClassCard cc)
-        {
-            var model = cc.DataContext as ClassCardViewModel;
-            if (model == null) return;
-            var row = Grid.GetRow(cc) - TitleRowsCount;
-            var col = Grid.GetColumn(cc) - TimeColumnsCount;
-            _selection = new Selection(row, col);
-            DropSelected();
-            UpdateSelection(cc);
-        }
-
-        private void UpdateSelection(ClassCard card)
-        {
-            var row = Grid.GetRow(card) - TitleRowsCount;
-            var col = Grid.GetColumn(card) - TimeColumnsCount;
-            _selection.UpdateEnd(row, col);
-            DropSelected();
-            for (int r = _selection.Top; r <= _selection.Bottom; r++)
-            {
-                for (int c = _selection.Left; c <= _selection.Right; c++)
-                {
-                    var spanned = _classesTable.Table[r][c];
-                    var @class = spanned.Item;
-                    @class.IsSelected = true;
-                    _selectedCards.Add(@class);
-                }
+                _selectedCard.IsSelected = false;    
             }
         }
         
-        private void OpenContextMenu(ClassCard classCard)
+        private void UpdateSelection(ClassCardViewMode card)
+        {
+            var row = Grid.GetRow(card) - TitleRowsCount;
+            var col = Grid.GetColumn(card) - TimeColumnsCount;
+            _selectedCard = ClassesCards[row][col].DataContext as ClassCardViewModel;
+            if (_selectedCard == null) return;
+            _selectedCard.IsSelected = true;
+        }
+        
+        private void OpenContextMenu(ClassCardViewMode classCard)
         {
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
-            if (!_selectedCards.Contains(model))
-            {
-                CreateSelection(classCard);
-            }
-            var cm = new ContextMenu();
-            cm.Items.Add(new MenuItem { Header = "Объединить", Command = JoinClassesCommand});
-            cm.IsOpen = true;
+//            var cm = new ContextMenu();
+//            cm.Items.Add(new MenuItem { Header = "Action", Command = });
+//            cm.IsOpen = true;
         }
 
 
         #endregion
-    }
-
-    class Selection
-    {
-        
-        public int StartRow { get; set; }
-        public int StartColumn { get; set; }
-        public int EndRow { get; set; }
-        public int EndColumn { get; set; }
-        public int Top { get { return Math.Min(StartRow, EndRow); } }
-        public int Bottom { get { return Math.Max(StartRow, EndRow); } }
-        public int Left { get { return Math.Min(StartColumn, EndColumn); } }
-        public int Right { get { return Math.Max(StartColumn, EndColumn); } }
-
-        public Selection(int row, int column)
-        {
-            StartRow = row;
-            StartColumn = column;
-            EndRow = row;
-            EndColumn = column;
-        }
-
-        public void UpdateEnd(int row, int col)
-        {
-            EndRow = row;
-            EndColumn = col;
-        }
     }
 }
