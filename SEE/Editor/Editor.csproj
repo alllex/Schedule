@@ -162,6 +162,7 @@
     <Compile Include="Models\SearchConflicts\Conflict.cs" />
     <Compile Include="Models\SearchConflicts\SearchConflicts.cs" />
     <Compile Include="Models\ScheduleProject.cs" />
+    <Compile Include="Models\SerializableModels.cs" />
     <Compile Include="ViewModels\Helpers\TimeLineMarkup.cs" />
     <Compile Include="ViewModels\Helpers\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
