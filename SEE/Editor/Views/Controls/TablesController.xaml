@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:userControls="clr-namespace:Editor.UserControls"
+             xmlns:controls="clr-namespace:Editor.Views.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <TabControl ItemsSource="{Binding Tables}"
-                    
                     SelectedIndex="0">
             <TabControl.ItemContainerStyle>
                 <Style TargetType="TabItem">
@@ -17,7 +17,7 @@
                         <Setter.Value>
                             <DataTemplate>
                                 <DockPanel>
-                                    <userControls:Table DataContext="{Binding}"/>
+                                    <controls:Table DataContext="{Binding}"/>
                                 </DockPanel>
                             </DataTemplate>
                         </Setter.Value>

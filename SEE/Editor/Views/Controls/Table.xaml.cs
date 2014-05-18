@@ -1,13 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using Editor.Repository;
-using Editor.ViewModels;
 using Editor.ViewModels.Controls;
 
-namespace Editor.UserControls
+namespace Editor.Views.Controls
 {
     /// <summary>
     /// Interaction logic for Table.xaml
