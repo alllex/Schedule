@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Editor.ViewModels;
 using Editor.ViewModels.Panels;
 using Editor.ViewModels.Windows;
 
@@ -16,7 +15,7 @@ namespace Editor.Views.Windows
             DataContextChanged += OnDataContextChanged;
         }
 
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var model = DataContext as ListsEditWindowViewModel;
             if (model != null)
