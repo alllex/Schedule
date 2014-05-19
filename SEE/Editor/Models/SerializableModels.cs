@@ -251,7 +251,7 @@ namespace Editor.Models.SerializableModels
         public Dictionary<int, sYearOfStudy> YearsOfStudy;
         public sClassesTable[] Tables;
 
-        # region Copy
+        # region Create
 
         public static sClassesSchedule Create(ClassesSchedule schedule)
         {
