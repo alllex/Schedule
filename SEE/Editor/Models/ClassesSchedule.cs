@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using Editor.Helpers;
+using Editor.Models.SerializableModels;
 
 namespace Editor.Models
 {
@@ -283,5 +284,24 @@ namespace Editor.Models
 
             return classes;
         }
+
+        # region Save/Load
+
+        public static void Save(ClassesSchedule schedule, string path)
+        {
+            SaveLoadSchedule.Save(schedule, path);
+        }
+
+        public static ClassesSchedule Load(string path)
+        {
+            return SaveLoadSchedule.Load(path);
+        }
+
+        public void Save(string path)
+        {
+            SaveLoadSchedule.Save(this, path);
+        }
+
+        # endregion
     }
 }
