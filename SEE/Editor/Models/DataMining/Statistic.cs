@@ -6,29 +6,29 @@ using System.Threading.Tasks;
 
 namespace Editor.Models.DataMining
 {
-    abstract public class Statistic<@Subject>
+    abstract public class Statistic<TSubject>
     {
         private static int countWeekdays = Enum.GetValues(typeof(Weekdays)).Length ;
 
-        protected ClassesSchedule _schedule;
-        protected @Subject _subject;
-        protected IEnumerable<FullClassRecord> _classes;
+        protected ClassesSchedule Schedule;
+        protected TSubject Subject;
+        protected IEnumerable<FullClassRecord> Classes;
         
         public int CountOfClassesPerWeek { get; protected set; }
         public float AverageCountOfClassesPerDay { get; protected set; }
         public Dictionary<Weekdays, int> CountOfClassesPerWeekday = new Dictionary<Weekdays, int>(countWeekdays);
 
-        protected Statistic(ClassesSchedule schedule, @Subject subject, Func<FullClassRecord, @Subject> getField)
+        protected Statistic(ClassesSchedule schedule, TSubject subject, Func<FullClassRecord, TSubject> getField)
         {
-            _subject = subject;
-            _schedule = schedule;
+            Subject = subject;
+            Schedule = schedule;
             SetClasses(getField);
             SetCounts();
         }
 
-        protected void SetClasses(Func<FullClassRecord, @Subject> getField) 
+        protected void SetClasses(Func<FullClassRecord, TSubject> getField) 
         {
-            _classes = _schedule.ToList().Where(f => getField(f).Equals(_subject));
+            Classes = Schedule.ToList().Where(f => getField(f).Equals(Subject));
         }
 
         protected void SetCounts()
@@ -40,7 +40,7 @@ namespace Editor.Models.DataMining
 
         protected void SetCountOfClassesPerWeek()
         {
-            CountOfClassesPerWeek = _classes.Count();
+            CountOfClassesPerWeek = Classes.Count();
         }
 
         protected void SetCountsOfClassesPerAllWeekdays()
@@ -51,13 +51,13 @@ namespace Editor.Models.DataMining
 
         protected void SetCountOfClassesPerSpecificWeekday(Weekdays weekday)
         {
-            var count = _classes.Where(c => c.Time.Day == weekday).Count();
+            var count = Classes.Count(c => c.Time.Day == weekday);
             CountOfClassesPerWeekday.Add(weekday, count);
         }
 
         protected void SetAverageCountOfClassesPerDay()
         {
-            AverageCountOfClassesPerDay = (float)CountOfClassesPerWeek / (float)countWeekdays;
+            AverageCountOfClassesPerDay = CountOfClassesPerWeek / (float)countWeekdays;
         }
     }
     

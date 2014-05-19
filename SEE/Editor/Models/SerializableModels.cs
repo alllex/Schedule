@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using Editor.Models;
 
-namespace Editor.Models.SerializableModels
+namespace Editor.Models
 {
 
     [Serializable]
@@ -16,12 +11,12 @@ namespace Editor.Models.SerializableModels
     {
         public int ID;
 
-        public sHavingId(int id)
+        protected sHavingId(int id)
         {
             ID = id;
         }
 
-        public sHavingId(HavingId havingId)
+        protected sHavingId(HavingId havingId)
         {
             ID = havingId.GetHashCode();
         }
@@ -32,12 +27,12 @@ namespace Editor.Models.SerializableModels
     {
         public string Name;
 
-        public sHavingName(int id, string name) : base(id)
+        protected sHavingName(int id, string name) : base(id)
         {
             Name = name;
         }
 
-        public sHavingName(HavingName havingName) : base(havingName)
+        protected sHavingName(HavingName havingName) : base(havingName)
         {
             Name = havingName.Name;
         }
@@ -164,7 +159,7 @@ namespace Editor.Models.SerializableModels
         public sLecturer Lecturer;
         public sClassroom Classroom;
 
-        public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base(classRecord)
+        public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base((HavingId) classRecord)
         {
             Subject = schedule.Subjects[classRecord.Subject.GetHashCode()];
             Lecturer = schedule.Lecturers[classRecord.Lecturer.GetHashCode()];
