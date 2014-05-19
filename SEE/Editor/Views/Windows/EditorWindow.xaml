@@ -1,0 +1,61 @@
+﻿<Window x:Class="Editor.Views.Windows.EditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:controls="clr-namespace:Editor.Views.Controls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:windows="clr-namespace:Editor.ViewModels.Windows"
+        mc:Ignorable="d"
+        Title="EditorWindow" Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        x:Name="Window" 
+        d:DataContext="{d:DesignInstance windows:EditorWindowViewModel}"
+        >
+    
+    <DockPanel>
+        <Menu Height="20"
+              DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Новый проект"
+                          Command="{Binding NewProjectCommand}"/>
+                <MenuItem Header="Открыть проект"
+                          Command="{Binding LoadDataCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Правка">
+                <MenuItem Header="Группы"
+                          Command="{Binding OpenGroupsEditorCommand}"
+                          IsEnabled="{Binding HasActiveProject, Mode=OneWay}"
+                          />
+                <MenuItem Header="Преподаватели"
+                          Command="{Binding OpenLecturersEditorCommand}"
+                          IsEnabled="{Binding HasActiveProject, Mode=OneWay}"
+                          />
+                <MenuItem Header="Аудитории"
+                          Command="{Binding OpenClassroomsEditorCommand}"
+                          IsEnabled="{Binding HasActiveProject, Mode=OneWay}"
+                          />
+                <MenuItem Header="Специальности"
+                          Command="{Binding OpenSpecializationsEditorCommand}"
+                          IsEnabled="{Binding HasActiveProject, Mode=OneWay}"
+                          />
+                <MenuItem Header="Курсы"
+                          Command="{Binding OpenYearsOfStudyEditorCommand}"
+                          IsEnabled="{Binding HasActiveProject, Mode=OneWay}"
+                          />
+            </MenuItem>
+        </Menu>
+        
+<!--        <Expander DockPanel.Dock="Left"-->
+<!--                  HorizontalAlignment="Left"-->
+<!--                  ExpandDirection="Right"-->
+<!--                  IsExpanded="False"-->
+<!--                  Header="Cards pool">-->
+<!--            <controls:CardClipboard x:Name="CardClipboard"/>-->
+<!--        </Expander>-->
+        
+        <controls:TableController  
+            x:Name="TablesController"    
+            DockPanel.Dock="Left" />
+        
+    </DockPanel>
+</Window>
