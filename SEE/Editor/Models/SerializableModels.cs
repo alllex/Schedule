@@ -54,13 +54,23 @@ namespace Editor.Models.SerializableModels
             Day = time.Day;
             Number = time.Number;
         }
+
+        public ClassTime ToNonSerializable()
+        {
+            return new ClassTime { Day = Day, Number = Number };
+        }
     }
 
     [Serializable]
     public class sSubject : sHavingName
-    {
+    {   
         public sSubject(Subject subject) : base(subject)
         {
+        }
+
+        public Subject ToNonSerializable()
+        {
+            return new Subject { Name = Name };
         }
     }
 
@@ -70,6 +80,11 @@ namespace Editor.Models.SerializableModels
         public sSpecialization(Specialization specialization) : base(specialization)
         {
         }
+
+        public Specialization ToNonSerializable()
+        {
+            return new Specialization { Name = Name };
+        }
     }
 
     [Serializable]
@@ -77,6 +92,11 @@ namespace Editor.Models.SerializableModels
     {
         public sYearOfStudy(YearOfStudy yearOfStudy) : base(yearOfStudy)
         {
+        }
+
+        public YearOfStudy ToNonSerializable()
+        {
+            return new YearOfStudy {Name = Name};
         }
     }
 
@@ -91,6 +111,11 @@ namespace Editor.Models.SerializableModels
             Degree = lecturer.Degree;
             Department = lecturer.Department;
         }
+
+        public Lecturer ToNonSerializable()
+        {
+            return new Lecturer { Name = Name, Degree = Degree, Department = Department };
+        }
     }
 
     [Serializable]
@@ -102,6 +127,11 @@ namespace Editor.Models.SerializableModels
         {
             Address = classroom.Address;
         }
+
+        public Classroom ToNonSerializable()
+        {
+            return new Classroom { Name = Name, Address = Address };
+        }
     }
 
     [Serializable]
@@ -110,11 +140,20 @@ namespace Editor.Models.SerializableModels
         public sSpecialization Specialization;
         public sYearOfStudy YearOfStudy;
 
-        public sGroup(Group group, sClassesSchedule schedule)
-            : base(group)
+        public sGroup(Group group, sClassesSchedule schedule) : base(group)
         {
             Specialization = schedule.Specializations[group.Specialization.GetHashCode()];
             YearOfStudy = schedule.YearsOfStudy[group.YearOfStudy.GetHashCode()];
+        }
+
+        public Group ToNonSerializable(ScheduleAndDicts scheduleAndDicts)
+        {
+            return new Group
+            {
+                Name = Name,
+                Specialization = scheduleAndDicts.Specializations[Specialization.ID],
+                YearOfStudy = scheduleAndDicts.YearsOfStudy[YearOfStudy.ID]
+            };
         }
     }
 
@@ -131,34 +170,33 @@ namespace Editor.Models.SerializableModels
             Lecturer = schedule.Lecturers[classRecord.Lecturer.GetHashCode()];
             Classroom = schedule.Classrooms[classRecord.Classroom.GetHashCode()];
         }
+
+        public ClassRecord ToNoneSerializable(ScheduleAndDicts scheduleAndDicts)
+        {
+            return new ClassRecord
+            {
+                Classroom = scheduleAndDicts.Classrooms[Classroom.ID],
+                Lecturer = scheduleAndDicts.Lecturers[Lecturer.ID],
+                Subject = scheduleAndDicts.Subjects[Subject.ID]
+            };
+        }
     }
 
     [Serializable]
     public class sClassesTable : sHavingId
     {
         public sYearOfStudy YearOfStudy;
-        public sGroup[] Groups;
         public sClassRecord[][] Table;
 
         public sClassesTable(ClassesTable table, sClassesSchedule schedule) : base(table.YearOfStudy)
         {  
-            CopyYearOfStudy(table);
-            YearOfStudy = new sYearOfStudy(table.YearOfStudy);
-            CopyGroups(table, schedule);
+            CopyYearOfStudy(table, schedule);
             CopyTable(table, schedule);
         }
 
-        private void CopyYearOfStudy(ClassesTable table)
+        private void CopyYearOfStudy(ClassesTable table, sClassesSchedule schedule)
         {
-            YearOfStudy = new sYearOfStudy(table.YearOfStudy);
-        }
-
-        private void CopyGroups(ClassesTable table, sClassesSchedule schedule)
-        {
-            var oldGroups = table.Groups;
-            Groups = new sGroup[oldGroups.Length];
-            for (int i = 0; i < oldGroups.Length; ++i)
-                Groups[i] = schedule.Groups[oldGroups[i].GetHashCode()];
+            YearOfStudy = schedule.YearsOfStudy[table.YearOfStudy.GetHashCode()];
         }
 
         private void CopyTable(ClassesTable table, sClassesSchedule schedule)
@@ -173,8 +211,34 @@ namespace Editor.Models.SerializableModels
                         Table[i][j] = new sClassRecord(oldTable[i][j], schedule);
             }       
         }
+
+        public ClassesTable ToNonSerializable(ScheduleAndDicts scheduleAndDicts)
+        {
+            var yearOfStudy = scheduleAndDicts.YearsOfStudy[YearOfStudy.ID];
+            var table = new ClassesTable(scheduleAndDicts.Schedule, yearOfStudy);
+
+            for (int i = 0; i < Table.Length; ++i)
+                for (int j = 0; j < Table[i].Length; ++j)
+                    if (Table[i][j] != null)
+                        table.Table[i][j] = Table[i][j].ToNoneSerializable(scheduleAndDicts);
+
+            return table;
+        }
     }
 
+    public class ScheduleAndDicts
+    {
+        public ClassTime[] TimeLine;
+        public Dictionary<int, Group> Groups;
+        public Dictionary<int, Lecturer> Lecturers;
+        public Dictionary<int, Classroom> Classrooms;
+        public Dictionary<int, Subject> Subjects;
+        public Dictionary<int, Specialization> Specializations;
+        public Dictionary<int, YearOfStudy> YearsOfStudy;
+        public ClassesTable[] Tables;
+        public ClassesSchedule Schedule;
+    }
+    
     [Serializable]
     public class sClassesSchedule : sHavingId
     {
@@ -185,7 +249,7 @@ namespace Editor.Models.SerializableModels
         public Dictionary<int, sSubject> Subjects;
         public Dictionary<int, sSpecialization> Specializations;
         public Dictionary<int, sYearOfStudy> YearsOfStudy;
-        public Dictionary<int, sClassesTable> Tables;
+        public sClassesTable[] Tables;
 
         # region Copy
 
@@ -258,9 +322,121 @@ namespace Editor.Models.SerializableModels
 
         private void CopyTables(ClassesSchedule schedule)
         {
-            Tables = new Dictionary<int, sClassesTable>(schedule.Tables.Count);
-            foreach (var table in schedule.Tables)
-                Tables.Add(table.YearOfStudy.GetHashCode(), new sClassesTable(table, this));
+            var oldTables = schedule.Tables;
+            Tables = new sClassesTable[oldTables.Count];
+            for (int i = 0; i < oldTables.Count; ++i)
+                Tables[i] = new sClassesTable(oldTables[i], this);
+        }
+
+        # endregion
+
+        # region ToClassesSchedule
+
+        public ClassesSchedule ToClassesSchedule()
+        {
+            var scheduleAndDicts = new ScheduleAndDicts();
+
+            scheduleAndDicts.Schedule = new ClassesSchedule();
+            NonSerializableTimeLine(scheduleAndDicts);
+            NonSerializableLectures(scheduleAndDicts);
+            NonSerializableClassrooms(scheduleAndDicts);
+            NonSerializableSubjects(scheduleAndDicts);
+            NonSerializableSpecializations(scheduleAndDicts);
+            NonSerializableYearsOfStudy(scheduleAndDicts);
+            NonSerializableGroups(scheduleAndDicts);
+            NonSerializableTables(scheduleAndDicts);
+
+            return scheduleAndDicts.Schedule;
+        }
+
+        private void NonSerializableTimeLine(ScheduleAndDicts scheduleAndDicts)
+        {
+            var length = TimeLine.Length;
+            scheduleAndDicts.TimeLine = new ClassTime[length];
+            for (int i = 0; i < length; ++i)
+            {
+                var time = TimeLine[i].ToNonSerializable();
+                scheduleAndDicts.TimeLine[i] = time;
+                scheduleAndDicts.Schedule.TimeLine.Add(time);
+            }
+        }
+
+        private void NonSerializableLectures(ScheduleAndDicts scheduleAndDicts)
+        {
+            scheduleAndDicts.Lecturers = new Dictionary<int, Lecturer>(Lecturers.Count);
+            foreach (var pair in Lecturers)
+            {
+                var lecturer = pair.Value.ToNonSerializable();
+                scheduleAndDicts.Lecturers.Add(pair.Key, lecturer);
+                scheduleAndDicts.Schedule.Lecturers.Add(lecturer);
+            }
+        }
+
+        private void NonSerializableClassrooms(ScheduleAndDicts scheduleAndDicts)
+        {
+            scheduleAndDicts.Classrooms = new Dictionary<int, Classroom>(Classrooms.Count);
+            foreach (var pair in Classrooms)
+            {
+                var classroom = pair.Value.ToNonSerializable();
+                scheduleAndDicts.Classrooms.Add(pair.Key, classroom);
+                scheduleAndDicts.Schedule.Classrooms.Add(classroom);
+            }
+        }
+
+        private void NonSerializableSubjects(ScheduleAndDicts scheduleAndDicts)
+        {
+            scheduleAndDicts.Subjects = new Dictionary<int, Subject>(Subjects.Count);
+            foreach (var pair in Subjects)
+            {
+                var subject = pair.Value.ToNonSerializable();
+                scheduleAndDicts.Subjects.Add(pair.Key, subject);
+                scheduleAndDicts.Schedule.Subjects.Add(subject);
+            }
+        }
+
+        private void NonSerializableSpecializations(ScheduleAndDicts scheduleAndDicts)
+        {
+            scheduleAndDicts.Specializations = new Dictionary<int, Specialization>(Specializations.Count);
+            foreach (var pair in Specializations)
+            {
+                var specialization = pair.Value.ToNonSerializable();
+                scheduleAndDicts.Specializations.Add(pair.Key, specialization);
+                scheduleAndDicts.Schedule.Specializations.Add(specialization);
+            }
+        }
+
+        private void NonSerializableYearsOfStudy(ScheduleAndDicts scheduleAndDicts)
+        {
+            scheduleAndDicts.YearsOfStudy = new Dictionary<int, YearOfStudy>(YearsOfStudy.Count);
+            foreach (var pair in YearsOfStudy)
+            {
+                var yearOfStudy = pair.Value.ToNonSerializable();
+                scheduleAndDicts.YearsOfStudy.Add(pair.Key, yearOfStudy);
+                scheduleAndDicts.Schedule.YearsOfStudy.Add(yearOfStudy);
+            }
+        }
+
+        private void NonSerializableGroups(ScheduleAndDicts scheduleAndDicts)
+        {
+            scheduleAndDicts.Groups = new Dictionary<int, Group>(Groups.Count);
+            foreach (var pair in Groups)
+            {
+                var group = pair.Value.ToNonSerializable(scheduleAndDicts);
+                scheduleAndDicts.Groups.Add(pair.Key, group);
+                scheduleAndDicts.Schedule.Groups.Add(group);
+            }
+        }
+
+        private void NonSerializableTables(ScheduleAndDicts scheduleAndDicts)
+        {
+            var length = Tables.Length;
+            scheduleAndDicts.Tables = new ClassesTable[length];
+            for (int i = 0; i < length; ++i)
+            {
+                var table = Tables[i].ToNonSerializable(scheduleAndDicts);
+                scheduleAndDicts.Tables[i] = table;
+                scheduleAndDicts.Schedule.Tables.Add(table);
+            }
         }
 
         # endregion
