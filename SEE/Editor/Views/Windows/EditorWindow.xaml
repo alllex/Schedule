@@ -53,7 +53,7 @@
 <!--            <controls:CardClipboard x:Name="CardClipboard"/>-->
 <!--        </Expander>-->
         
-        <controls:TablesController  
+        <controls:TableController  
             x:Name="TablesController"    
             DockPanel.Dock="Left" />
         

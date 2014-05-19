@@ -5,9 +5,9 @@ namespace Editor.Views.Controls
     /// <summary>
     /// Interaction logic for TablesController.xaml
     /// </summary>
-    public partial class TablesController : UserControl
+    public partial class TableController : UserControl
     {
-        public TablesController()
+        public TableController()
         {
             InitializeComponent();
         }

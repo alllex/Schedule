@@ -8,6 +8,25 @@ namespace Editor.ViewModels.Controls
     class TableControllerViewModel : HasProjectProperty
     {
 
+        #region SelectedIndex
+
+        private int _selectedIndex;
+
+        public int SelectedIndex
+        {
+            get { return _selectedIndex; }
+            set
+            {
+                if (_selectedIndex != value)
+                {
+                    _selectedIndex = value;
+                    RaisePropertyChanged(() => SelectedIndex);
+                }
+            }
+        }
+
+        #endregion
+
         #region Tables
 
         private ObservableCollection<TableViewModel> _tables = new ObservableCollection<TableViewModel>();
@@ -59,6 +78,10 @@ namespace Editor.ViewModels.Controls
             foreach (var yearOfStudy in Project.ClassesSchedule.YearsOfStudy)
             {
                 Tables.Add(new TableViewModel{Project = Project, YearOfStudy = yearOfStudy});
+            }
+            if (Tables.Count > 0)
+            {
+                SelectedIndex = 0;
             }
         }
     }

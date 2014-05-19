@@ -195,7 +195,7 @@ namespace Editor.ViewModels.Controls
 
         private ClassCardViewMode CreateClassCard(int row, int column)
         {
-            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]);
+            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]){Project = Project};
             var classCard = new ClassCardViewMode { DataContext = viewModel };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
@@ -268,6 +268,7 @@ namespace Editor.ViewModels.Controls
             card.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
             card.MouseRightButtonUp += ClassCardOnMouseRightButtonUp;
             card.MouseEnter += CardOnMouseEnter;
+            card.MouseLeave += CardOnMouseLeave;
             card.MouseLeftButtonDown += CardOnMouseLeftButtonDown;
             card.MouseRightButtonDown += CardOnMouseRightButtonDown;
         }
@@ -277,8 +278,19 @@ namespace Editor.ViewModels.Controls
             card.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
             card.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
             card.MouseEnter -= CardOnMouseEnter;
+            card.MouseLeave -= CardOnMouseLeave;
             card.MouseLeftButtonDown -= CardOnMouseLeftButtonDown;
             card.MouseRightButtonDown -= CardOnMouseRightButtonDown;
+        }
+        
+        private void CardOnMouseLeave(object sender, MouseEventArgs mouseEventArgs)
+        {
+            //DropSelected();
+        }
+
+        private void CardOnMouseEnter(object sender, MouseEventArgs e)
+        {
+
         }
 
         private void CardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -301,15 +313,6 @@ namespace Editor.ViewModels.Controls
             UpdateSelection(classCard);
         }
 
-        private void CardOnMouseEnter(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed) return;
-            var classCard = sender as ClassCardViewMode;
-            if (classCard == null) return;
-            DropSelected();
-            UpdateSelection(classCard);
-        }
-
         private void ClassCardOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
         }
@@ -318,6 +321,8 @@ namespace Editor.ViewModels.Controls
         {
             var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
+            DropSelected();
+            UpdateSelection(classCard);
             OpenContextMenu(classCard);
         }
         
@@ -354,12 +359,13 @@ namespace Editor.ViewModels.Controls
             if (@class == null)
             {
                 _classesTable.Table[row][col] = new ClassRecord();
-
+                @class = _classesTable.Table[row][col];
             }
             var model = new ClassCardViewModel(@class) { Project = Project };
             var edit = new ClassCardEditMode(centerX, centerY) { DataContext = model };
-
             edit.ShowDialog();
+            ClassesCards[row][col].DataContext = model;
+            _selectedCard = model;
         }
         
         private void OpenContextMenu(ClassCardViewMode classCard)

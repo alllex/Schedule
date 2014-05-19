@@ -33,7 +33,7 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
-        private ClassCardViewModel _selectedCard;
+        //private ClassCardViewModel _selectedCard;
 
         public CardClipboardViewModel(ScheduleProject project)
         {

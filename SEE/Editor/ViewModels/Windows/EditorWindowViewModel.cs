@@ -100,6 +100,7 @@ namespace Editor.ViewModels.Windows
 
         private void OnLoadData()
         {
+            _tableController.Tables.Clear();
             Project = new ScheduleProject { ClassesSchedule = new ScheduleRepository().Schedule };
             UpdateTables();
         }

@@ -86,7 +86,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Controls\TablesController.xaml">
+    <Page Include="Views\Controls\TableController.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -164,7 +164,7 @@
     <Compile Include="ViewModels\Controls\TableControllerViewModel.cs" />
     <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />
-    <Compile Include="ViewModels\HasClassesScheduleProperty.cs" />
+    <Compile Include="ViewModels\HasProjectProperty.cs" />
     <Compile Include="Views\Cards\ClassCardEditMode.xaml.cs">
       <DependentUpon>ClassCardEditMode.xaml</DependentUpon>
     </Compile>
@@ -174,8 +174,8 @@
     <Compile Include="Views\Controls\CardClipboard.xaml.cs">
       <DependentUpon>CardClipboard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Controls\TablesController.xaml.cs">
-      <DependentUpon>TablesController.xaml</DependentUpon>
+    <Compile Include="Views\Controls\TableController.xaml.cs">
+      <DependentUpon>TableController.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Panels\YearOfStudyEditPanel.xaml.cs">
       <DependentUpon>YearOfStudyEditPanel.xaml</DependentUpon>
