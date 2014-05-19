@@ -159,20 +159,20 @@ namespace Editor.Models
         public sLecturer Lecturer;
         public sClassroom Classroom;
 
-        public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base((HavingId) classRecord)
+        public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base(classRecord)
         {
-            Subject = schedule.Subjects[classRecord.Subject.GetHashCode()];
-            Lecturer = schedule.Lecturers[classRecord.Lecturer.GetHashCode()];
-            Classroom = schedule.Classrooms[classRecord.Classroom.GetHashCode()];
+            Subject = classRecord.Subject == null ? null : schedule.Subjects[classRecord.Subject.GetHashCode()];
+            Lecturer = classRecord.Lecturer == null ? null : schedule.Lecturers[classRecord.Lecturer.GetHashCode()];
+            Classroom = classRecord.Classroom == null ? null : schedule.Classrooms[classRecord.Classroom.GetHashCode()];
         }
 
         public ClassRecord ToNoneSerializable(ScheduleAndDicts scheduleAndDicts)
         {
             return new ClassRecord
             {
-                Classroom = scheduleAndDicts.Classrooms[Classroom.ID],
-                Lecturer = scheduleAndDicts.Lecturers[Lecturer.ID],
-                Subject = scheduleAndDicts.Subjects[Subject.ID]
+                Classroom = Classroom == null ? null : scheduleAndDicts.Classrooms[Classroom.ID],
+                Lecturer = Lecturer == null ? null : scheduleAndDicts.Lecturers[Lecturer.ID],
+                Subject = Subject == null ? null : scheduleAndDicts.Subjects[Subject.ID]
             };
         }
     }
