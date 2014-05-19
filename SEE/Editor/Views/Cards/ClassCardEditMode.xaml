@@ -12,19 +12,19 @@
         >
     
     <Window.Resources>
-        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding ClassesSchedule.Subjects}">
+        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding Project.ClassesSchedule.Subjects}">
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        <CollectionViewSource x:Key="SortedLectures" Source="{Binding ClassesSchedule.Lecturers}">
+        <CollectionViewSource x:Key="SortedLectures" Source="{Binding Project.ClassesSchedule.Lecturers}">
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        <CollectionViewSource x:Key="SortedClassrooms" Source="{Binding ClassesSchedule.Classrooms}">
+        <CollectionViewSource x:Key="SortedClassrooms" Source="{Binding Project.ClassesSchedule.Classrooms}">
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>

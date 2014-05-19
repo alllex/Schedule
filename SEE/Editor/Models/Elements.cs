@@ -255,29 +255,6 @@ namespace Editor.Models
     [Serializable]
     public class Subject : HavingName
     {
-        protected bool Equals(Subject other)
-        {
-            return _classType == other._classType;
-        }
-        
-        #region ClassType
-
-        private ClassType _classType;
-        public ClassType ClassType
-        {
-            get { return _classType; }
-            set
-            {
-                if (_classType != value)
-                {
-                    _classType = value;
-                    RaisePropertyChanged(() => ClassType);
-                }
-            }
-        }
-
-        #endregion
-
     }
 
     [Serializable]

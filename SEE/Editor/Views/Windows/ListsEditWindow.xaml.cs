@@ -20,9 +20,11 @@ namespace Editor.Views.Windows
             var model = DataContext as ListsEditWindowViewModel;
             if (model != null)
             {
-                ClassroomEditPanel.DataContext = new ClassroomEditPanelViewModel{ ClassesSchedule = model.ClassesSchedule };
-                GroupEditPanel.DataContext = new GroupEditPanelViewModel { ClassesSchedule = model.ClassesSchedule };
-                LecturerEditPanel.DataContext = new LecturerEditPanelViewModel { ClassesSchedule = model.ClassesSchedule };
+                ClassroomEditPanel.DataContext = new ClassroomEditPanelViewModel { Project = model.Project };
+                GroupEditPanel.DataContext = new GroupEditPanelViewModel { Project = model.Project };
+                LecturerEditPanel.DataContext = new LecturerEditPanelViewModel { Project = model.Project };
+                SpecializationEditPanel.DataContext = new SpecializationEditPanelViewModel {Project = model.Project};
+                YearOfStudyEditPanel.DataContext = new YearOfStudyEditPanelViewModel { Project = model.Project };
             }
         }
     }

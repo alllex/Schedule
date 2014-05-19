@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:Editor.Converters"
         xmlns:panels="clr-namespace:Editor.Views.Panels"
-        Title="ListsEditWindow" Height="500" Width="700"
+        Title="Списки" Height="500" Width="700"
         WindowStartupLocation="CenterScreen">
     <DockPanel>
         <TabControl x:Name="SectionsTabControl"

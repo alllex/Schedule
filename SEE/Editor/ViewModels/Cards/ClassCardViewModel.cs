@@ -4,7 +4,7 @@ using Editor.Models;
 
 namespace Editor.ViewModels.Cards
 {
-    public class ClassCardViewModel : HasClassesScheduleProperty
+    public class ClassCardViewModel : HasProjectProperty
     {
 
         #region Properties

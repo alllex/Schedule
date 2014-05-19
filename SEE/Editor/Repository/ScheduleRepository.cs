@@ -103,7 +103,7 @@ namespace Editor.Repository
 
         private void InitClasses()
         {
-            Schedule.UpdateTables();
+            Schedule.CreateNewTables();
             foreach (var classesTable in Schedule.Tables)
             {
                 int classCount = classesTable.Groups.Count() * Schedule.TimeLine.Count * 5 / 6;

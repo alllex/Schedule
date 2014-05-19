@@ -161,7 +161,7 @@
     <Compile Include="ViewModels\Helpers\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
     <Compile Include="ViewModels\Controls\CardClipboardViewModel.cs" />
-    <Compile Include="ViewModels\Controls\TablesControllerViewModel.cs" />
+    <Compile Include="ViewModels\Controls\TableControllerViewModel.cs" />
     <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />
     <Compile Include="ViewModels\HasClassesScheduleProperty.cs" />

@@ -5,7 +5,7 @@ using Editor.ViewModels.Cards;
 
 namespace Editor.Models
 {
-    public class ScheduleProject : HasClassesScheduleProperty
+    public class ScheduleProject : HasProjectProperty
     {
 
         #region CardClipboard
@@ -26,6 +26,26 @@ namespace Editor.Models
         }
 
         #endregion
+
+        #region ClassesSchedule
+
+        private ClassesSchedule _classesSchedule;
+
+        public ClassesSchedule ClassesSchedule
+        {
+            get { return _classesSchedule; }
+            set
+            {
+                if (_classesSchedule != value)
+                {
+                    _classesSchedule = value;
+                    RaisePropertyChanged(() => ClassesSchedule);
+                }
+            }
+        }
+
+        #endregion
+
         
     }
 }

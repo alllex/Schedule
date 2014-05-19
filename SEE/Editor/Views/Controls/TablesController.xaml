@@ -4,25 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Editor.Views.Controls"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <TabControl ItemsSource="{Binding Tables}"
-                    SelectedIndex="0">
-            <TabControl.ItemContainerStyle>
-                <Style TargetType="TabItem">
-                    <Setter Property="Header" Value="{Binding TableHeader}"/>
-                    <Setter Property="ContentTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <DockPanel>
-                                    <controls:Table DataContext="{Binding}"/>
-                                </DockPanel>
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TabControl.ItemContainerStyle>
-        </TabControl>        
-    </Grid>
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="SortedTables" Source="{Binding Tables}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="TableHeader" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
+
+            <DockPanel>
+        <GroupBox Header="Редактор таблиц"
+                  Padding="5">
+            <TabControl ItemsSource="{Binding Source={StaticResource SortedTables}}"
+                        SelectedIndex="0">
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Header" Value="{Binding TableHeader}"/>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <controls:Table DataContext="{Binding}"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.ItemContainerStyle>
+            </TabControl>
+        </GroupBox>
+    </DockPanel>
 </UserControl>

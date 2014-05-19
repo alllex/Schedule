@@ -8,9 +8,7 @@
     <DockPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Auto">
             <Grid x:Name="TableGrid"
-                  Margin="10">
-
-            </Grid>
+                  Margin="10" />
         </ScrollViewer>
     </DockPanel>
 </UserControl>

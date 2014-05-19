@@ -2,41 +2,41 @@
 
 namespace Editor.ViewModels
 {
-    public abstract class HasClassesScheduleProperty : BaseViewModel
+    public abstract class HasProjectProperty : BaseViewModel
     {
-        #region ClassesSchedule
+        #region Project
 
-        private ClassesSchedule _classesSchedule;
+        private ScheduleProject _project;
 
-        public ClassesSchedule ClassesSchedule
+        public ScheduleProject Project
         {
-            get { return _classesSchedule; }
+            get { return _project; }
             set
             {
-                if (_classesSchedule != value)
+                if (_project != value)
                 {
-                    if (_classesSchedule != null && _classesSchedule.ItemChangedProperty != null)
-                    {
-                        _classesSchedule.ItemChangedProperty -= RaiseClassesScheduleChanged;
-                    }
-                    _classesSchedule = value;
-                    if (_classesSchedule != null)
-                    {
-                        _classesSchedule.ItemChangedProperty += RaiseClassesScheduleChanged;
-                    }
-                    ClassesScheduleOnPropertyChanged();
-                    RaisePropertyChanged(() => ClassesSchedule);
+//                    if (_Project != null && _Project.ItemChangedProperty != null)
+//                    {
+//                        _Project.ItemChangedProperty -= RaiseProjectChanged;
+//                    }
+                    _project = value;
+//                    if (_Project != null)
+//                    {
+//                        _Project.ItemChangedProperty += RaiseProjectChanged;
+//                    }
+                    //ProjectOnPropertyChanged();
+                    RaisePropertyChanged(() => Project);
                 }
             }
         }
 
         #endregion
 
-        private void RaiseClassesScheduleChanged()
-        {
-            ClassesScheduleOnPropertyChanged();
-        }
-
-        protected virtual void ClassesScheduleOnPropertyChanged(){}
+//        private void RaiseProjectChanged()
+//        {
+//            ProjectOnPropertyChanged();
+//        }
+//
+//        protected virtual void ProjectOnPropertyChanged(){}
     }
 }

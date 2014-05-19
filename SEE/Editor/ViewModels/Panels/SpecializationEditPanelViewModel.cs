@@ -1,6 +1,6 @@
 ﻿namespace Editor.ViewModels.Panels
 {
-    class SpecializationEditPanelViewModel : HasClassesScheduleProperty
+    class SpecializationEditPanelViewModel : HasProjectProperty
     {
 
         #region Properties

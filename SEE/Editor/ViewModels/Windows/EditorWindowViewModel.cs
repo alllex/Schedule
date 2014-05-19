@@ -1,14 +1,17 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
+using Editor.Views.Controls;
 using Editor.Views.Windows;
 
 namespace Editor.ViewModels.Windows
 {
 
-    class EditorWindowViewModel : HasClassesScheduleProperty
+    class EditorWindowViewModel : HasProjectProperty
     {
 
         #region Properties
@@ -31,55 +34,12 @@ namespace Editor.ViewModels.Windows
         }
 
         #endregion
-
-        #region Project
-
-        private ScheduleProject _project;
-
-        public ScheduleProject Project
-        {
-            get { return _project; }
-            set
-            {
-                if (_project != value)
-                {
-                    _project = value;
-                    RaisePropertyChanged(() => Project);
-                }
-            }
-        }
-
-        #endregion
-
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            //new TablesControllerViewModel(_project) {ClassesSchedule = ClassesSchedule};
-            HasActiveProject = ClassesSchedule != null;
-        }
-
-//        #region TablesControllerDataContext
-//
-//        private TablesControllerViewModel _tablesControllerDataContext;
-//
-//        public TablesControllerViewModel TablesControllerDataContext
-//        {
-//            get { return _tablesControllerDataContext; }
-//            set
-//            {
-//                if (_tablesControllerDataContext != value)
-//                {
-//                    _tablesControllerDataContext = value;
-//                    RaisePropertyChanged(() => TablesControllerDataContext);
-//                }
-//            }
-//        }
-//
-//        #endregion
-
+        
         #endregion
 
         #region Fields
 
+        private readonly TableControllerViewModel _tableController;
 
         #endregion
 
@@ -87,7 +47,33 @@ namespace Editor.ViewModels.Windows
 
         public EditorWindowViewModel()
         {
-            OnLoadData();
+            PropertyChanged += OnPropertyChanged;
+        }
+
+        public EditorWindowViewModel(TableControllerViewModel tableControllerViewModel)
+        {
+            _tableController = tableControllerViewModel;
+            PropertyChanged += OnPropertyChanged;
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var s = sender as EditorWindowViewModel;
+            if (s == null) return;
+            if (e.PropertyName == "Project")
+            {
+                HasActiveProject = Project != null;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void UpdateTables()
+        {
+            //Project.ClassesSchedule.CreateNewTables();
+            _tableController.UpdateTables();
         }
 
         #endregion
@@ -101,15 +87,21 @@ namespace Editor.ViewModels.Windows
         public ICommand OpenSpecializationsEditorCommand { get { return new DelegateCommand(OnOpenSpecializationEditor); } }
         public ICommand OpenYearsOfStudyEditorCommand { get { return new DelegateCommand(OnOpenYearsOfStudyEditor); } }
         public ICommand LoadDataCommand { get { return new DelegateCommand(OnLoadData); } }
+        public ICommand NewProjectCommand { get { return new DelegateCommand(OnNewProject); } }
 
         #endregion
 
         #region Command Handlers
 
+        private void OnNewProject()
+        {
+            Project = new ScheduleProject {ClassesSchedule = new ClassesSchedule()};
+        }
+
         private void OnLoadData()
         {
-            Project = new ScheduleProject{ClassesSchedule = new ScheduleRepository().Schedule};
-            ClassesSchedule = _project.ClassesSchedule;
+            Project = new ScheduleProject { ClassesSchedule = new ScheduleRepository().Schedule };
+            UpdateTables();
         }
 
         private void OnOpenGroupsEditor()
@@ -144,9 +136,10 @@ namespace Editor.ViewModels.Windows
 
         private void OpenListsEditorHelper(ListsEditorTab initTab = ListsEditorTab.Groups)
         {
-            var vm = new ListsEditWindowViewModel(initTab){ClassesSchedule = ClassesSchedule};
+            var vm = new ListsEditWindowViewModel(initTab){Project = Project};
             var window = new ListsEditWindow { DataContext = vm };
             window.ShowDialog();
+            UpdateTables();
         }
 
         #endregion

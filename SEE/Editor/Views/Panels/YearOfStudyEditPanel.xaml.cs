@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Editor.Views.Panels
 {
@@ -10,6 +11,11 @@ namespace Editor.Views.Panels
         public YearOfStudyEditPanel()
         {
             InitializeComponent();
+        }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(sender.GetType() + "");
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Editor.ViewModels.Windows
         YearsOfStudy
     }
 
-    class ListsEditWindowViewModel : HasClassesScheduleProperty
+    class ListsEditWindowViewModel : HasProjectProperty
     {
 
         #region Properties
