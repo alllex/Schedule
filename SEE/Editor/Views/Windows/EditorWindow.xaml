@@ -18,8 +18,12 @@
             <MenuItem Header="Файл">
                 <MenuItem Header="Новый проект"
                           Command="{Binding NewProjectCommand}"/>
-                <MenuItem Header="Открыть проект"
-                          Command="{Binding LoadDataCommand}"/>
+                <MenuItem Header="Сгенерировать"
+                          Command="{Binding LoadRandomScheduleCommand}"/>
+                <MenuItem Header="Сохранить"
+                          Command="{Binding SaveProjectCommand}"/>
+                <MenuItem Header="Открыть"
+                          Command="{Binding OpenProjectCommand}"/>
             </MenuItem>
             <MenuItem Header="Правка">
                 <MenuItem Header="Группы"

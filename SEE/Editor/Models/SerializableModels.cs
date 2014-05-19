@@ -434,14 +434,14 @@ namespace Editor.Models
             }
         }
 
-        # endregion
+        #endregion
 
-        # region Serialize
+        #region Serialize
 
         public static void Save(sClassesSchedule schedule, string path)
         {
-            FileStream streamSave = new FileStream(path, FileMode.Create, FileAccess.Write);
-            BinaryFormatter serializer = new BinaryFormatter();
+            var streamSave = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            var serializer = new BinaryFormatter();
 
             serializer.Serialize(streamSave, schedule);
             streamSave.Close();
@@ -449,8 +449,8 @@ namespace Editor.Models
 
         public static sClassesSchedule Load(string path)
         {
-            FileStream streamLoad = new FileStream(path, FileMode.Open, FileAccess.Read);
-            BinaryFormatter deserializer = new BinaryFormatter();
+            var streamLoad = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var deserializer = new BinaryFormatter();
 
             var schedule = (sClassesSchedule)deserializer.Deserialize(streamLoad);
             streamLoad.Close();
@@ -459,7 +459,7 @@ namespace Editor.Models
 
         public void Save(string path)
         {
-            sClassesSchedule.Save(this, path);
+            Save(this, path);
         }
 
         # endregion

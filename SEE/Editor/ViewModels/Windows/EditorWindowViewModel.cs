@@ -1,12 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 using Editor.Helpers;
 using Editor.Models;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
 using Editor.Views.Controls;
 using Editor.Views.Windows;
+using Microsoft.Win32;
 
 namespace Editor.ViewModels.Windows
 {
@@ -70,9 +73,14 @@ namespace Editor.ViewModels.Windows
 
         #region Methods
 
+        private void SetNewProject(ScheduleProject proj)
+        {
+            Project = proj;
+            UpdateTables();
+        }
+
         private void UpdateTables()
         {
-            //Project.ClassesSchedule.CreateNewTables();
             _tableController.UpdateTables();
         }
 
@@ -86,23 +94,60 @@ namespace Editor.ViewModels.Windows
         public ICommand OpenClassroomsEditorCommand { get { return new DelegateCommand(OnOpenClassroomsEditor); } }
         public ICommand OpenSpecializationsEditorCommand { get { return new DelegateCommand(OnOpenSpecializationEditor); } }
         public ICommand OpenYearsOfStudyEditorCommand { get { return new DelegateCommand(OnOpenYearsOfStudyEditor); } }
-        public ICommand LoadDataCommand { get { return new DelegateCommand(OnLoadData); } }
+        public ICommand LoadRandomScheduleCommand { get { return new DelegateCommand(OnLoadRandomSchedule); } }
         public ICommand NewProjectCommand { get { return new DelegateCommand(OnNewProject); } }
+        public ICommand SaveProjectCommand { get { return new DelegateCommand(OnSaveProject, CanExecuteSaveProject); } }
+        public ICommand OpenProjectCommand { get { return new DelegateCommand(OnOpenProject); } }
 
         #endregion
 
         #region Command Handlers
 
-        private void OnNewProject()
+        private void OnSaveProject()
         {
-            Project = new ScheduleProject {ClassesSchedule = new ClassesSchedule()};
+            var dlg = new SaveFileDialog
+            {
+                FileName = "Расписание",
+                DefaultExt = ".sch",
+                Filter = "Расписание|*.sch|Другие файлы|*.*"
+            };
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                SaveLoadSchedule.Save(Project.ClassesSchedule, dlg.FileName);
+            }
         }
 
-        private void OnLoadData()
+        private bool CanExecuteSaveProject()
+        {
+            return HasActiveProject;
+        }
+
+        private void OnOpenProject()
+        {
+            var dlg = new OpenFileDialog
+            {
+                FileName = "Расписание",
+                DefaultExt = ".sch",
+                Filter = "Расписание|*.sch|Другие файлы|*.*"
+            };
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                var schedule = SaveLoadSchedule.Load(dlg.FileName);
+                SetNewProject(new ScheduleProject{ClassesSchedule = schedule});
+            }
+        }
+
+        private void OnNewProject()
+        {
+            SetNewProject(new ScheduleProject { ClassesSchedule = new ClassesSchedule() });
+        }
+
+        private void OnLoadRandomSchedule()
         {
             _tableController.Tables.Clear();
-            Project = new ScheduleProject { ClassesSchedule = new ScheduleRepository().Schedule };
-            UpdateTables();
+            SetNewProject(new ScheduleProject { ClassesSchedule = new ScheduleRepository().Schedule });
         }
 
         private void OnOpenGroupsEditor()
