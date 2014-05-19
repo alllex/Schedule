@@ -469,4 +469,17 @@ namespace Editor.Models.SerializableModels
 
         # endregion
     }
+
+    public class SaveLoadSchedule
+    {
+        public static void Save(ClassesSchedule schedule, string path)
+        {
+            sClassesSchedule.Create(schedule).Save(path);
+        }
+
+        public static ClassesSchedule Load(string path)
+        {
+            return sClassesSchedule.Load(path).ToClassesSchedule();
+        }
+    }
 }
