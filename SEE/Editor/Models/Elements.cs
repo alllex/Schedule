@@ -25,7 +25,6 @@ namespace Editor.Models
         Lecture, Practice
     }
 
-    [Serializable]
     public class HavingId : NotificationObject
     {
         private static int _count;
@@ -38,7 +37,6 @@ namespace Editor.Models
 
     }
 
-    [Serializable]
     public abstract class HavingName : HavingId, IComparable
     {
         protected bool Equals(HavingName other)
@@ -203,7 +201,6 @@ namespace Editor.Models
 
     //}
 
-    [Serializable]
     public class ClassTime : HavingId
     {
         public static string[] ClassIntervals = { "09:00-\n10:00", "10:00-\n11:00", "11:00-\n12:00" };
@@ -252,35 +249,11 @@ namespace Editor.Models
 
     }
 
-    [Serializable]
     public class Subject : HavingName
     {
-        protected bool Equals(Subject other)
-        {
-            return _classType == other._classType;
-        }
-        
-        #region ClassType
-
-        private ClassType _classType;
-        public ClassType ClassType
-        {
-            get { return _classType; }
-            set
-            {
-                if (_classType != value)
-                {
-                    _classType = value;
-                    RaisePropertyChanged(() => ClassType);
-                }
-            }
-        }
-
-        #endregion
 
     }
 
-    [Serializable]
     public class Specialization : HavingName
     {
     }
@@ -295,13 +268,6 @@ namespace Editor.Models
         }
     }
 
-    [Serializable]
-    public class Department : HavingName
-    {
-
-    }
-
-    [Serializable]
     public class Group : HavingName
     {
         protected bool Equals(Group other)
@@ -353,7 +319,6 @@ namespace Editor.Models
         }
     }
 
-    [Serializable]
     public class Lecturer : HavingName
     {
         #region Degree
@@ -377,9 +342,9 @@ namespace Editor.Models
 
         #region Department
 
-        private Department _department;
+        private string _department;
 
-        public Department Department
+        public string Department
         {
             get { return _department; }
             set
@@ -396,7 +361,6 @@ namespace Editor.Models
 
     }
 
-    [Serializable]
     public class Classroom : HavingName
     {
         protected bool Equals(Classroom other)
