@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows;
 using Editor.ViewModels.Controls;
 using Editor.ViewModels.Windows;
 
@@ -13,10 +16,19 @@ namespace Editor.Views.Windows
         {
             InitializeComponent();
 
-            var model = new EditorWindowViewModel();
-            DataContext = model;
-            CardClipboard.DataContext = new CardClipboardViewModel(model.Project);
-            TablesController.DataContext = new TablesControllerViewModel(model.Project);
+            var tableControllerViewModel = new TableControllerViewModel();
+            var viewModel = new EditorWindowViewModel(tableControllerViewModel);
+            DataContext = viewModel;
+            viewModel.PropertyChanged += (s, e) =>
+            {
+                var x = s as EditorWindowViewModel;
+                if (x == null) return;
+                if (e.PropertyName == "Project")
+                {
+                    tableControllerViewModel.Project = viewModel.Project;
+                }
+            };
+            TablesController.DataContext = tableControllerViewModel;
         }
     }
 }

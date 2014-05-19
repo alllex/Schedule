@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,25 +12,13 @@ using Editor.Views.Cards;
 
 namespace Editor.ViewModels.Controls
 {
-    public class TableViewModel : HasClassesScheduleProperty
+    public class TableViewModel : HasProjectProperty
     {
 
         public static int TimeColumnsCount = 2;
         public static int TitleRowsCount = 2;
 
         #region Properties
-
-        protected override void ClassesScheduleOnPropertyChanged()
-        {
-            _timeLineMarkup = new TimeLineMarkup(ClassesSchedule);
-            InitDayLine();
-            InitTimeIntervalLine();
-
-            if (YearOfStudy != null)
-            {
-                YearOfStudyOnPropertyChanged();
-            }
-        }
 
         #region YearOfStudy
 
@@ -42,21 +32,11 @@ namespace Editor.ViewModels.Controls
                 if (_yearOfStudy != value)
                 {
                     _yearOfStudy = value;
-                    YearOfStudyOnPropertyChanged();
                     RaisePropertyChanged(() => YearOfStudy);
                 }
             }
         }
-
-        private void YearOfStudyOnPropertyChanged()
-        {
-            TableHeader = YearOfStudy.ToString();
-            _classesTable = ClassesSchedule.GetClassesTable(YearOfStudy);
-            _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
-            InitializeTitles();
-            InitLectureCards();
-        }
-
+        
         #endregion
 
         #region TableHeader
@@ -143,15 +123,14 @@ namespace Editor.ViewModels.Controls
 
         private ClassCardViewModel _selectedCard;
         private int _selectedRow, _selectedColumn;
-        private ScheduleProject _project;
 
         #region Ctor
 
-        public TableViewModel(ScheduleProject project)
+        public TableViewModel()
         {
-            _project = project;
+            PropertyChanged += OnPropertyChanged;
         }
-        
+
         #endregion
 
         private void InitializeTitles()
@@ -216,7 +195,7 @@ namespace Editor.ViewModels.Controls
 
         private ClassCardViewMode CreateClassCard(int row, int column)
         {
-            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]);
+            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]){Project = Project};
             var classCard = new ClassCardViewMode { DataContext = viewModel };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
@@ -273,12 +252,11 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
-
         private void OnSendToCardClipboard()
         {
-            if (_selectedCard == null || _selectedCard.Class == null) return;
-            var model = new ClassCardViewModel(_selectedCard.Class);
-            _project.CardClipboard.Add(model);
+//            if (_selectedCard == null || _selectedCard.Class == null) return;
+//            var model = new ClassCardViewModel(_selectedCard.Class);
+//            Project.CardClipboard.Add(model);
         }
 
         #endregion
@@ -290,6 +268,7 @@ namespace Editor.ViewModels.Controls
             card.MouseLeftButtonUp += ClassCardOnMouseLeftButtonUp;
             card.MouseRightButtonUp += ClassCardOnMouseRightButtonUp;
             card.MouseEnter += CardOnMouseEnter;
+            card.MouseLeave += CardOnMouseLeave;
             card.MouseLeftButtonDown += CardOnMouseLeftButtonDown;
             card.MouseRightButtonDown += CardOnMouseRightButtonDown;
         }
@@ -299,8 +278,19 @@ namespace Editor.ViewModels.Controls
             card.MouseLeftButtonUp -= ClassCardOnMouseLeftButtonUp;
             card.MouseRightButtonUp -= ClassCardOnMouseRightButtonUp;
             card.MouseEnter -= CardOnMouseEnter;
+            card.MouseLeave -= CardOnMouseLeave;
             card.MouseLeftButtonDown -= CardOnMouseLeftButtonDown;
             card.MouseRightButtonDown -= CardOnMouseRightButtonDown;
+        }
+        
+        private void CardOnMouseLeave(object sender, MouseEventArgs mouseEventArgs)
+        {
+            //DropSelected();
+        }
+
+        private void CardOnMouseEnter(object sender, MouseEventArgs e)
+        {
+
         }
 
         private void CardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -323,15 +313,6 @@ namespace Editor.ViewModels.Controls
             UpdateSelection(classCard);
         }
 
-        private void CardOnMouseEnter(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed) return;
-            var classCard = sender as ClassCardViewMode;
-            if (classCard == null) return;
-            DropSelected();
-            UpdateSelection(classCard);
-        }
-
         private void ClassCardOnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
         }
@@ -340,6 +321,8 @@ namespace Editor.ViewModels.Controls
         {
             var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
+            DropSelected();
+            UpdateSelection(classCard);
             OpenContextMenu(classCard);
         }
         
@@ -376,12 +359,13 @@ namespace Editor.ViewModels.Controls
             if (@class == null)
             {
                 _classesTable.Table[row][col] = new ClassRecord();
-
+                @class = _classesTable.Table[row][col];
             }
-            var model = new ClassCardViewModel(@class){ClassesSchedule = ClassesSchedule};
+            var model = new ClassCardViewModel(@class) { Project = Project };
             var edit = new ClassCardEditMode(centerX, centerY) { DataContext = model };
-
             edit.ShowDialog();
+            ClassesCards[row][col].DataContext = model;
+            _selectedCard = model;
         }
         
         private void OpenContextMenu(ClassCardViewMode classCard)
@@ -393,6 +377,41 @@ namespace Editor.ViewModels.Controls
             cm.Items.Add(new MenuItem { Header = "Paste", Command = PasteClassCommand });
             cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });
             cm.IsOpen = true;
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var s = sender as TableViewModel;
+            if (s == null) return;
+            if (e.PropertyName == "Project")
+            {
+                OnProjectChanged();
+            }
+            else if (e.PropertyName == "YearOfStudy")
+            {
+                OnYearOfStudyChanged();
+            }
+        }
+
+        private void OnYearOfStudyChanged()
+        {
+            TableHeader = YearOfStudy.ToString();
+            _classesTable = Project.ClassesSchedule.GetClassesTable(YearOfStudy);
+            _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
+            InitializeTitles();
+            InitLectureCards();
+        }
+
+        private void OnProjectChanged()
+        {
+            _timeLineMarkup = new TimeLineMarkup(Project.ClassesSchedule);
+            InitDayLine();
+            InitTimeIntervalLine();
+
+            if (YearOfStudy != null)
+            {
+                OnYearOfStudyChanged();
+            }
         }
 
         #endregion

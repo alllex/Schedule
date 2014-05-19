@@ -1,6 +1,6 @@
 ﻿namespace Editor.ViewModels.Panels
 {
-    class GroupEditPanelViewModel : HasClassesScheduleProperty
+    class GroupEditPanelViewModel : HasProjectProperty
     {
 
         #region Properties

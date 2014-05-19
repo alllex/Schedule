@@ -8,19 +8,19 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedList" Source="{Binding ClassesSchedule.Groups}">
+        <CollectionViewSource x:Key="SortedList" Source="{Binding Project.ClassesSchedule.Groups}">
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        <CollectionViewSource x:Key="SortedSpecializations" Source="{Binding ClassesSchedule.Specializations}">
+        <CollectionViewSource x:Key="SortedSpecializations" Source="{Binding Project.ClassesSchedule.Specializations}">
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
 
-        <CollectionViewSource x:Key="SortedYearsOfStudy" Source="{Binding ClassesSchedule.YearsOfStudy}">
+        <CollectionViewSource x:Key="SortedYearsOfStudy" Source="{Binding Project.ClassesSchedule.YearsOfStudy}">
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>

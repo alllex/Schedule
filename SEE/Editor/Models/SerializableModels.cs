@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using Editor.Models;
 
-namespace Editor.Models.SerializableModels
+namespace Editor.Models
 {
 
     [Serializable]
@@ -16,12 +11,12 @@ namespace Editor.Models.SerializableModels
     {
         public int ID;
 
-        public sHavingId(int id)
+        protected sHavingId(int id)
         {
             ID = id;
         }
 
-        public sHavingId(HavingId havingId)
+        protected sHavingId(HavingId havingId)
         {
             ID = havingId.GetHashCode();
         }
@@ -32,12 +27,12 @@ namespace Editor.Models.SerializableModels
     {
         public string Name;
 
-        public sHavingName(int id, string name) : base(id)
+        protected sHavingName(int id, string name) : base(id)
         {
             Name = name;
         }
 
-        public sHavingName(HavingName havingName) : base(havingName)
+        protected sHavingName(HavingName havingName) : base(havingName)
         {
             Name = havingName.Name;
         }
@@ -164,7 +159,7 @@ namespace Editor.Models.SerializableModels
         public sLecturer Lecturer;
         public sClassroom Classroom;
 
-        public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base(classRecord)
+        public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base((HavingId) classRecord)
         {
             Subject = schedule.Subjects[classRecord.Subject.GetHashCode()];
             Lecturer = schedule.Lecturers[classRecord.Lecturer.GetHashCode()];
@@ -439,14 +434,14 @@ namespace Editor.Models.SerializableModels
             }
         }
 
-        # endregion
+        #endregion
 
-        # region Serialize
+        #region Serialize
 
         public static void Save(sClassesSchedule schedule, string path)
         {
-            FileStream streamSave = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-            BinaryFormatter serializer = new BinaryFormatter();
+            var streamSave = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            var serializer = new BinaryFormatter();
 
             serializer.Serialize(streamSave, schedule);
             streamSave.Close();
@@ -454,8 +449,8 @@ namespace Editor.Models.SerializableModels
 
         public static sClassesSchedule Load(string path)
         {
-            FileStream streamLoad = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-            BinaryFormatter deserializer = new BinaryFormatter();
+            var streamLoad = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var deserializer = new BinaryFormatter();
 
             var schedule = (sClassesSchedule)deserializer.Deserialize(streamLoad);
             streamLoad.Close();
@@ -464,7 +459,7 @@ namespace Editor.Models.SerializableModels
 
         public void Save(string path)
         {
-            sClassesSchedule.Save(this, path);
+            Save(this, path);
         }
 
         # endregion

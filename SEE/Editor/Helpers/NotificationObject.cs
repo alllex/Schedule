@@ -4,7 +4,6 @@ using System.Linq.Expressions;
 
 namespace Editor.Helpers
 {
-    [Serializable]
     public class NotificationObject : INotifyPropertyChanged
     {
         protected void RaisePropertyChanged<T>(Expression<Func<T>> action)

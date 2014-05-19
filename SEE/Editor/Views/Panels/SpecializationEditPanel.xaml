@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedList" Source="{Binding ClassesSchedule.Specializations}">
+        <CollectionViewSource x:Key="SortedList" Source="{Binding Project.ClassesSchedule.Specializations}">
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>

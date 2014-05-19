@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Editor.Models.SearchConflicts
 {
@@ -45,44 +43,32 @@ namespace Editor.Models.SearchConflicts
 
         private static Conflicts GreaterFourClassesPerDay(ScheduleList allClasses)
         {
-            var conflicts = new Conflicts();
             var message = "Больше 4х занятий в день";
 
             var groupClasses = from c in allClasses
                                group c by new Tuple<Group, Weekdays>(c.Group, c.Time.Day);
 
-            foreach (var c in groupClasses)
-                if (c.Count() >= 5) conflicts.Add(new Conflict(message, ConflictType.Warning, c));
-
-            return conflicts;
+            return (from c in groupClasses where c.Count() >= 5 select new Conflict(message, ConflictType.Warning, c)).ToList();
         }
 
         private static Conflicts GroupsInDifferentClassrooms(ScheduleList allClasses)
         {
-            var conflicts = new Conflicts();
             var message = "Группа находится в нескольких аудиториях одновременно.";
 
             var groupClasses = from c in allClasses
                                group c by new Tuple<Group, ClassTime>(c.Group, c.Time);
 
-            foreach (var c in groupClasses)
-                if (c.Count() > 1) conflicts.Add(new Conflict(message, ConflictType.Conflict, c));
-
-            return conflicts;
+            return (from c in groupClasses where c.Count() > 1 select new Conflict(message, ConflictType.Conflict, c)).ToList();
         }
 
         private static Conflicts LecterersInDifferentClassrooms(ScheduleList allClasses)
         {
-            var conflicts = new Conflicts();
             var message = "Преподаватель находится в нескольких аудиториях одновременно.";
 
             var groupClasses = from c in allClasses
                                group c by new Tuple<Lecturer, ClassTime>(c.Lecturer, c.Time);
 
-            foreach (var c in groupClasses)
-                if (c.Count() > 1) conflicts.Add(new Conflict(message, ConflictType.Conflict, c));
-
-            return conflicts;
+            return (from c in groupClasses where c.Count() > 1 select new Conflict(message, ConflictType.Conflict, c)).ToList();
         }
 
         private static Conflicts NextClassesAtDifferentAddress(ScheduleList allClasses)

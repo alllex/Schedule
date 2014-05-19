@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Collections.Generic;
+using System.Linq;
 using Editor.Helpers;
-using Editor.Models.SerializableModels;
 
 namespace Editor.Models
 {
@@ -246,13 +246,25 @@ namespace Editor.Models
 //            YearsOfStudy.CollectionChanged += OnSomeCollectionChanged;
         }
 
-        public void UpdateTables()
+        public void CreateNewTables()
         {
             Tables.Clear();
             foreach (var yearOfStudy in YearsOfStudy)
             {
                 Tables.Add(new ClassesTable(this, yearOfStudy));
             }
+        }
+
+        public void AddYearOfStudy(YearOfStudy year)
+        {
+            YearsOfStudy.Add(year);
+            Tables.Add(new ClassesTable(this, year));
+        }
+
+        public void RemoveYearOfStudy(YearOfStudy year)
+        {
+            YearsOfStudy.Remove(year);
+            Tables.Remove((from t in Tables where t.YearOfStudy == year select t).First());
         }
 
         public ClassesTable GetClassesTable(YearOfStudy year)

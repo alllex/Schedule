@@ -4,11 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:panels="clr-namespace:Editor.ViewModels.Panels"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance panels:YearOfStudyEditPanelViewModel}"
+             >
     
     <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedList" Source="{Binding ClassesSchedule.YearsOfStudy}">
+        <CollectionViewSource x:Key="SortedList" Source="{Binding Project.ClassesSchedule.YearsOfStudy}">
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>
@@ -16,13 +19,31 @@
     </UserControl.Resources>
     
     <DockPanel>
-        <ListBox x:Name="ListBox"
-                 DockPanel.Dock="Left"
-                 ItemsSource="{Binding Source={StaticResource SortedList}}"
-                 DisplayMemberPath="Name"
-                 SelectedIndex="0"
-                 MinWidth="150">
-        </ListBox>
+        <DockPanel DockPanel.Dock="Left">
+            
+            <Button DockPanel.Dock="Bottom"
+                    Content="Добавить"
+                    Margin="10"
+                    Command="{Binding AddYearOfStudyCommand}"/>
+            
+            <ListBox x:Name="ListBox"
+                    ItemsSource="{Binding Source={StaticResource SortedList}}"
+                    SelectedIndex="0"
+                    MinWidth="150">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+<!--                        <Setter Property="ContextMenu">-->
+<!--                            <Setter.Value>-->
+<!--                                <ContextMenu>-->
+<!--                                </ContextMenu>-->
+<!--                            </Setter.Value>-->
+<!--                        </Setter>-->
+                        <Setter Property="Content" Value="{Binding Name}"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+            
+        </DockPanel>
         <StackPanel Margin="5" DataContext="{Binding ElementName=ListBox, Path=SelectedItem}">
             <Label Content="Курс"/>
             <TextBox Text="{Binding Name}"/>
