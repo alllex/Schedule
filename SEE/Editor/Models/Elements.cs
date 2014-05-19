@@ -251,24 +251,6 @@ namespace Editor.Models
 
     public class Subject : HavingName
     {
-        
-        #region ClassType
-
-        private ClassType _classType;
-        public ClassType ClassType
-        {
-            get { return _classType; }
-            set
-            {
-                if (_classType != value)
-                {
-                    _classType = value;
-                    RaisePropertyChanged(() => ClassType);
-                }
-            }
-        }
-
-        #endregion
 
     }
 
