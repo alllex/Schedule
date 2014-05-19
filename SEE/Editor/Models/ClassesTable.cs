@@ -5,7 +5,6 @@ namespace Editor.Models
 {
     public class ClassesTable
     {
-
         private readonly ClassesSchedule _schedule;
         public readonly YearOfStudy YearOfStudy;
 
