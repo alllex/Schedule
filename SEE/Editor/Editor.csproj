@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0E31E440-D6B1-443D-B234-47D8F59F4CFA}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Editor</RootNamespace>
+    <AssemblyName>Editor</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="PresentationUI, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Resources\IconsResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ImplicitStylesResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\StylesResourceDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\ClassCardEditMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\DayCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\CardClipboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\TablesController.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Panels\YearOfStudyEditPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Panels\SpecializationEditPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Panels\GroupEditPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\ClassCardViewMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Panels\LecturerEditPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Panels\ClassroomEditPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\SubtitleCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Table.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\TimeCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\TitleCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\EditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\ListsEditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converters\BaseConverter.cs" />
+    <Compile Include="Converters\ClassRecordToClassCardViewModelConverter.cs" />
+    <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
+    <Compile Include="Converters\IsBiggerThanConverter.cs" />
+    <Compile Include="Helpers\ClipboardService.cs" />
+    <Compile Include="Helpers\DelegateCommand.cs" />
+    <Compile Include="Helpers\ExObservableCollection.cs" />
+    <Compile Include="Helpers\NotificationObject.cs" />
+    <Compile Include="Models\ClassesSchedule.cs" />
+    <Compile Include="Models\ClassesTable.cs" />
+    <Compile Include="Models\FullClassRecord.cs" />
+    <Compile Include="Models\DataMining\Statistic.cs" />
+    <Compile Include="Models\DataMining\DataMining.cs" />
+    <Compile Include="Models\DataMining\StatisticOf.cs" />
+    <Compile Include="Models\Elements.cs" />
+    <Compile Include="Models\Interfaces.cs" />
+    <Compile Include="Helpers\SpannedItem.cs" />
+    <Compile Include="Helpers\TableItem.cs" />
+    <Compile Include="Models\SearchConflicts\Conflict.cs" />
+    <Compile Include="Models\SearchConflicts\SearchConflicts.cs" />
+    <Compile Include="Models\ScheduleProject.cs" />
+    <Compile Include="Models\SerializableModels.cs" />
+    <Compile Include="ViewModels\Helpers\TimeLineMarkup.cs" />
+    <Compile Include="ViewModels\Helpers\TitlesMarkup.cs" />
+    <Compile Include="Repository\ScheduleRepository.cs" />
+    <Compile Include="ViewModels\Controls\CardClipboardViewModel.cs" />
+    <Compile Include="ViewModels\Controls\TablesControllerViewModel.cs" />
+    <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\HasClassesScheduleProperty.cs" />
+    <Compile Include="Views\Cards\ClassCardEditMode.xaml.cs">
+      <DependentUpon>ClassCardEditMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\DayCard.xaml.cs">
+      <DependentUpon>DayCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\CardClipboard.xaml.cs">
+      <DependentUpon>CardClipboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TablesController.xaml.cs">
+      <DependentUpon>TablesController.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\YearOfStudyEditPanel.xaml.cs">
+      <DependentUpon>YearOfStudyEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\SpecializationEditPanel.xaml.cs">
+      <DependentUpon>SpecializationEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\GroupEditPanel.xaml.cs">
+      <DependentUpon>GroupEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\ClassCardViewMode.xaml.cs">
+      <DependentUpon>ClassCardViewMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\LecturerEditPanel.xaml.cs">
+      <DependentUpon>LecturerEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Panels\ClassroomEditPanel.xaml.cs">
+      <DependentUpon>ClassroomEditPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\SubtitleCard.xaml.cs">
+      <DependentUpon>SubtitleCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\Table.xaml.cs">
+      <DependentUpon>Table.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\TimeCard.xaml.cs">
+      <DependentUpon>TimeCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Cards\TitleCard.xaml.cs">
+      <DependentUpon>TitleCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Cards\DayCardViewModel.cs" />
+    <Compile Include="ViewModels\Windows\EditorWindowViewModel.cs" />
+    <Compile Include="ViewModels\Panels\GroupEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Cards\ClassCardViewModel.cs" />
+    <Compile Include="ViewModels\Panels\LecturerEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Windows\ListsEditWindowViewModel.cs" />
+    <Compile Include="ViewModels\Panels\ClassroomEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Cards\SubtitleCardViewModel.cs" />
+    <Compile Include="ViewModels\Controls\TableViewModel.cs" />
+    <Compile Include="ViewModels\Cards\TimeCardViewModel.cs" />
+    <Compile Include="ViewModels\Cards\TitleCardViewModel.cs" />
+    <Compile Include="Views\Windows\EditorWindow.xaml.cs">
+      <DependentUpon>EditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\ListsEditWindow.xaml.cs">
+      <DependentUpon>ListsEditWindow.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
