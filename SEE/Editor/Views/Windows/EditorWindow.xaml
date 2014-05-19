@@ -1,6 +1,7 @@
 ﻿<Window x:Class="Editor.Views.Windows.EditorWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+<<<<<<< HEAD
 		xmlns:controls="clr-namespace:Editor.Views.Controls" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:windows="clr-namespace:Editor.ViewModels.Windows"
@@ -11,13 +12,23 @@
         x:Name="Window" 
         d:DataContext="{d:DesignInstance windows:EditorWindowViewModel}"
         >
+=======
+		xmlns:controls="clr-namespace:Editor.Views.Controls"
+		Title="EditorWindow" Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        x:Name="Window">
+>>>>>>> 28ca2c07711a6262fa1c6bfb7ca50e4beaff9434
     
     <DockPanel>
         <Menu Height="20"
               DockPanel.Dock="Top">
             <MenuItem Header="Файл">
+<<<<<<< HEAD
                 <MenuItem Header="Новый проект"
                           Command="{Binding NewProjectCommand}"/>
+=======
+>>>>>>> 28ca2c07711a6262fa1c6bfb7ca50e4beaff9434
                 <MenuItem Header="Открыть проект"
                           Command="{Binding LoadDataCommand}"/>
             </MenuItem>
@@ -45,6 +56,7 @@
             </MenuItem>
         </Menu>
         
+<<<<<<< HEAD
 <!--        <Expander DockPanel.Dock="Left"-->
 <!--                  HorizontalAlignment="Left"-->
 <!--                  ExpandDirection="Right"-->
@@ -54,8 +66,23 @@
 <!--        </Expander>-->
         
         <controls:TableController  
+=======
+        <Expander DockPanel.Dock="Left"
+                  HorizontalAlignment="Left"
+                  ExpandDirection="Right"
+                  IsExpanded="False"
+                  Header="Cards pool">
+            <controls:CardClipboard x:Name="CardClipboard"/>
+        </Expander>
+        
+        <controls:TablesController  
+>>>>>>> 28ca2c07711a6262fa1c6bfb7ca50e4beaff9434
             x:Name="TablesController"    
             DockPanel.Dock="Left" />
         
     </DockPanel>
 </Window>
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 28ca2c07711a6262fa1c6bfb7ca50e4beaff9434

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 using Editor.Helpers;
+using Editor.Models.SerializableModels;
 
 namespace Editor.Models
 {
 
-    [Serializable]
-    public class ClassRecord : HavingName
+    public class ClassRecord : HavingId
     {
         protected bool Equals(ClassRecord other)
         {
@@ -81,7 +80,6 @@ namespace Editor.Models
         }
     }
 
-    [Serializable]
     public class ClassesSchedule : HavingId
     {
 
@@ -284,5 +282,37 @@ namespace Editor.Models
 
         public delegate void ItemChanged();
         public ItemChanged ItemChangedProperty { get; set; }
+
+        public List<FullClassRecord> ToList()
+        {
+            var classes = new List<FullClassRecord>();
+            
+            foreach (var table in Tables)
+                for (int i = 0; i < TimeLine.Count; ++i)
+                    for (int j = 0; j < Groups.Count; ++j)
+                        if (table.Table[i][j] != null)
+                            classes.Add(new FullClassRecord(TimeLine[i], Groups[j], table.Table[i][j]));
+
+            return classes;
+        }
+
+        # region Save/Load
+
+        public static void Save(ClassesSchedule schedule, string path)
+        {
+            SaveLoadSchedule.Save(schedule, path);
+        }
+
+        public static ClassesSchedule Load(string path)
+        {
+            return SaveLoadSchedule.Load(path);
+        }
+
+        public void Save(string path)
+        {
+            SaveLoadSchedule.Save(this, path);
+        }
+
+        # endregion
     }
 }
