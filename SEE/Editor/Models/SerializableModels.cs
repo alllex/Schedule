@@ -445,7 +445,7 @@ namespace Editor.Models.SerializableModels
 
         public static void Save(sClassesSchedule schedule, string path)
         {
-            FileStream streamSave = new FileStream(path, FileMode.Create, FileAccess.Write);
+            FileStream streamSave = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
             BinaryFormatter serializer = new BinaryFormatter();
 
             serializer.Serialize(streamSave, schedule);
@@ -454,7 +454,7 @@ namespace Editor.Models.SerializableModels
 
         public static sClassesSchedule Load(string path)
         {
-            FileStream streamLoad = new FileStream(path, FileMode.Open, FileAccess.Read);
+            FileStream streamLoad = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             BinaryFormatter deserializer = new BinaryFormatter();
 
             var schedule = (sClassesSchedule)deserializer.Deserialize(streamLoad);
