@@ -251,10 +251,6 @@ namespace Editor.Models
 
     public class Subject : HavingName
     {
-        protected bool Equals(Subject other)
-        {
-            return _classType == other._classType;
-        }
         
         #region ClassType
 
