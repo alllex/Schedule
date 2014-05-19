@@ -159,7 +159,7 @@ namespace Editor.Models
         public sLecturer Lecturer;
         public sClassroom Classroom;
 
-        public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base((HavingId) classRecord)
+        public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base(classRecord)
         {
             Subject = schedule.Subjects[classRecord.Subject.GetHashCode()];
             Lecturer = schedule.Lecturers[classRecord.Lecturer.GetHashCode()];

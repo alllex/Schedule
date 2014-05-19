@@ -65,6 +65,7 @@ namespace Editor.ViewModels.Controls
             {
                 foreach (var tableViewModel in Tables)
                 {
+                    tableViewModel.YearOfStudy = null;
                     tableViewModel.Project = Project;
                 }
             }

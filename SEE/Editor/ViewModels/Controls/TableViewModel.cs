@@ -395,6 +395,7 @@ namespace Editor.ViewModels.Controls
 
         private void OnYearOfStudyChanged()
         {
+            if (YearOfStudy == null) return;
             TableHeader = YearOfStudy.ToString();
             _classesTable = Project.ClassesSchedule.GetClassesTable(YearOfStudy);
             _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
