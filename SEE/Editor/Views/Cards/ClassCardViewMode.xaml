@@ -12,45 +12,86 @@
     
     <UserControl.Resources>
         
-        <Style TargetType="Border">
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
-
         <Style TargetType="Label">
             <Setter Property="Margin" Value="3,4,3,0" />
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="3,1,3,0" />
         </Style>
+        
         <Style x:Key="BorderStyle" TargetType="Border">
+
             <Style.Triggers>
+
+                <DataTrigger Binding="{Binding HasConflict}" Value="False">
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding HasWarning}" Value="False">
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Background" Value="White"/>
+                </DataTrigger>
+                
                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
                     <Setter Property="BorderBrush" Value="MediumBlue"/>
-                    <Setter Property="BorderThickness" Value="1"/>
                     <Setter Property="Background" Value="AliceBlue"/>
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding IsSelected}" Value="False">
                     <Setter Property="BorderBrush" Value="Black"/>
-                    <Setter Property="BorderThickness" Value="1"/>
                     <Setter Property="Background" Value="White"/>
                 </DataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsSelected}" Value="False" />
+                        <Condition Binding="{Binding Class}" Value="{x:Null}" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Background" Value="Transparent" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsSelected}" Value="False" />
+                        <Condition Binding="{Binding HasWarning}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Background" Value="Yellow" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsSelected}" Value="False" />
+                        <Condition Binding="{Binding HasConflict}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="Background" Value="Red" />
+                </MultiDataTrigger>
+
             </Style.Triggers>
-            <Setter Property="BorderBrush" Value="Black"/>
+
+            <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            
         </Style>
+        
     </UserControl.Resources>
     
     <DockPanel x:Name="DockPanel">
-        <Border CornerRadius="3"
-                    MinWidth="150"
-                    Style="{StaticResource BorderStyle}"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    >
+        <Border MinWidth="150"
+                Style="{StaticResource BorderStyle}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                >
+            
+            
             <StackPanel Margin="3"
-                            VerticalAlignment="Center"
-                            >
+                        VerticalAlignment="Center"
+                        >
                 <StackPanel.Resources>
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -63,8 +104,12 @@
                 <TextBlock Text="{Binding Class.Lecturer.Name}"
                                FontStyle="Italic" />
                 <TextBlock Text="{Binding Class.Classroom.Name}"
-                               Margin="3,3,10,3" />
+                           ToolTip="{Binding Class.Classroom.Address}"
+                           Margin="3,3,10,3">
+                </TextBlock>
             </StackPanel>
+            
+            
         </Border>
     </DockPanel>
 </UserControl>

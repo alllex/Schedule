@@ -1,4 +1,4 @@
-﻿namespace Editor.ViewModels.Panels
+﻿namespace Editor.ViewModels.Panels.Edit
 {
     class SpecializationEditPanelViewModel : HasProjectProperty
     {

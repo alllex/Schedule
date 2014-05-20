@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Editor.Models.DataMining
 {
@@ -19,10 +16,10 @@ namespace Editor.Models.DataMining
 
         private void SetCountGroupsInClassroom()
         {
-            var groups = from c in _classes
+            var groups = from c in Classes
                          group c by c.Time;
 
-            foreach (var t in _schedule.TimeLine)
+            foreach (var t in Schedule.TimeLine)
                 CountGroupsInClassroom.Add(t, 0);
 
             foreach (var g in groups)
@@ -33,9 +30,8 @@ namespace Editor.Models.DataMining
         }
     }
 
-    public class StatisticOfGroup     : Statistic<Group>
+    public class StatisticOfGroup : Statistic<Group>
     {
-        
         public StatisticOfGroup(ClassesSchedule schedule, Group subject)
             : base(schedule, subject, f => f.Group) { }
     }

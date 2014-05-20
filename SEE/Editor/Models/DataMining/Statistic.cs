@@ -1,34 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Editor.Models.DataMining
 {
-    abstract public class Statistic<@Subject>
-    {
-        private static int countWeekdays = Enum.GetValues(typeof(Weekdays)).Length ;
 
-        protected ClassesSchedule _schedule;
-        protected @Subject _subject;
-        protected IEnumerable<FullClassRecord> _classes;
-        
+    public class ClassesPerWeekday
+    {
+        public Weekdays Weekday { get; set; }   
+        public int Count { get; set; }
+    }
+
+    abstract public class Statistic<TSubject>
+    {
+        // ReSharper disable once StaticFieldInGenericType
+        private static readonly int CountWeekdays = Enum.GetValues(typeof(Weekdays)).Length ;
+
+        protected ClassesSchedule Schedule;
+        protected IEnumerable<FullClassRecord> Classes;
+
+        public TSubject Subject;
         public int CountOfClassesPerWeek { get; protected set; }
         public float AverageCountOfClassesPerDay { get; protected set; }
-        public Dictionary<Weekdays, int> CountOfClassesPerWeekday = new Dictionary<Weekdays, int>(countWeekdays);
+        public List<ClassesPerWeekday> CountOfClassesPerWeekday { get; protected set; }
 
-        protected Statistic(ClassesSchedule schedule, @Subject subject, Func<FullClassRecord, @Subject> getField)
+        protected Statistic(ClassesSchedule schedule, TSubject subject, Func<FullClassRecord, TSubject> getField)
         {
-            _subject = subject;
-            _schedule = schedule;
+            Subject = subject;
+            Schedule = schedule;
             SetClasses(getField);
             SetCounts();
         }
 
-        protected void SetClasses(Func<FullClassRecord, @Subject> getField) 
+        protected void SetClasses(Func<FullClassRecord, TSubject> getField) 
         {
-            _classes = _schedule.ToList().Where(f => getField(f).Equals(_subject));
+            Classes = Schedule.ToList().Where(f => getField(f).Equals(Subject));
         }
 
         protected void SetCounts()
@@ -40,24 +46,22 @@ namespace Editor.Models.DataMining
 
         protected void SetCountOfClassesPerWeek()
         {
-            CountOfClassesPerWeek = _classes.Count();
+            CountOfClassesPerWeek = Classes.Count();
         }
 
         protected void SetCountsOfClassesPerAllWeekdays()
         {
-            foreach (Weekdays weekday in Enum.GetValues(typeof(Weekdays)))
-                SetCountOfClassesPerSpecificWeekday(weekday);
-        }
-
-        protected void SetCountOfClassesPerSpecificWeekday(Weekdays weekday)
-        {
-            var count = _classes.Where(c => c.Time.Day == weekday).Count();
-            CountOfClassesPerWeekday.Add(weekday, count);
+            CountOfClassesPerWeekday = new List<ClassesPerWeekday>();
+            foreach (Weekdays weekday in Enum.GetValues(typeof (Weekdays)))
+            {
+                var count = Classes.Count(c => c.Time.Day == weekday);
+                CountOfClassesPerWeekday.Add(new ClassesPerWeekday{ Weekday = weekday, Count = count});
+            }
         }
 
         protected void SetAverageCountOfClassesPerDay()
         {
-            AverageCountOfClassesPerDay = (float)CountOfClassesPerWeek / (float)countWeekdays;
+            AverageCountOfClassesPerDay = CountOfClassesPerWeek / (float)CountWeekdays;
         }
     }
     

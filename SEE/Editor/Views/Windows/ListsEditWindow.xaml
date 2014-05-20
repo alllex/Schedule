@@ -4,7 +4,16 @@
         xmlns:converters="clr-namespace:Editor.Converters"
         xmlns:panels="clr-namespace:Editor.Views.Panels"
         Title="Списки" Height="500" Width="700"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Editor.ViewModels.Windows"
+        mc:Ignorable="d"
+        
+        d:DataContext="{d:DesignInstance viewModels:ListsEditWindowViewModel}"
+        
+        >
     <DockPanel>
         <TabControl x:Name="SectionsTabControl"
                     SelectedIndex="{Binding ActiveTab, Converter={converters:ListsEditorTabToIntConverter}}">

@@ -65,12 +65,29 @@ namespace Editor.ViewModels.Controls
             {
                 foreach (var tableViewModel in Tables)
                 {
+                    tableViewModel.YearOfStudy = null;
                     tableViewModel.Project = Project;
                 }
             }
         }
 
         #endregion
+
+        public void ShowConflicts()
+        {
+            foreach (var tableViewModel in Tables)
+            {
+                tableViewModel.ShowConflicts();
+            }
+        }
+
+        public void HideConflicts()
+        {
+            foreach (var tableViewModel in Tables)
+            {
+                tableViewModel.HideConflicts();
+            }
+        }
 
         public void UpdateTables()
         {

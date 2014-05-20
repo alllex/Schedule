@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Editor.Repository;
-
-namespace Editor.Models.DataMining
+﻿namespace Editor.Models.DataMining
 {
-    public class DataMining
+    public class DataMiner
     {
         public static StatisticOfGroup StaticticOfGroup(ClassesSchedule schedule, Group group)
         {

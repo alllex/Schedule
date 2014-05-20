@@ -1,6 +1,6 @@
-﻿namespace Editor.ViewModels.Panels
+﻿namespace Editor.ViewModels.Panels.Edit
 {
-    class LecturerEditPanelViewModel : HasProjectProperty
+    class GroupEditPanelViewModel : HasProjectProperty
     {
 
         #region Properties
@@ -10,6 +10,6 @@
         #region Ctor
 
         #endregion
-        
+
     }
 }
