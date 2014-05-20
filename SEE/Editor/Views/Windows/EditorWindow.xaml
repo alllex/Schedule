@@ -49,6 +49,23 @@
                 <MenuItem Header="Open Statistic Window"
                           Command="{Binding OpenStatisticWindowCommand}"/>
             </MenuItem>
+
+            <MenuItem Header="Conflicts">
+                <MenuItem Header="Run conflict test">
+                    <MenuItem Header="Run All tests"
+                        Command="{Binding TODO}"/>
+                    <MenuItem Header="More than 4 classes per day"
+                        Command="{Binding TODO}"/>
+                    <MenuItem Header="Group in different places"
+                        Command="{Binding TODO}"/>
+                    <MenuItem Header="Group in different places"
+                        Command="{Binding TODO}"/>
+                    <MenuItem Header="Next class in different place"
+                        Command="{Binding TODO}"/>
+                </MenuItem>
+                <MenuItem Header="Open"
+                          Command="{Binding OpenStatisticWindowCommand}"/>
+            </MenuItem>
         </Menu>
         
 <!--        <Expander DockPanel.Dock="Left"-->

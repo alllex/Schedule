@@ -38,14 +38,20 @@ namespace Editor.Repository
 
         private void InitClassrooms()
         {
-            const int classroomsCount = 20;
+            const int classroomsCount = 100;
             const int minRoomNumber = 1000;
             const int maxRoomNumber = 2001;
+
+            string[] addresses = {"Petergoff", "Saint-Petersburg", "Moscow", "Dubai"};
 
             for (int i = 0; i < classroomsCount; i++)
             {
                 int num = Rnd.Next(minRoomNumber, maxRoomNumber);
-                Schedule.Classrooms.Add(new Classroom{Name = num.ToString(CultureInfo.InvariantCulture), Address = "Seasam street"});
+                Schedule.Classrooms.Add(new Classroom
+                {
+                    Name = num.ToString(CultureInfo.InvariantCulture), 
+                    Address = addresses[Rnd.Next(addresses.Count())]
+                });
             }
         }
 

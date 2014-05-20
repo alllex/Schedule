@@ -1,16 +1,24 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Editor.Models.DataMining;
+﻿using System.Collections.ObjectModel;
 
-namespace Editor.Models
+namespace Editor.Models.DataMining
 {
     public class StatisticCompilation
     {
 
-        public Collection<Statistic<Group>> GroupStatistic;
-        public Collection<Statistic<Lecturer>> LecturerStatistic;
+        public Collection<Statistic<Group>> GroupStatistic = new Collection<Statistic<Group>>();
+        public Collection<Statistic<Lecturer>> LecturerStatistic = new Collection<Statistic<Lecturer>>();
 
         public StatisticCompilation(ClassesSchedule schedule)
+        {
+            BuildAllStatistic(schedule);
+        }
+
+        public void UpdateStatistic(ClassesSchedule schedule)
+        {
+            BuildAllStatistic(schedule);
+        }
+
+        private void BuildAllStatistic(ClassesSchedule schedule)
         {
             BuildGroupStatistics(schedule);
             BuildLecturerStatistics(schedule);
@@ -18,7 +26,7 @@ namespace Editor.Models
 
         private void BuildLecturerStatistics(ClassesSchedule schedule)
         {
-            LecturerStatistic = new Collection<Statistic<Lecturer>>();
+            LecturerStatistic.Clear();
             foreach (var lecturer in schedule.Lecturers)
             {
                 var stat = DataMiner.StaticticOfLecturer(schedule, lecturer);
@@ -28,7 +36,7 @@ namespace Editor.Models
 
         private void BuildGroupStatistics(ClassesSchedule schedule)
         {
-            GroupStatistic = new Collection<Statistic<Group>>();
+            GroupStatistic.Clear();
             foreach (var group in schedule.Groups)
             {
                 var stat = DataMiner.StaticticOfGroup(schedule, group);

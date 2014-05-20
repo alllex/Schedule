@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using Editor.Models.DataMining;
+using Editor.Models.SearchConflicts;
 using Editor.ViewModels;
 using Editor.ViewModels.Cards;
 
@@ -63,6 +65,27 @@ namespace Editor.Models
         }
 
         #endregion
+
+        #region ConflictCompilation
+
+        private ConflictCompilation _conflictCompilation;
+
+        public ConflictCompilation ConflictCompilation
+        {
+            get { return _conflictCompilation; }
+            set
+            {
+                if (_conflictCompilation != value)
+                {
+                    _conflictCompilation = value;
+                    RaisePropertyChanged(() => ConflictCompilation);
+                }
+            }
+        }
+
+        #endregion
+
         
+
     }
 }

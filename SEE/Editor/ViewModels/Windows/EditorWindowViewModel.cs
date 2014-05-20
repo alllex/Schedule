@@ -1,13 +1,10 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows;
+﻿using System.ComponentModel;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
 using Editor.Helpers;
 using Editor.Models;
+using Editor.Models.DataMining;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
-using Editor.Views.Controls;
 using Editor.Views.Windows;
 using Microsoft.Win32;
 
