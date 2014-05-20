@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
 
@@ -82,7 +84,6 @@ namespace Editor.ViewModels.Cards
         }
 
         #endregion
-
         
         #endregion
 
@@ -101,8 +102,22 @@ namespace Editor.ViewModels.Cards
         public ClassCardViewModel(ClassRecord @class)
         {
             Class = @class;
+            PropertyChanged += OnPropertyChanged;
         }
 
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var s = sender as ClassCardViewModel;
+            if (s == null) return;
+            if (e.PropertyName == "Class")
+            {
+                if (Class == null)
+                {
+                    HasWarning = false;
+                    HasConflict = false;
+                }
+            }
+        }
 
         #endregion
 

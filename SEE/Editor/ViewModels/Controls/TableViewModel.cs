@@ -273,6 +273,8 @@ namespace Editor.ViewModels.Controls
         public ICommand CopyClassCommand { get { return new DelegateCommand(OnCopyClassCommand); } }
         public ICommand PasteClassCommand { get { return new DelegateCommand(OnPasteClassCommand); } }
         public ICommand SendToCardClipboardCommand { get { return new DelegateCommand(OnSendToCardClipboard); } }
+        public ICommand CutClassCommand { get { return new DelegateCommand(OnCutClass, CanExecuteHasClass); } }
+        public ICommand DeleteClassCommand { get { return new DelegateCommand(OnDeleteClass, CanExecuteHasClass); } }
         
         #endregion
 
@@ -307,6 +309,41 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
+        private void OnCutClass(object param)
+        {
+            if (_selectedCard == null || _selectedCard.Class == null) return;
+            var classCard = param as ClassCardViewMode;
+            if (classCard == null) return;
+            var row = Grid.GetRow(classCard) - TitleRowsCount;
+            var col = Grid.GetColumn(classCard) - TimeColumnsCount;
+
+            var @class = new ClassRecord();
+            ClassRecord.Copy(_classesTable.Table[row][col], @class);
+            ClipboardService.SetData(@class);
+
+            var vmodel = classCard.DataContext as ClassCardViewModel;
+            if (vmodel == null) return;
+
+            vmodel.Class = null;
+            _classesTable.Table[row][col] = null;
+
+        }
+        
+        private void OnDeleteClass(object param)
+        {
+            if (_selectedCard == null || _selectedCard.Class == null) return;
+            var classCard = param as ClassCardViewMode;
+            if (classCard == null) return;
+            var row = Grid.GetRow(classCard) - TitleRowsCount;
+            var col = Grid.GetColumn(classCard) - TimeColumnsCount;
+
+            var vmodel = classCard.DataContext as ClassCardViewModel;
+            if (vmodel == null) return;
+
+            vmodel.Class = null;
+            _classesTable.Table[row][col] = null;
+        }
+
         private void OnEditClass(object param)
         {
             if (_selectedCard == null) return;
@@ -325,6 +362,11 @@ namespace Editor.ViewModels.Controls
 //            if (_selectedCard == null || _selectedCard.Class == null) return;
 //            var model = new ClassCardViewModel(_selectedCard.Class);
 //            Project.CardClipboard.Add(model);
+        }
+
+        private bool CanExecuteHasClass()
+        {
+            return _selectedCard != null && _selectedCard.Class != null;
         }
 
         #endregion
@@ -448,7 +490,9 @@ namespace Editor.ViewModels.Controls
             cm.Items.Add(new MenuItem { Header = "Edit", Command = EditClassCommand, CommandParameter = classCard});
             cm.Items.Add(new MenuItem { Header = "Copy", Command = CopyClassCommand });
             cm.Items.Add(new MenuItem { Header = "Paste", Command = PasteClassCommand });
-            cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });
+            cm.Items.Add(new MenuItem { Header = "Cut", Command = CutClassCommand, CommandParameter = classCard });
+            cm.Items.Add(new MenuItem { Header = "Delete", Command = DeleteClassCommand, CommandParameter = classCard });
+            //cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });
             cm.IsOpen = true;
         }
 
