@@ -1,0 +1,91 @@
+﻿<Window x:Class="Editor.Views.Windows.EditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:controls="clr-namespace:Editor.Views.Controls" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:windows="clr-namespace:Editor.ViewModels.Windows"
+        mc:Ignorable="d"
+        Title="EditorWindow" Height="700" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        x:Name="Window" 
+        d:DataContext="{d:DesignInstance windows:EditorWindowViewModel}"
+        >
+    
+    <DockPanel>
+        <Menu Height="20"
+              DockPanel.Dock="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Новый проект"
+                          Command="{Binding NewProjectCommand}"/>
+                <MenuItem Header="Сгенерировать"
+                          Command="{Binding LoadRandomScheduleCommand}"/>
+                <MenuItem Header="Сохранить"
+                          Command="{Binding SaveProjectCommand}"/>
+                <MenuItem Header="Открыть"
+                          Command="{Binding OpenProjectCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Правка">
+                <MenuItem Header="Группы"
+                          Command="{Binding OpenGroupsEditorCommand}"
+                          />
+                <MenuItem Header="Преподаватели"
+                          Command="{Binding OpenLecturersEditorCommand}"
+                          />
+                <MenuItem Header="Аудитории"
+                          Command="{Binding OpenClassroomsEditorCommand}"
+                          />
+                <MenuItem Header="Специальности"
+                          Command="{Binding OpenSpecializationsEditorCommand}"
+                          />
+                <MenuItem Header="Курсы"
+                          Command="{Binding OpenYearsOfStudyEditorCommand}"
+                          />
+            </MenuItem>
+            <MenuItem Header="Statistic">
+                <MenuItem Header="Calculate statistic"
+                          Command="{Binding CalcStatisticCommand}"/>
+                <MenuItem Header="Open Statistic Window"
+                          Command="{Binding OpenStatisticWindowCommand}"/>
+            </MenuItem>
+
+            <MenuItem Header="Conflicts">
+                <MenuItem Header="Run conflict test">
+                    <MenuItem Header="Run All tests"
+                        Command="{Binding TODO}"
+                              IsEnabled="False"/>
+                    
+                    <MenuItem Header="More than 4 classes per day"
+                        Command="{Binding CheckConflictGreaterThanFourClassesPerDayCommand}"/>
+                    
+                    <MenuItem Header="Group in different places"
+                              IsEnabled="False"
+                        Command="{Binding TODO}"/>
+                    <MenuItem Header="Group in different places"
+                              IsEnabled="False"
+                        Command="{Binding TODO}"/>
+                    <MenuItem Header="Next class in different place"
+                              IsEnabled="False"
+                        Command="{Binding TODO}"/>
+                </MenuItem>
+                
+                <MenuItem Header="Show/Hide conflicts"
+                          Command="{Binding ShowHideConflictsCommand}"/>
+            </MenuItem>
+        </Menu>
+        
+<!--        <Expander DockPanel.Dock="Left"-->
+<!--                  HorizontalAlignment="Left"-->
+<!--                  ExpandDirection="Right"-->
+<!--                  IsExpanded="False"-->
+<!--                  Header="Cards pool">-->
+<!--            <controls:CardClipboard x:Name="CardClipboard"/>-->
+<!--        </Expander>-->
+        
+        <controls:TableController  
+            x:Name="TablesController"    
+            DockPanel.Dock="Left" />
+        
+    </DockPanel>
+</Window>
