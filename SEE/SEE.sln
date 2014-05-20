@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor\Editor.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleData", "ScheduleData\ScheduleData.csproj", "{038BB399-CF52-47BD-9FF3-8B43A016E070}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Test", "Test\Test.fsproj", "{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{038BB399-CF52-47BD-9FF3-8B43A016E070}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{038BB399-CF52-47BD-9FF3-8B43A016E070}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{038BB399-CF52-47BD-9FF3-8B43A016E070}.Release|x86.ActiveCfg = Release|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7D21F2A2-B036-4AA4-8F90-FCA7CE8F4A99}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,8 +3,9 @@ namespace SEE
 
 open Microsoft.Office.Interop.Excel
 open System.IO
+open Editor.Models
 
-type TransferData = (string [,]) []
+type TransferData = (string [,] * string) []
 
 type Importer = 
     class
@@ -22,7 +23,7 @@ type Importer =
             printfn "worksheets count = %A" worksheetsCount
             let worksheets = [| for x in workbook.Worksheets -> 
                                     let ws = x :?> Worksheet
-                                    getWorksheet ws
+                                    getWorksheet ws, ws.Name
                              |]
             app.Quit()
             worksheets
@@ -30,16 +31,65 @@ type Importer =
 
 type Exporter =
     class
+        static member VerticalOffset = 2 //2 extra rows for group & subgroup numbers
+        static member HorizontalOffset = 2 //2 extra columns for weekday and time
+
         static member Export(path : string, data : TransferData) =
             let app = new ApplicationClass(Visible = false)
             let workbook = app.Workbooks.Add(XlWBATemplate.xlWBATWorksheet)
             Array.iter
-                (fun table ->
+                (fun (table, name) ->
                     let ws = workbook.Worksheets.Add() :?> Worksheet
+                    ws.Name <- name
                     for i in 1..Array2D.length1 table do
                         for j in 1..Array2D.length2 table do
                             (ws.Cells.[i, j] :?> Range).Value2 <- table.[i - 1, j - 1]
                 ) data
             workbook.SaveAs(Filename = path)
             app.Quit()
+
+        static member Exp(path : string, data : sClassesSchedule) =
+            let numberOfSheets = data.Tables.Length
+            let currentTable = data.Tables.[0]
+            let numberOfDays = 
+                let mutable counter = 1
+                let mutable day = data.TimeLine.[0].Day
+                for i in 1 .. data.TimeLine.Length - 1 do
+                    if day <> data.TimeLine.[i].Day then counter <- counter + 1
+                                                         day <- data.TimeLine.[i].Day
+                counter
+            //не учтены специализации: непонятно, откуда взять подгруппы
+            let groups = [|for i in data.Groups -> i.Value |]
+            let numberOfGroups = groups.Length
+            let numberOfColumns = numberOfGroups + Exporter.HorizontalOffset
+            let numberOfRows = data.TimeLine.Length + Exporter.VerticalOffset 
+            let list = Array2D.create numberOfRows numberOfColumns "" //empty table (1 sheet)
+
+            if data.TimeLine.Length > 0 then
+                let currentDay = ref data.TimeLine.[0].Day
+                let writeTimes i (x : sClassTime) = 
+                    list.[i + Exporter.VerticalOffset, 1] <- ClassTime.ClassIntervals.[x.Number]
+
+                    if x.Day <> !currentDay 
+                    then list.[i + Exporter.VerticalOffset, 0] <- x.Day.ToString()
+                         currentDay.Value <- x.Day
+            
+                list.[Exporter.VerticalOffset, 0] <- currentDay.Value.ToString() 
+                Array.iteri writeTimes data.TimeLine
+
+           (* if data.TimeLine.Length > 0 then
+                let currentSpecialization = ref currentTable.G
+                let writeTimes i (x : sClassTime) = 
+                    list.[i + Exporter.VerticalOffset, 1] <- ClassTime.ClassIntervals.[x.Number]
+
+                    if x.Day <> !currentDay 
+                    then list.[i + Exporter.VerticalOffset, 0] <- x.Day.ToString()
+                         currentDay.Value <- x.Day
+            
+                list.[Exporter.VerticalOffset, 0] <- currentDay.Value.ToString() 
+                Array.iteri writeTimes data.TimeLine *)
+
+           // let list1 = array2D [for i in 0 .. data.TimeLine.Length - 1 -> [data.TimeLine.[i].Day.ToString()]]
+            Exporter.Export(path, [|list, currentTable.YearOfStudy.ToString()|])
+
     end
