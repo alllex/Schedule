@@ -17,6 +17,7 @@ namespace Editor.Models.SearchConflicts
             conflicts.AddRange(GroupsInDifferentClassrooms(allClasses));
             conflicts.AddRange(LecterersInDifferentClassrooms(allClasses));
             conflicts.AddRange(NextClassesAtDifferentAddress(allClasses));
+            conflicts.AddRange(CardsWithBlankFields(allClasses));
             return conflicts;
         }
         
@@ -38,6 +39,11 @@ namespace Editor.Models.SearchConflicts
         public static Conflicts NextClassesAtDifferentAddress(ClassesSchedule schedule)
         {
             return NextClassesAtDifferentAddress(schedule.ToList());
+        }
+
+        public static Conflicts CardsWithBlankFields(ClassesSchedule schedule)
+        {
+            return CardsWithBlankFields(schedule.ToList());
         }
 
         #region Private Methods
@@ -95,8 +101,19 @@ namespace Editor.Models.SearchConflicts
                     var conflictingClasses = new List<FullClassRecord> { prevClass, currClass };
                     conflicts.Add(new Conflict(message, ConflictType.Warning, conflictingClasses));
                 }
-
             }
+            return conflicts;
+        }
+
+        private static Conflicts CardsWithBlankFields(ScheduleList allClasses)
+        {
+            var conflicts = new Conflicts();
+            var message = "У этой карточки не заполнены некоторые поля.";
+
+            foreach (var @class in allClasses)
+                if (@class.Classroom == null || @class.Lecturer == null || @class.Subject == null)
+                    conflicts.Add(new Conflict(message, ConflictType.Warning, @class));
+
             return conflicts;
         }
 
