@@ -53,18 +53,25 @@
             <MenuItem Header="Conflicts">
                 <MenuItem Header="Run conflict test">
                     <MenuItem Header="Run All tests"
-                        Command="{Binding TODO}"/>
+                        Command="{Binding TODO}"
+                              IsEnabled="False"/>
+                    
                     <MenuItem Header="More than 4 classes per day"
+                        Command="{Binding CheckConflictGreaterThanFourClassesPerDayCommand}"/>
+                    
+                    <MenuItem Header="Group in different places"
+                              IsEnabled="False"
                         Command="{Binding TODO}"/>
                     <MenuItem Header="Group in different places"
-                        Command="{Binding TODO}"/>
-                    <MenuItem Header="Group in different places"
+                              IsEnabled="False"
                         Command="{Binding TODO}"/>
                     <MenuItem Header="Next class in different place"
+                              IsEnabled="False"
                         Command="{Binding TODO}"/>
                 </MenuItem>
-                <MenuItem Header="Open"
-                          Command="{Binding OpenStatisticWindowCommand}"/>
+                
+                <MenuItem Header="Show/Hide conflicts"
+                          Command="{Binding ShowHideConflictsCommand}"/>
             </MenuItem>
         </Menu>
         

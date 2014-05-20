@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
+using Editor.Models.SearchConflicts;
 using Editor.ViewModels.Cards;
 using Editor.ViewModels.Helpers;
 using Editor.Views.Cards;
@@ -133,6 +134,57 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
+        #region Public
+
+        public void ShowConflicts()
+        {
+            if (Project == null || Project.ConflictCompilation == null || Project.ConflictCompilation.Conflicts == null) return;
+            foreach (var conflict in Project.ConflictCompilation.Conflicts)
+            {
+                foreach (var conflictingClass in conflict.ConflictingClasses)
+                {
+                    var group = conflictingClass.Group;
+                    if (group.YearOfStudy != _classesTable.YearOfStudy) continue;
+                    var time = conflictingClass.Time;
+                    var row = _classesTable.TimeIndexes[time];
+                    var column = _classesTable.GroupIndexes[group];
+                    if (row < 0 || column < 0 || row >= ClassesRowsCount || column >= ClassesColumnsCount)
+                    {
+                        continue;
+                    }
+                    var vmodel = ClassesCards[row][column].DataContext as ClassCardViewModel;
+                    if (vmodel == null) continue;
+                    switch (conflict.ConflictType)
+                    {
+                        case ConflictType.Warning:
+                            vmodel.HasWarning = true;
+                            break;
+                        case ConflictType.Conflict:
+                            vmodel.HasConflict = true;
+                            break;
+                    }
+                }
+            }
+        }
+
+        public void HideConflicts()
+        {
+            for (var row = 0; row < ClassesRowsCount; row++)
+            {
+                for (var col = 0; col < ClassesColumnsCount; col++)
+                {
+                    var vmodel = ClassesCards[row][col].DataContext as ClassCardViewModel;
+                    if (vmodel == null) continue;
+                    vmodel.HasConflict = false;
+                    vmodel.HasWarning = false;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Initialization
+
         private void InitializeTitles()
         {
             Titles = new ObservableCollection<UIElement>();
@@ -190,12 +242,12 @@ namespace Editor.ViewModels.Controls
                 {
                     ClassesCards[row][col] = CreateClassCard(row, col);
                 }
-            }    
+            }
         }
 
         private ClassCardViewMode CreateClassCard(int row, int column)
         {
-            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]){Project = Project};
+            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]) { Project = Project };
             var classCard = new ClassCardViewMode { DataContext = viewModel };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
@@ -212,6 +264,8 @@ namespace Editor.ViewModels.Controls
         {
             return TitleRowsCount + ClassesRowsCount;
         }
+
+        #endregion
 
         #region Commands
 
@@ -255,7 +309,7 @@ namespace Editor.ViewModels.Controls
 
         private void OnEditClass(object param)
         {
-            if (_selectedCard == null || _selectedCard.Class == null) return;
+            if (_selectedCard == null) return;
             var classCard = param as ClassCardViewMode;
             if (classCard == null) return;
             OpenCardEditor(classCard);
@@ -263,7 +317,7 @@ namespace Editor.ViewModels.Controls
 
         private bool CanExecuteEditClass()
         {
-            return _selectedCard != null && _selectedCard.Class != null;
+            return _selectedCard != null;
         }
 
         private void OnSendToCardClipboard()

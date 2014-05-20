@@ -13,16 +13,16 @@ namespace Editor.Models.SearchConflicts
         {
             var conflicts = new Conflicts();
             var allClasses = schedule.ToList();
-            conflicts.AddRange(GreaterFourClassesPerDay(allClasses));
+            conflicts.AddRange(GreaterThanFourClassesPerDay(allClasses));
             conflicts.AddRange(GroupsInDifferentClassrooms(allClasses));
             conflicts.AddRange(LecterersInDifferentClassrooms(allClasses));
             conflicts.AddRange(NextClassesAtDifferentAddress(allClasses));
             return conflicts;
         }
         
-        public static Conflicts GreaterFourClassesPerDay(ClassesSchedule schedule)
+        public static Conflicts GreaterThanFourClassesPerDay(ClassesSchedule schedule)
         {
-            return GreaterFourClassesPerDay(schedule.ToList());
+            return GreaterThanFourClassesPerDay(schedule.ToList());
         }
 
         public static Conflicts GroupsInDifferentClassrooms(ClassesSchedule schedule)
@@ -42,7 +42,7 @@ namespace Editor.Models.SearchConflicts
 
         #region Private Methods
 
-        private static Conflicts GreaterFourClassesPerDay(ScheduleList allClasses)
+        private static Conflicts GreaterThanFourClassesPerDay(ScheduleList allClasses)
         {
             var message = "Больше 4х занятий в день";
 

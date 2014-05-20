@@ -85,7 +85,25 @@ namespace Editor.Models
 
         #endregion
 
-        
+        #region AreConflictsShown
 
+        private bool _areConflictsShown;
+
+        public bool AreConflictsShown
+        {
+            get { return _areConflictsShown; }
+            set
+            {
+                if (_areConflictsShown != value)
+                {
+                    _areConflictsShown = value;
+                    RaisePropertyChanged(() => AreConflictsShown);
+                }
+            }
+        }
+
+        #endregion
+
+        
     }
 }

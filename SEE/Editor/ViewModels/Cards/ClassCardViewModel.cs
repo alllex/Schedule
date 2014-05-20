@@ -45,6 +45,45 @@ namespace Editor.ViewModels.Cards
 
         #endregion
 
+        #region HasWarning
+
+        private bool _hasWarning;
+
+        public bool HasWarning
+        {
+            get { return _hasWarning; }
+            set
+            {
+                if (_hasWarning != value)
+                {
+                    _hasWarning = value;
+                    RaisePropertyChanged(() => HasWarning);
+                }
+            }
+        }
+
+        #endregion
+
+        #region HasConflict
+
+        private bool _hasConflict;
+
+        public bool HasConflict
+        {
+            get { return _hasConflict; }
+            set
+            {
+                if (_hasConflict != value)
+                {
+                    _hasConflict = value;
+                    RaisePropertyChanged(() => HasConflict);
+                }
+            }
+        }
+
+        #endregion
+
+        
         #endregion
 
         #region Commands
@@ -62,12 +101,6 @@ namespace Editor.ViewModels.Cards
         public ClassCardViewModel(ClassRecord @class)
         {
             Class = @class;
-            IsSelected = false;
-        }
-
-        public ClassCardViewModel()
-        {
-            IsSelected = false;
         }
 
 

@@ -73,6 +73,22 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
+        public void ShowConflicts()
+        {
+            foreach (var tableViewModel in Tables)
+            {
+                tableViewModel.ShowConflicts();
+            }
+        }
+
+        public void HideConflicts()
+        {
+            foreach (var tableViewModel in Tables)
+            {
+                tableViewModel.HideConflicts();
+            }
+        }
+
         public void UpdateTables()
         {
             Tables.Clear();
