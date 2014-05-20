@@ -62,6 +62,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\DataMining\StatisticCompilation.cs" />
+    <Compile Include="Models\SearchConflicts\ConflictCompilation.cs" />
+    <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
+    <Compile Include="ViewModels\Windows\TabCategory.cs" />
+    <Compile Include="ViewModels\Windows\StatisticWindowViewModel.cs" />
+    <Compile Include="Views\Panels\Statistics\StatPanel.xaml.cs">
+      <DependentUpon>StatPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\StatisticWindow.xaml.cs">
+      <DependentUpon>StatisticWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Resources\IconsResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -90,15 +101,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Panels\YearOfStudyEditPanel.xaml">
+    <Page Include="Views\Panels\Edit\YearOfStudyEditPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Panels\SpecializationEditPanel.xaml">
+    <Page Include="Views\Panels\Edit\SpecializationEditPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Panels\GroupEditPanel.xaml">
+    <Page Include="Views\Panels\Edit\GroupEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -106,11 +117,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Panels\LecturerEditPanel.xaml">
+    <Page Include="Views\Panels\Edit\LecturerEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Panels\ClassroomEditPanel.xaml">
+    <Page Include="Views\Panels\Edit\ClassroomEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -127,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Cards\TitleCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Panels\Statistics\StatPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,14 +169,14 @@
     <Compile Include="Models\ClassesTable.cs" />
     <Compile Include="Models\FullClassRecord.cs" />
     <Compile Include="Models\DataMining\Statistic.cs" />
-    <Compile Include="Models\DataMining\DataMining.cs" />
+    <Compile Include="Models\DataMining\DataMiner.cs" />
     <Compile Include="Models\DataMining\StatisticOf.cs" />
     <Compile Include="Models\Elements.cs" />
     <Compile Include="Models\Interfaces.cs" />
     <Compile Include="Helpers\SpannedItem.cs" />
     <Compile Include="Helpers\TableItem.cs" />
     <Compile Include="Models\SearchConflicts\Conflict.cs" />
-    <Compile Include="Models\SearchConflicts\SearchConflicts.cs" />
+    <Compile Include="Models\SearchConflicts\ConflictSearchEngine.cs" />
     <Compile Include="Models\ScheduleProject.cs" />
     <Compile Include="Models\SerializableModels.cs" />
     <Compile Include="ViewModels\Helpers\TimeLineMarkup.cs" />
@@ -169,8 +184,8 @@
     <Compile Include="Repository\ScheduleRepository.cs" />
     <Compile Include="ViewModels\Controls\CardClipboardViewModel.cs" />
     <Compile Include="ViewModels\Controls\TableControllerViewModel.cs" />
-    <Compile Include="ViewModels\Panels\YearOfStudyEditPanelViewModel.cs" />
-    <Compile Include="ViewModels\Panels\SpecializationEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Panels\Edit\YearOfStudyEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Panels\Edit\SpecializationEditPanelViewModel.cs" />
     <Compile Include="ViewModels\HasProjectProperty.cs" />
     <Compile Include="Views\Cards\ClassCardEditMode.xaml.cs">
       <DependentUpon>ClassCardEditMode.xaml</DependentUpon>
@@ -184,22 +199,22 @@
     <Compile Include="Views\Controls\TableController.xaml.cs">
       <DependentUpon>TableController.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Panels\YearOfStudyEditPanel.xaml.cs">
+    <Compile Include="Views\Panels\Edit\YearOfStudyEditPanel.xaml.cs">
       <DependentUpon>YearOfStudyEditPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Panels\SpecializationEditPanel.xaml.cs">
+    <Compile Include="Views\Panels\Edit\SpecializationEditPanel.xaml.cs">
       <DependentUpon>SpecializationEditPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Panels\GroupEditPanel.xaml.cs">
+    <Compile Include="Views\Panels\Edit\GroupEditPanel.xaml.cs">
       <DependentUpon>GroupEditPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Cards\ClassCardViewMode.xaml.cs">
       <DependentUpon>ClassCardViewMode.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Panels\LecturerEditPanel.xaml.cs">
+    <Compile Include="Views\Panels\Edit\LecturerEditPanel.xaml.cs">
       <DependentUpon>LecturerEditPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Panels\ClassroomEditPanel.xaml.cs">
+    <Compile Include="Views\Panels\Edit\ClassroomEditPanel.xaml.cs">
       <DependentUpon>ClassroomEditPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Cards\SubtitleCard.xaml.cs">
@@ -217,11 +232,11 @@
     <Compile Include="Helpers\BaseViewModel.cs" />
     <Compile Include="ViewModels\Cards\DayCardViewModel.cs" />
     <Compile Include="ViewModels\Windows\EditorWindowViewModel.cs" />
-    <Compile Include="ViewModels\Panels\GroupEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Panels\Edit\GroupEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Cards\ClassCardViewModel.cs" />
-    <Compile Include="ViewModels\Panels\LecturerEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Panels\Edit\LecturerEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\ListsEditWindowViewModel.cs" />
-    <Compile Include="ViewModels\Panels\ClassroomEditPanelViewModel.cs" />
+    <Compile Include="ViewModels\Panels\Edit\ClassroomEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Cards\SubtitleCardViewModel.cs" />
     <Compile Include="ViewModels\Controls\TableViewModel.cs" />
     <Compile Include="ViewModels\Cards\TimeCardViewModel.cs" />
@@ -232,6 +247,10 @@
     <Compile Include="Views\Windows\ListsEditWindow.xaml.cs">
       <DependentUpon>ListsEditWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\Windows\StatisticWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

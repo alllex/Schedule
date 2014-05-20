@@ -1,13 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Editor.Models.SearchConflicts
 {
-    using Conflicts    = List<Conflict>;
-    using ScheduleList = List<FullClassRecord>; 
+    using Conflicts = List<Conflict>;
+    using ScheduleList = List<FullClassRecord>;
 
-    class SearchConflicts
+    class ConflictSearchEngine
     {
         public static Conflicts SearchAllConflicts(ClassesSchedule schedule)
         {
@@ -20,7 +20,6 @@ namespace Editor.Models.SearchConflicts
             return conflicts;
         }
 
-        
         public static Conflicts GreaterFourClassesPerDay(ClassesSchedule schedule)
         {
             return GreaterFourClassesPerDay(schedule.ToList());
@@ -41,6 +40,8 @@ namespace Editor.Models.SearchConflicts
             return NextClassesAtDifferentAddress(schedule.ToList());
         }
 
+        #region Private Methods
+
         private static Conflicts GreaterFourClassesPerDay(ScheduleList allClasses)
         {
             var message = "Больше 4х занятий в день";
@@ -48,7 +49,7 @@ namespace Editor.Models.SearchConflicts
             var groupClasses = from c in allClasses
                                group c by new Tuple<Group, Weekdays>(c.Group, c.Time.Day);
 
-            return (from c in groupClasses where c.Count() >= 5 select new Conflict(message, ConflictType.Warning, c)).ToList();
+            return (from c in groupClasses where c.Count() > 4 select new Conflict(message, ConflictType.Warning, c)).ToList();
         }
 
         private static Conflicts GroupsInDifferentClassrooms(ScheduleList allClasses)
@@ -89,13 +90,15 @@ namespace Editor.Models.SearchConflicts
                     currClass.Time.Number - prevClass.Time.Number <= 1 &&
                     prevClass.Classroom.Address != currClass.Classroom.Address)
                 {
-                    var conflictingClasses = new List<FullClassRecord> {prevClass, currClass};
+                    var conflictingClasses = new List<FullClassRecord> { prevClass, currClass };
                     conflicts.Add(new Conflict(message, ConflictType.Warning, conflictingClasses));
                 }
-                        
+
             }
             return conflicts;
         }
+
+        #endregion
 
     }
 

@@ -1,22 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Editor.Models.DataMining
 {
+
+    public class ClassesPerWeekday
+    {
+        public Weekdays Weekday { get; set; }   
+        public int Count { get; set; }
+    }
+
     abstract public class Statistic<TSubject>
     {
-        private static int countWeekdays = Enum.GetValues(typeof(Weekdays)).Length ;
+        // ReSharper disable once StaticFieldInGenericType
+        private static readonly int CountWeekdays = Enum.GetValues(typeof(Weekdays)).Length ;
 
         protected ClassesSchedule Schedule;
-        protected TSubject Subject;
         protected IEnumerable<FullClassRecord> Classes;
-        
+
+        public TSubject Subject;
         public int CountOfClassesPerWeek { get; protected set; }
         public float AverageCountOfClassesPerDay { get; protected set; }
-        public Dictionary<Weekdays, int> CountOfClassesPerWeekday = new Dictionary<Weekdays, int>(countWeekdays);
+        public List<ClassesPerWeekday> CountOfClassesPerWeekday { get; protected set; }
 
         protected Statistic(ClassesSchedule schedule, TSubject subject, Func<FullClassRecord, TSubject> getField)
         {
@@ -45,19 +51,17 @@ namespace Editor.Models.DataMining
 
         protected void SetCountsOfClassesPerAllWeekdays()
         {
-            foreach (Weekdays weekday in Enum.GetValues(typeof(Weekdays)))
-                SetCountOfClassesPerSpecificWeekday(weekday);
-        }
-
-        protected void SetCountOfClassesPerSpecificWeekday(Weekdays weekday)
-        {
-            var count = Classes.Count(c => c.Time.Day == weekday);
-            CountOfClassesPerWeekday.Add(weekday, count);
+            CountOfClassesPerWeekday = new List<ClassesPerWeekday>();
+            foreach (Weekdays weekday in Enum.GetValues(typeof (Weekdays)))
+            {
+                var count = Classes.Count(c => c.Time.Day == weekday);
+                CountOfClassesPerWeekday.Add(new ClassesPerWeekday{ Weekday = weekday, Count = count});
+            }
         }
 
         protected void SetAverageCountOfClassesPerDay()
         {
-            AverageCountOfClassesPerDay = CountOfClassesPerWeek / (float)countWeekdays;
+            AverageCountOfClassesPerDay = CountOfClassesPerWeek / (float)CountWeekdays;
         }
     }
     

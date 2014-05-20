@@ -63,7 +63,9 @@
                 <TextBlock Text="{Binding Class.Lecturer.Name}"
                                FontStyle="Italic" />
                 <TextBlock Text="{Binding Class.Classroom.Name}"
-                               Margin="3,3,10,3" />
+                           ToolTip="{Binding Class.Classroom.Address}"
+                           Margin="3,3,10,3">
+                </TextBlock>
             </StackPanel>
         </Border>
     </DockPanel>

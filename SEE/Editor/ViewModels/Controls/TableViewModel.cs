@@ -215,6 +215,7 @@ namespace Editor.ViewModels.Controls
 
         #region Commands
 
+        public ICommand EditClassCommand { get { return new DelegateCommand(OnEditClass, CanExecuteEditClass); } }
         public ICommand CopyClassCommand { get { return new DelegateCommand(OnCopyClassCommand); } }
         public ICommand PasteClassCommand { get { return new DelegateCommand(OnPasteClassCommand); } }
         public ICommand SendToCardClipboardCommand { get { return new DelegateCommand(OnSendToCardClipboard); } }
@@ -251,6 +252,19 @@ namespace Editor.ViewModels.Controls
         }
 
         #endregion
+
+        private void OnEditClass(object param)
+        {
+            if (_selectedCard == null || _selectedCard.Class == null) return;
+            var classCard = param as ClassCardViewMode;
+            if (classCard == null) return;
+            OpenCardEditor(classCard);
+        }
+
+        private bool CanExecuteEditClass()
+        {
+            return _selectedCard != null && _selectedCard.Class != null;
+        }
 
         private void OnSendToCardClipboard()
         {
@@ -290,7 +304,11 @@ namespace Editor.ViewModels.Controls
 
         private void CardOnMouseEnter(object sender, MouseEventArgs e)
         {
-
+            if (e.LeftButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed) return;
+            var classCard = sender as ClassCardViewMode;
+            if (classCard == null) return;
+            DropSelected();
+            UpdateSelection(classCard);
         }
 
         private void CardOnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -373,6 +391,7 @@ namespace Editor.ViewModels.Controls
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
             var cm = new ContextMenu();
+            cm.Items.Add(new MenuItem { Header = "Edit", Command = EditClassCommand, CommandParameter = classCard});
             cm.Items.Add(new MenuItem { Header = "Copy", Command = CopyClassCommand });
             cm.Items.Add(new MenuItem { Header = "Paste", Command = PasteClassCommand });
             cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });

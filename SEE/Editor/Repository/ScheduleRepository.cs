@@ -38,14 +38,20 @@ namespace Editor.Repository
 
         private void InitClassrooms()
         {
-            const int classroomsCount = 20;
+            const int classroomsCount = 100;
             const int minRoomNumber = 1000;
             const int maxRoomNumber = 2001;
+
+            string[] addresses = {"Petergoff", "Saint-Petersburg", "Moscow", "Dubai"};
 
             for (int i = 0; i < classroomsCount; i++)
             {
                 int num = Rnd.Next(minRoomNumber, maxRoomNumber);
-                Schedule.Classrooms.Add(new Classroom{Name = num.ToString(CultureInfo.InvariantCulture), Address = "Seasam street"});
+                Schedule.Classrooms.Add(new Classroom
+                {
+                    Name = num.ToString(CultureInfo.InvariantCulture), 
+                    Address = addresses[Rnd.Next(addresses.Count())]
+                });
             }
         }
 
@@ -71,7 +77,7 @@ namespace Editor.Repository
 
         private void InitYearsOfStudy()
         {
-            const int yearsCount = 1;
+            const int yearsCount = 3;
             for (int i = 1; i <= yearsCount; i++)
             {
                 Schedule.YearsOfStudy.Add(new YearOfStudy{Name = i.ToString(CultureInfo.InvariantCulture)});
@@ -80,7 +86,7 @@ namespace Editor.Repository
 
         private void InitSpecializations()
         {
-            string[] specializationNames = { "Primat", "Matobess", /*"PI", "Pure math"*/ };
+            string[] specializationNames = { "Primat", "Matobess", "PI", "Pure math" };
             int specializationCount = specializationNames.Length;
             for (int i = 0; i < specializationCount; i++)
             {
@@ -90,7 +96,7 @@ namespace Editor.Repository
 
         private void InitGroups()
         {
-            string[] groupNames = { "A", "B", "C", /*"D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"*/ };
+            string[] groupNames = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N" };
             int groupCount = groupNames.Length;
             for (int i = 0; i < groupCount; i++)
             {
@@ -106,7 +112,7 @@ namespace Editor.Repository
             Schedule.CreateNewTables();
             foreach (var classesTable in Schedule.Tables)
             {
-                int classCount = classesTable.Groups.Count() * Schedule.TimeLine.Count * 5 / 6;
+                int classCount = classesTable.Groups.Count() * Schedule.TimeLine.Count;
                 for (int i = 0; i < classCount; i++)
                 {
                     Subject s = Schedule.Subjects[Rnd.Next(Schedule.Subjects.Count)];

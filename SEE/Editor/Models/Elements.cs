@@ -16,7 +16,7 @@ namespace Editor.Models
     [Serializable]
     public enum Weekdays
     {
-        Monday, Tuesday//, Wednesday, Thursday, Friday, Saturday //, Sunday
+        Monday, Tuesday, Wednesday, Thursday, Friday, Saturday //, Sunday
     }
 
     [Serializable]
@@ -203,7 +203,7 @@ namespace Editor.Models
 
     public class ClassTime : HavingId
     {
-        public static string[] ClassIntervals = { "09:00-\n10:00", "10:00-\n11:00", "11:00-\n12:00" };
+        public static string[] ClassIntervals = { "09:00-\n10:00", "10:00-\n11:00", "11:00-\n12:00", "12:00-\n13:00", "13:00-\n14:00", "14:00-\n15:00" };
 
         protected bool Equals(ClassTime other)
         {

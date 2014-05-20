@@ -1,6 +1,6 @@
 ﻿namespace Editor.ViewModels.Windows
 {
-    class ListsEditWindowViewModel : HasProjectProperty
+    class StatisticWindowViewModel : HasProjectProperty
     {
 
         #region Properties
@@ -27,7 +27,7 @@
 
         #region Ctor
 
-        public ListsEditWindowViewModel(TabCategory initTab = TabCategory.Groups)
+        public StatisticWindowViewModel(TabCategory initTab = TabCategory.Groups)
         {
             ActiveTab = initTab;
         }

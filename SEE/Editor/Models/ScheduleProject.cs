@@ -1,11 +1,12 @@
 ﻿using System.Collections.ObjectModel;
-using Editor.Helpers;
+using Editor.Models.DataMining;
+using Editor.Models.SearchConflicts;
 using Editor.ViewModels;
 using Editor.ViewModels.Cards;
 
 namespace Editor.Models
 {
-    public class ScheduleProject : HasProjectProperty
+    public class ScheduleProject : BaseViewModel
     {
 
         #region CardClipboard
@@ -46,6 +47,45 @@ namespace Editor.Models
 
         #endregion
 
+        #region StatisticCompilation
+
+        private StatisticCompilation _statisticCompilation;
+
+        public StatisticCompilation StatisticCompilation
+        {
+            get { return _statisticCompilation; }
+            set
+            {
+                if (_statisticCompilation != value)
+                {
+                    _statisticCompilation = value;
+                    RaisePropertyChanged(() => StatisticCompilation);
+                }
+            }
+        }
+
+        #endregion
+
+        #region ConflictCompilation
+
+        private ConflictCompilation _conflictCompilation;
+
+        public ConflictCompilation ConflictCompilation
+        {
+            get { return _conflictCompilation; }
+            set
+            {
+                if (_conflictCompilation != value)
+                {
+                    _conflictCompilation = value;
+                    RaisePropertyChanged(() => ConflictCompilation);
+                }
+            }
+        }
+
+        #endregion
+
         
+
     }
 }
