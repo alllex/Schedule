@@ -34,7 +34,7 @@ type Exporter =
         static member VerticalOffset = 2 //2 extra rows for group & subgroup numbers
         static member HorizontalOffset = 2 //2 extra columns for weekday and time
 
-        static member Export(path : string, data : TransferData) =
+        static member ExportFromData(path : string, data : TransferData) =
             let app = new ApplicationClass(Visible = false)
             let workbook = app.Workbooks.Add(XlWBATemplate.xlWBATWorksheet)
             Array.iter
@@ -48,7 +48,7 @@ type Exporter =
             workbook.SaveAs(Filename = path)
             app.Quit()
 
-        static member Exp(path : string, data : sClassesSchedule) =
+        static member Export(path : string, data : sClassesSchedule) =
             let numberOfSheets = data.Tables.Length
             let currentTable = data.Tables.[0]
             let numberOfDays = 
@@ -101,6 +101,6 @@ type Exporter =
                 Array.iteri writeColumn currentTable.Table
                          
         
-            Exporter.Export(path, [|list, currentTable.YearOfStudy.ToString()|])
+            Exporter.ExportFromData(path, [|list, currentTable.YearOfStudy.ToString()|])
 
     end
