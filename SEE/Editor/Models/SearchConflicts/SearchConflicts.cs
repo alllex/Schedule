@@ -19,7 +19,6 @@ namespace Editor.Models.SearchConflicts
             conflicts.AddRange(NextClassesAtDifferentAddress(allClasses));
             return conflicts;
         }
-
         
         public static Conflicts GreaterFourClassesPerDay(ClassesSchedule schedule)
         {

@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
 
-namespace Editor.ViewModels.Panels
+namespace Editor.ViewModels.Panels.Edit
 {
     class YearOfStudyEditPanelViewModel : HasProjectProperty
     {
@@ -30,8 +30,7 @@ namespace Editor.ViewModels.Panels
         }
 
         #endregion
-
-
+        
 
     }
 }

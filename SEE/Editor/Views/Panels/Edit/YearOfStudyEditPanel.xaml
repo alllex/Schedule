@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:panels="clr-namespace:Editor.ViewModels.Panels"
+             xmlns:edit="clr-namespace:Editor.ViewModels.Panels.Edit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance panels:YearOfStudyEditPanelViewModel}"
+             d:DataContext="{d:DesignInstance edit:YearOfStudyEditPanelViewModel}"
              >
     
     <UserControl.Resources>

@@ -7,12 +7,12 @@ namespace Editor.Converters
     {
         public override object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return (int) ((ListsEditorTab) value);
+            return (int) ((TabCategory) value);
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return (ListsEditorTab) ((int) value);
+            return (TabCategory) ((int) value);
         }
     }
 }
