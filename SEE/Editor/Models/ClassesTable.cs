@@ -9,16 +9,25 @@ namespace Editor.Models
         public readonly YearOfStudy YearOfStudy;
 
         public Group[] Groups;
-        public Dictionary<Group, int> GroupIndexes = new Dictionary<Group, int>(); 
+        public Dictionary<Group, int> GroupIndexes = new Dictionary<Group, int>();
+        public Dictionary<ClassTime, int> TimeIndexes = new Dictionary<ClassTime, int>();
         public ClassRecord[][] Table;
-       
 
         public ClassesTable(ClassesSchedule schedule, YearOfStudy yearOfStudy)
         {
             _schedule = schedule;
             YearOfStudy = yearOfStudy;
             SetGroups();
+            SetTime();
             CreateTable();
+        }
+
+        private void SetTime()
+        {
+            for (int i = 0; i < _schedule.TimeLine.Count(); i++)
+            {
+                TimeIndexes.Add(_schedule.TimeLine[i], i);
+            }
         }
 
         private void SetGroups()

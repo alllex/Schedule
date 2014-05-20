@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
+using Editor.Models.SearchConflicts;
 using Editor.ViewModels.Cards;
 using Editor.ViewModels.Helpers;
 using Editor.Views.Cards;
@@ -133,6 +134,57 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
+        #region Public
+
+        public void ShowConflicts()
+        {
+            if (Project == null || Project.ConflictCompilation == null || Project.ConflictCompilation.Conflicts == null) return;
+            foreach (var conflict in Project.ConflictCompilation.Conflicts)
+            {
+                foreach (var conflictingClass in conflict.ConflictingClasses)
+                {
+                    var group = conflictingClass.Group;
+                    if (group.YearOfStudy != _classesTable.YearOfStudy) continue;
+                    var time = conflictingClass.Time;
+                    var row = _classesTable.TimeIndexes[time];
+                    var column = _classesTable.GroupIndexes[group];
+                    if (row < 0 || column < 0 || row >= ClassesRowsCount || column >= ClassesColumnsCount)
+                    {
+                        continue;
+                    }
+                    var vmodel = ClassesCards[row][column].DataContext as ClassCardViewModel;
+                    if (vmodel == null) continue;
+                    switch (conflict.ConflictType)
+                    {
+                        case ConflictType.Warning:
+                            vmodel.HasWarning = true;
+                            break;
+                        case ConflictType.Conflict:
+                            vmodel.HasConflict = true;
+                            break;
+                    }
+                }
+            }
+        }
+
+        public void HideConflicts()
+        {
+            for (var row = 0; row < ClassesRowsCount; row++)
+            {
+                for (var col = 0; col < ClassesColumnsCount; col++)
+                {
+                    var vmodel = ClassesCards[row][col].DataContext as ClassCardViewModel;
+                    if (vmodel == null) continue;
+                    vmodel.HasConflict = false;
+                    vmodel.HasWarning = false;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Initialization
+
         private void InitializeTitles()
         {
             Titles = new ObservableCollection<UIElement>();
@@ -190,12 +242,12 @@ namespace Editor.ViewModels.Controls
                 {
                     ClassesCards[row][col] = CreateClassCard(row, col);
                 }
-            }    
+            }
         }
 
         private ClassCardViewMode CreateClassCard(int row, int column)
         {
-            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]){Project = Project};
+            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]) { Project = Project };
             var classCard = new ClassCardViewMode { DataContext = viewModel };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
@@ -213,12 +265,16 @@ namespace Editor.ViewModels.Controls
             return TitleRowsCount + ClassesRowsCount;
         }
 
+        #endregion
+
         #region Commands
 
         public ICommand EditClassCommand { get { return new DelegateCommand(OnEditClass, CanExecuteEditClass); } }
         public ICommand CopyClassCommand { get { return new DelegateCommand(OnCopyClassCommand); } }
         public ICommand PasteClassCommand { get { return new DelegateCommand(OnPasteClassCommand); } }
         public ICommand SendToCardClipboardCommand { get { return new DelegateCommand(OnSendToCardClipboard); } }
+        public ICommand CutClassCommand { get { return new DelegateCommand(OnCutClass, CanExecuteHasClass); } }
+        public ICommand DeleteClassCommand { get { return new DelegateCommand(OnDeleteClass, CanExecuteHasClass); } }
         
         #endregion
 
@@ -253,9 +309,44 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
-        private void OnEditClass(object param)
+        private void OnCutClass(object param)
         {
             if (_selectedCard == null || _selectedCard.Class == null) return;
+            var classCard = param as ClassCardViewMode;
+            if (classCard == null) return;
+            var row = Grid.GetRow(classCard) - TitleRowsCount;
+            var col = Grid.GetColumn(classCard) - TimeColumnsCount;
+
+            var @class = new ClassRecord();
+            ClassRecord.Copy(_classesTable.Table[row][col], @class);
+            ClipboardService.SetData(@class);
+
+            var vmodel = classCard.DataContext as ClassCardViewModel;
+            if (vmodel == null) return;
+
+            vmodel.Class = null;
+            _classesTable.Table[row][col] = null;
+
+        }
+        
+        private void OnDeleteClass(object param)
+        {
+            if (_selectedCard == null || _selectedCard.Class == null) return;
+            var classCard = param as ClassCardViewMode;
+            if (classCard == null) return;
+            var row = Grid.GetRow(classCard) - TitleRowsCount;
+            var col = Grid.GetColumn(classCard) - TimeColumnsCount;
+
+            var vmodel = classCard.DataContext as ClassCardViewModel;
+            if (vmodel == null) return;
+
+            vmodel.Class = null;
+            _classesTable.Table[row][col] = null;
+        }
+
+        private void OnEditClass(object param)
+        {
+            if (_selectedCard == null) return;
             var classCard = param as ClassCardViewMode;
             if (classCard == null) return;
             OpenCardEditor(classCard);
@@ -263,7 +354,7 @@ namespace Editor.ViewModels.Controls
 
         private bool CanExecuteEditClass()
         {
-            return _selectedCard != null && _selectedCard.Class != null;
+            return _selectedCard != null;
         }
 
         private void OnSendToCardClipboard()
@@ -271,6 +362,11 @@ namespace Editor.ViewModels.Controls
 //            if (_selectedCard == null || _selectedCard.Class == null) return;
 //            var model = new ClassCardViewModel(_selectedCard.Class);
 //            Project.CardClipboard.Add(model);
+        }
+
+        private bool CanExecuteHasClass()
+        {
+            return _selectedCard != null && _selectedCard.Class != null;
         }
 
         #endregion
@@ -394,7 +490,9 @@ namespace Editor.ViewModels.Controls
             cm.Items.Add(new MenuItem { Header = "Edit", Command = EditClassCommand, CommandParameter = classCard});
             cm.Items.Add(new MenuItem { Header = "Copy", Command = CopyClassCommand });
             cm.Items.Add(new MenuItem { Header = "Paste", Command = PasteClassCommand });
-            cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });
+            cm.Items.Add(new MenuItem { Header = "Cut", Command = CutClassCommand, CommandParameter = classCard });
+            cm.Items.Add(new MenuItem { Header = "Delete", Command = DeleteClassCommand, CommandParameter = classCard });
+            //cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });
             cm.IsOpen = true;
         }
 

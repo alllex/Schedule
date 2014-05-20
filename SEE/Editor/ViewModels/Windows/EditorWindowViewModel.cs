@@ -1,8 +1,11 @@
 ﻿using System.ComponentModel;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
 using Editor.Models.DataMining;
+using Editor.Models.SearchConflicts;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
 using Editor.Views.Windows;
@@ -97,11 +100,49 @@ namespace Editor.ViewModels.Windows
         public ICommand OpenProjectCommand { get { return new DelegateCommand(OnOpenProject); } }
         public ICommand CalcStatisticCommand { get { return new DelegateCommand(OnCalcStatistic, CanExecuteHasActiveProject); } }
         public ICommand OpenStatisticWindowCommand { get { return new DelegateCommand(OnOpenStatisticWindow, CanExecuteHasActiveProject); } }
+        public ICommand CheckConflictGreaterThanFourClassesPerDayCommand { get { return new DelegateCommand(OnCheckConflictGreaterThanFourClassesPerDay, CanExecuteHasActiveProject); } }
+        public ICommand ShowHideConflictsCommand { get { return new DelegateCommand(OnShowHideConflicts, CanExecuteShowHideConflicts); } }
+
 
         #endregion
 
         #region Command Handlers
 
+        private void OnShowHideConflicts()
+        {
+            if (Project.AreConflictsShown)
+            {
+                _tableController.HideConflicts();
+                Project.AreConflictsShown = false;
+            }
+            else
+            {
+                if (Project.ConflictCompilation.Conflicts.Any())
+                {
+                    _tableController.ShowConflicts();
+                    Project.AreConflictsShown = true;
+                }
+                else
+                {
+                    MessageBox.Show("There're no conflicts!");
+                }
+            }
+        }
+
+        private bool CanExecuteShowHideConflicts()
+        {
+            return HasActiveProject && Project.ConflictCompilation != null;
+        }
+
+        private void OnCheckConflictGreaterThanFourClassesPerDay()
+        {
+            if (Project != null && Project.ClassesSchedule != null)
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                Project.ConflictCompilation = new ConflictCompilation(Project.ClassesSchedule, ConflictCriteria.GreaterThanFourClassesPerDay);
+                Mouse.OverrideCursor = Cursors.Arrow;
+            }
+        }
 
         private void OnCalcStatistic()
         {
