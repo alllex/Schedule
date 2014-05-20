@@ -21,6 +21,7 @@ namespace Editor.Views.Windows
             if (model != null)
             {
                 GroupStatPanel.DataContext = new GroupStatPanelViewModel { Project = model.Project };
+                LecturerStatPanel.DataContext = new LecturerStatPanelViewModel { Project = model.Project };
             }
         }
     }

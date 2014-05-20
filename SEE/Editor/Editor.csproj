@@ -62,11 +62,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\StatisticCompilation.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\TabCategory.cs" />
     <Compile Include="ViewModels\Windows\StatisticWindowViewModel.cs" />
-    <Compile Include="Views\Panels\Statistics\GroupStatPanel.xaml.cs">
-      <DependentUpon>GroupStatPanel.xaml</DependentUpon>
+    <Compile Include="Views\Panels\Statistics\StatPanel.xaml.cs">
+      <DependentUpon>StatPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Windows\StatisticWindow.xaml.cs">
       <DependentUpon>StatisticWindow.xaml</DependentUpon>
@@ -139,7 +140,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Panels\Statistics\GroupStatPanel.xaml">
+    <Page Include="Views\Panels\Statistics\StatPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -167,7 +168,7 @@
     <Compile Include="Models\ClassesTable.cs" />
     <Compile Include="Models\FullClassRecord.cs" />
     <Compile Include="Models\DataMining\Statistic.cs" />
-    <Compile Include="Models\DataMining\DataMining.cs" />
+    <Compile Include="Models\DataMining\DataMiner.cs" />
     <Compile Include="Models\DataMining\StatisticOf.cs" />
     <Compile Include="Models\Elements.cs" />
     <Compile Include="Models\Interfaces.cs" />

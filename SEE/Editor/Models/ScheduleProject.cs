@@ -1,11 +1,10 @@
 ﻿using System.Collections.ObjectModel;
-using Editor.Helpers;
 using Editor.ViewModels;
 using Editor.ViewModels.Cards;
 
 namespace Editor.Models
 {
-    public class ScheduleProject : HasProjectProperty
+    public class ScheduleProject : BaseViewModel
     {
 
         #region CardClipboard
@@ -46,6 +45,24 @@ namespace Editor.Models
 
         #endregion
 
+        #region StatisticCompilation
+
+        private StatisticCompilation _statisticCompilation;
+
+        public StatisticCompilation StatisticCompilation
+        {
+            get { return _statisticCompilation; }
+            set
+            {
+                if (_statisticCompilation != value)
+                {
+                    _statisticCompilation = value;
+                    RaisePropertyChanged(() => StatisticCompilation);
+                }
+            }
+        }
+
+        #endregion
         
     }
 }

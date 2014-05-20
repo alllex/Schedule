@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using Editor.ViewModels.Panels;
 using Editor.ViewModels.Panels.Edit;
 using Editor.ViewModels.Windows;
 

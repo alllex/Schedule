@@ -32,7 +32,6 @@ namespace Editor.Models.DataMining
 
     public class StatisticOfGroup : Statistic<Group>
     {
-        
         public StatisticOfGroup(ClassesSchedule schedule, Group subject)
             : base(schedule, subject, f => f.Group) { }
     }

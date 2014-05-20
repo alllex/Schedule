@@ -5,9 +5,9 @@ namespace Editor.Views.Panels.Statistics
     /// <summary>
     /// Interaction logic for GroupStatPanel.xaml
     /// </summary>
-    public partial class GroupStatPanel : UserControl
+    public partial class StatPanel : UserControl
     {
-        public GroupStatPanel()
+        public StatPanel()
         {
             InitializeComponent();
         }

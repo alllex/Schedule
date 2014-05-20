@@ -1,6 +1,6 @@
 ﻿namespace Editor.Models.DataMining
 {
-    public class DataMining
+    public class DataMiner
     {
         public static StatisticOfGroup StaticticOfGroup(ClassesSchedule schedule, Group group)
         {

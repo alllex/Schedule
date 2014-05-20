@@ -44,6 +44,8 @@
                           />
             </MenuItem>
             <MenuItem Header="Statistic">
+                <MenuItem Header="Calculate statistic"
+                          Command="{Binding CalcStatisticCommand}"/>
                 <MenuItem Header="Open Statistic Window"
                           Command="{Binding OpenStatisticWindowCommand}"/>
             </MenuItem>

@@ -290,9 +290,9 @@ namespace Editor.Models
             
             foreach (var table in Tables)
                 for (int i = 0; i < TimeLine.Count; ++i)
-                    for (int j = 0; j < Groups.Count; ++j)
+                    for (int j = 0; j < table.Groups.Count(); ++j)
                         if (table.Table[i][j] != null)
-                            classes.Add(new FullClassRecord(TimeLine[i], Groups[j], table.Table[i][j]));
+                            classes.Add(new FullClassRecord(TimeLine[i], table.Groups[j], table.Table[i][j]));
 
             return classes;
         }

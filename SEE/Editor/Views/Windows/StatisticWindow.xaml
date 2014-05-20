@@ -19,7 +19,10 @@
         <TabControl x:Name="SectionsTabControl"
                     SelectedIndex="{Binding ActiveTab, Converter={converters:ListsEditorTabToIntConverter}}">
             <TabItem Header="Группы">
-                <statistics:GroupStatPanel x:Name="GroupStatPanel" />
+                <statistics:StatPanel x:Name="GroupStatPanel" />
+            </TabItem>
+            <TabItem Header="Преподаватели">
+                <statistics:StatPanel x:Name="LecturerStatPanel" />
             </TabItem>
         </TabControl>
     </DockPanel>

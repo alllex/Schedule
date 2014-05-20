@@ -98,11 +98,23 @@ namespace Editor.ViewModels.Windows
         public ICommand NewProjectCommand { get { return new DelegateCommand(OnNewProject); } }
         public ICommand SaveProjectCommand { get { return new DelegateCommand(OnSaveProject, CanExecuteHasActiveProject); } }
         public ICommand OpenProjectCommand { get { return new DelegateCommand(OnOpenProject); } }
+        public ICommand CalcStatisticCommand { get { return new DelegateCommand(OnCalcStatistic, CanExecuteHasActiveProject); } }
         public ICommand OpenStatisticWindowCommand { get { return new DelegateCommand(OnOpenStatisticWindow, CanExecuteHasActiveProject); } }
 
         #endregion
 
         #region Command Handlers
+
+
+        private void OnCalcStatistic()
+        {
+            if (Project != null && Project.ClassesSchedule != null)
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                Project.StatisticCompilation = new StatisticCompilation(Project.ClassesSchedule);
+                Mouse.OverrideCursor = Cursors.Arrow;
+            }
+        }
 
         private void OnOpenStatisticWindow()
         {
@@ -149,8 +161,10 @@ namespace Editor.ViewModels.Windows
 
         private void OnLoadRandomSchedule()
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             _tableController.Tables.Clear();
             SetNewProject(new ScheduleProject { ClassesSchedule = new ScheduleRepository().Schedule });
+            Mouse.OverrideCursor = Cursors.Arrow;
         }
 
         private void OnOpenGroupsEditor()
