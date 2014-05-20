@@ -17,6 +17,8 @@ namespace Editor.Models.SearchConflicts
             conflicts.AddRange(GroupsInDifferentClassrooms(allClasses));
             conflicts.AddRange(LecterersInDifferentClassrooms(allClasses));
             conflicts.AddRange(NextClassesAtDifferentAddress(allClasses));
+            conflicts.AddRange(CardsWithBlankFields(allClasses));
+
             return conflicts;
         }
         
@@ -38,6 +40,11 @@ namespace Editor.Models.SearchConflicts
         public static Conflicts NextClassesAtDifferentAddress(ClassesSchedule schedule)
         {
             return NextClassesAtDifferentAddress(schedule.ToList());
+        }
+
+        public static Conflicts CardsWithBlankFields(ClassesSchedule schedule)
+        {
+            return CardsWithBlankFields(schedule.ToList());
         }
 
         #region Private Methods
@@ -86,16 +93,27 @@ namespace Editor.Models.SearchConflicts
             for (int i = 1; i < allClasses.Count; ++i)
             {
                 var currClass = classes.ElementAt(i);
-                if (prevClass.Time.Day == currClass.Time.Day &&
+
+                if (currClass.Time != null && prevClass.Time != null &&
+                    currClass.Classroom != null && prevClass.Classroom != null &&
+                    prevClass.Time.Day == currClass.Time.Day &&
                     currClass.Time.Number - prevClass.Time.Number <= 1 &&
                     prevClass.Classroom.Address != currClass.Classroom.Address)
                 {
                     var conflictingClasses = new List<FullClassRecord> { prevClass, currClass };
                     conflicts.Add(new Conflict(message, ConflictType.Warning, conflictingClasses));
                 }
-
             }
             return conflicts;
+        }
+
+        private static Conflicts CardsWithBlankFields(ScheduleList allClasses)
+        {
+            var message = "У этой карточки не заполнены некоторые поля.";
+
+            return (from c in allClasses
+                    where c.Lecturer == null || c.Classroom == null || c.Subject == null
+                    select new Conflict(message, ConflictType.Warning, c)).ToList();
         }
 
         #endregion

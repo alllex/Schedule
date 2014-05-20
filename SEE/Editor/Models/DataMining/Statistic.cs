@@ -34,8 +34,11 @@ namespace Editor.Models.DataMining
 
         protected void SetClasses(Func<FullClassRecord, TSubject> getField) 
         {
-            Classes = Schedule.ToList().Where(f => getField(f).Equals(Subject));
+            Classes = Schedule.ToList().Where(f => { var field = getField(f); 
+                                                     return field == null ? false : field.Equals(Subject); 
+                                                   });
         }
+
 
         protected void SetCounts()
         {

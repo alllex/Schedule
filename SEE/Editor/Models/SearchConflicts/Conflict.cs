@@ -17,5 +17,12 @@ namespace Editor.Models.SearchConflicts
             ConflictType = conflictType;
             ConflictingClasses = conflictingClasses;
         }
+
+        public Conflict(String message, ConflictType conflictType, FullClassRecord conflictingClass)
+        {
+            Message = message;
+            ConflictType = conflictType;
+            ConflictingClasses = new List<FullClassRecord> { conflictingClass };
+        }
     }
 }

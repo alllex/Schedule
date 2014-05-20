@@ -8,7 +8,7 @@ namespace Editor.Models.DataMining
         public Dictionary<ClassTime, int> CountGroupsInClassroom;
         
         public StatisticOfClassroom(ClassesSchedule schedule, Classroom subject)
-            : base(schedule, subject, f => f.Classroom) 
+            : base(schedule, subject, f => f == null ? null : f.Classroom) 
         {
             CountGroupsInClassroom = new Dictionary<ClassTime, int>(schedule.TimeLine.Count);
             SetCountGroupsInClassroom();
@@ -33,24 +33,24 @@ namespace Editor.Models.DataMining
     public class StatisticOfGroup : Statistic<Group>
     {
         public StatisticOfGroup(ClassesSchedule schedule, Group subject)
-            : base(schedule, subject, f => f.Group) { }
+            : base(schedule, subject, f => f == null ? null : f.Group) { }
     }
 
     public class StatisticOfLecturer  : Statistic<Lecturer>
     {
         public StatisticOfLecturer(ClassesSchedule schedule, Lecturer subject)
-            : base(schedule, subject, f => f.Lecturer) { }
+            : base(schedule, subject, f => f == null ? null : f.Lecturer) { }
     }
 
     public class StatisticOfTime      : Statistic<ClassTime>
     {
         public StatisticOfTime(ClassesSchedule schedule, ClassTime subject)
-            : base(schedule, subject, f => f.Time) { }
+            : base(schedule, subject, f => f == null ? null : f.Time) { }
     }
 
     public class StatisticOfSubject   : Statistic<Subject>
     {
         public StatisticOfSubject(ClassesSchedule schedule, Subject subject)
-            : base(schedule, subject, f => f.Subject) { }
+            : base(schedule, subject, f => f == null ? null : f.Subject) { }
     }
 }

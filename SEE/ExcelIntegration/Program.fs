@@ -70,26 +70,37 @@ type Exporter =
                 let writeTimes i (x : sClassTime) = 
                     list.[i + Exporter.VerticalOffset, 1] <- ClassTime.ClassIntervals.[x.Number]
 
-                    if x.Day <> !currentDay 
-                    then list.[i + Exporter.VerticalOffset, 0] <- x.Day.ToString()
-                         currentDay.Value <- x.Day
+                    if x.Day <> !currentDay then 
+                        list.[i + Exporter.VerticalOffset, 0] <- x.Day.ToString()
+                        currentDay.Value <- x.Day
             
                 list.[Exporter.VerticalOffset, 0] <- currentDay.Value.ToString() 
                 Array.iteri writeTimes data.TimeLine
 
-           (* if data.TimeLine.Length > 0 then
-                let currentSpecialization = ref currentTable.G
-                let writeTimes i (x : sClassTime) = 
-                    list.[i + Exporter.VerticalOffset, 1] <- ClassTime.ClassIntervals.[x.Number]
+            if currentTable.Groups.Length > 0 then
+                let currentSpecialization = ref currentTable.Groups.[0].Specialization
+                let writeGroups i (x : sGroup) = 
+                    list.[1, i + Exporter.HorizontalOffset] <- currentTable.Groups.[i].Name
 
-                    if x.Day <> !currentDay 
-                    then list.[i + Exporter.VerticalOffset, 0] <- x.Day.ToString()
-                         currentDay.Value <- x.Day
+                    if x.Specialization <> !currentSpecialization then 
+                        list.[0, i + Exporter.HorizontalOffset] <- x.Specialization.Name
+                        currentSpecialization.Value <- x.Specialization
             
-                list.[Exporter.VerticalOffset, 0] <- currentDay.Value.ToString() 
-                Array.iteri writeTimes data.TimeLine *)
+                list.[0, Exporter.HorizontalOffset] <- currentSpecialization.Value.Name
+                Array.iteri writeGroups currentTable.Groups
 
-           // let list1 = array2D [for i in 0 .. data.TimeLine.Length - 1 -> [data.TimeLine.[i].Day.ToString()]]
+            if currentTable.Table.Length > 0 then
+                let writeColumn i (x : sClassRecord[]) =
+                    let writeClasses j (x : sClassRecord) =
+                        list.[i + Exporter.VerticalOffset, j + Exporter.HorizontalOffset] <-
+                            if x <> null then 
+                                x.Subject.Name + "\n" + x.Lecturer.Name + "\n" + x.Classroom.Name
+                            else ""
+                    Array.iteri writeClasses x
+
+                Array.iteri writeColumn currentTable.Table
+                         
+        
             Exporter.Export(path, [|list, currentTable.YearOfStudy.ToString()|])
 
     end
