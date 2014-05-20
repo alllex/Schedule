@@ -107,14 +107,11 @@ namespace Editor.Models.SearchConflicts
 
         private static Conflicts CardsWithBlankFields(ScheduleList allClasses)
         {
-            var conflicts = new Conflicts();
             var message = "У этой карточки не заполнены некоторые поля.";
 
-            foreach (var @class in allClasses)
-                if (@class.Classroom == null || @class.Lecturer == null || @class.Subject == null)
-                    conflicts.Add(new Conflict(message, ConflictType.Warning, @class));
-
-            return conflicts;
+            return (from c in allClasses
+                    where c.Lecturer == null || c.Classroom == null || c.Subject == null
+                    select new Conflict(message, ConflictType.Warning, c)).ToList();
         }
 
         #endregion
