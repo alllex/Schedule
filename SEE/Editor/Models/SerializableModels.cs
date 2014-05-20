@@ -182,11 +182,21 @@ namespace Editor.Models
     {
         public sYearOfStudy YearOfStudy;
         public sClassRecord[][] Table;
+        public sGroup[] Groups;
 
         public sClassesTable(ClassesTable table, sClassesSchedule schedule) : base(table.YearOfStudy)
         {  
             CopyYearOfStudy(table, schedule);
+            CopyGroups(table, schedule);
             CopyTable(table, schedule);
+        }
+
+        private void CopyGroups(ClassesTable table, sClassesSchedule schedule)
+        {
+            var length = table.Groups.Length;
+            Groups = new sGroup[length];
+            for (int i = 0; i < length; ++i)
+                Groups[i] = schedule.Groups[table.Groups[i].GetHashCode()];
         }
 
         private void CopyYearOfStudy(ClassesTable table, sClassesSchedule schedule)
