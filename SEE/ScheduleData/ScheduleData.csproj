@@ -39,11 +39,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImplementationData.cs" />
-    <Compile Include="ImplementationForEditor.cs" />
+    <Compile Include="ClassesSchedule.cs" />
+    <Compile Include="ClassesTable.cs" />
+    <Compile Include="DataMining\DataMiner.cs" />
+    <Compile Include="DataMining\Statistic.cs" />
+    <Compile Include="DataMining\StatisticCompilation.cs" />
+    <Compile Include="DataMining\StatisticOf.cs" />
+    <Compile Include="Elements.cs" />
+    <Compile Include="FullClassRecord.cs" />
+    <Compile Include="Helpers\NotificationObject.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchConflicts\Conflict.cs" />
+    <Compile Include="SearchConflicts\ConflictCompilation.cs" />
+    <Compile Include="SearchConflicts\ConflictSearchEngine.cs" />
+    <Compile Include="SerializableModels.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

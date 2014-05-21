@@ -51,9 +51,9 @@
     <None Include="Tests.fsx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Editor\Editor.csproj">
-      <Name>Editor</Name>
-      <Project>{0e31e440-d6b1-443d-b234-47d8f59f4cfa}</Project>
+    <ProjectReference Include="..\ScheduleData\ScheduleData.csproj">
+      <Name>ScheduleData</Name>
+      <Project>{038bb399-cf52-47bd-9ff3-8b43a016e070}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
