@@ -21,8 +21,23 @@ namespace Editor.Models.SearchConflicts
         {
             switch (criteria)
             {
+                case ConflictCriteria.All:
+                    Conflicts = ConflictSearchEngine.SearchAllConflicts(schedule);
+                    break;
                 case ConflictCriteria.GreaterThanFourClassesPerDay:
                     Conflicts = ConflictSearchEngine.GreaterThanFourClassesPerDay(schedule);
+                    break;
+                case ConflictCriteria.CardsWithBlankFields:
+                    Conflicts = ConflictSearchEngine.CardsWithBlankFields(schedule);
+                    break;
+                case ConflictCriteria.GroupsInDifferentClassrooms:
+                    Conflicts = ConflictSearchEngine.GroupsInDifferentClassrooms(schedule);
+                    break;
+                case ConflictCriteria.LecturersInDifferentClassrooms:
+                    Conflicts = ConflictSearchEngine.LecterersInDifferentClassrooms(schedule);
+                    break;
+                case ConflictCriteria.NextClassesAtDifferentAddress:
+                    Conflicts = ConflictSearchEngine.NextClassesAtDifferentAddress(schedule);
                     break;
             }
         }

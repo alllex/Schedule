@@ -88,25 +88,71 @@ namespace Editor.ViewModels.Windows
 
         #region Commands
 
+        #region ListsEditor commands
+
         public ICommand OpenListsEditorCommand { get { return new DelegateCommand(OnOpenListsEditor, CanExecuteHasActiveProject); } }
         public ICommand OpenGroupsEditorCommand { get { return new DelegateCommand(OnOpenGroupsEditor, CanExecuteHasActiveProject); } }
         public ICommand OpenLecturersEditorCommand { get { return new DelegateCommand(OnOpenLecturersEditor, CanExecuteHasActiveProject); } }
         public ICommand OpenClassroomsEditorCommand { get { return new DelegateCommand(OnOpenClassroomsEditor, CanExecuteHasActiveProject); } }
         public ICommand OpenSpecializationsEditorCommand { get { return new DelegateCommand(OnOpenSpecializationEditor, CanExecuteHasActiveProject); } }
         public ICommand OpenYearsOfStudyEditorCommand { get { return new DelegateCommand(OnOpenYearsOfStudyEditor, CanExecuteHasActiveProject); } }
+
+        #endregion
+
         public ICommand LoadRandomScheduleCommand { get { return new DelegateCommand(OnLoadRandomSchedule); } }
         public ICommand NewProjectCommand { get { return new DelegateCommand(OnNewProject); } }
         public ICommand SaveProjectCommand { get { return new DelegateCommand(OnSaveProject, CanExecuteHasActiveProject); } }
         public ICommand OpenProjectCommand { get { return new DelegateCommand(OnOpenProject); } }
+
         public ICommand CalcStatisticCommand { get { return new DelegateCommand(OnCalcStatistic, CanExecuteHasActiveProject); } }
         public ICommand OpenStatisticWindowCommand { get { return new DelegateCommand(OnOpenStatisticWindow, CanExecuteHasStatistic); } }
+
+        #region Conflicts
+
+        public ICommand CheckAllConflictsCommand { get { return new DelegateCommand(OnCheckCheckAllConflicts, CanExecuteHasActiveProject); } }
+        public ICommand CheckConflictGroupsInDifferentClassroomsCommand { get { return new DelegateCommand(OnCheckConflictGroupsInDifferentClassrooms, CanExecuteHasActiveProject); } }
+        public ICommand CheckConflictLecturersInDifferentClassroomsCommand { get { return new DelegateCommand(OnCheckConflictLecturersInDifferentClassrooms, CanExecuteHasActiveProject); } }
+        public ICommand CheckConflictNextClassesAtDifferentAddressCommand { get { return new DelegateCommand(OnCheckConflictNextClassesAtDifferentAddress, CanExecuteHasActiveProject); } }
+        public ICommand CheckConflictCardsWithBlankFieldsCommand { get { return new DelegateCommand(OnCheckConflictCardsWithBlankFields, CanExecuteHasActiveProject); } }
         public ICommand CheckConflictGreaterThanFourClassesPerDayCommand { get { return new DelegateCommand(OnCheckConflictGreaterThanFourClassesPerDay, CanExecuteHasActiveProject); } }
         public ICommand ShowHideConflictsCommand { get { return new DelegateCommand(OnShowHideConflicts, CanExecuteShowHideConflicts); } }
+
+        #endregion
 
 
         #endregion
 
         #region Command Handlers
+
+        private void OnCheckCheckAllConflicts()
+        {
+            CheckConflict(ConflictCriteria.All);
+        }
+
+        private void OnCheckConflictGreaterThanFourClassesPerDay()
+        {
+            CheckConflict(ConflictCriteria.GreaterThanFourClassesPerDay);
+        }
+
+        private void OnCheckConflictCardsWithBlankFields()
+        {
+            CheckConflict(ConflictCriteria.CardsWithBlankFields);
+        }
+
+        private void OnCheckConflictNextClassesAtDifferentAddress()
+        {
+            CheckConflict(ConflictCriteria.NextClassesAtDifferentAddress);
+        }
+
+        private void OnCheckConflictLecturersInDifferentClassrooms()
+        {
+            CheckConflict(ConflictCriteria.LecturersInDifferentClassrooms);
+        }
+
+        private void OnCheckConflictGroupsInDifferentClassrooms()
+        {
+            CheckConflict(ConflictCriteria.GroupsInDifferentClassrooms);
+        }
 
         private void OnShowHideConflicts()
         {
@@ -134,13 +180,21 @@ namespace Editor.ViewModels.Windows
             return HasActiveProject && Project.ConflictCompilation != null;
         }
 
-        private void OnCheckConflictGreaterThanFourClassesPerDay()
+        private void CheckConflict(ConflictCriteria criteria)
         {
             if (Project != null && Project.ClassesSchedule != null)
             {
                 Mouse.OverrideCursor = Cursors.Wait;
-                Project.ConflictCompilation = new ConflictCompilation(Project.ClassesSchedule, ConflictCriteria.GreaterThanFourClassesPerDay);
+                if (Project.AreConflictsShown)
+                {
+                    OnShowHideConflicts();
+                }
+                Project.ConflictCompilation = new ConflictCompilation(Project.ClassesSchedule, criteria);
                 Mouse.OverrideCursor = Cursors.Arrow;
+                if (!Project.AreConflictsShown)
+                {
+                    OnShowHideConflicts();
+                }
             }
         }
 
