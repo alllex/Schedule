@@ -14,7 +14,7 @@ namespace Editor.Models.SearchConflicts
 
     public class ConflictCompilation
     {
-        public List<Conflict> Conflicts;
+        public IEnumerable<Conflict> Conflicts;
 
         public ConflictCompilation(ClassesSchedule schedule, ConflictCriteria criteria)
         {
