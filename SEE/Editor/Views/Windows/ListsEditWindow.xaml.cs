@@ -22,6 +22,7 @@ namespace Editor.Views.Windows
             {
                 ClassroomEditPanel.DataContext = new ClassroomEditPanelViewModel { Project = model.Project };
                 GroupEditPanel.DataContext = new GroupEditPanelViewModel { Project = model.Project };
+                SubjectEditPanel.DataContext = new SubjectEditPanelViewModel() { Project = model.Project };
                 LecturerEditPanel.DataContext = new LecturerEditPanelViewModel { Project = model.Project };
                 SpecializationEditPanel.DataContext = new SpecializationEditPanelViewModel {Project = model.Project};
                 YearOfStudyEditPanel.DataContext = new YearOfStudyEditPanelViewModel { Project = model.Project };

@@ -2,13 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:Editor.Converters"
-        xmlns:panels="clr-namespace:Editor.Views.Panels"
         Title="Списки" Height="500" Width="700"
         WindowStartupLocation="CenterScreen"
         
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Editor.ViewModels.Windows"
+        xmlns:edit="clr-namespace:Editor.Views.Panels.Edit"
         mc:Ignorable="d"
         
         d:DataContext="{d:DesignInstance viewModels:ListsEditWindowViewModel}"
@@ -18,19 +18,22 @@
         <TabControl x:Name="SectionsTabControl"
                     SelectedIndex="{Binding ActiveTab, Converter={converters:ListsEditorTabToIntConverter}}">
             <TabItem Header="Группы">
-                    <panels:GroupEditPanel x:Name="GroupEditPanel"/>
+                    <edit:GroupEditPanel x:Name="GroupEditPanel"/>
+            </TabItem>
+            <TabItem Header="Предметы">
+                <edit:SubjectEditPanel x:Name="SubjectEditPanel"/>
             </TabItem>
             <TabItem Header="Преподаватели">
-                <panels:LecturerEditPanel  x:Name="LecturerEditPanel"/>
+                <edit:LecturerEditPanel  x:Name="LecturerEditPanel"/>
             </TabItem>
             <TabItem Header="Аудитории">
-                <panels:ClassroomEditPanel x:Name="ClassroomEditPanel"/>
+                <edit:ClassroomEditPanel x:Name="ClassroomEditPanel"/>
             </TabItem>
             <TabItem Header="Специальности">
-                <panels:SpecializationEditPanel x:Name="SpecializationEditPanel"/>
+                <edit:SpecializationEditPanel x:Name="SpecializationEditPanel"/>
             </TabItem>
             <TabItem Header="Курсы">
-                <panels:YearOfStudyEditPanel x:Name="YearOfStudyEditPanel"/>
+                <edit:YearOfStudyEditPanel x:Name="YearOfStudyEditPanel"/>
             </TabItem>
         </TabControl>
     </DockPanel>

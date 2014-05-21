@@ -65,9 +65,13 @@
     <Compile Include="Helpers\ScrollViewerEx.cs" />
     <Compile Include="Models\DataMining\StatisticCompilation.cs" />
     <Compile Include="Models\SearchConflicts\ConflictCompilation.cs" />
+    <Compile Include="ViewModels\Panels\Edit\SubjectEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\TabCategory.cs" />
     <Compile Include="ViewModels\Windows\StatisticWindowViewModel.cs" />
+    <Compile Include="Views\Panels\Edit\SubjectEditPanel.xaml.cs">
+      <DependentUpon>SubjectEditPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Panels\Statistics\StatPanel.xaml.cs">
       <DependentUpon>StatPanel.xaml</DependentUpon>
     </Compile>
@@ -99,6 +103,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\TableController.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Panels\Edit\SubjectEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -164,7 +172,7 @@
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\ClipboardService.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
-    <Compile Include="Helpers\ExObservableCollection.cs" />
+    <Compile Include="Helpers\ObservableCollectionEx.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
     <Compile Include="Models\ClassesSchedule.cs" />
     <Compile Include="Models\ClassesTable.cs" />

@@ -269,7 +269,9 @@ namespace Editor.ViewModels.Windows
 
         private void OnNewProject()
         {
-            SetNewProject(new ScheduleProject { ClassesSchedule = new ClassesSchedule() });
+            var schedule = new ClassesSchedule();
+            schedule.InitStdTimeLine();
+            SetNewProject(new ScheduleProject { ClassesSchedule = schedule });
         }
 
         private void OnLoadRandomSchedule()

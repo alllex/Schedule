@@ -33,7 +33,7 @@ namespace Editor.Models
         private void SetGroups()
         {
             var gps =
-                from g in _schedule.Groups
+                from g in _schedule.CorrectGroups()
                 where g.YearOfStudy.Name == YearOfStudy.Name
                 select g;
             Groups = gps.ToArray();

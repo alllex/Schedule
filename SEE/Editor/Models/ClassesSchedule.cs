@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using Editor.Helpers;
 
@@ -84,11 +85,13 @@ namespace Editor.Models
     public class ClassesSchedule : HavingId
     {
 
+        #region Properties
+
         #region TimeLine
 
-        private ObservableCollectionEx<ClassTime> _timeLine = new ObservableCollectionEx<ClassTime>();
+        private ObservableCollection<ClassTime> _timeLine = new ObservableCollection<ClassTime>();
 
-        public ObservableCollectionEx<ClassTime> TimeLine
+        public ObservableCollection<ClassTime> TimeLine
         {
             get { return _timeLine; }
             set
@@ -105,9 +108,9 @@ namespace Editor.Models
 
         #region Groups
 
-        private ObservableCollectionEx<Group> _groups = new ObservableCollectionEx<Group>();
+        private ObservableCollection<Group> _groups = new ObservableCollection<Group>();
 
-        public ObservableCollectionEx<Group> Groups
+        public ObservableCollection<Group> Groups
         {
             get { return _groups; }
             set
@@ -124,9 +127,9 @@ namespace Editor.Models
 
         #region Lecturers
 
-        private ObservableCollectionEx<Lecturer> _lecturers = new ObservableCollectionEx<Lecturer>();
+        private ObservableCollection<Lecturer> _lecturers = new ObservableCollection<Lecturer>();
 
-        public ObservableCollectionEx<Lecturer> Lecturers
+        public ObservableCollection<Lecturer> Lecturers
         {
             get { return _lecturers; }
             set
@@ -143,8 +146,8 @@ namespace Editor.Models
 
         #region Classrooms
 
-        private ObservableCollectionEx<Classroom> _classrooms = new ObservableCollectionEx<Classroom>();
-        public ObservableCollectionEx<Classroom> Classrooms
+        private ObservableCollection<Classroom> _classrooms = new ObservableCollection<Classroom>();
+        public ObservableCollection<Classroom> Classrooms
         {
             get { return _classrooms; }
             set
@@ -161,9 +164,9 @@ namespace Editor.Models
 
         #region Subjects
 
-        private ObservableCollectionEx<Subject> _subjects = new ObservableCollectionEx<Subject>();
+        private ObservableCollection<Subject> _subjects = new ObservableCollection<Subject>();
 
-        public ObservableCollectionEx<Subject> Subjects
+        public ObservableCollection<Subject> Subjects
         {
             get { return _subjects; }
             set
@@ -180,9 +183,9 @@ namespace Editor.Models
 
         #region Specializations
 
-        private ObservableCollectionEx<Specialization> _specializations = new ObservableCollectionEx<Specialization>();
+        private ObservableCollection<Specialization> _specializations = new ObservableCollection<Specialization>();
 
-        public ObservableCollectionEx<Specialization> Specializations
+        public ObservableCollection<Specialization> Specializations
         {
             get { return _specializations; }
             set
@@ -199,9 +202,9 @@ namespace Editor.Models
 
         #region YearsOfStudy
 
-        private ObservableCollectionEx<YearOfStudy> _yearsOfStudy = new ObservableCollectionEx<YearOfStudy>();
+        private ObservableCollection<YearOfStudy> _yearsOfStudy = new ObservableCollection<YearOfStudy>();
 
-        public ObservableCollectionEx<YearOfStudy> YearsOfStudy
+        public ObservableCollection<YearOfStudy> YearsOfStudy
         {
             get { return _yearsOfStudy; }
             set
@@ -234,17 +237,195 @@ namespace Editor.Models
         }
 
         #endregion
+
+        #endregion
+
+        #region Adders
+
+        public void AddYearOfStudy(YearOfStudy year)
+        {
+            YearsOfStudy.Add(year);
+            Tables.Add(new ClassesTable(this, year));
+        }
+
+        public void AddSpecialization(Specialization specialization)
+        {
+            Specializations.Add(specialization);
+        }
+
+        public void AddSubject(Subject subject)
+        {
+            Subjects.Add(subject);
+        }
+
+        public void AddClassroom(Classroom classroom)
+        {
+            Classrooms.Add(classroom);
+        }
+
+        public void AddLecturer(Lecturer lecturer)
+        {
+            Lecturers.Add(lecturer);
+        }
+
+        public void AddGroup(Group group)
+        {
+            Groups.Add(group);
+        }
+
+        #endregion
         
+        #region Removers
+
+        public void RemoveYearOfStudy(YearOfStudy year)
+        {
+            YearsOfStudy.Remove(year);
+            Tables.Remove((from t in Tables where t.YearOfStudy == year select t).First());
+            foreach (var @group in Groups)
+            {
+                if (group.YearOfStudy == year)
+                {
+                    group.YearOfStudy = null;
+                }
+            }
+        }
+
+        public void RemoveSpecialization(Specialization specialization)
+        {
+            Specializations.Remove(specialization);
+            foreach (var @group in Groups)
+            {
+                if (group.Specialization == specialization)
+                {
+                    group.Specialization = null;
+                }
+            }
+        }
+
+        public void RemoveSubject(Subject subject)
+        {
+            Subjects.Remove(subject);
+            foreach (var classesTable in Tables)
+            {
+                for (int i = 0; i < classesTable.RowsCount(); i++)
+                {
+                    for (int j = 0; j < classesTable.ColumnsCount(); j++)
+                    {
+                        if (classesTable.Table[i][j].Subject == subject)
+                        {
+                            classesTable.Table[i][j].Subject = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void RemoveClassroom(Classroom classroom)
+        {
+            Classrooms.Remove(classroom);
+            foreach (var classesTable in Tables)
+            {
+                for (int i = 0; i < classesTable.RowsCount(); i++)
+                {
+                    for (int j = 0; j < classesTable.ColumnsCount(); j++)
+                    {
+                        if (classesTable.Table[i][j].Classroom == classroom)
+                        {
+                            classesTable.Table[i][j].Classroom = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void RemoveLecturer(Lecturer lecturer)
+        {
+            Lecturers.Remove(lecturer);
+            foreach (var classesTable in Tables)
+            {
+                for (int i = 0; i < classesTable.RowsCount(); i++)
+                {
+                    for (int j = 0; j < classesTable.ColumnsCount(); j++)
+                    {
+                        if (classesTable.Table[i][j].Lecturer == lecturer)
+                        {
+                            classesTable.Table[i][j].Lecturer = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void RemoveGroup(Group group1)
+        {
+            Groups.Remove(group1);
+            var tableIndex = Tables.IndexOf(GetClassesTable(group1.YearOfStudy));
+            Tables[tableIndex] = new ClassesTable(this, group1.YearOfStudy);
+        }
+
+        #endregion
+
+        #region Ctor
+
         public ClassesSchedule()
         {
-//            TimeLine.CollectionChanged += OnSomeCollectionChanged;
-//            Groups.CollectionChanged += OnSomeCollectionChanged;
-//            Lecturers.CollectionChanged += OnSomeCollectionChanged;
-//            Classrooms.CollectionChanged += OnSomeCollectionChanged;
-//            Subjects.CollectionChanged += OnSomeCollectionChanged;
-//            Specializations.CollectionChanged += OnSomeCollectionChanged;
-//            YearsOfStudy.CollectionChanged += OnSomeCollectionChanged;
+            Groups.CollectionChanged += GroupsOnCollectionChanged;
         }
+
+        private void GroupsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems == null) return;
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (var item in e.NewItems)
+                    {
+                        //Removed items
+                        var group = item as Group;
+                        if (group == null) continue;
+                        group.PropertyChanged -= GroupOnPropertyChanged;
+                    }
+                    break;
+                case NotifyCollectionChangedAction.Add:
+                    foreach (var item in e.NewItems)
+                    {
+                        //Added items
+                        var group = item as Group;
+                        if (group == null) continue;
+                        group.PropertyChanged += GroupOnPropertyChanged;
+                    }
+                    break;
+            }
+
+            CreateNewTables();
+        }
+
+        private void GroupOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var group = sender as Group;
+            if (group == null) return;
+            if (e.PropertyName == "YearOfStudy")
+            {
+                CreateNewTables();
+            }
+            else if (e.PropertyName == "Specialization")
+            {
+                if (group.YearOfStudy != null)
+                {
+                    var tableIndex = Tables.IndexOf(GetClassesTable(group.YearOfStudy));
+                    Tables[tableIndex] = new ClassesTable(this, group.YearOfStudy);
+                }
+            }
+        }
+
+        public IEnumerable<Group> CorrectGroups()
+        {
+            return from g in Groups where g != null && g.YearOfStudy != null && g.Specialization != null select g;
+        }
+
+        #endregion
+
+        #region Public
 
         public void CreateNewTables()
         {
@@ -255,34 +436,30 @@ namespace Editor.Models
             }
         }
 
-        public void AddYearOfStudy(YearOfStudy year)
+        public bool HasGroups(YearOfStudy year)
         {
-            YearsOfStudy.Add(year);
-            Tables.Add(new ClassesTable(this, year));
+            return Groups.Any(g => g.YearOfStudy == year);
         }
 
-        public void RemoveYearOfStudy(YearOfStudy year)
+        public void InitStdTimeLine()
         {
-            YearsOfStudy.Remove(year);
-            Tables.Remove((from t in Tables where t.YearOfStudy == year select t).First());
+            var wds = Enum.GetValues(typeof(Weekdays));
+            foreach (var weekday in wds)
+            {
+                for (int i = 0; i < ClassTime.ClassIntervals.Count(); i++)
+                {
+                    TimeLine.Add(new ClassTime { Day = (Weekdays)weekday, Number = i });
+                }
+            }
         }
+
+        #endregion
 
         public ClassesTable GetClassesTable(YearOfStudy year)
         {
             var index = YearsOfStudy.IndexOf(year);
             return Tables[index];
         }
-
-        private void OnSomeCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (ItemChangedProperty != null)
-            {
-                ItemChangedProperty();
-            }
-        }
-
-        public delegate void ItemChanged();
-        public ItemChanged ItemChangedProperty { get; set; }
 
         public List<FullClassRecord> ToList()
         {
