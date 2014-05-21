@@ -7,7 +7,7 @@ using SEE;
 
 namespace Editor.Models
 {
-    class ImportAndExport
+    class ImportExportSchedule
     {
         public static void Export(ClassesSchedule schedule, string path)
         {
