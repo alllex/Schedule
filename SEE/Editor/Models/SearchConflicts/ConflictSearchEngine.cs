@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace Editor.Models.SearchConflicts
 {
-    using Conflicts    = List<Conflict>;
-    using ScheduleList = List<FullClassRecord>; 
+    using Conflicts    = IEnumerable<Conflict>;
+    using ScheduleList = IEnumerable<FullClassRecord>; 
 
     class ConflictSearchEngine
     {
         public static Conflicts SearchAllConflicts(ClassesSchedule schedule)
         {
-            var conflicts = new Conflicts();
+            var conflicts = new List<Conflict>();
             var allClasses = schedule.ToList();
             conflicts.AddRange(GreaterThanFourClassesPerDay(allClasses));
             conflicts.AddRange(GroupsInDifferentClassrooms(allClasses));
@@ -53,35 +53,38 @@ namespace Editor.Models.SearchConflicts
         {
             var message = "Больше 4х занятий в день";
 
-            var groupClasses = from c in allClasses
-                               group c by new Tuple<Group, Weekdays>(c.Group, c.Time.Day);
-
-            return (from c in groupClasses where c.Count() > 4 select new Conflict(message, ConflictType.Warning, c)).ToList();
+            return from c in allClasses
+                   where c.Group != null && c.Time != null
+                   group c by new Tuple<Group, Weekdays>(c.Group, c.Time.Day) into g
+                   where g.Count() > 4 
+                   select new Conflict(message, ConflictType.Warning, g);
         }
 
         private static Conflicts GroupsInDifferentClassrooms(ScheduleList allClasses)
         {
             var message = "Группа находится в нескольких аудиториях одновременно.";
 
-            var groupClasses = from c in allClasses
-                               group c by new Tuple<Group, ClassTime>(c.Group, c.Time);
-
-            return (from c in groupClasses where c.Count() > 1 select new Conflict(message, ConflictType.Conflict, c)).ToList();
+            return from c in allClasses
+                   where c.Group != null && c.Time != null
+                   group c by new Tuple<Group, ClassTime>(c.Group, c.Time) into g
+                   where g.Count() > 1
+                   select new Conflict(message, ConflictType.Conflict, g);
         }
 
         private static Conflicts LecterersInDifferentClassrooms(ScheduleList allClasses)
         {
             var message = "Преподаватель находится в нескольких аудиториях одновременно.";
 
-            var groupClasses = from c in allClasses
-                               group c by new Tuple<Lecturer, ClassTime>(c.Lecturer, c.Time);
-
-            return (from c in groupClasses where c.Count() > 1 select new Conflict(message, ConflictType.Conflict, c)).ToList();
+            return from c in allClasses
+                   where c.Lecturer != null && c.Time != null
+                   group c by new Tuple<Lecturer, ClassTime>(c.Lecturer, c.Time) into g
+                   where g.Count() > 1
+                   select new Conflict(message, ConflictType.Conflict, g);
         }
 
         private static Conflicts NextClassesAtDifferentAddress(ScheduleList allClasses)
         {
-            var conflicts = new Conflicts();
+            var conflicts = new List<Conflict>();
             var message = "Адреса двух аудиторий, в которых проходят два соседних занятия, различны.";
 
             var classes = from c in allClasses
@@ -90,7 +93,7 @@ namespace Editor.Models.SearchConflicts
 
             var prevClass = classes.ElementAt(0);
 
-            for (int i = 1; i < allClasses.Count; ++i)
+            for (int i = 1; i < allClasses.Count(); ++i)
             {
                 var currClass = classes.ElementAt(i);
 
@@ -111,9 +114,9 @@ namespace Editor.Models.SearchConflicts
         {
             var message = "У этой карточки не заполнены некоторые поля.";
 
-            return (from c in allClasses
-                    where c.Lecturer == null || c.Classroom == null || c.Subject == null
-                    select new Conflict(message, ConflictType.Warning, c)).ToList();
+            return from c in allClasses
+                   where c.Lecturer == null || c.Classroom == null || c.Subject == null
+                   select new Conflict(message, ConflictType.Warning, c);
         }
 
         #endregion
