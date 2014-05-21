@@ -2,6 +2,7 @@
 using System.Linq;
 using Editor.Helpers;
 using Editor.Models;
+using ScheduleData;
 
 namespace Editor.ViewModels.Helpers
 {
@@ -13,10 +14,7 @@ namespace Editor.ViewModels.Helpers
         {
             var headers =
                 from t in groups
-                orderby t.Name
-                group t by t.Specialization
-                into h
-                select h;
+                group t by t.Specialization;
 
             int currectCol = 0;
             foreach (var h in headers)

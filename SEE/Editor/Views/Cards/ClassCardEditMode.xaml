@@ -73,7 +73,7 @@
                 Height="25" Width="60" Margin="5,0,5,5" 
                 />-->
         
-        <Button Click="OkClick" Content="Ok" IsDefault="True"
+        <Button Click="OkClick" Content="Ok" IsDefault="True" IsCancel="True"
                 DockPanel.Dock="Right"
                 Height="25" Width="60" Margin="0,0,5,5"
                 />

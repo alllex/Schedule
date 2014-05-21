@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Editor.Models;
-using Editor.Models.DataMining;
+using ScheduleData;
+using ScheduleData.DataMining;
 
 namespace Editor.ViewModels.Panels.Statistics
 {

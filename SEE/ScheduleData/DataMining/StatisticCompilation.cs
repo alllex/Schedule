@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Editor.Models.DataMining
+namespace ScheduleData.DataMining
 {
     public class StatisticCompilation
     {

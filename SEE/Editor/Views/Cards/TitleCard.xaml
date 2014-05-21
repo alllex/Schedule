@@ -11,9 +11,11 @@
                 Background="White"
                 CornerRadius="3">
             <TextBlock Text="{Binding Item.Name}"
+                       TextAlignment="Center"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Margin="5">
+                       TextWrapping="Wrap"
+                       Margin="10,5,10,5">
             </TextBlock>
         </Border>
     </Grid>

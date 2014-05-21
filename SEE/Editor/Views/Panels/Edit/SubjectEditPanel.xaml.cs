@@ -3,11 +3,11 @@
 namespace Editor.Views.Panels.Edit
 {
     /// <summary>
-    /// Interaction logic for RoomEditPanel.xaml
+    /// Interaction logic for SubjectEditPanel.xaml
     /// </summary>
-    public partial class ClassroomEditPanel : UserControl
+    public partial class SubjectEditPanel : UserControl
     {
-        public ClassroomEditPanel()
+        public SubjectEditPanel()
         {
             InitializeComponent();
         }

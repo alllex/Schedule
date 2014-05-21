@@ -62,11 +62,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\DataMining\StatisticCompilation.cs" />
-    <Compile Include="Models\SearchConflicts\ConflictCompilation.cs" />
+    <Compile Include="Helpers\ScrollViewerEx.cs" />
+    <Compile Include="Models\ImportAndExport.cs" />
+    <Compile Include="ViewModels\Panels\Edit\SubjectEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\TabCategory.cs" />
     <Compile Include="ViewModels\Windows\StatisticWindowViewModel.cs" />
+    <Compile Include="Views\Panels\Edit\SubjectEditPanel.xaml.cs">
+      <DependentUpon>SubjectEditPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Panels\Statistics\StatPanel.xaml.cs">
       <DependentUpon>StatPanel.xaml</DependentUpon>
     </Compile>
@@ -98,6 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\TableController.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Panels\Edit\SubjectEditPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -163,22 +171,9 @@
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\ClipboardService.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
-    <Compile Include="Helpers\ExObservableCollection.cs" />
-    <Compile Include="Helpers\NotificationObject.cs" />
-    <Compile Include="Models\ClassesSchedule.cs" />
-    <Compile Include="Models\ClassesTable.cs" />
-    <Compile Include="Models\FullClassRecord.cs" />
-    <Compile Include="Models\DataMining\Statistic.cs" />
-    <Compile Include="Models\DataMining\DataMiner.cs" />
-    <Compile Include="Models\DataMining\StatisticOf.cs" />
-    <Compile Include="Models\Elements.cs" />
-    <Compile Include="Models\Interfaces.cs" />
     <Compile Include="Helpers\SpannedItem.cs" />
     <Compile Include="Helpers\TableItem.cs" />
-    <Compile Include="Models\SearchConflicts\Conflict.cs" />
-    <Compile Include="Models\SearchConflicts\ConflictSearchEngine.cs" />
     <Compile Include="Models\ScheduleProject.cs" />
-    <Compile Include="Models\SerializableModels.cs" />
     <Compile Include="ViewModels\Helpers\TimeLineMarkup.cs" />
     <Compile Include="ViewModels\Helpers\TitlesMarkup.cs" />
     <Compile Include="Repository\ScheduleRepository.cs" />
@@ -277,7 +272,16 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ExcelIntegration\ExcelIntegration.fsproj">
+      <Project>{ef800667-5e58-456d-a307-cf83694791e3}</Project>
+      <Name>ExcelIntegration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScheduleData\ScheduleData.csproj">
+      <Project>{038bb399-cf52-47bd-9ff3-8b43a016e070}</Project>
+      <Name>ScheduleData</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

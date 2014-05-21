@@ -42,26 +42,27 @@
                 <Label Content="Среднее количество пар в день:"/>
                 <Label Content="{Binding StatisticOnSelected.AverageCountOfClassesPerDay, Mode=OneWay}"/>
             </StackPanel>
-            <Label Content="Нагрузка на каждый день недели"/>
-            <ListBox ItemsSource="{Binding StatisticOnSelected.CountOfClassesPerWeekday}"
+            <GroupBox Header="Нагрузка на каждый день недели">
+                <ListBox ItemsSource="{Binding StatisticOnSelected.CountOfClassesPerWeekday}"
                      Margin="0,10,0,0">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="ContentTemplate">
-                            <Setter.Value>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="{Binding Weekday}"
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Label Content="{Binding Weekday}"
                                                Margin="5,2,2,2" />
-                                        <Label Content="{Binding Count}"
+                                            <Label Content="{Binding Count}"
                                                Margin="5,2,2,2"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </GroupBox>
         </StackPanel>
         
     </DockPanel>

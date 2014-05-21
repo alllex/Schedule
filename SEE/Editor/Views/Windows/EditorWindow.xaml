@@ -19,12 +19,19 @@
             <MenuItem Header="Файл">
                 <MenuItem Header="Новый проект"
                           Command="{Binding NewProjectCommand}"/>
+                <Separator />
                 <MenuItem Header="Сгенерировать"
                           Command="{Binding LoadRandomScheduleCommand}"/>
+                <Separator />
                 <MenuItem Header="Сохранить"
                           Command="{Binding SaveProjectCommand}"/>
                 <MenuItem Header="Открыть"
                           Command="{Binding OpenProjectCommand}"/>
+                <Separator />
+                <MenuItem Header="Экспорт">
+                    <MenuItem Header="Excel (.xlsx)"
+                          Command="{Binding ExportToExcelCommand}"/>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Правка">
                 <MenuItem Header="Группы"
@@ -43,34 +50,30 @@
                           Command="{Binding OpenYearsOfStudyEditorCommand}"
                           />
             </MenuItem>
-            <MenuItem Header="Statistic">
-                <MenuItem Header="Calculate statistic"
+            <MenuItem Header="Статистика">
+                <MenuItem Header="Получить стат. данные"
                           Command="{Binding CalcStatisticCommand}"/>
-                <MenuItem Header="Open Statistic Window"
+                <MenuItem Header="Открыть окно статистики"
                           Command="{Binding OpenStatisticWindowCommand}"/>
             </MenuItem>
 
-            <MenuItem Header="Conflicts">
-                <MenuItem Header="Run conflict test">
-                    <MenuItem Header="Run All tests"
-                        Command="{Binding TODO}"
-                              IsEnabled="False"/>
-                    
-                    <MenuItem Header="More than 4 classes per day"
+            <MenuItem Header="Проверка расписания">
+                <MenuItem Header="Выполнить проверку">
+                    <MenuItem Header="Все проверки"
+                        Command="{Binding CheckAllConflictsCommand}"/>
+                    <MenuItem Header="Карточки, с незаполненными полями"
+                        Command="{Binding CheckConflictCardsWithBlankFieldsCommand}"/>
+                    <MenuItem Header="Больше 4х пар в день"
                         Command="{Binding CheckConflictGreaterThanFourClassesPerDayCommand}"/>
-                    
-                    <MenuItem Header="Group in different places"
-                              IsEnabled="False"
-                        Command="{Binding TODO}"/>
-                    <MenuItem Header="Group in different places"
-                              IsEnabled="False"
-                        Command="{Binding TODO}"/>
-                    <MenuItem Header="Next class in different place"
-                              IsEnabled="False"
-                        Command="{Binding TODO}"/>
+                    <MenuItem Header="Группа одновременно на разных занятиях"
+                        Command="{Binding CheckConflictGroupsInDifferentClassroomsCommand}"/>
+                    <MenuItem Header="Преподаватель одновременно в разных кабинетах"
+                        Command="{Binding CheckConflictLecturersInDifferentClassroomsCommand}"/>
+                    <MenuItem Header="Соседние пары по разным адресам"
+                        Command="{Binding CheckConflictNextClassesAtDifferentAddressCommand}"/>
                 </MenuItem>
                 
-                <MenuItem Header="Show/Hide conflicts"
+                <MenuItem Header="Показать/Скрыть конфликты"
                           Command="{Binding ShowHideConflictsCommand}"/>
             </MenuItem>
         </Menu>

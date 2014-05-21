@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Editor.Models
+namespace ScheduleData
 {
     public class ClassesTable
     {
@@ -32,10 +32,9 @@ namespace Editor.Models
 
         private void SetGroups()
         {
-            var gps = 
-                from g in _schedule.Groups
+            var gps =
+                from g in _schedule.CorrectGroups()
                 where g.YearOfStudy.Name == YearOfStudy.Name
-                orderby g.Specialization, g.Name
                 select g;
             Groups = gps.ToArray();
             for (int i = 0; i < Groups.Count(); i++)
@@ -63,6 +62,18 @@ namespace Editor.Models
         public int ColumnsCount()
         {
             return Groups.Count();
+        }
+
+        public void AddGroup(Group group)
+        {
+            if (group == null || group.YearOfStudy != YearOfStudy) return;
+            // TODO
+        }
+
+        public void RemoveGroup(Group group)
+        {
+            if (group == null || group.YearOfStudy != YearOfStudy) return;
+            // TODO
         }
 
     }

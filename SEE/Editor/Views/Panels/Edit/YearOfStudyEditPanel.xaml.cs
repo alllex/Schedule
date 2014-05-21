@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Editor.Views.Panels
+namespace Editor.Views.Panels.Edit
 {
     /// <summary>
     /// Interaction logic for GroupEditorPanel.xaml

@@ -94,7 +94,10 @@ namespace Editor.ViewModels.Controls
             Tables.Clear();
             foreach (var yearOfStudy in Project.ClassesSchedule.YearsOfStudy)
             {
-                Tables.Add(new TableViewModel{Project = Project, YearOfStudy = yearOfStudy});
+                if (Project.ClassesSchedule.HasGroups(yearOfStudy))
+                {
+                    Tables.Add(new TableViewModel { Project = Project, YearOfStudy = yearOfStudy });
+                }
             }
             if (Tables.Count > 0)
             {

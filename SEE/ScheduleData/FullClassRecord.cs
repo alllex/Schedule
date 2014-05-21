@@ -1,4 +1,4 @@
-﻿namespace Editor.Models
+﻿namespace ScheduleData
 {
     public class FullClassRecord : ClassRecord
     {

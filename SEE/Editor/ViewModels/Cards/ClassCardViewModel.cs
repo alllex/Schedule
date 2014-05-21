@@ -1,8 +1,5 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows.Input;
-using Editor.Helpers;
-using Editor.Models;
+﻿using System.ComponentModel;
+using ScheduleData;
 
 namespace Editor.ViewModels.Cards
 {

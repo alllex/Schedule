@@ -3,6 +3,7 @@
     enum TabCategory
     {
         Groups,
+        Subjects,
         Lecturers,
         Classrooms,
         Specializations,

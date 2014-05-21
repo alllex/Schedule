@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
+using ScheduleData;
 
 namespace Editor.ViewModels.Panels.Edit
 {

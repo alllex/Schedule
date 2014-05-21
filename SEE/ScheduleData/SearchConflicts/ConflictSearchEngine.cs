@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Editor.Models.SearchConflicts
+namespace ScheduleData.SearchConflicts
 {
-    using Conflicts    = IEnumerable<Conflict>;
-    using ScheduleList = IEnumerable<FullClassRecord>; 
-
     class ConflictSearchEngine
     {
-        public static Conflicts SearchAllConflicts(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> SearchAllConflicts(ClassesSchedule schedule)
         {
             var conflicts = new List<Conflict>();
             var allClasses = schedule.ToList();
@@ -22,34 +19,34 @@ namespace Editor.Models.SearchConflicts
             return conflicts;
         }
         
-        public static Conflicts GreaterThanFourClassesPerDay(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> GreaterThanFourClassesPerDay(ClassesSchedule schedule)
         {
             return GreaterThanFourClassesPerDay(schedule.ToList());
         }
 
-        public static Conflicts GroupsInDifferentClassrooms(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> GroupsInDifferentClassrooms(ClassesSchedule schedule)
         {
             return GroupsInDifferentClassrooms(schedule.ToList());
         }
 
-        public static Conflicts LecterersInDifferentClassrooms(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> LecterersInDifferentClassrooms(ClassesSchedule schedule)
         {
             return LecterersInDifferentClassrooms(schedule.ToList());
         }
 
-        public static Conflicts NextClassesAtDifferentAddress(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> NextClassesAtDifferentAddress(ClassesSchedule schedule)
         {
             return NextClassesAtDifferentAddress(schedule.ToList());
         }
 
-        public static Conflicts CardsWithBlankFields(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> CardsWithBlankFields(ClassesSchedule schedule)
         {
             return CardsWithBlankFields(schedule.ToList());
         }
 
         #region Private Methods
 
-        private static Conflicts GreaterThanFourClassesPerDay(ScheduleList allClasses)
+        private static IEnumerable<Conflict> GreaterThanFourClassesPerDay(IEnumerable<FullClassRecord> allClasses)
         {
             var message = "Больше 4х занятий в день";
 
@@ -60,7 +57,7 @@ namespace Editor.Models.SearchConflicts
                    select new Conflict(message, ConflictType.Warning, g);
         }
 
-        private static Conflicts GroupsInDifferentClassrooms(ScheduleList allClasses)
+        private static IEnumerable<Conflict> GroupsInDifferentClassrooms(IEnumerable<FullClassRecord> allClasses)
         {
             var message = "Группа находится в нескольких аудиториях одновременно.";
 
@@ -71,7 +68,7 @@ namespace Editor.Models.SearchConflicts
                    select new Conflict(message, ConflictType.Conflict, g);
         }
 
-        private static Conflicts LecterersInDifferentClassrooms(ScheduleList allClasses)
+        private static IEnumerable<Conflict> LecterersInDifferentClassrooms(IEnumerable<FullClassRecord> allClasses)
         {
             var message = "Преподаватель находится в нескольких аудиториях одновременно.";
 
@@ -82,7 +79,7 @@ namespace Editor.Models.SearchConflicts
                    select new Conflict(message, ConflictType.Conflict, g);
         }
 
-        private static Conflicts NextClassesAtDifferentAddress(ScheduleList allClasses)
+        private static IEnumerable<Conflict> NextClassesAtDifferentAddress(IEnumerable<FullClassRecord> allClasses)
         {
             var conflicts = new List<Conflict>();
             var message = "Адреса двух аудиторий, в которых проходят два соседних занятия, различны.";
@@ -106,11 +103,12 @@ namespace Editor.Models.SearchConflicts
                     var conflictingClasses = new List<FullClassRecord> { prevClass, currClass };
                     conflicts.Add(new Conflict(message, ConflictType.Warning, conflictingClasses));
                 }
+                prevClass = currClass;
             }
             return conflicts;
         }
 
-        private static Conflicts CardsWithBlankFields(ScheduleList allClasses)
+        private static IEnumerable<Conflict> CardsWithBlankFields(IEnumerable<FullClassRecord> allClasses)
         {
             var message = "У этой карточки не заполнены некоторые поля.";
 

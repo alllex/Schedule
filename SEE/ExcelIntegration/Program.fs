@@ -4,8 +4,7 @@ namespace SEE
 open Microsoft.Office.Interop.Excel
 open System.IO
 open System.Collections.Generic
-open Editor.Models
-
+open ScheduleData
 
 type TransferData = (string [,] * string) []
 
