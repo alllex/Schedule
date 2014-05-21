@@ -35,7 +35,7 @@
                 
                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
                     <Setter Property="BorderBrush" Value="MediumBlue"/>
-                    <Setter Property="Background" Value="AliceBlue"/>
+                    <Setter Property="Background" Value="SkyBlue"/>
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding IsSelected}" Value="False">
