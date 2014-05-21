@@ -63,6 +63,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\ScrollViewerEx.cs" />
+    <Compile Include="Models\ImportAndExport.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\TabCategory.cs" />
     <Compile Include="ViewModels\Windows\StatisticWindowViewModel.cs" />
@@ -264,6 +265,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExcelIntegration\ExcelIntegration.fsproj">
+      <Project>{ef800667-5e58-456d-a307-cf83694791e3}</Project>
+      <Name>ExcelIntegration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScheduleData\ScheduleData.csproj">
       <Project>{038bb399-cf52-47bd-9ff3-8b43a016e070}</Project>
       <Name>ScheduleData</Name>
