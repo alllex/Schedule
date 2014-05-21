@@ -106,6 +106,7 @@ namespace Editor.Models.SearchConflicts
                     var conflictingClasses = new List<FullClassRecord> { prevClass, currClass };
                     conflicts.Add(new Conflict(message, ConflictType.Warning, conflictingClasses));
                 }
+                prevClass = currClass;
             }
             return conflicts;
         }

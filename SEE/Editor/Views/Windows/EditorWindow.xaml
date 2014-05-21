@@ -19,12 +19,19 @@
             <MenuItem Header="Файл">
                 <MenuItem Header="Новый проект"
                           Command="{Binding NewProjectCommand}"/>
+                <Separator />
                 <MenuItem Header="Сгенерировать"
                           Command="{Binding LoadRandomScheduleCommand}"/>
+                <Separator />
                 <MenuItem Header="Сохранить"
                           Command="{Binding SaveProjectCommand}"/>
                 <MenuItem Header="Открыть"
                           Command="{Binding OpenProjectCommand}"/>
+                <Separator />
+                <MenuItem Header="Экспорт">
+                    <MenuItem Header="Excel (.xlsx)"
+                          Command="{Binding ExportToExcelCommand}"/>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Правка">
                 <MenuItem Header="Группы"

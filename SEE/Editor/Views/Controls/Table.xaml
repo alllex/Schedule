@@ -2,13 +2,46 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:Editor.ViewModels.Controls"
+             xmlns:helpers="clr-namespace:Editor.Helpers"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="300" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance controls:TableViewModel}"
+             >
+
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding EditClassCommand}" 
+                    Key="Enter"/>
+        <KeyBinding Command="{Binding CopyClassCommand}" 
+                    Key="C"
+                    Modifiers="Control"/>
+        <KeyBinding Command="{Binding CutClassCommand}" 
+                    Key="X"
+                    Modifiers="Control"/>
+        <KeyBinding Command="{Binding PasteClassCommand}" 
+                    Key="V"
+                    Modifiers="Control"/>
+        <KeyBinding Command="{Binding DeleteClassCommand}" 
+                    Key="Delete"/>
+
+
+        <KeyBinding Command="{Binding SelectionMoveDownCommand}" 
+                    Key="S"/>
+        <KeyBinding Command="{Binding SelectionMoveUpCommand}" 
+                    Key="W"/>
+        <KeyBinding Command="{Binding SelectionMoveLeftCommand}" 
+                    Key="A"/>
+        <KeyBinding Command="{Binding SelectionMoveRightCommand}" 
+                    Key="D"/>
+        
+    </UserControl.InputBindings>
+
     <DockPanel>
         <ScrollViewer HorizontalScrollBarVisibility="Auto">
             <Grid x:Name="TableGrid"
-                  Margin="10" />
+                  Margin="10">
+            </Grid>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

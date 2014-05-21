@@ -269,16 +269,65 @@ namespace Editor.ViewModels.Controls
 
         #region Commands
 
-        public ICommand EditClassCommand { get { return new DelegateCommand(OnEditClass, CanExecuteEditClass); } }
-        public ICommand CopyClassCommand { get { return new DelegateCommand(OnCopyClassCommand); } }
-        public ICommand PasteClassCommand { get { return new DelegateCommand(OnPasteClassCommand); } }
-        public ICommand SendToCardClipboardCommand { get { return new DelegateCommand(OnSendToCardClipboard); } }
+        public ICommand EditClassCommand { get { return new DelegateCommand(OnEditClass, HasSelectedCard); } }
+        public ICommand CopyClassCommand { get { return new DelegateCommand(OnCopyClassCommand, HasSelectedCard); } }
+        public ICommand PasteClassCommand { get { return new DelegateCommand(OnPasteClassCommand, HasSelectedCard); } }
+        public ICommand SendToCardClipboardCommand { get { return new DelegateCommand(OnSendToCardClipboard, HasSelectedCard); } }
         public ICommand CutClassCommand { get { return new DelegateCommand(OnCutClass, CanExecuteHasClass); } }
         public ICommand DeleteClassCommand { get { return new DelegateCommand(OnDeleteClass, CanExecuteHasClass); } }
-        
+
+        public ICommand SelectionMoveUpCommand { get { return new DelegateCommand(OnSelectionMoveUp, CanExecuteSelectionMoveUp); } }
+        public ICommand SelectionMoveDownCommand { get { return new DelegateCommand(OnSelectionMoveDown, CanExecuteSelectionMoveDown); } }
+        public ICommand SelectionMoveRightCommand { get { return new DelegateCommand(OnSelectionMoveRight, CanExecuteSelectionMoveRight); } }
+        public ICommand SelectionMoveLeftCommand { get { return new DelegateCommand(OnSelectionMoveLeft, CanExecuteSelectionMoveLeft); } }
+
         #endregion
 
         #region Command Handlers
+
+        #region Move selection
+
+        private bool CanExecuteSelectionMoveLeft()
+        {
+            return HasSelectedCard() && _selectedColumn > 0;
+        }
+
+        private void OnSelectionMoveLeft()
+        {
+            UpdateSelection(_selectedRow, _selectedColumn - 1);
+        }
+
+        private bool CanExecuteSelectionMoveRight()
+        {
+            return HasSelectedCard() && _selectedColumn < ClassesColumnsCount - 1;
+        }
+
+        private void OnSelectionMoveRight()
+        {
+            UpdateSelection(_selectedRow, _selectedColumn + 1);
+        }
+
+        private bool CanExecuteSelectionMoveDown()
+        {
+            return HasSelectedCard() && _selectedRow < ClassesRowsCount - 1;
+        }
+
+        private void OnSelectionMoveDown()
+        {
+            UpdateSelection(_selectedRow + 1, _selectedColumn);
+        }
+
+        private bool CanExecuteSelectionMoveUp()
+        {
+            return HasSelectedCard() && _selectedRow > 0;
+        }
+
+        private void OnSelectionMoveUp()
+        {
+            UpdateSelection(_selectedRow - 1, _selectedColumn);
+        }
+
+        #endregion
 
         #region Copy
 
@@ -304,15 +353,17 @@ namespace Editor.ViewModels.Controls
             }
             var cliped = ClipboardService.GetData<ClassRecord>();
             ClassRecord.Copy(cliped, _selectedCard.Class);
-            //ClassesCards[_selectedRow][_selectedColumn].DataContext = _selectedCard;
         }
 
         #endregion
 
-        private void OnCutClass(object param)
+        #region Cut
+
+
+        private void OnCutClass()
         {
             if (_selectedCard == null || _selectedCard.Class == null) return;
-            var classCard = param as ClassCardViewMode;
+            var classCard = ClassesCards[_selectedRow][_selectedColumn];
             if (classCard == null) return;
             var row = Grid.GetRow(classCard) - TitleRowsCount;
             var col = Grid.GetColumn(classCard) - TimeColumnsCount;
@@ -328,11 +379,15 @@ namespace Editor.ViewModels.Controls
             _classesTable.Table[row][col] = null;
 
         }
-        
-        private void OnDeleteClass(object param)
+
+        #endregion
+
+        #region Delete
+
+        private void OnDeleteClass()
         {
             if (_selectedCard == null || _selectedCard.Class == null) return;
-            var classCard = param as ClassCardViewMode;
+            var classCard = ClassesCards[_selectedRow][_selectedColumn];
             if (classCard == null) return;
             var row = Grid.GetRow(classCard) - TitleRowsCount;
             var col = Grid.GetColumn(classCard) - TimeColumnsCount;
@@ -344,15 +399,21 @@ namespace Editor.ViewModels.Controls
             _classesTable.Table[row][col] = null;
         }
 
-        private void OnEditClass(object param)
+        #endregion
+        
+        #region Edit
+
+        private void OnEditClass()
         {
             if (_selectedCard == null) return;
-            var classCard = param as ClassCardViewMode;
+            var classCard = ClassesCards[_selectedRow][_selectedColumn];
             if (classCard == null) return;
             OpenCardEditor(classCard);
         }
 
-        private bool CanExecuteEditClass()
+        #endregion
+
+        private bool HasSelectedCard()
         {
             return _selectedCard != null;
         }
@@ -403,7 +464,6 @@ namespace Editor.ViewModels.Controls
             if (e.LeftButton != MouseButtonState.Pressed && e.RightButton != MouseButtonState.Pressed) return;
             var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
-            DropSelected();
             UpdateSelection(classCard);
         }
 
@@ -411,7 +471,6 @@ namespace Editor.ViewModels.Controls
         {
             var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
-            DropSelected();
             UpdateSelection(classCard);
             if (e.ClickCount == 2)
             {
@@ -423,7 +482,6 @@ namespace Editor.ViewModels.Controls
         {
             var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
-            DropSelected();
             UpdateSelection(classCard);
         }
 
@@ -435,7 +493,6 @@ namespace Editor.ViewModels.Controls
         {
             var classCard = sender as ClassCardViewMode;
             if (classCard == null) return;
-            DropSelected();
             UpdateSelection(classCard);
             OpenContextMenu(classCard);
         }
@@ -454,6 +511,12 @@ namespace Editor.ViewModels.Controls
         {
             var row = Grid.GetRow(card) - TitleRowsCount;
             var col = Grid.GetColumn(card) - TimeColumnsCount;
+            UpdateSelection(row, col);
+        }
+
+        private void UpdateSelection(int row, int col)
+        {
+            DropSelected();
             _selectedRow = row;
             _selectedColumn = col;
             _selectedCard = ClassesCards[row][col].DataContext as ClassCardViewModel;
@@ -479,7 +542,7 @@ namespace Editor.ViewModels.Controls
             var edit = new ClassCardEditMode(centerX, centerY) { DataContext = model };
             edit.ShowDialog();
             ClassesCards[row][col].DataContext = model;
-            _selectedCard = model;
+            UpdateSelection(row, col);
         }
         
         private void OpenContextMenu(ClassCardViewMode classCard)
@@ -487,11 +550,11 @@ namespace Editor.ViewModels.Controls
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
             var cm = new ContextMenu();
-            cm.Items.Add(new MenuItem { Header = "Редактировать", Command = EditClassCommand, CommandParameter = classCard});
-            cm.Items.Add(new MenuItem { Header = "Скопировать", Command = CopyClassCommand });
-            cm.Items.Add(new MenuItem { Header = "Вставить", Command = PasteClassCommand });
-            cm.Items.Add(new MenuItem { Header = "Вырезать", Command = CutClassCommand, CommandParameter = classCard });
-            cm.Items.Add(new MenuItem { Header = "Удалить", Command = DeleteClassCommand, CommandParameter = classCard });
+            cm.Items.Add(new MenuItem { Header = "Редактировать", Command = EditClassCommand, InputGestureText = "Enter"});
+            cm.Items.Add(new MenuItem { Header = "Скопировать", Command = CopyClassCommand, InputGestureText = "Ctrl+C" });
+            cm.Items.Add(new MenuItem { Header = "Вставить", Command = PasteClassCommand, InputGestureText = "Ctrl+V" });
+            cm.Items.Add(new MenuItem { Header = "Вырезать", Command = CutClassCommand, InputGestureText = "Ctrl+X" });
+            cm.Items.Add(new MenuItem { Header = "Удалить", Command = DeleteClassCommand, InputGestureText = "Del" });
             //cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });
             cm.IsOpen = true;
         }
