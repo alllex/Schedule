@@ -137,7 +137,7 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                // export dlg.FileName()
+                ImportExportSchedule.Export(Project.ClassesSchedule, dlg.FileName);
             }
         }
 
