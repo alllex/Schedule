@@ -487,11 +487,11 @@ namespace Editor.ViewModels.Controls
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
             var cm = new ContextMenu();
-            cm.Items.Add(new MenuItem { Header = "Edit", Command = EditClassCommand, CommandParameter = classCard});
-            cm.Items.Add(new MenuItem { Header = "Copy", Command = CopyClassCommand });
-            cm.Items.Add(new MenuItem { Header = "Paste", Command = PasteClassCommand });
-            cm.Items.Add(new MenuItem { Header = "Cut", Command = CutClassCommand, CommandParameter = classCard });
-            cm.Items.Add(new MenuItem { Header = "Delete", Command = DeleteClassCommand, CommandParameter = classCard });
+            cm.Items.Add(new MenuItem { Header = "Редактировать", Command = EditClassCommand, CommandParameter = classCard});
+            cm.Items.Add(new MenuItem { Header = "Скопировать", Command = CopyClassCommand });
+            cm.Items.Add(new MenuItem { Header = "Вставить", Command = PasteClassCommand });
+            cm.Items.Add(new MenuItem { Header = "Вырезать", Command = CutClassCommand, CommandParameter = classCard });
+            cm.Items.Add(new MenuItem { Header = "Удалить", Command = DeleteClassCommand, CommandParameter = classCard });
             //cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });
             cm.IsOpen = true;
         }

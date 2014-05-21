@@ -170,7 +170,7 @@ namespace Editor.ViewModels.Windows
                 }
                 else
                 {
-                    MessageBox.Show("There're no conflicts!");
+                    MessageBox.Show("Ни одного конфликта не найдено!", "Поиск конфликтов");
                 }
             }
         }
