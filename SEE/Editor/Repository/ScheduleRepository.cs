@@ -42,7 +42,7 @@ namespace Editor.Repository
             const int minRoomNumber = 1000;
             const int maxRoomNumber = 2001;
 
-            string[] addresses = {"Petergoff", "Saint-Petersburg", "Moscow", "Dubai"};
+            string[] addresses = {"Petergoff", "Saint-Petersburg"};
 
             for (int i = 0; i < classroomsCount; i++)
             {
@@ -67,7 +67,7 @@ namespace Editor.Repository
 
         private void InitLecturers()
         {
-            string[] lecturerNames = { "Ivanov", "Petrov", "Baranov", "Semenov", "Kirilenko", "Polozov", "Luciv" };
+            string[] lecturerNames = { "Ivanov", "Petrov", "Sidirov", "Baranov", "Semenov", "Kirilenko", "Polozov", "Luciv" };
             int lecturersCount = lecturerNames.Length;
             for (int i = 0; i < lecturersCount; i++)
             {
@@ -77,8 +77,9 @@ namespace Editor.Repository
 
         private void InitYearsOfStudy()
         {
-            const int yearsCount = 3;
-            for (int i = 1; i <= yearsCount; i++)
+            const int yearsStart = 2;
+            const int yearsCount = 1;
+            for (int i = yearsStart; i < yearsStart + yearsCount; i++)
             {
                 Schedule.YearsOfStudy.Add(new YearOfStudy{Name = i.ToString(CultureInfo.InvariantCulture)});
             }
@@ -86,7 +87,12 @@ namespace Editor.Repository
 
         private void InitSpecializations()
         {
-            string[] specializationNames = { "Primat", "Matobess", "PI", "Pure math" };
+            string[] specializationNames = { "Фундаментальная математика и механика", 
+                                             "Прикладная математика и информатика", 
+                                             "Математическое обеспечение \nи администрирование информационных систем", 
+                                             "Фундаментальная информатика \nи информационные технологии",
+                                             "Программная инженерия"};
+
             int specializationCount = specializationNames.Length;
             for (int i = 0; i < specializationCount; i++)
             {
@@ -96,14 +102,25 @@ namespace Editor.Repository
 
         private void InitGroups()
         {
-            string[] groupNames = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N" };
+            string[][] groupNames =
+            {
+                new[] { "211 (ПОМИ)", "212", "213" }, 
+                new[] { "221", "222", "223", "224" },
+                new[] { "241", "242", "243", "244" },
+                new[] { "261" },
+                new[] { "271" }
+            };
             int groupCount = groupNames.Length;
+            int max = Schedule.Specializations.Count - 1;
             for (int i = 0; i < groupCount; i++)
             {
-                var g = groupNames[i];
-                var y = Schedule.YearsOfStudy[Rnd.Next(Schedule.YearsOfStudy.Count)];
-                var s = Schedule.Specializations[Rnd.Next(Schedule.Specializations.Count)];
-                Schedule.Groups.Add(new Group{Name = g, YearOfStudy = y, Specialization = s});
+                for (int j = 0; j < groupNames[i].Length; j++)
+                {
+                    var g = groupNames[i][j];
+                    var y = Schedule.YearsOfStudy[0];
+                    var s = Schedule.Specializations[i > max ? 0 : i];
+                    Schedule.Groups.Add(new Group { Name = g, YearOfStudy = y, Specialization = s });
+                }
             }
         }
 

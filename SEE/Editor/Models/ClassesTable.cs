@@ -32,10 +32,9 @@ namespace Editor.Models
 
         private void SetGroups()
         {
-            var gps = 
+            var gps =
                 from g in _schedule.Groups
                 where g.YearOfStudy.Name == YearOfStudy.Name
-                orderby g.Specialization, g.Name
                 select g;
             Groups = gps.ToArray();
             for (int i = 0; i < Groups.Count(); i++)
