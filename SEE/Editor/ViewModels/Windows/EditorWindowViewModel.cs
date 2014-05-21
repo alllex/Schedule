@@ -119,10 +119,26 @@ namespace Editor.ViewModels.Windows
 
         #endregion
 
+        public ICommand ExportToExcelCommand { get { return new DelegateCommand(OnExportToExcel, CanExecuteHasActiveProject); } }
 
         #endregion
 
         #region Command Handlers
+
+        private void OnExportToExcel()
+        {
+            var dlg = new SaveFileDialog
+            {
+                FileName = "Расписание",
+                DefaultExt = ".xlsx",
+                Filter = "Расписание|*.xlsx"
+            };
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                // export dlg.FileName()
+            }
+        }
 
         private void OnCheckCheckAllConflicts()
         {
