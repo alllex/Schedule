@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using Editor.ViewModels.Panels.Statistics;
 using Editor.ViewModels.Windows;
 
@@ -24,5 +25,20 @@ namespace Editor.Views.Windows
                 LecturerStatPanel.DataContext = new LecturerStatPanelViewModel { Project = model.Project };
             }
         }
+
+//        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+//        {
+//            Close();
+//        }
+//
+//        private void ButtonBase_OnClick2(object sender, RoutedEventArgs e)
+//        {
+//            var model = DataContext as StatisticWindowViewModel;
+//            if (model != null)
+//            {
+//                GroupStatPanel.DataContext = new GroupStatPanelViewModel { Project = model.Project };
+//                LecturerStatPanel.DataContext = new LecturerStatPanelViewModel { Project = model.Project };
+//            }
+//        }
     }
 }

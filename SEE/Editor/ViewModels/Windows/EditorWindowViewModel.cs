@@ -99,7 +99,7 @@ namespace Editor.ViewModels.Windows
         public ICommand SaveProjectCommand { get { return new DelegateCommand(OnSaveProject, CanExecuteHasActiveProject); } }
         public ICommand OpenProjectCommand { get { return new DelegateCommand(OnOpenProject); } }
         public ICommand CalcStatisticCommand { get { return new DelegateCommand(OnCalcStatistic, CanExecuteHasActiveProject); } }
-        public ICommand OpenStatisticWindowCommand { get { return new DelegateCommand(OnOpenStatisticWindow, CanExecuteHasActiveProject); } }
+        public ICommand OpenStatisticWindowCommand { get { return new DelegateCommand(OnOpenStatisticWindow, CanExecuteHasStatistic); } }
         public ICommand CheckConflictGreaterThanFourClassesPerDayCommand { get { return new DelegateCommand(OnCheckConflictGreaterThanFourClassesPerDay, CanExecuteHasActiveProject); } }
         public ICommand ShowHideConflictsCommand { get { return new DelegateCommand(OnShowHideConflicts, CanExecuteShowHideConflicts); } }
 
@@ -156,9 +156,14 @@ namespace Editor.ViewModels.Windows
 
         private void OnOpenStatisticWindow()
         {
-            var vm = new StatisticWindowViewModel(TabCategory.Groups) { Project = Project };
+            var vm = new StatisticWindowViewModel(CalcStatisticCommand) { Project = Project };
             var window = new StatisticWindow { DataContext = vm };
             window.ShowDialog(); 
+        }
+
+        private bool CanExecuteHasStatistic()
+        {
+            return Project != null && Project.StatisticCompilation != null;
         }
 
         private void OnSaveProject()
