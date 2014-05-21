@@ -64,8 +64,6 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\ScrollViewerEx.cs" />
     <Compile Include="Models\ImportAndExport.cs" />
-    <Compile Include="Models\DataMining\StatisticCompilation.cs" />
-    <Compile Include="Models\SearchConflicts\ConflictCompilation.cs" />
     <Compile Include="ViewModels\Panels\Edit\SubjectEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\TabCategory.cs" />

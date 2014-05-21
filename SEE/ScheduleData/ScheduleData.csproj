@@ -47,7 +47,6 @@
     <Compile Include="DataMining\StatisticOf.cs" />
     <Compile Include="Elements.cs" />
     <Compile Include="FullClassRecord.cs" />
-    <Compile Include="Helpers\ExObservableCollection.cs" />
     <Compile Include="Helpers\NotificationObject.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
