@@ -19,7 +19,7 @@
         </CollectionViewSource>
     </UserControl.Resources>
 
-            <DockPanel>
+    <DockPanel>
         <GroupBox Header="Редактор таблиц"
                   Padding="5">
             <TabControl ItemsSource="{Binding Source={StaticResource SortedTables}}"
