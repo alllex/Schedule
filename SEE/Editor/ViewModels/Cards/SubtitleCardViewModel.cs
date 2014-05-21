@@ -1,5 +1,4 @@
 ﻿using Editor.Helpers;
-using Editor.Models;
 using ScheduleData;
 
 namespace Editor.ViewModels.Cards
@@ -8,19 +7,18 @@ namespace Editor.ViewModels.Cards
     {
         #region Properties
 
-        #region Subtitle
+        #region Item
 
-        private string _subtitle;
-
-        public string Subtitle
+        private HavingName _item;
+        public HavingName Item
         {
-            get { return _subtitle; }
+            get { return _item; }
             set
             {
-                if (_subtitle != value)
+                if (_item != value)
                 {
-                    _subtitle = value;
-                    RaisePropertyChanged(() => Subtitle);
+                    _item = value;
+                    RaisePropertyChanged(() => Item);
                 }
             }
         }
@@ -31,9 +29,10 @@ namespace Editor.ViewModels.Cards
 
         #region Ctor
 
+
         public SubtitleCardViewModel(HavingName name)
         {
-            Subtitle = name.Name;
+            _item = name;
         }
 
         #endregion

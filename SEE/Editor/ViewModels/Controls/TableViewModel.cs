@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Editor.Helpers;
-using Editor.Models;
 using Editor.ViewModels.Cards;
 using Editor.ViewModels.Helpers;
 using Editor.Views.Cards;
@@ -19,6 +18,8 @@ namespace Editor.ViewModels.Controls
 
         public static int TimeColumnsCount = 2;
         public static int TitleRowsCount = 2;
+        private const int DayMarginOffset = 5;
+        private static readonly int ClassesPerDayMax = ClassTime.ClassIntervals.Length;
 
         #region Properties
 
@@ -199,6 +200,16 @@ namespace Editor.ViewModels.Controls
                 Grid.SetColumnSpan(tc, title.ColumnSpan);
                 Titles.Add(tc);
             }
+            foreach (var title in _titlesMarkup.Subtitles)
+            {
+                var tvm = new SubtitleCardViewModel(title.Item);
+                var tc = new SubtitleCard { DataContext = tvm };
+                Grid.SetRow(tc, title.Row);
+                Grid.SetColumn(tc, TitleRowsCount + title.Column);
+                Grid.SetRowSpan(tc, title.RowSpan);
+                Grid.SetColumnSpan(tc, title.ColumnSpan);
+                Titles.Add(tc);
+            }
         }
 
         private void InitDayLine()
@@ -212,6 +223,7 @@ namespace Editor.ViewModels.Controls
                 Grid.SetColumn(dc, day.Column);
                 Grid.SetRowSpan(dc, day.RowSpan);
                 Grid.SetColumnSpan(dc, day.ColumnSpan);
+                dc.Margin = new Thickness(0, 0, 0, DayMarginOffset);
                 DayLine.Add(dc);
             }
         }
@@ -219,6 +231,7 @@ namespace Editor.ViewModels.Controls
         private void InitTimeIntervalLine()
         {
             TimeIntervals = new ObservableCollection<UIElement>();
+            var i = 0;
             foreach (var classInterval in _timeLineMarkup.ClassesIntervals)
             {
                 var tvm = new TimeCardViewModel(classInterval.Item);
@@ -227,6 +240,10 @@ namespace Editor.ViewModels.Controls
                 Grid.SetColumn(tc, classInterval.Column);
                 Grid.SetRowSpan(tc, classInterval.RowSpan);
                 Grid.SetColumnSpan(tc, classInterval.ColumnSpan);
+                if ((++i) % ClassesPerDayMax == 0)
+                {
+                    tc.Margin = new Thickness(0, 0, 0, DayMarginOffset);
+                }
                 TimeIntervals.Add(tc);
             }
         }
@@ -252,6 +269,10 @@ namespace Editor.ViewModels.Controls
             var classCard = new ClassCardViewMode { DataContext = viewModel };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
+            if (Project.ClassesSchedule.TimeLine[row].Number + 1 == ClassesPerDayMax)
+            {
+                classCard.Margin = new Thickness(0, 0, 0, DayMarginOffset);
+            }
             AddClassCardHandlers(classCard);
             return classCard;
         }
@@ -598,10 +619,6 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
-        #region Delegate
 
-
-
-        #endregion
     }
 }

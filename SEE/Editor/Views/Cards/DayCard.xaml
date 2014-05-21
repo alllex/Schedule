@@ -8,8 +8,8 @@
     <Grid>
         <Border BorderThickness="1"
                 BorderBrush="Black"
-                Background="White"
-                CornerRadius="3">
+                Background="PaleTurquoise"
+                CornerRadius="20,0,0,20">
             <TextBlock Text="{Binding Day, Mode=OneTime}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
