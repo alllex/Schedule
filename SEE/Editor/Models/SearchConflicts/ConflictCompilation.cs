@@ -9,7 +9,8 @@ namespace Editor.Models.SearchConflicts
         GreaterThanFourClassesPerDay,
         GroupsInDifferentClassrooms,
         LecturersInDifferentClassrooms,
-        NextClassesAtDifferentAddress
+        NextClassesAtDifferentAddress,
+        CardsWithBlankFields
     }
 
     public class ConflictCompilation
