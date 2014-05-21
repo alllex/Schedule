@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using Editor.Helpers;
 
-namespace Editor.Models
+namespace ScheduleData
 {
 
     [Serializable]

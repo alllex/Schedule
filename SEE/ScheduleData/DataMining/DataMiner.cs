@@ -1,4 +1,4 @@
-﻿namespace Editor.Models.DataMining
+﻿namespace ScheduleData.DataMining
 {
     public class DataMiner
     {

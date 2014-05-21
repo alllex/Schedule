@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Editor.Models
+namespace ScheduleData
 {
     public class ClassesTable
     {
@@ -62,6 +62,18 @@ namespace Editor.Models
         public int ColumnsCount()
         {
             return Groups.Count();
+        }
+
+        public void AddGroup(Group group)
+        {
+            if (group == null || group.YearOfStudy != YearOfStudy) return;
+            // TODO
+        }
+
+        public void RemoveGroup(Group group)
+        {
+            if (group == null || group.YearOfStudy != YearOfStudy) return;
+            // TODO
         }
 
     }

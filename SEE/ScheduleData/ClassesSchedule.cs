@@ -4,9 +4,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using Editor.Helpers;
 
-namespace Editor.Models
+namespace ScheduleData
 {
 
     public class ClassRecord : HavingId
@@ -359,8 +358,7 @@ namespace Editor.Models
         public void RemoveGroup(Group group1)
         {
             Groups.Remove(group1);
-            var tableIndex = Tables.IndexOf(GetClassesTable(group1.YearOfStudy));
-            Tables[tableIndex] = new ClassesTable(this, group1.YearOfStudy);
+            // TODO
         }
 
         #endregion
@@ -397,7 +395,6 @@ namespace Editor.Models
                     break;
             }
 
-            CreateNewTables();
         }
 
         private void GroupOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -406,14 +403,13 @@ namespace Editor.Models
             if (group == null) return;
             if (e.PropertyName == "YearOfStudy")
             {
-                CreateNewTables();
+                // TODO
             }
             else if (e.PropertyName == "Specialization")
             {
                 if (group.YearOfStudy != null)
                 {
-                    var tableIndex = Tables.IndexOf(GetClassesTable(group.YearOfStudy));
-                    Tables[tableIndex] = new ClassesTable(this, group.YearOfStudy);
+                    // TODO
                 }
             }
         }

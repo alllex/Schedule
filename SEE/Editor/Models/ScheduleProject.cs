@@ -1,8 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using Editor.Models.DataMining;
-using Editor.Models.SearchConflicts;
 using Editor.ViewModels;
 using Editor.ViewModels.Cards;
+using ScheduleData;
+using ScheduleData.DataMining;
+using ScheduleData.SearchConflicts;
 
 namespace Editor.Models
 {

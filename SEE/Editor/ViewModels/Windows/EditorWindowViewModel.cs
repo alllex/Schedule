@@ -4,12 +4,13 @@ using System.Windows;
 using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
-using Editor.Models.DataMining;
-using Editor.Models.SearchConflicts;
 using Editor.Repository;
 using Editor.ViewModels.Controls;
 using Editor.Views.Windows;
 using Microsoft.Win32;
+using ScheduleData;
+using ScheduleData.DataMining;
+using ScheduleData.SearchConflicts;
 
 namespace Editor.ViewModels.Windows
 {

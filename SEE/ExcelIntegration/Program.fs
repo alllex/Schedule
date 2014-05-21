@@ -3,7 +3,7 @@ namespace SEE
 
 open Microsoft.Office.Interop.Excel
 open System.IO
-open Editor.Models
+open ScheduleData
 
 type TransferData = (string [,] * string) []
 

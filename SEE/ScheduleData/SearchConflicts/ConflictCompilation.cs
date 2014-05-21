@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Editor.Models.SearchConflicts
+namespace ScheduleData.SearchConflicts
 {
 
     public enum ConflictCriteria

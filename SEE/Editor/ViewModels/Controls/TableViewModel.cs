@@ -6,10 +6,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Editor.Helpers;
 using Editor.Models;
-using Editor.Models.SearchConflicts;
 using Editor.ViewModels.Cards;
 using Editor.ViewModels.Helpers;
 using Editor.Views.Cards;
+using ScheduleData;
+using ScheduleData.SearchConflicts;
 
 namespace Editor.ViewModels.Controls
 {

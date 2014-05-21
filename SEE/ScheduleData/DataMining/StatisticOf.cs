@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Editor.Models.DataMining
+namespace ScheduleData.DataMining
 {
     public class StatisticOfClassroom : Statistic<Classroom>
     {
