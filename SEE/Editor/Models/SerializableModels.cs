@@ -76,6 +76,10 @@ namespace Editor.Models
         {
         }
 
+        public sSpecialization(int id, string name) : base(id, name)
+        {
+        }
+
         public Specialization ToNonSerializable()
         {
             return new Specialization { Name = Name };
@@ -135,6 +139,12 @@ namespace Editor.Models
         public sSpecialization Specialization;
         public sYearOfStudy YearOfStudy;
 
+        public sGroup(int id, string name, sSpecialization specialization, sYearOfStudy yearOfStudy) : base(id, name)
+        {
+            Specialization = specialization;
+            YearOfStudy = yearOfStudy;
+        }
+        
         public sGroup(Group group, sClassesSchedule schedule) : base(group)
         {
             Specialization = schedule.Specializations[group.Specialization.GetHashCode()];

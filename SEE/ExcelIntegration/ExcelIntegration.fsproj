@@ -50,6 +50,13 @@
     <None Include="App.config" />
     <None Include="Tests.fsx" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Editor\Editor.csproj">
+      <Name>Editor</Name>
+      <Project>{0e31e440-d6b1-443d-b234-47d8f59f4cfa}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
   </PropertyGroup>

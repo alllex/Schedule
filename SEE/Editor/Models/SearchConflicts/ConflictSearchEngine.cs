@@ -18,6 +18,7 @@ namespace Editor.Models.SearchConflicts
             conflicts.AddRange(LecterersInDifferentClassrooms(allClasses));
             conflicts.AddRange(NextClassesAtDifferentAddress(allClasses));
             conflicts.AddRange(CardsWithBlankFields(allClasses));
+
             return conflicts;
         }
         
@@ -92,6 +93,7 @@ namespace Editor.Models.SearchConflicts
             for (int i = 1; i < allClasses.Count; ++i)
             {
                 var currClass = classes.ElementAt(i);
+
                 if (currClass.Time != null && prevClass.Time != null &&
                     currClass.Classroom != null && prevClass.Classroom != null &&
                     prevClass.Time.Day == currClass.Time.Day &&
