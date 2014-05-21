@@ -44,6 +44,12 @@ namespace Editor.Models
         public Weekdays Day;
         public int Number;
 
+        public sClassTime(int id, Weekdays day, int number) : base(id)
+        {
+            Day = day;
+            Number = number;
+        }
+
         public sClassTime(ClassTime time) : base(time)
         {
             Day = time.Day;
@@ -58,7 +64,11 @@ namespace Editor.Models
 
     [Serializable]
     public class sSubject : sHavingName
-    {   
+    {
+        public sSubject(int id, string name) : base(id, name)
+        {
+        }
+        
         public sSubject(Subject subject) : base(subject)
         {
         }
@@ -89,6 +99,10 @@ namespace Editor.Models
     [Serializable]
     public class sYearOfStudy : sHavingName
     {
+        public sYearOfStudy(int id, string name) : base(id, name)
+        {
+        }
+        
         public sYearOfStudy(YearOfStudy yearOfStudy) : base(yearOfStudy)
         {
         }
@@ -105,6 +119,12 @@ namespace Editor.Models
         public string Degree;
         public string Department;
 
+        public sLecturer(int id, string name, string degree, string department) : base(id, name)
+        {
+            Degree = degree;
+            Department = department;
+        }
+        
         public sLecturer(Lecturer lecturer) : base(lecturer)
         {
             Degree = lecturer.Degree;
@@ -122,6 +142,11 @@ namespace Editor.Models
     {
         public string Address;
 
+        public sClassroom(int id, string name, string address) : base(id, name)
+        {
+            Address = address;
+        }
+        
         public sClassroom(Classroom classroom) : base(classroom)
         {
             Address = classroom.Address;
@@ -169,6 +194,13 @@ namespace Editor.Models
         public sLecturer Lecturer;
         public sClassroom Classroom;
 
+        public sClassRecord(int id, sSubject subject, sLecturer lecturer, sClassroom classroom) : base(id)
+        {
+            Subject = subject;
+            Lecturer = lecturer;
+            Classroom = classroom;
+        }
+        
         public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base(classRecord)
         {
             Subject = classRecord.Subject == null ? null : schedule.Subjects[classRecord.Subject.GetHashCode()];
@@ -194,6 +226,13 @@ namespace Editor.Models
         public sClassRecord[][] Table;
         public sGroup[] Groups;
 
+        public sClassesTable(int id, sYearOfStudy yearOfStudy, sClassRecord[][] table, sGroup[] groups) : base(id)
+        {
+            YearOfStudy = yearOfStudy;
+            Table = table;
+            Groups = groups;
+        }
+        
         public sClassesTable(ClassesTable table, sClassesSchedule schedule) : base(table.YearOfStudy)
         {  
             CopyYearOfStudy(table, schedule);
@@ -265,6 +304,18 @@ namespace Editor.Models
         public Dictionary<int, sSpecialization> Specializations;
         public Dictionary<int, sYearOfStudy> YearsOfStudy;
         public sClassesTable[] Tables;
+
+        public sClassesSchedule(int id, sClassTime[] timeline, Dictionary<int, sGroup> groups, Dictionary<int, sLecturer> lecturers, Dictionary<int, sClassroom> classrooms, Dictionary<int, sSubject> subjects, Dictionary<int, sSpecialization> specializations, Dictionary<int, sYearOfStudy> yearsOfStudy, sClassesTable[] tables) : base(id)
+        {
+            TimeLine = timeline;
+            Groups = groups;
+            Lecturers = lecturers;
+            Classrooms = classrooms;
+            Subjects = subjects;
+            Specializations = specializations;
+            YearsOfStudy = yearsOfStudy;
+            Tables = tables;
+        }
 
         # region Create
 
