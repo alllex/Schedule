@@ -3,7 +3,7 @@ using ScheduleData;
 
 namespace Editor.ViewModels.Cards
 {
-    internal class SubtitleCardViewModel : NotificationObject
+    internal class SubtitleCardViewModel : HasProjectProperty
     {
         #region Properties
 
@@ -28,7 +28,6 @@ namespace Editor.ViewModels.Cards
         #endregion
 
         #region Ctor
-
 
         public SubtitleCardViewModel(HavingName name)
         {

@@ -3,7 +3,7 @@ using ScheduleData;
 
 namespace Editor.ViewModels.Cards
 {
-    class TitleCardViewModel : NotificationObject
+    class TitleCardViewModel : HasProjectProperty
     {
         #region Properties
 

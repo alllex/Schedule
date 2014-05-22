@@ -27,13 +27,17 @@
 
 
         <KeyBinding Command="{Binding SelectionMoveDownCommand}" 
-                    Key="S"/>
+                    Key="Down"
+                    Modifiers="Alt"/>
         <KeyBinding Command="{Binding SelectionMoveUpCommand}" 
-                    Key="W"/>
+                    Key="Up"
+                    Modifiers="Alt"/>
         <KeyBinding Command="{Binding SelectionMoveLeftCommand}" 
-                    Key="A"/>
+                    Key="Left"
+                    Modifiers="Alt"/>
         <KeyBinding Command="{Binding SelectionMoveRightCommand}" 
-                    Key="D"/>
+                    Key="Right"
+                    Modifiers="Alt"/>
         
     </UserControl.InputBindings>
 

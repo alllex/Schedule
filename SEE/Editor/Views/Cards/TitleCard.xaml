@@ -10,13 +10,25 @@
                 BorderBrush="Black"
                 Background="Ivory"
                 CornerRadius="20,20,0,0">
-            <TextBlock Text="{Binding Item.Name}"
+            <Grid>
+                <TextBlock x:Name="TextBlock"
+                       Text="{Binding Item.Name}"
                        TextAlignment="Center"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        TextWrapping="Wrap"
-                       Margin="10,5,10,5">
-            </TextBlock>
+                       Margin="10,5,10,5" 
+                       MouseDown="TextBlock_OnMouseDown"/>
+                <TextBox x:Name="TextBox"
+                         Text="{Binding Item.Name}"
+                         Visibility="Collapsed"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         TextWrapping="Wrap"
+                         Margin="10,5,10,5" 
+                         LostFocus="TextBox_OnLostFocus"
+                         />
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
