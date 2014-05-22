@@ -14,6 +14,7 @@ namespace Editor.ViewModels.Helpers
         {
             var headers =
                 from t in groups
+                where t.Specialization != null
                 group t by t.Specialization;
 
             int currectCol = 0;
