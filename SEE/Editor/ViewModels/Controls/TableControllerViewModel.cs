@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
 
 namespace Editor.ViewModels.Controls
 {
@@ -47,7 +46,9 @@ namespace Editor.ViewModels.Controls
         #endregion
 
         #region Fields
-        
+
+        public Action UpdateViews;
+       
         #endregion
 
         #region Ctor
@@ -67,6 +68,13 @@ namespace Editor.ViewModels.Controls
                 {
                     tableViewModel.YearOfStudy = null;
                     tableViewModel.Project = Project;
+                }
+            }
+            else if (e.PropertyName == "SelectedIndex")
+            {
+                if (SelectedIndex >= 0)
+                {
+                    Project.ActiveYearOfStudy = Project.ClassesSchedule.YearsOfStudy[SelectedIndex];
                 }
             }
         }
@@ -96,7 +104,7 @@ namespace Editor.ViewModels.Controls
             {
                 if (Project.ClassesSchedule.HasGroups(yearOfStudy))
                 {
-                    Tables.Add(new TableViewModel { Project = Project, YearOfStudy = yearOfStudy });
+                    Tables.Add(new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = yearOfStudy });
                 }
             }
             if (Tables.Count > 0)

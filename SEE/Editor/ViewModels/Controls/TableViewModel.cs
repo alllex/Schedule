@@ -127,10 +127,13 @@ namespace Editor.ViewModels.Controls
         private ClassCardViewModel _selectedCard;
         private int _selectedRow, _selectedColumn;
 
+        private readonly Action _updateViews;
+
         #region Ctor
 
-        public TableViewModel()
+        public TableViewModel(Action updateViews)
         {
+            _updateViews = updateViews;
             PropertyChanged += OnPropertyChanged;
         }
 
@@ -192,7 +195,7 @@ namespace Editor.ViewModels.Controls
             Titles = new ObservableCollection<UIElement>();
             foreach (var title in _titlesMarkup.Titles)
             {
-                var tvm = new TitleCardViewModel(title.Item);
+                var tvm = new TitleCardViewModel(title.Item, _updateViews) { Project = Project };
                 var tc = new TitleCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
                 Grid.SetColumn(tc, TitleRowsCount + title.Column);
@@ -202,7 +205,7 @@ namespace Editor.ViewModels.Controls
             }
             foreach (var title in _titlesMarkup.Subtitles)
             {
-                var tvm = new SubtitleCardViewModel(title.Item);
+                var tvm = new SubtitleCardViewModel(title.Item, _updateViews) { Project = Project };
                 var tc = new SubtitleCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
                 Grid.SetColumn(tc, TitleRowsCount + title.Column);

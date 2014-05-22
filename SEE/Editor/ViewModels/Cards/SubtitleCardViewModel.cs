@@ -1,4 +1,6 @@
-﻿using Editor.Helpers;
+﻿using System;
+using System.Windows.Input;
+using Editor.Helpers;
 using ScheduleData;
 
 namespace Editor.ViewModels.Cards
@@ -7,18 +9,18 @@ namespace Editor.ViewModels.Cards
     {
         #region Properties
 
-        #region Item
+        #region Group
 
-        private HavingName _item;
-        public HavingName Item
+        private Group _group;
+        public Group Group
         {
-            get { return _item; }
+            get { return _group; }
             set
             {
-                if (_item != value)
+                if (_group != value)
                 {
-                    _item = value;
-                    RaisePropertyChanged(() => Item);
+                    _group = value;
+                    RaisePropertyChanged(() => Group);
                 }
             }
         }
@@ -27,11 +29,29 @@ namespace Editor.ViewModels.Cards
 
         #endregion
 
+        private readonly Action _updateViews;
+
         #region Ctor
 
-        public SubtitleCardViewModel(HavingName name)
+        public SubtitleCardViewModel(Group group, Action updateViews)
         {
-            _item = name;
+            Group = group;
+            _updateViews = updateViews;
+        }
+
+        #endregion
+
+        #region Commands
+
+        public ICommand RemoveGroupCommand { get { return new DelegateCommand(OnRemoveGroup);}}
+
+        private void OnRemoveGroup()
+        {
+            if (_updateViews != null)
+            {
+                Project.ClassesSchedule.RemoveGroup(Group);
+                _updateViews();
+            }
         }
 
         #endregion

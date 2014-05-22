@@ -81,7 +81,7 @@ namespace ScheduleData
 
         public void AddGroup(Group group)
         {
-            if (group == null || group.YearOfStudy != YearOfStudy || Groups.Any(g => g == group)) return;
+            if (group == null || group.YearOfStudy != YearOfStudy || Groups.Contains(group)) return;
 
             var oldGroups = Groups.ToList();
             oldGroups.Add(group);

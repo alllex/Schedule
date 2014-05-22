@@ -57,6 +57,7 @@ namespace Editor.ViewModels.Windows
         public EditorWindowViewModel(TableControllerViewModel tableControllerViewModel)
         {
             _tableController = tableControllerViewModel;
+            _tableController.UpdateViews = UpdateViews;
             PropertyChanged += OnPropertyChanged;
         }
 
@@ -77,12 +78,14 @@ namespace Editor.ViewModels.Windows
         private void SetNewProject(ScheduleProject proj)
         {
             Project = proj;
-            UpdateTables();
+            UpdateViews();
         }
 
-        private void UpdateTables()
+        private void UpdateViews()
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             _tableController.UpdateTables();
+            Mouse.OverrideCursor = Cursors.Arrow;
         }
 
         #endregion
@@ -279,7 +282,8 @@ namespace Editor.ViewModels.Windows
         {
             Mouse.OverrideCursor = Cursors.Wait;
             _tableController.Tables.Clear();
-            SetNewProject(new ScheduleProject { ClassesSchedule = new ScheduleRepository().Schedule });
+            var schedule = new ScheduleRepository().Schedule;
+            SetNewProject(new ScheduleProject { ClassesSchedule = schedule, ActiveYearOfStudy = schedule.YearsOfStudy.Any() ? schedule.YearsOfStudy.First() : null});
             Mouse.OverrideCursor = Cursors.Arrow;
         }
 
@@ -318,7 +322,7 @@ namespace Editor.ViewModels.Windows
             var vm = new ListsEditWindowViewModel(initTab){Project = Project};
             var window = new ListsEditWindow { DataContext = vm };
             window.ShowDialog();
-            UpdateTables();
+            UpdateViews();
         }
 
         private bool CanExecuteHasActiveProject()

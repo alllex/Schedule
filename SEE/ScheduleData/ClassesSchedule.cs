@@ -270,6 +270,10 @@ namespace ScheduleData
         public void AddGroup(Group group)
         {
             Groups.Add(group);
+            if (group == null || group.YearOfStudy == null) return;
+            var table = Tables.First(t => t.YearOfStudy == group.YearOfStudy);
+            if (table == null) return;
+            table.AddGroup(group);
         }
 
         #endregion
@@ -355,10 +359,13 @@ namespace ScheduleData
             }
         }
 
-        public void RemoveGroup(Group group1)
+        public void RemoveGroup(Group group)
         {
-            Groups.Remove(group1);
-            // TODO
+            Groups.Remove(group);
+            if (group == null || group.YearOfStudy == null) return;
+            var table = Tables.First(t => t.YearOfStudy == group.YearOfStudy);
+            if (table == null) return;
+            table.RemoveGroup(group);
         }
 
         #endregion
@@ -406,11 +413,11 @@ namespace ScheduleData
                 ClassesTable tableForAdd = null;
                 ClassesTable tableForRemove = null;
                 
-                for (int i = 0; i < Tables.Count; ++i)
-                    if (Tables[i].YearOfStudy == group.YearOfStudy)
-                        tableForAdd = Tables[i];
-                    else if (Tables[i].GroupIndexes.ContainsKey(group))
-                        tableForRemove = Tables[i];
+                foreach (ClassesTable t in Tables)
+                    if (t.YearOfStudy == @group.YearOfStudy)
+                        tableForAdd = t;
+                    else if (t.GroupIndexes.ContainsKey(@group))
+                        tableForRemove = t;
 
                 if (tableForRemove != null)
                 {
@@ -427,9 +434,9 @@ namespace ScheduleData
                 if (group.YearOfStudy != null)
                 {
                     ClassesTable tableForMove = null;
-                    for (int i = 0; i < Tables.Count; ++i)
-                        if (Tables[i].YearOfStudy == group.YearOfStudy)
-                            tableForMove = Tables[i];
+                    foreach (ClassesTable t in Tables)
+                        if (t.YearOfStudy == @group.YearOfStudy)
+                            tableForMove = t;
 
                     var classes = tableForMove.AllClassesOfGroup(group);
                     tableForMove.RemoveGroup(group);

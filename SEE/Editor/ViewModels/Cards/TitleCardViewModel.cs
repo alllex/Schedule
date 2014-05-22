@@ -1,4 +1,6 @@
-﻿using Editor.Helpers;
+﻿using System;
+using System.Windows.Input;
+using Editor.Helpers;
 using ScheduleData;
 
 namespace Editor.ViewModels.Cards
@@ -7,18 +9,18 @@ namespace Editor.ViewModels.Cards
     {
         #region Properties
 
-        #region Item
+        #region Specialization
 
-        private HavingName _item;
-        public HavingName Item
+        private Specialization _specialization;
+        public Specialization Specialization
         {
-            get { return _item; }
+            get { return _specialization; }
             set
             {
-                if (_item != value)
+                if (_specialization != value)
                 {
-                    _item = value;
-                    RaisePropertyChanged(() => Item);
+                    _specialization = value;
+                    RaisePropertyChanged(() => Specialization);
                 }
             }
         }
@@ -27,12 +29,31 @@ namespace Editor.ViewModels.Cards
 
         #endregion
 
+        private readonly Action _updateViews;
+
         #region Ctor
 
 
-        public TitleCardViewModel(HavingName name)
+        public TitleCardViewModel(Specialization specialization, Action updateViews)
         {
-            _item = name;
+            Specialization = specialization;
+            _updateViews = updateViews;
+        }
+
+        #endregion
+
+        #region Commands
+
+        public ICommand AddGroupCommand { get { return new DelegateCommand(OnAddGroup); } }
+
+        private void OnAddGroup()
+        {
+            if (_updateViews != null)
+            {
+                var group = new Group { Name = "Новая группа", Specialization = Specialization, YearOfStudy = Project.ActiveYearOfStudy};
+                Project.ClassesSchedule.AddGroup(group);
+                _updateViews();
+            }
         }
 
         #endregion

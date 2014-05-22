@@ -11,18 +11,10 @@
              d:DataContext="{d:DesignInstance controls1:TableControllerViewModel}"
              >
 
-    <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedTables" Source="{Binding Tables}">
-            <CollectionViewSource.SortDescriptions>
-                <componentModel:SortDescription PropertyName="TableHeader" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-    </UserControl.Resources>
-
     <DockPanel>
         <GroupBox Header="Редактор таблиц"
                   Padding="5">
-            <TabControl ItemsSource="{Binding Source={StaticResource SortedTables}}"
+            <TabControl ItemsSource="{Binding Tables}"
                         SelectedIndex="{Binding SelectedIndex}">
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">

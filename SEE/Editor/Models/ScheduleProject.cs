@@ -105,6 +105,25 @@ namespace Editor.Models
 
         #endregion
 
+        #region ActiveYearOfStudy
+
+        private YearOfStudy _activeYearOfStudy;
+
+        public YearOfStudy ActiveYearOfStudy
+        {
+            get { return _activeYearOfStudy; }
+            set
+            {
+                if (_activeYearOfStudy != value)
+                {
+                    _activeYearOfStudy = value;
+                    RaisePropertyChanged(() => ActiveYearOfStudy);
+                }
+            }
+        }
+
+        #endregion
+
         
     }
 }

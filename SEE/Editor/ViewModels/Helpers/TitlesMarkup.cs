@@ -7,8 +7,8 @@ namespace Editor.ViewModels.Helpers
 {
     class TitlesMarkup
     {
-        public List<TableItem<HavingName>> Titles = new List<TableItem<HavingName>>();
-        public List<TableItem<HavingName>> Subtitles = new List<TableItem<HavingName>>();
+        public List<TableItem<Specialization>> Titles = new List<TableItem<Specialization>>();
+        public List<TableItem<Group>> Subtitles = new List<TableItem<Group>>();
 
         public TitlesMarkup(IEnumerable<Group> groups)
         {
@@ -20,10 +20,10 @@ namespace Editor.ViewModels.Helpers
             int currectCol = 0;
             foreach (var h in headers)
             {
-                Titles.Add(new TableItem<HavingName>{Item = h.Key, Column = currectCol, Row = 0, ColumnSpan = h.Count(), RowSpan = 1});
+                Titles.Add(new TableItem<Specialization> { Item = h.Key, Column = currectCol, Row = 0, ColumnSpan = h.Count(), RowSpan = 1 });
                 foreach (var title in h)
                 {
-                    Subtitles.Add(new TableItem<HavingName> { Item = title, Row = 1, Column = currectCol });
+                    Subtitles.Add(new TableItem<Group> { Item = title, Row = 1, Column = currectCol });
                     currectCol++;
                 }
             }
