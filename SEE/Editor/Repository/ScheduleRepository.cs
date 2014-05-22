@@ -78,8 +78,8 @@ namespace Editor.Repository
 
         private void InitYearsOfStudy()
         {
-            const int yearsStart = 2;
-            const int yearsCount = 1;
+            const int yearsStart = 1;
+            const int yearsCount = 2;
             for (int i = yearsStart; i < yearsStart + yearsCount; i++)
             {
                 Schedule.YearsOfStudy.Add(new YearOfStudy{Name = i.ToString(CultureInfo.InvariantCulture)});
@@ -105,11 +105,16 @@ namespace Editor.Repository
         {
             string[][] groupNames =
             {
+                new[] { "111 (ПОМИ)", "112", "113" }, 
+                new[] { "121", "122", "123", "124" },
+                new[] { "141", "142", "143", "144" },
+                new[] { "161" },
+                new[] { "171" }/*,
                 new[] { "211 (ПОМИ)", "212", "213" }, 
                 new[] { "221", "222", "223", "224" },
                 new[] { "241", "242", "243", "244" },
                 new[] { "261" },
-                new[] { "271" }
+                new[] { "271" }*/
             };
             int groupCount = groupNames.Length;
             int max = Schedule.Specializations.Count - 1;
@@ -118,7 +123,7 @@ namespace Editor.Repository
                 for (int j = 0; j < groupNames[i].Length; j++)
                 {
                     var g = groupNames[i][j];
-                    var y = Schedule.YearsOfStudy[0];
+                    var y = Schedule.YearsOfStudy[/*2 * i >= groupCount ? 1 : */0];
                     var s = Schedule.Specializations[i > max ? 0 : i];
                     Schedule.Groups.Add(new Group { Name = g, YearOfStudy = y, Specialization = s });
                 }
