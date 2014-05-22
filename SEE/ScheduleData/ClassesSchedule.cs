@@ -403,13 +403,37 @@ namespace ScheduleData
             if (group == null) return;
             if (e.PropertyName == "YearOfStudy")
             {
-                // TODO
+                ClassesTable tableForAdd = null;
+                ClassesTable tableForRemove = null;
+                
+                for (int i = 0; i < Tables.Count; ++i)
+                    if (Tables[i].YearOfStudy == group.YearOfStudy)
+                        tableForAdd = Tables[i];
+                    else if (Tables[i].GroupIndexes.ContainsKey(group))
+                        tableForRemove = Tables[i];
+
+                if (tableForRemove != null)
+                {
+                    var classes = tableForRemove.AllClassesOfGroup(group);
+                    tableForRemove.RemoveGroup(group);
+                    tableForAdd.AddGroup(group, classes);
+
+                }
+                else
+                    tableForAdd.AddGroup(group);
             }
             else if (e.PropertyName == "Specialization")
             {
                 if (group.YearOfStudy != null)
                 {
-                    // TODO
+                    ClassesTable tableForMove = null;
+                    for (int i = 0; i < Tables.Count; ++i)
+                        if (Tables[i].YearOfStudy == group.YearOfStudy)
+                            tableForMove = Tables[i];
+
+                    var classes = tableForMove.AllClassesOfGroup(group);
+                    tableForMove.RemoveGroup(group);
+                    tableForMove.AddGroup(group, classes);
                 }
             }
         }

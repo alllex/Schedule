@@ -8,8 +8,8 @@
     <Grid>
         <Border BorderThickness="1"
                 BorderBrush="Black"
-                Background="White"
-                CornerRadius="3">
+                Background="Ivory"
+                CornerRadius="20,20,0,0">
             <TextBlock Text="{Binding Item.Name}"
                        TextAlignment="Center"
                        HorizontalAlignment="Center"
