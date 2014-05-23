@@ -592,7 +592,7 @@ namespace Editor.ViewModels.Controls
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
             var cm = new ContextMenu();
-            cm.Items.Add(new MenuItem { Header = "Редактировать", Command = EditClassCommand, InputGestureText = "Enter"});
+            cm.Items.Add(new MenuItem { Header = "Редактировать", Command = EditClassCommand});
             cm.Items.Add(new MenuItem { Header = "Скопировать", Command = CopyClassCommand, InputGestureText = "Ctrl+C" });
             cm.Items.Add(new MenuItem { Header = "Вставить", Command = PasteClassCommand, InputGestureText = "Ctrl+V" });
             cm.Items.Add(new MenuItem { Header = "Вырезать", Command = CutClassCommand, InputGestureText = "Ctrl+X" });

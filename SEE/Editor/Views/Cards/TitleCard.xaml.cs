@@ -26,5 +26,14 @@ namespace Editor.Views.Cards
             TextBlock.Visibility = Visibility.Visible;
             TextBox.Visibility = Visibility.Collapsed;
         }
+
+        private void TextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                TextBlock.Visibility = Visibility.Visible;
+                TextBox.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }
