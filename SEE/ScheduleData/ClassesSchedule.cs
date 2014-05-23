@@ -8,78 +8,78 @@ using System.Linq;
 namespace ScheduleData
 {
 
-    public class ClassRecord : HavingId
-    {
-        protected bool Equals(ClassRecord other)
-        {
-            return Equals(_subject, other._subject) && Equals(_lecturer, other._lecturer) && Equals(_classroom, other._classroom);
-        }
-
-        #region Subject
-
-        private Subject _subject;
-
-        public Subject Subject
-        {
-            get { return _subject; }
-            set
-            {
-                if (_subject != value)
-                {
-                    _subject = value;
-                    RaisePropertyChanged(() => Subject);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Lecturer
-
-        private Lecturer _lecturer;
-
-        public Lecturer Lecturer
-        {
-            get { return _lecturer; }
-            set
-            {
-                if (_lecturer != value)
-                {
-                    _lecturer = value;
-                    RaisePropertyChanged(() => Lecturer);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Classroom
-
-        private Classroom _classroom;
-
-        public Classroom Classroom
-        {
-            get { return _classroom; }
-            set
-            {
-                if (_classroom != value)
-                {
-                    _classroom = value;
-                    RaisePropertyChanged(() => Classroom);
-                }
-            }
-        }
-
-        #endregion
-
-        public static void Copy(ClassRecord from, ClassRecord to)
-        {
-            if (from == null || to == null) return;
-            to.Subject = from.Subject;
-            to.Lecturer = from.Lecturer;
-            to.Classroom = from.Classroom;
-        }
-    }
+//    public class ClassRecord : HavingId
+//    {
+//        protected bool Equals(ClassRecord other)
+//        {
+//            return Equals(_subject, other._subject) && Equals(_lecturer, other._lecturer) && Equals(_classroom, other._classroom);
+//        }
+//
+//        #region Subject
+//
+//        private Subject _subject;
+//
+//        public Subject Subject
+//        {
+//            get { return _subject; }
+//            set
+//            {
+//                if (_subject != value)
+//                {
+//                    _subject = value;
+//                    RaisePropertyChanged(() => Subject);
+//                }
+//            }
+//        }
+//
+//        #endregion
+//
+//        #region Lecturer
+//
+//        private Lecturer _lecturer;
+//
+//        public Lecturer Lecturer
+//        {
+//            get { return _lecturer; }
+//            set
+//            {
+//                if (_lecturer != value)
+//                {
+//                    _lecturer = value;
+//                    RaisePropertyChanged(() => Lecturer);
+//                }
+//            }
+//        }
+//
+//        #endregion
+//
+//        #region Classroom
+//
+//        private Classroom _classroom;
+//
+//        public Classroom Classroom
+//        {
+//            get { return _classroom; }
+//            set
+//            {
+//                if (_classroom != value)
+//                {
+//                    _classroom = value;
+//                    RaisePropertyChanged(() => Classroom);
+//                }
+//            }
+//        }
+//
+//        #endregion
+//
+//        public static void Copy(ClassRecord from, ClassRecord to)
+//        {
+//            if (from == null || to == null) return;
+//            to.Subject = from.Subject;
+//            to.Lecturer = from.Lecturer;
+//            to.Classroom = from.Classroom;
+//        }
+//    }
 
     public class ClassesSchedule : HavingId
     {
@@ -510,24 +510,5 @@ namespace ScheduleData
 
             return classes;
         }
-
-        # region Save/Load
-
-        public static void Save(ClassesSchedule schedule, string path)
-        {
-            SaveLoadSchedule.Save(schedule, path);
-        }
-
-        public static ClassesSchedule Load(string path)
-        {
-            return SaveLoadSchedule.Load(path);
-        }
-
-        public void Save(string path)
-        {
-            SaveLoadSchedule.Save(this, path);
-        }
-
-        # endregion
     }
 }

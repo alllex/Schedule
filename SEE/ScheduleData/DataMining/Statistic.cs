@@ -57,7 +57,7 @@ namespace ScheduleData.DataMining
             CountOfClassesPerWeekday = new List<ClassesPerWeekday>();
             foreach (Weekdays weekday in Enum.GetValues(typeof (Weekdays)))
             {
-                var count = Classes.Count(c => c.Time.Day == weekday);
+                var count = Classes.Count(c => c.ClassTime.Day == weekday);
                 CountOfClassesPerWeekday.Add(new ClassesPerWeekday{ Weekday = weekday, Count = count});
             }
         }

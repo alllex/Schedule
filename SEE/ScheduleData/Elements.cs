@@ -385,118 +385,117 @@ namespace ScheduleData
         #endregion
 
     }
-
-    //[Serializable]
-    //public class Class : HavingName
-    //{
-    //    protected bool Equals(Class other)
-    //    {
-    //        return Equals(_subject, other._subject) && Equals(_group, other._group) && Equals(_lecturer, other._lecturer) && Equals(_classroom, other._classroom) && Equals(_classTime, other._classTime);
-    //    }
+    
+    public class ClassRecord : HavingId
+    {
+        protected bool Equals(ClassRecord other)
+        {
+            return Equals(_subject, other._subject) && Equals(_group, other._group) && Equals(_lecturer, other._lecturer) && Equals(_classroom, other._classroom) && Equals(_classTime, other._classTime);
+        }
         
-    //    #region Subject
+        #region Subject
 
-    //    private Subject _subject;
+        private Subject _subject;
 
-    //    public Subject Subject
-    //    {
-    //        get { return _subject; }
-    //        set
-    //        {
-    //            if (_subject != value)
-    //            {
-    //                _subject = value;
-    //                RaisePropertyChanged(() => Subject);
-    //            }
-    //        }
-    //    }
+        public Subject Subject
+        {
+            get { return _subject; }
+            set
+            {
+                if (_subject != value)
+                {
+                    _subject = value;
+                    RaisePropertyChanged(() => Subject);
+                }
+            }
+        }
 
-    //    #endregion
+        #endregion
 
-    //    #region Group
+        #region Group
 
-    //    private Group _group;
+        private Group _group;
 
-    //    public Group Group
-    //    {
-    //        get { return _group; }
-    //        set
-    //        {
-    //            if (_group != value)
-    //            {
-    //                _group = value;
-    //                RaisePropertyChanged(() => Group);
-    //            }
-    //        }
-    //    }
+        public Group Group
+        {
+            get { return _group; }
+            set
+            {
+                if (_group != value)
+                {
+                    _group = value;
+                    RaisePropertyChanged(() => Group);
+                }
+            }
+        }
 
-    //    #endregion
+        #endregion
 
-    //    #region Lecturer
+        #region Lecturer
 
-    //    private Lecturer _lecturer;
+        private Lecturer _lecturer;
 
-    //    public Lecturer Lecturer
-    //    {
-    //        get { return _lecturer; }
-    //        set
-    //        {
-    //            if (_lecturer != value)
-    //            {
-    //                _lecturer = value;
-    //                RaisePropertyChanged(() => Lecturer);
-    //            }
-    //        }
-    //    }
+        public Lecturer Lecturer
+        {
+            get { return _lecturer; }
+            set
+            {
+                if (_lecturer != value)
+                {
+                    _lecturer = value;
+                    RaisePropertyChanged(() => Lecturer);
+                }
+            }
+        }
 
-    //    #endregion
+        #endregion
 
-    //    #region Classroom
+        #region Classroom
 
-    //    private Classroom _classroom;
+        private Classroom _classroom;
 
-    //    public Classroom Classroom
-    //    {
-    //        get { return _classroom; }
-    //        set
-    //        {
-    //            if (_classroom != value)
-    //            {
-    //                _classroom = value;
-    //                RaisePropertyChanged(() => Classroom);
-    //            }
-    //        }
-    //    }
+        public Classroom Classroom
+        {
+            get { return _classroom; }
+            set
+            {
+                if (_classroom != value)
+                {
+                    _classroom = value;
+                    RaisePropertyChanged(() => Classroom);
+                }
+            }
+        }
 
-    //    #endregion
+        #endregion
 
-    //    #region ClassTime
+        #region ClassTime
 
-    //    private ClassTime _classTime;
+        private ClassTime _classTime;
 
-    //    public ClassTime ClassTime
-    //    {
-    //        get { return _classTime; }
-    //        set
-    //        {
-    //            if (_classTime != value)
-    //            {
-    //                _classTime = value;
-    //                RaisePropertyChanged(() => ClassTime);
-    //            }
-    //        }
-    //    }
+        public ClassTime ClassTime
+        {
+            get { return _classTime; }
+            set
+            {
+                if (_classTime != value)
+                {
+                    _classTime = value;
+                    RaisePropertyChanged(() => ClassTime);
+                }
+            }
+        }
 
-    //    #endregion
+        #endregion
 
-    //    public static void Copy(Class from, Class to)
-    //    {
-    //        if (from == null || to == null) return;
-    //        to.Subject = from.Subject;
-    //        to.Group = from.Group;
-    //        to.Lecturer = from.Lecturer;
-    //        to.Classroom = from.Classroom;
-    //        to.ClassTime = from.ClassTime;
-    //    }
-    //}
+        public static void Copy(ClassRecord from, ClassRecord to)
+        {
+            if (from == null || to == null) return;
+            to.Subject = from.Subject;
+            to.Group = from.Group;
+            to.Lecturer = from.Lecturer;
+            to.Classroom = from.Classroom;
+            to.ClassTime = from.ClassTime;
+        }
+    }
 }

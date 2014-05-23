@@ -154,7 +154,7 @@ namespace Editor.ViewModels.Controls
                 {
                     var group = conflictingClass.Group;
                     if (group.YearOfStudy != _classesTable.YearOfStudy) continue;
-                    var time = conflictingClass.Time;
+                    var time = conflictingClass.ClassTime;
                     var row = _classesTable.TimeIndexes[time];
                     var column = _classesTable.GroupIndexes[group];
                     if (row < 0 || column < 0 || row >= ClassesRowsCount || column >= ClassesColumnsCount)

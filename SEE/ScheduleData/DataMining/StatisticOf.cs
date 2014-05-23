@@ -17,7 +17,7 @@ namespace ScheduleData.DataMining
         private void SetCountGroupsInClassroom()
         {
             var groups = from c in Classes
-                         group c by c.Time;
+                         group c by c.ClassTime;
 
             foreach (var t in Schedule.TimeLine)
                 CountGroupsInClassroom.Add(t, 0);
@@ -45,7 +45,7 @@ namespace ScheduleData.DataMining
     public class StatisticOfTime      : Statistic<ClassTime>
     {
         public StatisticOfTime(ClassesSchedule schedule, ClassTime subject)
-            : base(schedule, subject, f => f == null ? null : f.Time) { }
+            : base(schedule, subject, f => f == null ? null : f.ClassTime) { }
     }
 
     public class StatisticOfSubject   : Statistic<Subject>
