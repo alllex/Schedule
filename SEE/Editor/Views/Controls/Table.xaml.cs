@@ -33,6 +33,7 @@ namespace Editor.Views.Controls
         {
             ResizeGrid(model.TableHeight(), model.TableWidth());
             TableGrid.Children.Clear();
+            TableGrid.Children.Add(model.LeftTopControl);
             foreach (var time in model.TimeIntervals)
             {
                 TableGrid.Children.Add(time);

@@ -32,6 +32,11 @@
                     <MenuItem Header="Excel (.xlsx)"
                           Command="{Binding ExportToExcelCommand}"/>
                 </MenuItem>
+                <MenuItem Header="Импорт"
+                          IsEnabled="False">
+                    <MenuItem Header="Excel (.xlsx)"
+                              Command="{Binding ImportFromExcelCommand}"/>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Правка">
                 <MenuItem Header="Группы"

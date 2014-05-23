@@ -480,6 +480,16 @@ namespace ScheduleData
             }
         }
 
+        public void InitByOne()
+        {
+            var year = new YearOfStudy {Name = "Новый"};
+            var spec = new Specialization {Name = "Специальность"};
+            var group = new Group {Name = "Группа", YearOfStudy = year, Specialization = spec};
+            AddYearOfStudy(year);
+            AddSpecialization(spec);
+            AddGroup(group);
+        }
+
         #endregion
 
         public ClassesTable GetClassesTable(YearOfStudy year)

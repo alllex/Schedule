@@ -3,25 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:statistics="clr-namespace:Editor.ViewModels.Panels.Statistics"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance statistics:GroupStatPanelViewModel}"
              >
-    
-    <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedList" Source="{Binding ObjectList}">
-            <CollectionViewSource.SortDescriptions>
-                <componentModel:SortDescription PropertyName="Name" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-    </UserControl.Resources>
-
+  
     <DockPanel>
         <ListBox x:Name="ListBox"
                  DockPanel.Dock="Left"
-                 ItemsSource="{Binding Source={StaticResource SortedList}}"
+                 ItemsSource="{Binding ObjectList}"
                  DisplayMemberPath="Name"
                  SelectedItem="{Binding SelectedItem}"
                  MinWidth="150">

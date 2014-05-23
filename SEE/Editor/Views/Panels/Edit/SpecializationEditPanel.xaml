@@ -3,17 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    
-    <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedList" Source="{Binding Project.ClassesSchedule.Specializations}">
-            <CollectionViewSource.SortDescriptions>
-                <componentModel:SortDescription PropertyName="Name" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-    </UserControl.Resources>
+
     
     <DockPanel>
         <DockPanel DockPanel.Dock="Left">
@@ -24,7 +16,7 @@
                     Command="{Binding AddSpecializationCommand}"/>
 
             <ListBox x:Name="ListBox"
-                    ItemsSource="{Binding Source={StaticResource SortedList}}"
+                    ItemsSource="{Binding Project.ClassesSchedule.Specializations}"
                     SelectedIndex="0"
                     DisplayMemberPath="Name"
                     MinWidth="150">
@@ -37,4 +29,5 @@
                      AcceptsReturn="True"/>
         </StackPanel>
     </DockPanel>
+    
 </UserControl>

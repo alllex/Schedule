@@ -8,11 +8,6 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedList" Source="{Binding Project.ClassesSchedule.Groups}">
-            <CollectionViewSource.SortDescriptions>
-                <componentModel:SortDescription PropertyName="Name" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
 
         <CollectionViewSource x:Key="SortedSpecializations" Source="{Binding Project.ClassesSchedule.Specializations}">
             <CollectionViewSource.SortDescriptions>
@@ -36,7 +31,7 @@
                     Command="{Binding AddGroupCommand}"/>
 
             <ListBox x:Name="ListBox"
-                    ItemsSource="{Binding Source={StaticResource SortedList}}"
+                    ItemsSource="{Binding Project.ClassesSchedule.Groups}"
                     SelectedIndex="0"
                     MinWidth="150">
                 <ListBox.ItemContainerStyle>

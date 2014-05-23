@@ -124,10 +124,27 @@ namespace Editor.ViewModels.Windows
         #endregion
 
         public ICommand ExportToExcelCommand { get { return new DelegateCommand(OnExportToExcel, CanExecuteHasActiveProject); } }
+        public ICommand ImportFromExcelCommand { get { return new DelegateCommand(OnImportFromExcel); } }
 
         #endregion
 
         #region Command Handlers
+
+        private void OnImportFromExcel()
+        {
+            var dlg = new OpenFileDialog
+            {
+                FileName = "Расписание",
+                DefaultExt = ".xlsx",
+                Filter = "Расписание|*.xlsx"
+            };
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                var schedule = ImportExportSchedule.Import(dlg.FileName);
+                SetNewProject(new ScheduleProject { ClassesSchedule = schedule });
+            }
+        }
 
         private void OnExportToExcel()
         {
@@ -225,6 +242,7 @@ namespace Editor.ViewModels.Windows
                 Mouse.OverrideCursor = Cursors.Wait;
                 Project.StatisticCompilation = new StatisticCompilation(Project.ClassesSchedule);
                 Mouse.OverrideCursor = Cursors.Arrow;
+                OnOpenStatisticWindow();
             }
         }
 
@@ -275,6 +293,7 @@ namespace Editor.ViewModels.Windows
         {
             var schedule = new ClassesSchedule();
             schedule.InitStdTimeLine();
+            schedule.InitByOne();
             SetNewProject(new ScheduleProject { ClassesSchedule = schedule });
         }
 
