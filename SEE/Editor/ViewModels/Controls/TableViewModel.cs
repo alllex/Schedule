@@ -513,7 +513,7 @@ namespace Editor.ViewModels.Controls
             UpdateSelection(classCard);
             if (e.ClickCount == 2)
             {
-                OpenCardEditor(classCard);
+                OnEditClass();
             }
         }
         
@@ -571,16 +571,19 @@ namespace Editor.ViewModels.Controls
 
             var row = Grid.GetRow(card) - TitleRowsCount;
             var col = Grid.GetColumn(card) - TimeColumnsCount;
-            var @class = _classesTable.Table[row][col];
-            if (@class == null)
-            {
-                _classesTable.Table[row][col] = new ClassRecord();
-                @class = _classesTable.Table[row][col];
-            }
+            var @class = _classesTable.Table[row][col] ?? new ClassRecord();
             var model = new ClassCardViewModel(@class) { Project = Project };
             var edit = new ClassCardEditMode(centerX, centerY) { DataContext = model };
             edit.ShowDialog();
-            ClassesCards[row][col].DataContext = model;
+            if (@class.Classroom != null || @class.Lecturer != null || @class.Subject != null)
+            {
+                _classesTable.Table[row][col] = @class;
+                ClassesCards[row][col].DataContext = model;
+            }
+            else
+            {
+                ClassesCards[row][col].DataContext = new ClassCardViewModel(null) { Project = Project }; ;
+            }
             UpdateSelection(row, col);
         }
         
