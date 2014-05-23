@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 
 namespace ScheduleData
@@ -218,19 +216,19 @@ namespace ScheduleData
 
         #endregion
 
-        #region Tables
+        #region ClassRecords
 
-        private ObservableCollection<ClassesTable> _tables = new ObservableCollection<ClassesTable>();
+        private ObservableCollection<ClassRecord> _classRecords = new ObservableCollection<ClassRecord>();
 
-        public ObservableCollection<ClassesTable> Tables
+        public ObservableCollection<ClassRecord> ClassRecords
         {
-            get { return _tables; }
+            get { return _classRecords; }
             set
             {
-                if (_tables != value)
+                if (_classRecords != value)
                 {
-                    _tables = value;
-                    RaisePropertyChanged(() => Tables);
+                    _classRecords = value;
+                    RaisePropertyChanged(() => ClassRecords);
                 }
             }
         }
@@ -244,7 +242,6 @@ namespace ScheduleData
         public void AddYearOfStudy(YearOfStudy year)
         {
             YearsOfStudy.Add(year);
-            Tables.Add(new ClassesTable(this, year));
         }
 
         public void AddSpecialization(Specialization specialization)
@@ -270,10 +267,6 @@ namespace ScheduleData
         public void AddGroup(Group group)
         {
             Groups.Add(group);
-            if (group == null || group.YearOfStudy == null) return;
-            var table = Tables.First(t => t.YearOfStudy == group.YearOfStudy);
-            if (table == null) return;
-            table.AddGroup(group);
         }
 
         #endregion
@@ -283,7 +276,6 @@ namespace ScheduleData
         public void RemoveYearOfStudy(YearOfStudy year)
         {
             YearsOfStudy.Remove(year);
-            Tables.Remove((from t in Tables where t.YearOfStudy == year select t).First());
             foreach (var @group in Groups)
             {
                 if (group.YearOfStudy == year)
@@ -308,17 +300,11 @@ namespace ScheduleData
         public void RemoveSubject(Subject subject)
         {
             Subjects.Remove(subject);
-            foreach (var classesTable in Tables)
+            foreach (var classRecord in ClassRecords)
             {
-                for (int i = 0; i < classesTable.RowsCount(); i++)
+                if (classRecord.Subject == subject)
                 {
-                    for (int j = 0; j < classesTable.ColumnsCount(); j++)
-                    {
-                        if (classesTable.Table[i][j].Subject == subject)
-                        {
-                            classesTable.Table[i][j].Subject = null;
-                        }
-                    }
+                    classRecord.Subject = null;
                 }
             }
         }
@@ -326,17 +312,11 @@ namespace ScheduleData
         public void RemoveClassroom(Classroom classroom)
         {
             Classrooms.Remove(classroom);
-            foreach (var classesTable in Tables)
+            foreach (var classRecord in ClassRecords)
             {
-                for (int i = 0; i < classesTable.RowsCount(); i++)
+                if (classRecord.Classroom == classroom)
                 {
-                    for (int j = 0; j < classesTable.ColumnsCount(); j++)
-                    {
-                        if (classesTable.Table[i][j].Classroom == classroom)
-                        {
-                            classesTable.Table[i][j].Classroom = null;
-                        }
-                    }
+                    classRecord.Classroom = null;
                 }
             }
         }
@@ -344,17 +324,11 @@ namespace ScheduleData
         public void RemoveLecturer(Lecturer lecturer)
         {
             Lecturers.Remove(lecturer);
-            foreach (var classesTable in Tables)
+            foreach (var classRecord in ClassRecords)
             {
-                for (int i = 0; i < classesTable.RowsCount(); i++)
+                if (classRecord.Lecturer == lecturer)
                 {
-                    for (int j = 0; j < classesTable.ColumnsCount(); j++)
-                    {
-                        if (classesTable.Table[i][j].Lecturer == lecturer)
-                        {
-                            classesTable.Table[i][j].Lecturer = null;
-                        }
-                    }
+                    classRecord.Lecturer = null;
                 }
             }
         }
@@ -362,10 +336,14 @@ namespace ScheduleData
         public void RemoveGroup(Group group)
         {
             Groups.Remove(group);
-            if (group == null || group.YearOfStudy == null) return;
-            var table = Tables.First(t => t.YearOfStudy == group.YearOfStudy);
-            if (table == null) return;
-            table.RemoveGroup(group);
+            foreach (var classRecord in ClassRecords)
+            {
+                if (classRecord.Group == group)
+                {
+                    classRecord.Group = null;
+                }
+            }
+
         }
 
         #endregion
@@ -374,76 +352,76 @@ namespace ScheduleData
 
         public ClassesSchedule()
         {
-            Groups.CollectionChanged += GroupsOnCollectionChanged;
+//            Groups.CollectionChanged += GroupsOnCollectionChanged;
         }
 
-        private void GroupsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems == null) return;
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Remove:
-                    foreach (var item in e.NewItems)
-                    {
-                        //Removed items
-                        var group = item as Group;
-                        if (group == null) continue;
-                        group.PropertyChanged -= GroupOnPropertyChanged;
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Add:
-                    foreach (var item in e.NewItems)
-                    {
-                        //Added items
-                        var group = item as Group;
-                        if (group == null) continue;
-                        group.PropertyChanged += GroupOnPropertyChanged;
-                    }
-                    break;
-            }
-
-        }
-
-        private void GroupOnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var group = sender as Group;
-            if (group == null) return;
-            if (e.PropertyName == "YearOfStudy")
-            {
-                ClassesTable tableForAdd = null;
-                ClassesTable tableForRemove = null;
-                
-                foreach (ClassesTable t in Tables)
-                    if (t.YearOfStudy == @group.YearOfStudy)
-                        tableForAdd = t;
-                    else if (t.GroupIndexes.ContainsKey(@group))
-                        tableForRemove = t;
-
-                if (tableForRemove != null)
-                {
-                    var classes = tableForRemove.AllClassesOfGroup(group);
-                    tableForRemove.RemoveGroup(group);
-                    tableForAdd.AddGroup(group, classes);
-
-                }
-                else
-                    tableForAdd.AddGroup(group);
-            }
-            else if (e.PropertyName == "Specialization")
-            {
-                if (group.YearOfStudy != null)
-                {
-                    ClassesTable tableForMove = null;
-                    foreach (ClassesTable t in Tables)
-                        if (t.YearOfStudy == @group.YearOfStudy)
-                            tableForMove = t;
-
-                    var classes = tableForMove.AllClassesOfGroup(group);
-                    tableForMove.RemoveGroup(group);
-                    tableForMove.AddGroup(group, classes);
-                }
-            }
-        }
+//        private void GroupsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+//        {
+//            if (e.NewItems == null) return;
+//            switch (e.Action)
+//            {
+//                case NotifyCollectionChangedAction.Remove:
+//                    foreach (var item in e.NewItems)
+//                    {
+//                        //Removed items
+//                        var group = item as Group;
+//                        if (group == null) continue;
+//                        group.PropertyChanged -= GroupOnPropertyChanged;
+//                    }
+//                    break;
+//                case NotifyCollectionChangedAction.Add:
+//                    foreach (var item in e.NewItems)
+//                    {
+//                        //Added items
+//                        var group = item as Group;
+//                        if (group == null) continue;
+//                        group.PropertyChanged += GroupOnPropertyChanged;
+//                    }
+//                    break;
+//            }
+//
+//        }
+//
+//        private void GroupOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+//        {
+//            var group = sender as Group;
+//            if (group == null) return;
+//            if (e.PropertyName == "YearOfStudy")
+//            {
+//                ClassesTable tableForAdd = null;
+//                ClassesTable tableForRemove = null;
+//                
+//                foreach (ClassesTable t in Tables)
+//                    if (t.YearOfStudy == @group.YearOfStudy)
+//                        tableForAdd = t;
+//                    else if (t.GroupIndexes.ContainsKey(@group))
+//                        tableForRemove = t;
+//
+//                if (tableForRemove != null)
+//                {
+//                    var classes = tableForRemove.AllClassesOfGroup(group);
+//                    tableForRemove.RemoveGroup(group);
+//                    tableForAdd.AddGroup(group, classes);
+//
+//                }
+//                else
+//                    tableForAdd.AddGroup(group);
+//            }
+//            else if (e.PropertyName == "Specialization")
+//            {
+//                if (group.YearOfStudy != null)
+//                {
+//                    ClassesTable tableForMove = null;
+//                    foreach (ClassesTable t in Tables)
+//                        if (t.YearOfStudy == @group.YearOfStudy)
+//                            tableForMove = t;
+//
+//                    var classes = tableForMove.AllClassesOfGroup(group);
+//                    tableForMove.RemoveGroup(group);
+//                    tableForMove.AddGroup(group, classes);
+//                }
+//            }
+//        }
 
         public IEnumerable<Group> CorrectGroups()
         {
@@ -454,14 +432,14 @@ namespace ScheduleData
 
         #region Public
 
-        public void CreateNewTables()
-        {
-            Tables.Clear();
-            foreach (var yearOfStudy in YearsOfStudy)
-            {
-                Tables.Add(new ClassesTable(this, yearOfStudy));
-            }
-        }
+//        public void CreateNewTables()
+//        {
+//            Tables.Clear();
+//            foreach (var yearOfStudy in YearsOfStudy)
+//            {
+//                Tables.Add(new ClassesTable(this, yearOfStudy));
+//            }
+//        }
 
         public bool HasGroups(YearOfStudy year)
         {
@@ -482,7 +460,7 @@ namespace ScheduleData
 
         public void InitByOne()
         {
-            var year = new YearOfStudy {Name = "Новый"};
+            var year = new YearOfStudy {Name = "Новый курс"};
             var spec = new Specialization {Name = "Специальность"};
             var group = new Group {Name = "Группа", YearOfStudy = year, Specialization = spec};
             AddYearOfStudy(year);
@@ -492,23 +470,9 @@ namespace ScheduleData
 
         #endregion
 
-        public ClassesTable GetClassesTable(YearOfStudy year)
-        {
-            var index = YearsOfStudy.IndexOf(year);
-            return Tables[index];
-        }
-
         public List<FullClassRecord> ToList()
         {
-            var classes = new List<FullClassRecord>();
-            
-            foreach (var table in Tables)
-                for (int i = 0; i < TimeLine.Count; ++i)
-                    for (int j = 0; j < table.Groups.Count(); ++j)
-                        if (table.Table[i][j] != null)
-                            classes.Add(new FullClassRecord(TimeLine[i], table.Groups[j], table.Table[i][j]));
-
-            return classes;
+            return (from c in ClassRecords select (new FullClassRecord(c))).ToList();
         }
     }
 }

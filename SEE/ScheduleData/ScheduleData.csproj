@@ -40,7 +40,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassesSchedule.cs" />
-    <Compile Include="ClassesTable.cs" />
     <Compile Include="DataMining\DataMiner.cs" />
     <Compile Include="DataMining\Statistic.cs" />
     <Compile Include="DataMining\StatisticCompilation.cs" />

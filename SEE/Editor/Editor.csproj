@@ -63,6 +63,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helpers\ScrollViewerEx.cs" />
+    <Compile Include="Models\ClassesTable.cs" />
     <Compile Include="Models\ImportAndExport.cs" />
     <Compile Include="ViewModels\Controls\LeftTopContolViewModel.cs" />
     <Compile Include="ViewModels\Panels\Edit\SubjectEditPanelViewModel.cs" />

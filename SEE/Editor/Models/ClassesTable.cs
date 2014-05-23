@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ScheduleData;
 
-namespace ScheduleData
+namespace Editor.Models
 {
     public class ClassesTable
     {

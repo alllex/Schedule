@@ -13,6 +13,15 @@
             Classroom = classroom;
         }
 
+        public FullClassRecord(ClassRecord classRecord)
+        {
+            Group = classRecord.Group;
+            ClassTime = classRecord.ClassTime;
+            Subject = classRecord.Subject;
+            Lecturer = classRecord.Lecturer;
+            Classroom = classRecord.Classroom;
+        }
+
         public FullClassRecord(ClassTime classTime,  Group group, ClassRecord @class)
         {
                 Group = group;

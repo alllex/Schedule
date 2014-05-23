@@ -4,19 +4,16 @@ using Editor.Helpers;
 namespace ScheduleData
 {
 
-    [Serializable]
     public enum WeekType
     {
         Odd, Even, Both
     }
 
-    [Serializable]
     public enum Weekdays
     {
         Monday, Tuesday, Wednesday, Thursday, Friday, Saturday //, Sunday
     }
 
-    [Serializable]
     public enum ClassType
     {
         Lecture, Practice
@@ -255,14 +252,10 @@ namespace ScheduleData
     {
     }
 
-    [Serializable]
+
     public class YearOfStudy : HavingName
     {
 
-        public override string ToString()
-        {
-            return "Курс " + Name;
-        }
     }
 
     public class Group : HavingName
