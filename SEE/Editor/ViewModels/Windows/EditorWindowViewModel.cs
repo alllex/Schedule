@@ -242,6 +242,7 @@ namespace Editor.ViewModels.Windows
                 Mouse.OverrideCursor = Cursors.Wait;
                 Project.StatisticCompilation = new StatisticCompilation(Project.ClassesSchedule);
                 Mouse.OverrideCursor = Cursors.Arrow;
+                OnOpenStatisticWindow();
             }
         }
 
@@ -292,6 +293,7 @@ namespace Editor.ViewModels.Windows
         {
             var schedule = new ClassesSchedule();
             schedule.InitStdTimeLine();
+            schedule.InitByOne();
             SetNewProject(new ScheduleProject { ClassesSchedule = schedule });
         }
 

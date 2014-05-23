@@ -8,6 +8,7 @@ using Editor.Helpers;
 using Editor.ViewModels.Cards;
 using Editor.ViewModels.Helpers;
 using Editor.Views.Cards;
+using Editor.Views.Controls;
 using ScheduleData;
 using ScheduleData.SearchConflicts;
 
@@ -119,6 +120,9 @@ namespace Editor.ViewModels.Controls
 
         public int ClassesRowsCount;
         public int ClassesColumnsCount;
+
+        public LeftTopControl LeftTopControl;
+
         public ClassCardViewMode[][] ClassesCards;
         private ClassesTable _classesTable;
         private TimeLineMarkup _timeLineMarkup;
@@ -189,6 +193,16 @@ namespace Editor.ViewModels.Controls
         #endregion
 
         #region Initialization
+
+        private void InitializeLeftTop()
+        {
+            var viewModel = new LeftTopContolViewModel(_updateViews) {Project = Project};
+            LeftTopControl = new LeftTopControl { DataContext = viewModel };
+            Grid.SetRow(LeftTopControl, 0);
+            Grid.SetColumn(LeftTopControl, 0);
+            Grid.SetRowSpan(LeftTopControl, 2);
+            Grid.SetColumnSpan(LeftTopControl, 2);
+        }
 
         private void InitializeTitles()
         {
@@ -604,6 +618,7 @@ namespace Editor.ViewModels.Controls
             TableHeader = YearOfStudy.ToString();
             _classesTable = Project.ClassesSchedule.GetClassesTable(YearOfStudy);
             _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
+            InitializeLeftTop();
             InitializeTitles();
             InitLectureCards();
         }

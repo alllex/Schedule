@@ -64,10 +64,14 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\ScrollViewerEx.cs" />
     <Compile Include="Models\ImportAndExport.cs" />
+    <Compile Include="ViewModels\Controls\LeftTopContolViewModel.cs" />
     <Compile Include="ViewModels\Panels\Edit\SubjectEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\TabCategory.cs" />
     <Compile Include="ViewModels\Windows\StatisticWindowViewModel.cs" />
+    <Compile Include="Views\Controls\LeftTopControl.xaml.cs">
+      <DependentUpon>LeftTopControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Panels\Edit\SubjectEditPanel.xaml.cs">
       <DependentUpon>SubjectEditPanel.xaml</DependentUpon>
     </Compile>
@@ -98,6 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\CardClipboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\LeftTopControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
