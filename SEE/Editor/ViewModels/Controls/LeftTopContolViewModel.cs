@@ -33,8 +33,8 @@ namespace Editor.ViewModels.Controls
                     Specialization = spec,
                     YearOfStudy = Project.ActiveYearOfStudy
                 };
-                Project.ClassesSchedule.AddSpecialization(spec);
-                Project.ClassesSchedule.AddGroup(group);
+                Project.Schedule.AddSpecialization(spec);
+                Project.Schedule.AddGroup(group);
                 _updateViews();
             }
         }

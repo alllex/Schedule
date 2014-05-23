@@ -28,7 +28,7 @@ namespace Editor.ViewModels.Panels.Edit
 
         private void OnAddClassroom()
         {
-            Project.ClassesSchedule.AddClassroom(new Classroom { Name = "Новый" });
+            Project.Schedule.AddClassroom(new Classroom { Name = "Новый" });
         }
 
         #endregion

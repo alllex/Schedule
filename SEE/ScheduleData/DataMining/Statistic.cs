@@ -16,7 +16,7 @@ namespace ScheduleData.DataMining
         // ReSharper disable once StaticFieldInGenericType
         private static readonly int CountWeekdays = Enum.GetValues(typeof(Weekdays)).Length ;
 
-        protected ClassesSchedule Schedule;
+        protected Schedule Schedule;
         protected IEnumerable<FullClassRecord> Classes;
 
         public TSubject Subject;
@@ -24,7 +24,7 @@ namespace ScheduleData.DataMining
         public float AverageCountOfClassesPerDay { get; protected set; }
         public List<ClassesPerWeekday> CountOfClassesPerWeekday { get; protected set; }
 
-        protected Statistic(ClassesSchedule schedule, TSubject subject, Func<FullClassRecord, TSubject> getField)
+        protected Statistic(Schedule schedule, TSubject subject, Func<FullClassRecord, TSubject> getField)
         {
             Subject = subject;
             Schedule = schedule;

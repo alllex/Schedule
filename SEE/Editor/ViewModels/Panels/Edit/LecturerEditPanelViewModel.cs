@@ -28,7 +28,7 @@ namespace Editor.ViewModels.Panels.Edit
 
         private void OnAddLecturer()
         {
-            Project.ClassesSchedule.AddLecturer(new Lecturer { Name = "Новый" });
+            Project.Schedule.AddLecturer(new Lecturer { Name = "Новый" });
         }
 
         #endregion 

@@ -28,7 +28,7 @@ namespace Editor.ViewModels.Panels.Edit
 
         private void OnAddGroup()
         {
-            Project.ClassesSchedule.AddGroup(new Group { Name = "Новый" });
+            Project.Schedule.AddGroup(new Group { Name = "Новый" });
         }
 
         #endregion

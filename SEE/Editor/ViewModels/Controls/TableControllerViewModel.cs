@@ -74,7 +74,7 @@ namespace Editor.ViewModels.Controls
             {
                 if (SelectedIndex >= 0)
                 {
-                    Project.ActiveYearOfStudy = Project.ClassesSchedule.YearsOfStudy[SelectedIndex];
+                    Project.ActiveYearOfStudy = Project.Schedule.YearsOfStudy[SelectedIndex];
                 }
             }
         }
@@ -100,9 +100,9 @@ namespace Editor.ViewModels.Controls
         public void UpdateTables()
         {
             Tables.Clear();
-            foreach (var yearOfStudy in Project.ClassesSchedule.YearsOfStudy)
+            foreach (var yearOfStudy in Project.Schedule.YearsOfStudy)
             {
-                if (Project.ClassesSchedule.HasGroups(yearOfStudy))
+                if (Project.Schedule.HasGroups(yearOfStudy))
                 {
                     Tables.Add(new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = yearOfStudy });
                 }

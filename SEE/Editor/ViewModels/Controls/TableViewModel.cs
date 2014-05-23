@@ -157,7 +157,7 @@ namespace Editor.ViewModels.Controls
                     if (group.YearOfStudy != _classesTable.YearOfStudy) continue;
                     var time = conflictingClass.ClassTime;
                     var row = _classesTable.TimeIndexes[time];
-                    var column = _classesTable.GroupIndexes[group];
+                    var column = _classesTable.SubjectIndexes[group];
                     if (row < 0 || column < 0 || row >= ClassesRowsCount || column >= ClassesColumnsCount)
                     {
                         continue;
@@ -287,7 +287,7 @@ namespace Editor.ViewModels.Controls
             var classCard = new ClassCardViewMode { DataContext = viewModel };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
-            if (Project.ClassesSchedule.TimeLine[row].Number + 1 == ClassesPerDayMax)
+            if (Project.Schedule.TimeLine[row].Number + 1 == ClassesPerDayMax)
             {
                 classCard.Margin = new Thickness(0, 0, 0, DayMarginOffset);
             }
@@ -620,8 +620,10 @@ namespace Editor.ViewModels.Controls
         {
             if (YearOfStudy == null) return;
             TableHeader = YearOfStudy.ToString();
-            _classesTable = Project.ClassesSchedule.GetClassesTable(YearOfStudy);
-            _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
+
+            // TODO !!!
+            _classesTable = new ClassesTable(Project.Schedule, new YearOfStudy()); //Project.ClassesSchedule.GetClassesTable(YearOfStudy));
+            _titlesMarkup = new TitlesMarkup(_classesTable.Subjects);
             InitializeLeftTop();
             InitializeTitles();
             InitLectureCards();
@@ -629,7 +631,7 @@ namespace Editor.ViewModels.Controls
 
         private void OnProjectChanged()
         {
-            _timeLineMarkup = new TimeLineMarkup(Project.ClassesSchedule);
+            _timeLineMarkup = new TimeLineMarkup(Project.Schedule);
             InitDayLine();
             InitTimeIntervalLine();
 

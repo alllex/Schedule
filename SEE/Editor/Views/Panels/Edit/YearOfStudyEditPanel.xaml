@@ -11,7 +11,7 @@
              >
     
     <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedList" Source="{Binding Project.ClassesSchedule.YearsOfStudy}">
+        <CollectionViewSource x:Key="SortedList" Source="{Binding Project.Schedule.YearsOfStudy}">
             <CollectionViewSource.SortDescriptions>
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>

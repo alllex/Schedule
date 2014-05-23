@@ -5,12 +5,12 @@ namespace Editor.Models
 {
     class ImportExportSchedule
     {
-        public static void Export(ClassesSchedule schedule, string path)
+        public static void Export(Schedule schedule, string path)
         {
             Exporter.Export(path, sClassesSchedule.Create(schedule));
         }
 
-        public static ClassesSchedule Import(string path)
+        public static Schedule Import(string path)
         {
             return null; // Заглушка
         }

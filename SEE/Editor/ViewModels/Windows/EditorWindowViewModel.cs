@@ -142,7 +142,7 @@ namespace Editor.ViewModels.Windows
             if (result == true)
             {
                 var schedule = ImportExportSchedule.Import(dlg.FileName);
-                SetNewProject(new ScheduleProject { ClassesSchedule = schedule });
+                SetNewProject(new ScheduleProject { Schedule = schedule });
             }
         }
 
@@ -157,7 +157,7 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                ImportExportSchedule.Export(Project.ClassesSchedule, dlg.FileName);
+                ImportExportSchedule.Export(Project.Schedule, dlg.FileName);
             }
         }
 
@@ -219,14 +219,14 @@ namespace Editor.ViewModels.Windows
 
         private void CheckConflict(ConflictCriteria criteria)
         {
-            if (Project != null && Project.ClassesSchedule != null)
+            if (Project != null && Project.Schedule != null)
             {
                 Mouse.OverrideCursor = Cursors.Wait;
                 if (Project.AreConflictsShown)
                 {
                     OnShowHideConflicts();
                 }
-                Project.ConflictCompilation = new ConflictCompilation(Project.ClassesSchedule, criteria);
+                Project.ConflictCompilation = new ConflictCompilation(Project.Schedule, criteria);
                 Mouse.OverrideCursor = Cursors.Arrow;
                 if (!Project.AreConflictsShown)
                 {
@@ -237,10 +237,10 @@ namespace Editor.ViewModels.Windows
 
         private void OnCalcStatistic()
         {
-            if (Project != null && Project.ClassesSchedule != null)
+            if (Project != null && Project.Schedule != null)
             {
                 Mouse.OverrideCursor = Cursors.Wait;
-                Project.StatisticCompilation = new StatisticCompilation(Project.ClassesSchedule);
+                Project.StatisticCompilation = new StatisticCompilation(Project.Schedule);
                 Mouse.OverrideCursor = Cursors.Arrow;
                 OnOpenStatisticWindow();
             }
@@ -269,7 +269,7 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                SaveLoadSchedule.Save(Project.ClassesSchedule, dlg.FileName);
+                SaveLoadSchedule.Save(Project.Schedule, dlg.FileName);
             }
         }
 
@@ -285,16 +285,16 @@ namespace Editor.ViewModels.Windows
             if (result == true)
             {
                 var schedule = SaveLoadSchedule.Load(dlg.FileName);
-                SetNewProject(new ScheduleProject{ClassesSchedule = schedule});
+                SetNewProject(new ScheduleProject{Schedule = schedule});
             }
         }
 
         private void OnNewProject()
         {
-            var schedule = new ClassesSchedule();
+            var schedule = new Schedule();
             schedule.InitStdTimeLine();
             schedule.InitByOne();
-            SetNewProject(new ScheduleProject { ClassesSchedule = schedule });
+            SetNewProject(new ScheduleProject { Schedule = schedule });
         }
 
         private void OnLoadRandomSchedule()
@@ -302,7 +302,7 @@ namespace Editor.ViewModels.Windows
             Mouse.OverrideCursor = Cursors.Wait;
             _tableController.Tables.Clear();
             var schedule = new ScheduleRepository().Schedule;
-            SetNewProject(new ScheduleProject { ClassesSchedule = schedule, ActiveYearOfStudy = schedule.YearsOfStudy.Any() ? schedule.YearsOfStudy.First() : null});
+            SetNewProject(new ScheduleProject { Schedule = schedule, ActiveYearOfStudy = schedule.YearsOfStudy.Any() ? schedule.YearsOfStudy.First() : null});
             Mouse.OverrideCursor = Cursors.Arrow;
         }
 

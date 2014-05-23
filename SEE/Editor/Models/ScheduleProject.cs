@@ -29,19 +29,19 @@ namespace Editor.Models
 
         #endregion
 
-        #region ClassesSchedule
+        #region Schedule
 
-        private ClassesSchedule _classesSchedule;
+        private Schedule _schedule;
 
-        public ClassesSchedule ClassesSchedule
+        public Schedule Schedule
         {
-            get { return _classesSchedule; }
+            get { return _schedule; }
             set
             {
-                if (_classesSchedule != value)
+                if (_schedule != value)
                 {
-                    _classesSchedule = value;
-                    RaisePropertyChanged(() => ClassesSchedule);
+                    _schedule = value;
+                    RaisePropertyChanged(() => Schedule);
                 }
             }
         }

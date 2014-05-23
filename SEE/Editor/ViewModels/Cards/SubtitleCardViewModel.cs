@@ -49,7 +49,7 @@ namespace Editor.ViewModels.Cards
         {
             if (_updateViews != null)
             {
-                Project.ClassesSchedule.RemoveGroup(Group);
+                Project.Schedule.RemoveGroup(Group);
                 _updateViews();
             }
         }

@@ -6,7 +6,7 @@ namespace ScheduleData.SearchConflicts
 {
     class ConflictSearchEngine
     {
-        public static IEnumerable<Conflict> SearchAllConflicts(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> SearchAllConflicts(Schedule schedule)
         {
             var conflicts = new List<Conflict>();
             var allClasses = schedule.ToList();
@@ -19,27 +19,27 @@ namespace ScheduleData.SearchConflicts
             return conflicts;
         }
         
-        public static IEnumerable<Conflict> GreaterThanFourClassesPerDay(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> GreaterThanFourClassesPerDay(Schedule schedule)
         {
             return GreaterThanFourClassesPerDay(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> GroupsInDifferentClassrooms(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> GroupsInDifferentClassrooms(Schedule schedule)
         {
             return GroupsInDifferentClassrooms(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> LecterersInDifferentClassrooms(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> LecterersInDifferentClassrooms(Schedule schedule)
         {
             return LecterersInDifferentClassrooms(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> NextClassesAtDifferentAddress(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> NextClassesAtDifferentAddress(Schedule schedule)
         {
             return NextClassesAtDifferentAddress(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> CardsWithBlankFields(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> CardsWithBlankFields(Schedule schedule)
         {
             return CardsWithBlankFields(schedule.ToList());
         }

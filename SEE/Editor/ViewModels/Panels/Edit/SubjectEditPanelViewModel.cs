@@ -27,7 +27,7 @@ namespace Editor.ViewModels.Panels.Edit
 
         private void OnAddSubject()
         {
-            Project.ClassesSchedule.AddSubject(new Subject { Name = "Новый" });
+            Project.Schedule.AddSubject(new Subject { Name = "Новый" });
         }
 
         #endregion

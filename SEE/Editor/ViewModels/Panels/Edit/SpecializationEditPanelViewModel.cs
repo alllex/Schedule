@@ -28,7 +28,7 @@ namespace Editor.ViewModels.Panels.Edit
 
         private void OnAddSpecialization()
         {
-            Project.ClassesSchedule.AddSpecialization(new Specialization { Name = "Новый" });
+            Project.Schedule.AddSpecialization(new Specialization { Name = "Новый" });
         }
 
         #endregion

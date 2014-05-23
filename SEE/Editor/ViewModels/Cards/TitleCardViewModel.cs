@@ -51,7 +51,7 @@ namespace Editor.ViewModels.Cards
             if (_updateViews != null)
             {
                 var group = new Group { Name = "Новая группа", Specialization = Specialization, YearOfStudy = Project.ActiveYearOfStudy};
-                Project.ClassesSchedule.AddGroup(group);
+                Project.Schedule.AddGroup(group);
                 _updateViews();
             }
         }

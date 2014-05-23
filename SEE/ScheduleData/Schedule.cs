@@ -79,7 +79,7 @@ namespace ScheduleData
 //        }
 //    }
 
-    public class ClassesSchedule : HavingId
+    public class Schedule : HavingId
     {
 
         #region Properties
@@ -350,9 +350,31 @@ namespace ScheduleData
 
         #region Ctor
 
-        public ClassesSchedule()
+        public Schedule()
         {
 //            Groups.CollectionChanged += GroupsOnCollectionChanged;
+        }
+
+        public void InitStdTimeLine()
+        {
+            var wds = Enum.GetValues(typeof(Weekdays));
+            foreach (var weekday in wds)
+            {
+                for (int i = 0; i < ClassTime.ClassIntervals.Count(); i++)
+                {
+                    TimeLine.Add(new ClassTime { Day = (Weekdays)weekday, Number = i });
+                }
+            }
+        }
+
+        public void InitByOne()
+        {
+            var year = new YearOfStudy { Name = "Новый курс" };
+            var spec = new Specialization { Name = "Специальность" };
+            var group = new Group { Name = "Группа", YearOfStudy = year, Specialization = spec };
+            AddYearOfStudy(year);
+            AddSpecialization(spec);
+            AddGroup(group);
         }
 
 //        private void GroupsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -432,6 +454,16 @@ namespace ScheduleData
 
         #region Public
 
+        public List<Group> GroupsBySpecialization()
+        {
+            var groups = new List<Group>();
+            foreach (var spec in Specializations)
+            {
+                groups.AddRange(from g in Groups where g.Specialization == spec select g);
+            }
+            return groups;
+        }
+
 //        public void CreateNewTables()
 //        {
 //            Tables.Clear();
@@ -444,28 +476,6 @@ namespace ScheduleData
         public bool HasGroups(YearOfStudy year)
         {
             return Groups.Any(g => g.YearOfStudy == year);
-        }
-
-        public void InitStdTimeLine()
-        {
-            var wds = Enum.GetValues(typeof(Weekdays));
-            foreach (var weekday in wds)
-            {
-                for (int i = 0; i < ClassTime.ClassIntervals.Count(); i++)
-                {
-                    TimeLine.Add(new ClassTime { Day = (Weekdays)weekday, Number = i });
-                }
-            }
-        }
-
-        public void InitByOne()
-        {
-            var year = new YearOfStudy {Name = "Новый курс"};
-            var spec = new Specialization {Name = "Специальность"};
-            var group = new Group {Name = "Группа", YearOfStudy = year, Specialization = spec};
-            AddYearOfStudy(year);
-            AddSpecialization(spec);
-            AddGroup(group);
         }
 
         #endregion
