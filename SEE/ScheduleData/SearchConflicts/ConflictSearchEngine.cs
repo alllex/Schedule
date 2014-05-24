@@ -75,7 +75,7 @@ namespace ScheduleData.SearchConflicts
             return from c in allClasses
                    where c.Lecturer != null && c.Time != null
                    group c by new Tuple<Lecturer, ClassTime>(c.Lecturer, c.Time) into g
-                   where g.Count() > 1
+                   where g.Select(c => c.Classroom).Distinct().Count() > 1
                    select new Conflict(message, ConflictType.Conflict, g);
         }
 
