@@ -1,73 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using ScheduleData;
 
 namespace Editor.Models
 {
-
-    public abstract class ClassesTable<TSubject>
-    {
-
-        public List<TSubject> Subjects;
-        public Dictionary<TSubject, int> SubjectIndexes = new Dictionary<TSubject, int>();
-        public Dictionary<ClassTime, int> TimeIndexes = new Dictionary<ClassTime, int>();
-
-        protected Schedule Schedule;
-        protected ClassRecord[][] Table;
-
-        protected ClassesTable(Schedule schedule)
-        {
-            Schedule = schedule;
-            SetTime();
-        }
-
-        private void SetTime()
-        {
-            TimeIndexes.Clear();
-            for (int i = 0; i < Schedule.TimeLine.Count(); i++)
-                TimeIndexes.Add(Schedule.TimeLine[i], i);
-        }
-
-        protected void SetSubjectIndexes()
-        {
-            SubjectIndexes.Clear();
-            for (int i = 0; i < Subjects.Count(); i++)
-                SubjectIndexes.Add(Subjects[i], i);
-        }
-
-        protected void CreateTable()
-        {
-            var rowsCount = RowsCount();
-            var colsCount = ColumnsCount();
-            Table = new ClassRecord[rowsCount][];
-            for (int i = 0; i < rowsCount; i++)
-            {
-                Table[i] = new ClassRecord[colsCount];
-            }
-        }
-
-        public int RowsCount()
-        {
-            return TimeIndexes.Count;
-        }
-
-        public int ColumnsCount()
-        {
-            return SubjectIndexes.Count;
-        }
-
-    }
-
-    public class ClassesTable : ClassesTable<Group>
+    public class GroupClasses : ClassesTable<Group>
     {
         public readonly YearOfStudy YearOfStudy;
 
-        public ClassesTable(Schedule schedule, YearOfStudy yearOfStudy) : base(schedule)
+        public GroupClasses(Schedule schedule, YearOfStudy yearOfStudy) : base(schedule)
         {
             YearOfStudy = yearOfStudy;
             SetSubjects();
             SetSubjectIndexes();
             CreateTable();
+            SetClasses();
         }
 
         private void SetSubjects()
@@ -78,6 +24,28 @@ namespace Editor.Models
                 where g.YearOfStudy == YearOfStudy
                 select g;
             Subjects = gps.ToList();
+        }
+
+        private void SetClasses()
+        {
+            var rowsCount = TimeCardsCount();
+            var colsCount = SubjectsCount();
+            for (int i = 0; i < rowsCount; i++)
+            {
+                for (int j = 0; j < colsCount; j++)
+                {
+                    var timeIndex = i;
+                    var subjectIndex = j;
+                    var classes =
+                        from c in Schedule.ClassRecords
+                        where c.ClassTime == Schedule.TimeLine[timeIndex] && c.Group == Subjects[subjectIndex]
+                        select c;
+                    if (classes.Any())
+                    {
+                        SetClass(timeIndex, subjectIndex, classes.First());
+                    }
+                }
+            }
         }
 
 //        public void AddGroup(Group group)

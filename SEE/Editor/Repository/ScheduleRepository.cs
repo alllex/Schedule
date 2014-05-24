@@ -170,18 +170,16 @@ namespace Editor.Repository
                     Subject s = Schedule.Subjects[Rnd.Next(Schedule.Subjects.Count)];
                     Lecturer l = Schedule.Lecturers[Rnd.Next(Schedule.Lecturers.Count)];
                     Classroom c = Schedule.Classrooms[Rnd.Next(Schedule.Classrooms.Count)];
-                    if (Rnd.Next(100) > 70)
+                    if (Rnd.Next(100) < 40) continue;
+                    var @class = new ClassRecord
                     {
-                        var @class = new ClassRecord
-                        {
-                            Classroom = c,
-                            Group = group,
-                            Subject = s,
-                            Lecturer = l,
-                            ClassTime = classTime
-                        };
-                        Schedule.ClassRecords.Add(@class);
-                    }
+                        Classroom = c,
+                        Group = @group,
+                        Subject = s,
+                        Lecturer = l,
+                        ClassTime = classTime
+                    };
+                    Schedule.ClassRecords.Add(@class);
                 }
             }
             

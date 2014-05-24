@@ -269,6 +269,11 @@ namespace ScheduleData
             Groups.Add(group);
         }
 
+        public void AddClass(ClassRecord classRecord)
+        {
+            ClassRecords.Add(classRecord);
+        }
+
         #endregion
         
         #region Removers
@@ -344,6 +349,11 @@ namespace ScheduleData
                 }
             }
 
+        }
+
+        public void RemoveClass(ClassRecord classRecord)
+        {
+            ClassRecords.Remove(classRecord);
         }
 
         #endregion
