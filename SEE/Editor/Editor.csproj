@@ -64,6 +64,7 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\ScrollViewerEx.cs" />
     <Compile Include="Models\ImportAndExport.cs" />
+    <Compile Include="Models\ScheduleController.cs" />
     <Compile Include="ViewModels\Controls\LeftTopContolViewModel.cs" />
     <Compile Include="ViewModels\Panels\Edit\SubjectEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
