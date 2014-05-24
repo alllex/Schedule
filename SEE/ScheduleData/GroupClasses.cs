@@ -42,7 +42,7 @@ namespace Editor.Models
                         select c;
                     if (classes.Any())
                     {
-                        SetClass(timeIndex, subjectIndex, classes.First());
+                        Table[timeIndex][subjectIndex] = classes.First();
                     }
                 }
             }
