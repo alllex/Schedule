@@ -124,6 +124,24 @@ namespace Editor.Models
 
         #endregion
 
-        
+        #region ScheduleController
+
+        private ScheduleController _scheduleController;
+
+        public ScheduleController ScheduleController
+        {
+            get { return _scheduleController; }
+            set
+            {
+                if (_scheduleController != value)
+                {
+                    _scheduleController = value;
+                    RaisePropertyChanged(() => ScheduleController);
+                }
+            }
+        }
+
+        #endregion
+
     }
 }

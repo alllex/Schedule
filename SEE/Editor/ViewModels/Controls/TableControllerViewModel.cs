@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using ScheduleData;
 
 namespace Editor.ViewModels.Controls
 {
@@ -97,7 +99,7 @@ namespace Editor.ViewModels.Controls
             }
         }
 
-        public void UpdateTables()
+        public void UpdateAll()
         {
             Tables.Clear();
             foreach (var yearOfStudy in Project.Schedule.YearsOfStudy)
@@ -111,6 +113,19 @@ namespace Editor.ViewModels.Controls
             {
                 SelectedIndex = 0;
             }
+        }
+
+        public void AddYearOfStudy()
+        {
+            var year = new YearOfStudy {Name = "Новый курс"};
+            Project.Schedule.AddYSG(year);
+            Tables.Add(new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = year });
+        }
+
+        public void RemoveYearOfStudy(YearOfStudy yearOfStudy)
+        {
+            Project.Schedule.RemoveYearOfStudy(yearOfStudy);
+            Tables.Remove(Tables.First(t => t.YearOfStudy == yearOfStudy));
         }
     }
 }

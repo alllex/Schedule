@@ -281,12 +281,9 @@ namespace ScheduleData
         public void RemoveYearOfStudy(YearOfStudy year)
         {
             YearsOfStudy.Remove(year);
-            foreach (var @group in Groups)
+            foreach (var @group in Groups.Where(@group => @group.YearOfStudy == year))
             {
-                if (group.YearOfStudy == year)
-                {
-                    group.YearOfStudy = null;
-                }
+                @group.YearOfStudy = null;
             }
         }
 
@@ -377,9 +374,18 @@ namespace ScheduleData
             }
         }
 
-        public void InitByOne()
+        public void AddYSG()
         {
             var year = new YearOfStudy { Name = "Новый курс" };
+            var spec = new Specialization { Name = "Специальность" };
+            var group = new Group { Name = "Группа", YearOfStudy = year, Specialization = spec };
+            AddYearOfStudy(year);
+            AddSpecialization(spec);
+            AddGroup(group);
+        }
+
+        public void AddYSG(YearOfStudy year)
+        {
             var spec = new Specialization { Name = "Специальность" };
             var group = new Group { Name = "Группа", YearOfStudy = year, Specialization = spec };
             AddYearOfStudy(year);

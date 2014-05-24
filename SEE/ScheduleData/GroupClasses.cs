@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using ScheduleData;
 
-namespace Editor.Models
+namespace ScheduleData
 {
     public class GroupClasses : ClassesTable<Group>
     {

@@ -57,7 +57,7 @@ namespace Editor.ViewModels.Windows
         public EditorWindowViewModel(TableControllerViewModel tableControllerViewModel)
         {
             _tableController = tableControllerViewModel;
-            _tableController.UpdateViews = UpdateViews;
+            _tableController.UpdateViews = UpdateAll;
             PropertyChanged += OnPropertyChanged;
         }
 
@@ -78,14 +78,15 @@ namespace Editor.ViewModels.Windows
         private void SetNewProject(ScheduleProject proj)
         {
             Project = proj;
-            UpdateViews();
+            Project.ScheduleController = new ScheduleController();
+            AddUpdaters();
+            UpdateAll();
         }
 
-        private void UpdateViews()
+        private void AddUpdaters()
         {
-            Mouse.OverrideCursor = Cursors.Wait;
-            _tableController.UpdateTables();
-            Mouse.OverrideCursor = Cursors.Arrow;
+            Project.ScheduleController.AddYearOfStudyDelegate += AddYearOfStudy;
+            Project.ScheduleController.RemoveYearOfStudyDelegate += RemoveYearOfStudy;
         }
 
         #endregion
@@ -293,7 +294,7 @@ namespace Editor.ViewModels.Windows
         {
             var schedule = new Schedule();
             schedule.InitStdTimeLine();
-            schedule.InitByOne();
+            schedule.AddYSG();
             SetNewProject(new ScheduleProject { Schedule = schedule });
         }
 
@@ -341,7 +342,7 @@ namespace Editor.ViewModels.Windows
             var vm = new ListsEditWindowViewModel(initTab){Project = Project};
             var window = new ListsEditWindow { DataContext = vm };
             window.ShowDialog();
-            UpdateViews();
+            UpdateAll();
         }
 
         private bool CanExecuteHasActiveProject()
@@ -349,6 +350,104 @@ namespace Editor.ViewModels.Windows
             return HasActiveProject;
         }
         
+        #endregion
+
+        #region Update
+
+        private void UpdateAll()
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.UpdateAll();
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        public void AddClassRecord(ClassRecord classRecord)
+        {
+            
+        }
+
+        public void AddYearOfStudy()
+        {
+            _tableController.AddYearOfStudy();
+        }
+
+//        public void AddSpecializati(object param)
+//        {
+//            if (AddSpecializatiDelegate != null)
+//            {
+//                AddSpecializatiDelegate(param as Specializati);
+//            }
+//        }
+//
+//        public void AddGroup(object param)
+//        {
+//            if (AddGroupDelegate != null)
+//            {
+//                AddGroupDelegate(param as Group);
+//            }
+//        }
+//
+//        public void AddLecturer(object param)
+//        {
+//            if (AddLecturerDelegate != null)
+//            {
+//                AddLecturerDelegate(param as Lecturer);
+//            }
+//        }
+//
+//        public void AddSubject(object param)
+//        {
+//            if (AddSubjectDelegate != null)
+//            {
+//                AddSubjectDelegate(param as Subject);
+//            }
+//        }
+//
+//        public void RemoveClassRecord(object param)
+//        {
+//            if (RemoveClassRecordDelegate != null)
+//            {
+//                RemoveClassRecordDelegate(param as ClassRecord);
+//            }
+//        }
+//
+        public void RemoveYearOfStudy(YearOfStudy yearOfStudy)
+        {
+            _tableController.RemoveYearOfStudy(yearOfStudy);
+        }
+//
+//        public void RemoveSpecializati(object param)
+//        {
+//            if (RemoveSpecializatiDelegate != null)
+//            {
+//                RemoveSpecializatiDelegate(param as Specializati);
+//            }
+//        }
+//
+//        public void RemoveGroup(object param)
+//        {
+//            if (RemoveGroupDelegate != null)
+//            {
+//                RemoveGroupDelegate(param as Group);
+//            }
+//        }
+//
+//        public void RemoveLecturer(object param)
+//        {
+//            if (RemoveLecturerDelegate != null)
+//            {
+//                RemoveLecturerDelegate(param as Lecturer);
+//            }
+//        }
+//
+//        public void RemoveSubject(object param)
+//        {
+//            if (RemoveSubjectDelegate != null)
+//            {
+//                RemoveSubjectDelegate(param as Subject);
+//            }
+//        }
+
         #endregion
     }
 }
