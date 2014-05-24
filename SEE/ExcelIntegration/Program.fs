@@ -10,6 +10,7 @@ type TransferData = (string [,] * string) []
 
 type Importer = 
     class
+    (*
         static member VerticalOffset = 2 //2 extra rows for group & subgroup numbers
         static member HorizontalOffset = 2 //2 extra columns for weekday and time
 
@@ -111,10 +112,12 @@ type Importer =
                     id <- id + 1
                 
             new sClassesSchedule(id, timeLine, groups, lecturers, classrooms, subjects, specializations, yearsOfStudy, classesTables)
+            *)
     end
 
 type Exporter =
     class
+    (*
         static member VerticalOffset = 2 //2 extra rows for group & subgroup numbers
         static member HorizontalOffset = 2 //2 extra columns for weekday and time
 
@@ -183,5 +186,5 @@ type Exporter =
                 schedule.[numberOfSheets - 1 - sheet] <- getSheet sheet
 
             Exporter.ExportFromData(path, schedule)
-
+                         *)
     end
