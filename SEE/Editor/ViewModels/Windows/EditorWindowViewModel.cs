@@ -78,7 +78,7 @@ namespace Editor.ViewModels.Windows
         private void SetNewProject(ScheduleProject proj)
         {
             Project = proj;
-            Project.ScheduleController = new ScheduleController();
+            Project.ScheduleController = new ScheduleController { Project = Project };
             AddUpdaters();
             UpdateAll();
         }

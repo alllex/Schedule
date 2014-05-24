@@ -42,7 +42,7 @@
                                         <TextBlock Text="{Binding TableHeader}">
                                             <TextBlock.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Header="Удалить группу"
+                                                    <MenuItem Header="Удалить курс"
                                                               Command="{Binding Project.ScheduleController.RemoveYearOfStudyCommand}"
                                                               CommandParameter="{Binding YearOfStudy}"/>
                                                 </ContextMenu>

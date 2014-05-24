@@ -1,10 +1,11 @@
 ﻿using System.Windows.Input;
 using Editor.Helpers;
+using Editor.ViewModels;
 using ScheduleData;
 
 namespace Editor.Models
 {
-    public class ScheduleController
+    public class ScheduleController : HasProjectProperty
     {
         #region Delegates
 
@@ -51,7 +52,7 @@ namespace Editor.Models
         public ICommand AddSubjectCommand { get { return new DelegateCommand(OnAddSubject); } }
 
         public ICommand RemoveClassCommand { get { return new DelegateCommand(OnRemoveClassRecord); } }
-        public ICommand RemoveYearOfStudyCommand { get { return new DelegateCommand(OnRemoveYearOfStudy); } }
+        public ICommand RemoveYearOfStudyCommand { get { return new DelegateCommand(OnRemoveYearOfStudy, CanExecuteRemoveYearOfStudy); } }
         public ICommand RemoveSpecializationCommand { get { return new DelegateCommand(OnRemoveSpecialization); } }
         public ICommand RemoveGroupCommand { get { return new DelegateCommand(OnRemoveGroup); } }
         public ICommand RemoveLecturerCommand { get { return new DelegateCommand(OnRemoveLecturer); } }
@@ -123,6 +124,11 @@ namespace Editor.Models
             {
                 RemoveYearOfStudyDelegate(param as YearOfStudy);
             }
+        }
+ 
+        private bool CanExecuteRemoveYearOfStudy()
+        {
+            return Project.Schedule.YearsOfStudy.Count > 1;
         }
 
         public void OnRemoveSpecialization(object param)
