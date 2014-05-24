@@ -303,7 +303,7 @@ namespace ScheduleData
             CopyClassRecords();
         }
 
-        private void Copy<T, sT>(ObservableCollection<T> from, sT[] to, Dictionary<int, sT> dict, Func<T, sT> converter)
+        private void Copy<T, sT>(ObservableCollection<T> from, out sT[] to, out Dictionary<int, sT> dict, Func<T, sT> converter)
         {
 
             var count = from.Count;
@@ -320,42 +320,42 @@ namespace ScheduleData
 
         private void CopySubjects()
         {
-            Copy(Schedule.Subjects, Subjects, sDictionaries.Subjects, s => new sSubject(s));
+            Copy(Schedule.Subjects, out Subjects, out sDictionaries.Subjects, s => new sSubject(s));
         }
         
         private void CopySpecializations()
         {
-            Copy(Schedule.Specializations, Specializations, sDictionaries.Specializations, s => new sSpecialization(s)); 
+            Copy(Schedule.Specializations, out Specializations, out sDictionaries.Specializations, s => new sSpecialization(s)); 
         }
 
         private void CopyYearsOfStudy()
         {
-            Copy(Schedule.YearsOfStudy, YearsOfStudy, sDictionaries.YearsOfStudy, y => new sYearOfStudy(y));
+            Copy(Schedule.YearsOfStudy, out YearsOfStudy, out sDictionaries.YearsOfStudy, y => new sYearOfStudy(y));
         }
 
         private void CopyLecturers()
         {
-            Copy(Schedule.Lecturers, Lecturers, sDictionaries.Lecturers, l => new sLecturer(l));
+            Copy(Schedule.Lecturers, out Lecturers, out sDictionaries.Lecturers, l => new sLecturer(l));
         }
 
         private void CopyClassrooms()
         {
-            Copy(Schedule.Classrooms, Classrooms, sDictionaries.Classrooms, c => new sClassroom(c));
+            Copy(Schedule.Classrooms, out Classrooms, out sDictionaries.Classrooms, c => new sClassroom(c));
         }
 
         private void CopyTimeLine()
         {
-            Copy(Schedule.TimeLine, TimeLine, sDictionaries.TimeLine, t => new sClassTime(t));
+            Copy(Schedule.TimeLine, out TimeLine, out sDictionaries.TimeLine, t => new sClassTime(t));
         }
         
         private void CopyGroups()
         {
-            Copy(Schedule.Groups, Groups, sDictionaries.Groups, g => new sGroup(g, this));
+            Copy(Schedule.Groups, out Groups, out sDictionaries.Groups, g => new sGroup(g, this));
         }
 
         private void CopyClassRecords()
         {
-            Copy(Schedule.ClassRecords, ClassRecords, sDictionaries.ClassRecords, c => new sClassRecord(c, this));
+            Copy(Schedule.ClassRecords, out ClassRecords, out sDictionaries.ClassRecords, c => new sClassRecord(c, this));
         }
 
         # endregion
@@ -379,7 +379,7 @@ namespace ScheduleData
             return Schedule;
         }
 
-        private void Copy<sT, T>(sT[] from, ObservableCollection<T> to, Dictionary<int, T> dict, Func<sT, T> converter)
+        private void Copy<sT, T>(sT[] from, ObservableCollection<T> to, out Dictionary<int, T> dict, Func<sT, T> converter)
         {
 
             var count = from.Length;
@@ -395,42 +395,42 @@ namespace ScheduleData
 
         private void NonSerializableTimeLine()
         {
-            Copy(TimeLine, Schedule.TimeLine, Dictionaries.TimeLine, t => t.ToNonSerializable());
+            Copy(TimeLine, Schedule.TimeLine, out Dictionaries.TimeLine, t => t.ToNonSerializable());
         }
 
         private void NonSerializableLectures()
         {
-            Copy(Lecturers, Schedule.Lecturers, Dictionaries.Lecturers, l => l.ToNonSerializable());
+            Copy(Lecturers, Schedule.Lecturers, out Dictionaries.Lecturers, l => l.ToNonSerializable());
         }
 
         private void NonSerializableClassrooms()
         {
-            Copy(Classrooms, Schedule.Classrooms, Dictionaries.Classrooms, c => c.ToNonSerializable());
+            Copy(Classrooms, Schedule.Classrooms, out Dictionaries.Classrooms, c => c.ToNonSerializable());
         }
 
         private void NonSerializableSubjects()
         {
-            Copy(Subjects, Schedule.Subjects, Dictionaries.Subjects, s => s.ToNonSerializable());
+            Copy(Subjects, Schedule.Subjects, out Dictionaries.Subjects, s => s.ToNonSerializable());
         }
 
         private void NonSerializableSpecializations()
         {
-            Copy(Specializations, Schedule.Specializations, Dictionaries.Specializations, s => s.ToNonSerializable());
+            Copy(Specializations, Schedule.Specializations, out Dictionaries.Specializations, s => s.ToNonSerializable());
         }
 
         private void NonSerializableYearsOfStudy()
         {
-            Copy(YearsOfStudy, Schedule.YearsOfStudy, Dictionaries.YearsOfStudy, y => y.ToNonSerializable());
+            Copy(YearsOfStudy, Schedule.YearsOfStudy, out Dictionaries.YearsOfStudy, y => y.ToNonSerializable());
         }
 
         private void NonSerializableGroups()
         {
-            Copy(Groups, Schedule.Groups, Dictionaries.Groups, g => g.ToNonSerializable(this));
+            Copy(Groups, Schedule.Groups, out Dictionaries.Groups, g => g.ToNonSerializable(this));
         }
 
         private void NonSerializableClassRecords()
         {
-            Copy(ClassRecords, Schedule.ClassRecords, Dictionaries.ClassRecords, c => c.ToNoneSerializable(this));
+            Copy(ClassRecords, Schedule.ClassRecords, out Dictionaries.ClassRecords, c => c.ToNoneSerializable(this));
         }
 
         #endregion
