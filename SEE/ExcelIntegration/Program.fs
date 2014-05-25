@@ -200,7 +200,10 @@ type Exporter =
                         let writeColumn i j (x : ClassRecord) =
                                 table.[i + Exporter.VerticalOffset, j + Exporter.HorizontalOffset] <-
                                     if x <> null then 
-                                        x.Subject.Name + "\n" + x.Lecturer.Name + "\n" + x.Classroom.Name
+                                        sprintf "%s\n%s\n%s" 
+                                            (if x.Subject = null then "" else x.Subject.Name) 
+                                            (if x.Lecturer = null then "" else x.Lecturer.Name) 
+                                            (if x.Classroom = null then "" else x.Classroom.Name)
                                     else ""
                         Array2D.iteri writeColumn <| Array2D.init data.TimeLine.Count currentTable.Subjects.Count (fun i j -> currentTable.GetClass(i, j))             
                  
