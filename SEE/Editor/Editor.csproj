@@ -73,11 +73,15 @@
     <Compile Include="Models\ImportAndExport.cs" />
     <Compile Include="Models\ProjectStatus.cs" />
     <Compile Include="Models\ScheduleController.cs" />
+    <Compile Include="ViewModels\Controls\ConflictsViewerViewModel.cs" />
     <Compile Include="ViewModels\Controls\LeftTopControlViewModel.cs" />
     <Compile Include="ViewModels\Panels\Edit\SubjectEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\TabCategory.cs" />
     <Compile Include="ViewModels\Windows\StatisticWindowViewModel.cs" />
+    <Compile Include="Views\Controls\ConflictsViewer.xaml.cs">
+      <DependentUpon>ConflictsViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\LeftTopControl.xaml.cs">
       <DependentUpon>LeftTopControl.xaml</DependentUpon>
     </Compile>
@@ -111,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Controls\CardClipboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\ConflictsViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -298,18 +306,6 @@
       <Project>{038bb399-cf52-47bd-9ff3-8b43a016e070}</Project>
       <Name>ScheduleData</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\AppIcon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />

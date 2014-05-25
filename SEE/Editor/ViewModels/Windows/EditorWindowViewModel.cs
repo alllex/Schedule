@@ -45,6 +45,7 @@ namespace Editor.ViewModels.Windows
         #region Fields
 
         private readonly TableControllerViewModel _tableController;
+        private readonly ConflictsViewerViewModel _conflictsViewer;
 
         #endregion
 
@@ -55,9 +56,10 @@ namespace Editor.ViewModels.Windows
             PropertyChanged += OnPropertyChanged;
         }
 
-        public EditorWindowViewModel(TableControllerViewModel tableControllerViewModel)
+        public EditorWindowViewModel(TableControllerViewModel tableControllerViewModel, ConflictsViewerViewModel conflictsViewerViewModel)
         {
             _tableController = tableControllerViewModel;
+            _conflictsViewer = conflictsViewerViewModel;
             PropertyChanged += OnPropertyChanged;
         }
 
@@ -79,6 +81,7 @@ namespace Editor.ViewModels.Windows
         {
             Project = proj;
             Project.ScheduleController = new ScheduleController { Project = Project };
+            Project.ConflictCompilation = new ConflictCompilation();
             AddUpdaters();
             UpdateAll();
         }
@@ -124,6 +127,7 @@ namespace Editor.ViewModels.Windows
         public ICommand CheckConflictNextClassesAtDifferentAddressCommand { get { return new DelegateCommand(OnCheckConflictNextClassesAtDifferentAddress, CanExecuteHasActiveProject); } }
         public ICommand CheckConflictCardsWithBlankFieldsCommand { get { return new DelegateCommand(OnCheckConflictCardsWithBlankFields, CanExecuteHasActiveProject); } }
         public ICommand CheckConflictGreaterThanFourClassesPerDayCommand { get { return new DelegateCommand(OnCheckConflictGreaterThanFourClassesPerDay, CanExecuteHasActiveProject); } }
+        public ICommand CheckConflictLecturersOnDifferentClassesCommand { get { return new DelegateCommand(OnCheckConflictLecturersOnDifferentClasses, CanExecuteHasActiveProject); } }
         public ICommand ShowHideConflictsCommand { get { return new DelegateCommand(OnShowHideConflicts, CanExecuteShowHideConflicts); } }
 
         #endregion
@@ -220,6 +224,11 @@ namespace Editor.ViewModels.Windows
             CheckConflict(ConflictCriteria.GreaterThanFourClassesPerDay);
         }
 
+        private void OnCheckConflictLecturersOnDifferentClasses()
+        {
+            CheckConflict(ConflictCriteria.LecturersOnDifferentClasses);
+        }
+
         private void OnCheckConflictCardsWithBlankFields()
         {
             CheckConflict(ConflictCriteria.CardsWithBlankFields);
@@ -256,14 +265,14 @@ namespace Editor.ViewModels.Windows
                 }
                 else
                 {
-                    MessageBox.Show("Ни одного конфликта не найдено!", "Поиск конфликтов");
+                    MessageBox.Show("Ни одного конфликта не найдено", "Поиск конфликтов");
                 }
             }
         }
 
         private bool CanExecuteShowHideConflicts()
         {
-            return HasActiveProject && Project.ConflictCompilation != null;
+            return HasActiveProject && Project.ConflictCompilation != null && Project.ConflictCompilation.Conflicts.Count > 0;
         }
 
         private void CheckConflict(ConflictCriteria criteria)
@@ -277,7 +286,7 @@ namespace Editor.ViewModels.Windows
                     {
                         OnShowHideConflicts();
                     }
-                    Project.ConflictCompilation = new ConflictCompilation(Project.Schedule, criteria);
+                    Project.ConflictCompilation.CreateConflictCompilation(Project.Schedule, criteria);
                     Mouse.OverrideCursor = Cursors.Arrow;
                     if (!Project.AreConflictsShown)
                     {

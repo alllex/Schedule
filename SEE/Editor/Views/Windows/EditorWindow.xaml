@@ -79,6 +79,8 @@
                         Command="{Binding CheckConflictGroupsInDifferentClassroomsCommand}"/>
                     <MenuItem Header="Преподаватель одновременно в разных кабинетах"
                         Command="{Binding CheckConflictLecturersInDifferentClassroomsCommand}"/>
+                    <MenuItem Header="Преподаватель одновременно ведет различные занятия"
+                        Command="{Binding CheckConflictLecturersOnDifferentClassesCommand}"/>
                     <MenuItem Header="Соседние пары по разным адресам"
                         Command="{Binding CheckConflictNextClassesAtDifferentAddressCommand}"/>
                 </MenuItem>
@@ -95,6 +97,13 @@
 <!--                  Header="Cards pool">-->
 <!--            <controls:CardClipboard x:Name="CardClipboard"/>-->
 <!--        </Expander>-->
+        
+        <Expander DockPanel.Dock="Right"
+                  ExpandDirection="Left"
+                  Header="Конфликты"
+                  IsExpanded="False">
+            <controls:ConflictsViewer x:Name="ConflictsViewer"/>
+        </Expander>
         
         
         <StatusBar DockPanel.Dock="Bottom"

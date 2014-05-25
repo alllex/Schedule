@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Editor.Helpers;
 
 namespace ScheduleData.SearchConflicts
 {
@@ -9,36 +11,58 @@ namespace ScheduleData.SearchConflicts
         GreaterThanFourClassesPerDay,
         GroupsInDifferentClassrooms,
         LecturersInDifferentClassrooms,
-        LecterersOnDifferentClasses,        // НОВЫЙ КОНФЛИКТ: ЛЕКТОР ВЕДЁТ РАЗНЫЕ ПРЕДМЕТЫ (ВОЗМОЖНО, В ОДНОЙ АУДИТОРИИ)
+        LecturersOnDifferentClasses,        // НОВЫЙ КОНФЛИКТ: ЛЕКТОР ВЕДЁТ РАЗНЫЕ ПРЕДМЕТЫ (ВОЗМОЖНО, В ОДНОЙ АУДИТОРИИ)
         NextClassesAtDifferentAddress,
         CardsWithBlankFields
     }
 
-    public class ConflictCompilation
+    public class ConflictCompilation : NotificationObject
     {
-        public IEnumerable<Conflict> Conflicts;
+        #region Conflicts
 
-        public ConflictCompilation(Schedule schedule, ConflictCriteria criteria)
+        private ObservableCollection<Conflict> _conflicts = new ObservableCollection<Conflict>();
+
+        public ObservableCollection<Conflict> Conflicts
         {
+            get { return _conflicts; }
+            set
+            {
+                if (_conflicts != value)
+                {
+                    _conflicts = value;
+                    RaisePropertyChanged(() => Conflicts);
+                }
+            }
+        }
+
+        #endregion
+
+        
+        public void CreateConflictCompilation(Schedule schedule, ConflictCriteria criteria)
+        {
+
             switch (criteria)
             {
                 case ConflictCriteria.All:
-                    Conflicts = ConflictSearchEngine.SearchAllConflicts(schedule);
+                    Conflicts = new ObservableCollection<Conflict>(ConflictSearchEngine.SearchAllConflicts(schedule));
                     break;
                 case ConflictCriteria.GreaterThanFourClassesPerDay:
-                    Conflicts = ConflictSearchEngine.GreaterThanFourClassesPerDay(schedule);
+                    Conflicts = new ObservableCollection<Conflict>(ConflictSearchEngine.GreaterThanFourClassesPerDay(schedule));
                     break;
                 case ConflictCriteria.CardsWithBlankFields:
-                    Conflicts = ConflictSearchEngine.CardsWithBlankFields(schedule);
+                    Conflicts = new ObservableCollection<Conflict>(ConflictSearchEngine.CardsWithBlankFields(schedule));
                     break;
                 case ConflictCriteria.GroupsInDifferentClassrooms:
-                    Conflicts = ConflictSearchEngine.GroupsInDifferentClassrooms(schedule);
+                    Conflicts = new ObservableCollection<Conflict>(ConflictSearchEngine.GroupsInDifferentClassrooms(schedule));
                     break;
                 case ConflictCriteria.LecturersInDifferentClassrooms:
-                    Conflicts = ConflictSearchEngine.LecterersInDifferentClassrooms(schedule);
+                    Conflicts = new ObservableCollection<Conflict>(ConflictSearchEngine.LecturersInDifferentClassrooms(schedule));
+                    break;
+                case ConflictCriteria.LecturersOnDifferentClasses:
+                    Conflicts = new ObservableCollection<Conflict>(ConflictSearchEngine.LecturersInDifferentClassrooms(schedule));
                     break;
                 case ConflictCriteria.NextClassesAtDifferentAddress:
-                    Conflicts = ConflictSearchEngine.NextClassesAtDifferentAddress(schedule);
+                    Conflicts = new ObservableCollection<Conflict>(ConflictSearchEngine.NextClassesAtDifferentAddress(schedule));
                     break;
             }
         }
@@ -59,7 +83,7 @@ namespace ScheduleData.SearchConflicts
                     return "Преподаватель находится в нескольких аудиториях одновременно";
                 case ConflictCriteria.NextClassesAtDifferentAddress:
                     return "Адреса двух аудиторий, в которых проходят два соседних занятия, различны";
-                case ConflictCriteria.LecterersOnDifferentClasses:
+                case ConflictCriteria.LecturersOnDifferentClasses:
                     return "Преподаватель находится проводит несколько занятий одновременно";
             }
             return "";

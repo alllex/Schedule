@@ -17,14 +17,14 @@ namespace ScheduleData.DataMining
         private static readonly int CountWeekdays = Enum.GetValues(typeof(Weekdays)).Length ;
 
         protected Schedule Schedule;
-        protected IEnumerable<FullClassRecord> Classes;
+        protected IEnumerable<ClassRecord> Classes;
 
         public TSubject Subject;
         public int CountOfClassesPerWeek { get; protected set; }
         public float AverageCountOfClassesPerDay { get; protected set; }
         public List<ClassesPerWeekday> CountOfClassesPerWeekday { get; protected set; }
 
-        protected Statistic(Schedule schedule, TSubject subject, Func<FullClassRecord, TSubject> getField)
+        protected Statistic(Schedule schedule, TSubject subject, Func<ClassRecord, TSubject> getField)
         {
             Subject = subject;
             Schedule = schedule;
@@ -32,7 +32,7 @@ namespace ScheduleData.DataMining
             SetCounts();
         }
 
-        protected void SetClasses(Func<FullClassRecord, TSubject> getField) 
+        protected void SetClasses(Func<ClassRecord, TSubject> getField) 
         {
             Classes = Schedule.ToList().Where(f => { var field = getField(f); 
                                                      return field == null ? false : field.Equals(Subject); 

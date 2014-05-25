@@ -523,9 +523,9 @@ namespace ScheduleData
 
         #endregion
 
-        public List<FullClassRecord> ToList()
+        public List<ClassRecord> ToList()
         {
-            return (from c in ClassRecords select (new FullClassRecord(c))).ToList();
+            return ClassRecords.ToList();
         }
     }
 }

@@ -12,7 +12,8 @@ namespace ScheduleData.SearchConflicts
             var allClasses = schedule.ToList();
             conflicts.AddRange(GreaterThanFourClassesPerDay(allClasses));
             conflicts.AddRange(GroupsInDifferentClassrooms(allClasses));
-            conflicts.AddRange(LecterersInDifferentClassrooms(allClasses));
+            conflicts.AddRange(LecturersInDifferentClassrooms(allClasses));
+            conflicts.AddRange(LecturersOnDifferentClasses(allClasses));
             conflicts.AddRange(NextClassesAtDifferentAddress(allClasses));
             conflicts.AddRange(CardsWithBlankFields(allClasses));
 
@@ -29,14 +30,14 @@ namespace ScheduleData.SearchConflicts
             return GroupsInDifferentClassrooms(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> LecterersInDifferentClassrooms(Schedule schedule)
+        public static IEnumerable<Conflict> LecturersInDifferentClassrooms(Schedule schedule)
         {
-            return LecterersInDifferentClassrooms(schedule.ToList());
+            return LecturersInDifferentClassrooms(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> LecterersOnDifferentClasses(Schedule schedule)
+        public static IEnumerable<Conflict> LecturersOnDifferentClasses(Schedule schedule)
         {
-            return LecterersOnDifferentClasses(schedule.ToList());
+            return LecturersOnDifferentClasses(schedule.ToList());
         }
 
         public static IEnumerable<Conflict> NextClassesAtDifferentAddress(Schedule schedule)
@@ -51,7 +52,7 @@ namespace ScheduleData.SearchConflicts
 
         #region Private Methods
 
-        private static IEnumerable<Conflict> GreaterThanFourClassesPerDay(IEnumerable<FullClassRecord> allClasses)
+        private static IEnumerable<Conflict> GreaterThanFourClassesPerDay(IEnumerable<ClassRecord> allClasses)
         {
             var message = ConflictCompilation.ConflictDescription(ConflictCriteria.GreaterThanFourClassesPerDay);
 
@@ -62,7 +63,7 @@ namespace ScheduleData.SearchConflicts
                    select new Conflict(message, ConflictType.Warning, g);
         }
 
-        private static IEnumerable<Conflict> GroupsInDifferentClassrooms(IEnumerable<FullClassRecord> allClasses)
+        private static IEnumerable<Conflict> GroupsInDifferentClassrooms(IEnumerable<ClassRecord> allClasses)
         {
             var message = ConflictCompilation.ConflictDescription(ConflictCriteria.GroupsInDifferentClassrooms);
 
@@ -73,7 +74,7 @@ namespace ScheduleData.SearchConflicts
                    select new Conflict(message, ConflictType.Conflict, g);
         }
 
-        private static IEnumerable<Conflict> LecterersInDifferentClassrooms(IEnumerable<FullClassRecord> allClasses)
+        private static IEnumerable<Conflict> LecturersInDifferentClassrooms(IEnumerable<ClassRecord> allClasses)
         {
             var message = ConflictCompilation.ConflictDescription(ConflictCriteria.LecturersInDifferentClassrooms);
 
@@ -85,9 +86,9 @@ namespace ScheduleData.SearchConflicts
         }
 
 
-        private static IEnumerable<Conflict> LecterersOnDifferentClasses(IEnumerable<FullClassRecord> allClasses)
+        private static IEnumerable<Conflict> LecturersOnDifferentClasses(IEnumerable<ClassRecord> allClasses)
         {
-            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.LecterersOnDifferentClasses);
+            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.LecturersOnDifferentClasses);
 
             return from c in allClasses
                    where c.Lecturer != null && c.ClassTime != null
@@ -96,7 +97,7 @@ namespace ScheduleData.SearchConflicts
                    select new Conflict(message, ConflictType.Conflict, g);
         }
 
-        private static IEnumerable<Conflict> NextClassesAtDifferentAddress(IEnumerable<FullClassRecord> allClasses)
+        private static IEnumerable<Conflict> NextClassesAtDifferentAddress(IEnumerable<ClassRecord> allClasses)
         {
             var conflicts = new List<Conflict>();
             var message = ConflictCompilation.ConflictDescription(ConflictCriteria.NextClassesAtDifferentAddress);
@@ -117,7 +118,7 @@ namespace ScheduleData.SearchConflicts
                     currClass.ClassTime.Number - prevClass.ClassTime.Number <= 1 &&
                     prevClass.Classroom.Address != currClass.Classroom.Address)
                 {
-                    var conflictingClasses = new List<FullClassRecord> { prevClass, currClass };
+                    var conflictingClasses = new List<ClassRecord> { prevClass, currClass };
                     conflicts.Add(new Conflict(message, ConflictType.Warning, conflictingClasses));
                 }
                 prevClass = currClass;
@@ -125,7 +126,7 @@ namespace ScheduleData.SearchConflicts
             return conflicts;
         }
 
-        private static IEnumerable<Conflict> CardsWithBlankFields(IEnumerable<FullClassRecord> allClasses)
+        private static IEnumerable<Conflict> CardsWithBlankFields(IEnumerable<ClassRecord> allClasses)
         {
             var message = ConflictCompilation.ConflictDescription(ConflictCriteria.CardsWithBlankFields);
 

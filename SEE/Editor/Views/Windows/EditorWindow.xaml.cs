@@ -16,17 +16,20 @@ namespace Editor.Views.Windows
         {
             InitializeComponent();
 
+            var conflictsViewerViewModel = new ConflictsViewerViewModel();
             var tableControllerViewModel = new TableControllerViewModel();
-            var viewModel = new EditorWindowViewModel(tableControllerViewModel);
+            var viewModel = new EditorWindowViewModel(tableControllerViewModel, conflictsViewerViewModel);
             DataContext = viewModel;
             viewModel.PropertyChanged += (s, e) =>
             {
                 if (s is EditorWindowViewModel && e.PropertyName == "Project")
                 {
                     tableControllerViewModel.Project = viewModel.Project;
+                    conflictsViewerViewModel.Project = viewModel.Project;
                 }
             };
             TablesController.DataContext = tableControllerViewModel;
+            ConflictsViewer.DataContext = conflictsViewerViewModel;
         }
     }
 }
