@@ -42,5 +42,27 @@ namespace ScheduleData.SearchConflicts
                     break;
             }
         }
+
+        public static string ConflictDescription(ConflictCriteria criteria)
+        {
+            switch (criteria)
+            {
+                case ConflictCriteria.All:
+                    return "Все типы конфликтов";
+                case ConflictCriteria.GreaterThanFourClassesPerDay:
+                    return "Больше 4х занятий в день";
+                case ConflictCriteria.CardsWithBlankFields:
+                    return "У карточки не заполнены некоторые поля";
+                case ConflictCriteria.GroupsInDifferentClassrooms:
+                    return "Группа находится в нескольких аудиториях одновременно";
+                case ConflictCriteria.LecturersInDifferentClassrooms:
+                    return "Преподаватель находится в нескольких аудиториях одновременно";
+                case ConflictCriteria.NextClassesAtDifferentAddress:
+                    return "Адреса двух аудиторий, в которых проходят два соседних занятия, различны";
+                case ConflictCriteria.LecterersOnDifferentClasses:
+                    return "Преподаватель находится проводит несколько занятий одновременно";
+            }
+            return "";
+        }
     }
 }

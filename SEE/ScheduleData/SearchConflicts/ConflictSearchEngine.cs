@@ -53,7 +53,7 @@ namespace ScheduleData.SearchConflicts
 
         private static IEnumerable<Conflict> GreaterThanFourClassesPerDay(IEnumerable<FullClassRecord> allClasses)
         {
-            var message = "Больше 4х занятий в день";
+            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.GreaterThanFourClassesPerDay);
 
             return from c in allClasses
                    where c.Group != null && c.ClassTime != null
@@ -64,7 +64,7 @@ namespace ScheduleData.SearchConflicts
 
         private static IEnumerable<Conflict> GroupsInDifferentClassrooms(IEnumerable<FullClassRecord> allClasses)
         {
-            var message = "Группа находится в нескольких аудиториях одновременно.";
+            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.GroupsInDifferentClassrooms);
 
             return from c in allClasses
                    where c.Group != null && c.ClassTime != null
@@ -75,7 +75,7 @@ namespace ScheduleData.SearchConflicts
 
         private static IEnumerable<Conflict> LecterersInDifferentClassrooms(IEnumerable<FullClassRecord> allClasses)
         {
-            var message = "Преподаватель находится в нескольких аудиториях одновременно.";
+            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.LecturersInDifferentClassrooms);
 
             return from c in allClasses
                    where c.Lecturer != null && c.ClassTime != null
@@ -87,7 +87,7 @@ namespace ScheduleData.SearchConflicts
 
         private static IEnumerable<Conflict> LecterersOnDifferentClasses(IEnumerable<FullClassRecord> allClasses)
         {
-            var message = "Преподаватель находится проводит несколько занятий одновременно.";
+            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.LecterersOnDifferentClasses);
 
             return from c in allClasses
                    where c.Lecturer != null && c.ClassTime != null
@@ -99,7 +99,7 @@ namespace ScheduleData.SearchConflicts
         private static IEnumerable<Conflict> NextClassesAtDifferentAddress(IEnumerable<FullClassRecord> allClasses)
         {
             var conflicts = new List<Conflict>();
-            var message = "Адреса двух аудиторий, в которых проходят два соседних занятия, различны.";
+            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.NextClassesAtDifferentAddress);
 
             var classes = from c in allClasses
                           orderby c.Group.Name, c.ClassTime.Day, c.ClassTime.Number
@@ -127,7 +127,7 @@ namespace ScheduleData.SearchConflicts
 
         private static IEnumerable<Conflict> CardsWithBlankFields(IEnumerable<FullClassRecord> allClasses)
         {
-            var message = "У этой карточки не заполнены некоторые поля.";
+            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.CardsWithBlankFields);
 
             return from c in allClasses
                    where c.Lecturer == null || c.Classroom == null || c.Subject == null

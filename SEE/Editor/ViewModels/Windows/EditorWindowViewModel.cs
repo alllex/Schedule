@@ -149,10 +149,12 @@ namespace Editor.ViewModels.Windows
                 var schedule = ImportExportSchedule.Import(dlg.FileName);
                 SetNewProject(new ScheduleProject { Schedule = schedule });
             }
+            UpdateStatus("Импорт выполнен");
         }
 
         private void OnExportToExcel()
         {
+            UpdateStatus("Экспорт...");
             var dlg = new SaveFileDialog
             {
                 FileName = "Расписание",
@@ -164,6 +166,7 @@ namespace Editor.ViewModels.Windows
             {
                 ImportExportSchedule.Export(Project.Schedule, dlg.FileName);
             }
+            UpdateStatus("Экспорт выполнен");
         }
 
         private void OnCheckCheckAllConflicts()
@@ -451,6 +454,11 @@ namespace Editor.ViewModels.Windows
 //                RemoveSubjectDelegate(param as Subject);
 //            }
 //        }
+
+        private void UpdateStatus(string status)
+        {
+            Project.ProjectStatus.Status = status;
+        }
 
         #endregion
     }

@@ -143,5 +143,27 @@ namespace Editor.Models
 
         #endregion
 
+        #region ProjectStatus
+
+        private ProjectStatus _projectStatus;
+
+        public ProjectStatus ProjectStatus
+        {
+            get { return _projectStatus; }
+            set
+            {
+                if (_projectStatus != value)
+                {
+                    _projectStatus = value;
+                    RaisePropertyChanged(() => ProjectStatus);
+                }
+            }
+        }
+
+        #endregion
+
+        
+
+        
     }
 }
