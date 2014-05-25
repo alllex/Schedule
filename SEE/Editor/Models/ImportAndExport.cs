@@ -1,4 +1,5 @@
 ﻿using ScheduleData;
+using SEE;
 
 namespace Editor.Models
 {
@@ -6,7 +7,7 @@ namespace Editor.Models
     {
         public static void Export(Schedule schedule, string path)
         {
-            //Exporter.Export(path, sSchedule.Create(schedule));
+            Exporter.Export(path, schedule);
         }
 
         public static Schedule Import(string path)

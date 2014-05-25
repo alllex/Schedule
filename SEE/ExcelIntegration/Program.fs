@@ -143,13 +143,14 @@ type Exporter =
                     let currentTable = new GroupClasses(data, data.YearsOfStudy.[sheetNumber])
                     let groups = currentTable.Subjects //[| for i in data.Groups -> i.Value |]
                     let numberOfGroups = groups.Count
+ 
                     let numberOfColumns = numberOfGroups + Exporter.HorizontalOffset
                     let numberOfRows = data.TimeLine.Count + Exporter.VerticalOffset 
                     let table = Array2D.create numberOfRows numberOfColumns "" //empty table (1 sheet)
 
                     if data.TimeLine.Count > 0 then
                         let currentDay = ref data.TimeLine.[0].Day
-                        let writeTimes i (x : sClassTime) = 
+                        let writeTimes i (x : ClassTime) = 
                             table.[i + Exporter.VerticalOffset, 1] <- ClassTime.ClassIntervals.[x.Number]
 
                             if x.Day <> !currentDay then 
@@ -157,30 +158,28 @@ type Exporter =
                                 currentDay.Value <- x.Day
             
                         table.[Exporter.VerticalOffset, 0] <- currentDay.Value.ToString() 
-                        //Array.iteri writeTimes data.TimeLine
-                   (*
-                    if currentTable.Groups.Length > 0 then
-                        let currentSpecialization = ref currentTable.Groups.[0].Specialization
-                        let writeGroups i (x : sGroup) = 
-                            table.[1, i + Exporter.HorizontalOffset] <- currentTable.Groups.[i].Name
+                        Seq.iteri writeTimes data.TimeLine
+                   
+                    if numberOfGroups > 0 then
+                        let currentSpecialization = ref groups.[0].Specialization
+                        let writeGroups i (x : Group) = 
+                            table.[1, i + Exporter.HorizontalOffset] <- x.Name
 
                             if x.Specialization <> !currentSpecialization then 
                                 table.[0, i + Exporter.HorizontalOffset] <- x.Specialization.Name
                                 currentSpecialization.Value <- x.Specialization
             
                         table.[0, Exporter.HorizontalOffset] <- currentSpecialization.Value.Name
-                        Array.iteri writeGroups currentTable.Groups
+                        Seq.iteri writeGroups currentTable.Subjects
 
-                    if currentTable.Table.Length > 0 then
-                        let writeColumn i (x : sClassRecord[]) =
-                            let writeClasses j (x : sClassRecord) =
+                    if currentTable.Subjects.Count > 0 && data.TimeLine.Count > 0 then
+                        let writeColumn i j (x : ClassRecord) =
                                 table.[i + Exporter.VerticalOffset, j + Exporter.HorizontalOffset] <-
                                     if x <> null then 
                                         x.Subject.Name + "\n" + x.Lecturer.Name + "\n" + x.Classroom.Name
                                     else ""
-                            Array.iteri writeClasses x
-                        Array.iteri writeColumn currentTable.Table              
-                 *)
+                        Array2D.iteri writeColumn <| Array2D.init data.TimeLine.Count currentTable.Subjects.Count (fun i j -> currentTable.GetClass(i, j))             
+                 
                     table, currentTable.YearOfStudy.Name + " курс" 
 
                 schedule.[numberOfSheets - 1 - sheet] <- getSheet sheet
