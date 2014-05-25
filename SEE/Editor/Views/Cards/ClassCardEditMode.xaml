@@ -1,7 +1,11 @@
 ﻿<Window x:Class="Editor.Views.Cards.ClassCardEditMode"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:cards="clr-namespace:Editor.ViewModels.Cards"
         Title="ClassCardEditMode" 
          
         WindowStyle="None"
@@ -9,6 +13,8 @@
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="Manual"
         Topmost="True"
+        
+        d:DataContext="{d:DesignInstance cards:ClassCardViewModel}"
         
         >
     
@@ -30,52 +36,81 @@
                 <componentModel:SortDescription PropertyName="Name" />
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        
+
+        <Style TargetType="ComboBox">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Width" Value="200"/>
+        </Style>
+
     </Window.Resources>
     
-    <DockPanel LastChildFill="False">
-        <StackPanel Margin="3"
-                    DockPanel.Dock="Top">
-            <StackPanel.Resources>
-                <Style TargetType="ComboBox">
-                    <Setter Property="HorizontalAlignment" Value="Right"/>
-                    <Setter Property="Width" Value="160"/>
-                </Style>
-                <Style TargetType="DockPanel">
-                    <Setter Property="Margin" Value="3"/>
-                </Style>
-            </StackPanel.Resources>
-            <DockPanel>
-                <Label Content="Предмет: "
-                       HorizontalAlignment="Left"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource SortedSubjects}}"
-                          SelectedItem="{Binding Class.Subject}"
-                          DisplayMemberPath="Name" />
-            </DockPanel>
-            <DockPanel>
-                <Label Content="Преподаватель: "
-                           HorizontalAlignment="Left"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource SortedLectures}}"
-                            SelectedItem="{Binding Class.Lecturer}"
-                            DisplayMemberPath="Name" />
-            </DockPanel>
-            <DockPanel>
-                <Label Content="Аудитория:"
-                           HorizontalAlignment="Left"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource SortedClassrooms}}"
-                          SelectedItem="{Binding Class.Classroom}"
-                          DisplayMemberPath="Name" />
-            </DockPanel>
-        </StackPanel>
-        
-        <!--<Button Content="Cancel" IsCancel="True"
-                DockPanel.Dock="Right"
-                Height="25" Width="60" Margin="5,0,5,5" 
-                />-->
+    <DockPanel LastChildFill="False"
+               Margin="3">
+        <Grid DockPanel.Dock="Top"
+              >
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+
+
+            <Label Content="Предмет: "
+                      Margin="3" />
+            <Label Grid.Row="1" Grid.Column="0"
+                   Content="Преподаватель: " 
+                      Margin="3"
+                   />
+            <Label Grid.Row="2" Grid.Column="0"
+                   Content="Аудитория: " 
+                      Margin="3"/>
+
+
+            <ComboBox Grid.Row="0" Grid.Column="1" 
+                      ItemsSource="{Binding Source={StaticResource SortedSubjects}}"
+                      SelectedItem="{Binding Class.Subject}"
+                      DisplayMemberPath="Name"
+                      Margin="3"/>
+
+            <ComboBox Grid.Row="1" Grid.Column="1" 
+                      ItemsSource="{Binding Source={StaticResource SortedLectures}}"
+                      SelectedItem="{Binding Class.Lecturer}"
+                      DisplayMemberPath="Name"
+                      Margin="3"/>
+
+            <ComboBox Grid.Row="2" Grid.Column="1" 
+                      ItemsSource="{Binding Source={StaticResource SortedClassrooms}}"
+                      SelectedItem="{Binding Class.Classroom}"
+                      DisplayMemberPath="Name"
+                      Margin="3"/>
+
+            <Button Grid.Row="0" Grid.Column="2" 
+                    Content="x"
+                    Margin="3"
+                    Command="{Binding ClearSubjectCommand}"/>
+            
+            <Button Grid.Row="1" Grid.Column="2" 
+                    Content="x"
+                    Margin="3"
+                    Command="{Binding ClearLecturerCommand}"/>
+            
+            <Button Grid.Row="2" Grid.Column="2" 
+                    Content="x"
+                    Margin="3"
+                    Command="{Binding ClearClassroomCommand}"/>
+
+        </Grid>
         
         <Button Click="OkClick" Content="Ok" IsDefault="True" IsCancel="True"
                 DockPanel.Dock="Right"
-                Height="25" Width="60" Margin="0,0,5,5"
+                Height="25" Width="60" Margin="3"
                 />
         
     </DockPanel>

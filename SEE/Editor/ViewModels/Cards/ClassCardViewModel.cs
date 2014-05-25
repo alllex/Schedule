@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Windows.Input;
+using Editor.Helpers;
 using ScheduleData;
 
 namespace Editor.ViewModels.Cards
@@ -86,11 +88,33 @@ namespace Editor.ViewModels.Cards
 
         #region Commands
 
+        public ICommand ClearSubjectCommand { get { return new DelegateCommand(OnClearSubject, HasClass); } }
+        public ICommand ClearLecturerCommand { get { return new DelegateCommand(OnClearLecturer, HasClass); } }
+        public ICommand ClearClassroomCommand { get { return new DelegateCommand(OnClearClassroom, HasClass); } }
+
         #endregion
 
         #region Command Handlers
 
-        
+        private void OnClearLecturer()
+        {
+            Class.Lecturer = null;
+        }
+
+        private void OnClearClassroom()
+        {
+            Class.Classroom = null;
+        }
+
+        private void OnClearSubject()
+        {
+            Class.Subject = null;
+        }
+
+        private bool HasClass()
+        {
+            return Class != null;
+        }
 
         #endregion
         

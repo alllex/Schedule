@@ -585,6 +585,7 @@ namespace Editor.ViewModels.Controls
             }
             else
             {
+                _groupClasses.RemoveClass(row, col);
                 ClassesCards[row][col].DataContext = new ClassCardViewModel(null) { Project = Project }; ;
             }
             UpdateSelection(row, col);
