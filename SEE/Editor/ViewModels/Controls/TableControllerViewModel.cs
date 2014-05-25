@@ -117,15 +117,49 @@ namespace Editor.ViewModels.Controls
 
         public void AddYearOfStudy()
         {
-            var year = new YearOfStudy {Name = "Новый курс"};
-            Project.Schedule.AddYSG(year);
-            Tables.Add(new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = year });
+            var group = Project.Schedule.AddYSG();
+            Tables.Add(new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = group.YearOfStudy });
         }
 
         public void RemoveYearOfStudy(YearOfStudy yearOfStudy)
         {
             Project.Schedule.RemoveYearOfStudy(yearOfStudy);
             Tables.Remove(Tables.First(t => t.YearOfStudy == yearOfStudy));
+        }
+
+        public void AddSpecialization(YearOfStudy yearOfStudy)
+        {
+            Project.Schedule.AddNewSG(yearOfStudy);
+            UpdateAll();
+        }
+
+        public void RemoveSpecialization(Specialization specialization)
+        {
+            Project.Schedule.RemoveSpecialization(specialization);
+            UpdateAll();
+        }
+
+        public void AddGroup(YearOfStudy year, Specialization spec)
+        {
+            var group = Project.Schedule.AddNewGroup(year, spec);
+//            var table = Tables.First(t => t.YearOfStudy == year);
+//            var index = Tables.IndexOf(table);
+//            Tables[index].AddGroup(group);
+            UpdateAll();
+        }
+
+        public void RemoveGroup(Group @group)
+        {
+            Project.Schedule.RemoveGroup(group);
+            var table = Tables.First(t => t.YearOfStudy == group.YearOfStudy);
+            var index = Tables.IndexOf(table);
+            Tables.RemoveAt(index);
+            Tables.Insert(index, new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = group.YearOfStudy });
+            //UpdateAll();
+            if (Tables.Count > 0)
+            {
+                SelectedIndex = 0;
+            }
         }
     }
 }

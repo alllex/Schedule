@@ -11,7 +11,8 @@ namespace ScheduleData
         public Dictionary<ClassTime, int> TimeIndexes = new Dictionary<ClassTime, int>();
 
         protected Schedule Schedule;
-        protected ClassRecord[][] Table;
+        //protected ClassRecord[][] Table;
+        protected Dictionary<TSubject, Dictionary<ClassTime, ClassRecord>> TableDictionary = new Dictionary<TSubject, Dictionary<ClassTime, ClassRecord>>(); 
 
         protected ClassesTable(Schedule schedule)
         {
@@ -33,14 +34,22 @@ namespace ScheduleData
                 SubjectIndexes.Add(Subjects[i], i);
         }
 
-        protected void CreateTable()
+//        protected void CreateTable()
+//        {
+//            var rowsCount = TimeCardsCount();
+//            var colsCount = SubjectsCount();
+//            Table = new ClassRecord[rowsCount][];
+//            for (int i = 0; i < rowsCount; i++)
+//            {
+//                Table[i] = new ClassRecord[colsCount];
+//            }
+//        }
+
+        protected void CreateTableDictionary()
         {
-            var rowsCount = TimeCardsCount();
-            var colsCount = SubjectsCount();
-            Table = new ClassRecord[rowsCount][];
-            for (int i = 0; i < rowsCount; i++)
+            foreach (var subject in Subjects)
             {
-                Table[i] = new ClassRecord[colsCount];
+                TableDictionary[subject] = new Dictionary<ClassTime, ClassRecord>();
             }
         }
 
@@ -56,31 +65,36 @@ namespace ScheduleData
 
         public ClassRecord GetClass(int timeIndex, int subjectIndex)
         {
-            if (timeIndex < 0 || timeIndex >= TimeCardsCount() || subjectIndex < 0 || subjectIndex >= SubjectsCount())
-                return null;
-            return Table[timeIndex][subjectIndex];
+            if (!AreIndexesCorrect(timeIndex, subjectIndex)) return null;
+            var subject = Subjects[subjectIndex];
+            var time = Schedule.TimeLine[timeIndex];
+            return TableDictionary[subject].ContainsKey(time) ? TableDictionary[subject][time] : null;
         }
 
         public ClassRecord SetClass(int timeIndex, int subjectIndex, ClassRecord classRecord)
         {
             if (!AreIndexesCorrect(timeIndex, subjectIndex)) return null;
-            if (Table[timeIndex][subjectIndex] != null)
+            var subject = Subjects[subjectIndex];
+            var time = Schedule.TimeLine[timeIndex];
+            if (TableDictionary[subject].ContainsKey(time))
             {
-                Schedule.RemoveClass(Table[timeIndex][subjectIndex]);
+                Schedule.RemoveClass(TableDictionary[subject][time]);
             }
-            Table[timeIndex][subjectIndex] = classRecord;
             Schedule.AddClass(classRecord);
+            TableDictionary[subject][time] = classRecord;
             return classRecord;
         }
 
         public void RemoveClass(int timeIndex, int subjectIndex)
         {
             if (!AreIndexesCorrect(timeIndex, subjectIndex)) return;
-            if (Table[timeIndex][subjectIndex] != null)
+            var subject = Subjects[subjectIndex];
+            var time = Schedule.TimeLine[timeIndex];
+            if (TableDictionary[subject].ContainsKey(time))
             {
-                Schedule.RemoveClass(Table[timeIndex][subjectIndex]);
+                Schedule.RemoveClass(TableDictionary[subject][time]);
+                TableDictionary[subject].Remove(time);
             }
-            Table[timeIndex][subjectIndex] = null;
         }
 
         private bool AreIndexesCorrect(int timeIndex, int subjectIndex)

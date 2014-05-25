@@ -374,7 +374,10 @@ namespace ScheduleData
             }
         }
 
-        public void AddYSG()
+        /// <summary>
+        /// Add new YearOfStudy, Specialization and Group
+        /// </summary>
+        public Group AddYSG()
         {
             var year = new YearOfStudy { Name = "Новый курс" };
             var spec = new Specialization { Name = "Специальность" };
@@ -382,8 +385,13 @@ namespace ScheduleData
             AddYearOfStudy(year);
             AddSpecialization(spec);
             AddGroup(group);
+            return group;
         }
 
+        /// <summary>
+        /// Add new Specialization and Group to given new YearOfStudy
+        /// </summary>
+        /// <param name="year"></param>
         public void AddYSG(YearOfStudy year)
         {
             var spec = new Specialization { Name = "Специальность" };
@@ -391,6 +399,25 @@ namespace ScheduleData
             AddYearOfStudy(year);
             AddSpecialization(spec);
             AddGroup(group);
+        }
+        
+        /// <summary>
+        /// Add new Specialization and Group to given YearOfStudy
+        /// </summary>
+        /// <param name="year"></param>
+        public void AddNewSG(YearOfStudy year)
+        {
+            var spec = new Specialization { Name = "Новая специальность" };
+            var group = new Group { Name = "Новая группа", YearOfStudy = year, Specialization = spec };
+            AddSpecialization(spec);
+            AddGroup(group);
+        }
+
+        public Group AddNewGroup(YearOfStudy year, Specialization spec)
+        {
+            var group = new Group { Name = "Новая группа", YearOfStudy = year, Specialization = spec };
+            AddGroup(group);
+            return group;
         }
 
 //        private void GroupsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

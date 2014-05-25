@@ -186,7 +186,7 @@ namespace Editor.ViewModels.Controls
 ////                _classesTable.Table[row][col] = new ClassRecord();
 ////
 ////            }
-////            var model = new ClassCardViewModel(@class){ClassesSchedule = ClassesSchedule};
+////            var model = new ClassCardViewModel(@class){Schedule = Schedule};
 ////            var edit = new ClassCardEditMode(centerX, centerY) { DataContext = model };
 ////
 ////            edit.ShowDialog();

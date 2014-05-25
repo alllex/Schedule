@@ -10,14 +10,6 @@
              d:DataContext="{d:DesignInstance edit:YearOfStudyEditPanelViewModel}"
              >
     
-    <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedList" Source="{Binding Project.Schedule.YearsOfStudy}">
-            <CollectionViewSource.SortDescriptions>
-                <componentModel:SortDescription PropertyName="Name" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-    </UserControl.Resources>
-    
     <DockPanel>
         <DockPanel DockPanel.Dock="Left">
             
@@ -27,7 +19,7 @@
                     Command="{Binding AddYearOfStudyCommand}"/>
             
             <ListBox x:Name="ListBox"
-                    ItemsSource="{Binding Source={StaticResource SortedList}}"
+                    ItemsSource="{Binding Project.Schedule.YearsOfStudy}"
                     SelectedIndex="0"
                     MinWidth="150">
                 <ListBox.ItemContainerStyle>

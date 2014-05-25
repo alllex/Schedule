@@ -16,7 +16,7 @@
                     Command="{Binding AddSpecializationCommand}"/>
 
             <ListBox x:Name="ListBox"
-                    ItemsSource="{Binding Project.ClassesSchedule.Specializations}"
+                    ItemsSource="{Binding Project.Schedule.Specializations}"
                     SelectedIndex="0"
                     DisplayMemberPath="Name"
                     MinWidth="150">

@@ -5,8 +5,9 @@ using ScheduleData;
 
 namespace Editor.ViewModels.Cards
 {
-    class TitleCardViewModel : HasProjectProperty
+    class SpecializationCardViewModel : HasProjectProperty
     {
+
         #region Properties
 
         #region Specialization
@@ -34,7 +35,7 @@ namespace Editor.ViewModels.Cards
         #region Ctor
 
 
-        public TitleCardViewModel(Specialization specialization, Action updateViews)
+        public SpecializationCardViewModel(Specialization specialization, Action updateViews)
         {
             Specialization = specialization;
             _updateViews = updateViews;

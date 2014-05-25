@@ -16,7 +16,7 @@
                     Command="{Binding AddClassroomCommand}"/>
 
             <ListBox x:Name="ListBox"
-                    ItemsSource="{Binding Project.ClassesSchedule.Classrooms}"
+                    ItemsSource="{Binding Project.Schedule.Classrooms}"
                     SelectedIndex="0"
                     MinWidth="150">
                 <ListBox.ItemContainerStyle>

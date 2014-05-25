@@ -19,7 +19,7 @@ namespace Editor.ViewModels.Panels.Edit
             MessageBox.Show("Remove");
             //var year = param as Specialization;
             //if (year == null) return;
-            //Project.ClassesSchedule.RemoveSpecialization(year);
+            //Project.Schedule.RemoveSpecialization(year);
         }
 
         #endregion

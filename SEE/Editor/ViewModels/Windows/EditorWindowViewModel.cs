@@ -87,6 +87,10 @@ namespace Editor.ViewModels.Windows
         {
             Project.ScheduleController.AddYearOfStudyDelegate += AddYearOfStudy;
             Project.ScheduleController.RemoveYearOfStudyDelegate += RemoveYearOfStudy;
+            Project.ScheduleController.AddSpecializationDelegate += AddSpecialization;
+            Project.ScheduleController.RemoveSpecializationDelegate += RemoveSpecialization;
+            Project.ScheduleController.AddGroupDelegate += AddGroup;
+            Project.ScheduleController.RemoveGroupDelegate += RemoveGroup;
         }
 
         #endregion
@@ -368,25 +372,25 @@ namespace Editor.ViewModels.Windows
 
         public void AddYearOfStudy()
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             _tableController.AddYearOfStudy();
+            Mouse.OverrideCursor = Cursors.Arrow;
         }
 
-//        public void AddSpecializati(object param)
-//        {
-//            if (AddSpecializatiDelegate != null)
-//            {
-//                AddSpecializatiDelegate(param as Specializati);
-//            }
-//        }
-//
-//        public void AddGroup(object param)
-//        {
-//            if (AddGroupDelegate != null)
-//            {
-//                AddGroupDelegate(param as Group);
-//            }
-//        }
-//
+        public void AddSpecialization(YearOfStudy yearOfStudy)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.AddSpecialization(yearOfStudy);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        public void AddGroup(Specialization spec)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.AddGroup(Project.ActiveYearOfStudy, spec);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
 //        public void AddLecturer(object param)
 //        {
 //            if (AddLecturerDelegate != null)
@@ -413,25 +417,25 @@ namespace Editor.ViewModels.Windows
 //
         public void RemoveYearOfStudy(YearOfStudy yearOfStudy)
         {
+            Mouse.OverrideCursor = Cursors.Wait;
             _tableController.RemoveYearOfStudy(yearOfStudy);
+            Mouse.OverrideCursor = Cursors.Arrow;
         }
-//
-//        public void RemoveSpecializati(object param)
-//        {
-//            if (RemoveSpecializatiDelegate != null)
-//            {
-//                RemoveSpecializatiDelegate(param as Specializati);
-//            }
-//        }
-//
-//        public void RemoveGroup(object param)
-//        {
-//            if (RemoveGroupDelegate != null)
-//            {
-//                RemoveGroupDelegate(param as Group);
-//            }
-//        }
-//
+
+        public void RemoveSpecialization(Specialization specialization)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.RemoveSpecialization(specialization);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        public void RemoveGroup(Group @group)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.RemoveGroup(group);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
 //        public void RemoveLecturer(object param)
 //        {
 //            if (RemoveLecturerDelegate != null)

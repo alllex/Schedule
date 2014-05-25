@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ScheduleData
 {
@@ -11,8 +12,10 @@ namespace ScheduleData
             YearOfStudy = yearOfStudy;
             SetSubjects();
             SetSubjectIndexes();
-            CreateTable();
-            SetClasses();
+//            CreateTable();
+            CreateTableDictionary();
+//            SetClasses();
+            SetClassesDictionary();
         }
 
         private void SetSubjects()
@@ -25,26 +28,53 @@ namespace ScheduleData
             Subjects = gps.ToList();
         }
 
-        private void SetClasses()
+//        private void SetClasses()
+//        {
+//            var rowsCount = TimeCardsCount();
+//            var colsCount = SubjectsCount();
+//            for (int i = 0; i < rowsCount; i++)
+//            {
+//                for (int j = 0; j < colsCount; j++)
+//                {
+//                    var timeIndex = i;
+//                    var subjectIndex = j;
+//                    var classes =
+//                        from c in Schedule.ClassRecords
+//                        where c.ClassTime == Schedule.TimeLine[timeIndex] && c.Group == Subjects[subjectIndex]
+//                        select c;
+//                    if (classes.Any())
+//                    {
+//                        Table[timeIndex][subjectIndex] = classes.First();
+//                    }
+//                }
+//            }
+//        }
+
+        private void SetClassesDictionary()
         {
-            var rowsCount = TimeCardsCount();
-            var colsCount = SubjectsCount();
-            for (int i = 0; i < rowsCount; i++)
+            foreach (var subject in Subjects)
             {
-                for (int j = 0; j < colsCount; j++)
+                var subject1 = subject;
+                foreach (var time in Schedule.TimeLine)
                 {
-                    var timeIndex = i;
-                    var subjectIndex = j;
+                    var time1 = time;
                     var classes =
                         from c in Schedule.ClassRecords
-                        where c.ClassTime == Schedule.TimeLine[timeIndex] && c.Group == Subjects[subjectIndex]
+                        where c.ClassTime == time1 && c.Group == subject1
                         select c;
                     if (classes.Any())
                     {
-                        Table[timeIndex][subjectIndex] = classes.First();
+                        TableDictionary[subject][time] = classes.First();
                     }
                 }
             }
+        }
+
+        public void AddGroup(Group group)
+        {
+            if (group.YearOfStudy != YearOfStudy || TableDictionary.ContainsKey(group)) return;
+            
+            TableDictionary[group] = new Dictionary<ClassTime, ClassRecord>();
         }
 
 //        public void AddGroup(Group group)

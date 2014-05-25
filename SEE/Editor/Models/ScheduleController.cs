@@ -19,12 +19,12 @@ namespace Editor.Models
         public delegate void RemoveYearOfStudy(YearOfStudy yearOfStudy);
         public RemoveYearOfStudy RemoveYearOfStudyDelegate { get; set; }
 
-        public delegate void AddSpecialization(Specialization specialization);
+        public delegate void AddSpecialization(YearOfStudy yearOfStudy);
         public AddSpecialization AddSpecializationDelegate { get; set; }
         public delegate void RemoveSpecialization(Specialization specialization);
         public RemoveSpecialization RemoveSpecializationDelegate { get; set; }
 
-        public delegate void AddGroup(Group group);
+        public delegate void AddGroup(Specialization specialization);
         public AddGroup AddGroupDelegate { get; set; }
         public delegate void RemoveGroup(Group group);
         public RemoveGroup RemoveGroupDelegate { get; set; }
@@ -53,7 +53,7 @@ namespace Editor.Models
 
         public ICommand RemoveClassCommand { get { return new DelegateCommand(OnRemoveClassRecord); } }
         public ICommand RemoveYearOfStudyCommand { get { return new DelegateCommand(OnRemoveYearOfStudy, CanExecuteRemoveYearOfStudy); } }
-        public ICommand RemoveSpecializationCommand { get { return new DelegateCommand(OnRemoveSpecialization); } }
+        public ICommand RemoveSpecializationCommand { get { return new DelegateCommand(OnRemoveSpecialization, CanExecuteRemoveSpecialization); } }
         public ICommand RemoveGroupCommand { get { return new DelegateCommand(OnRemoveGroup); } }
         public ICommand RemoveLecturerCommand { get { return new DelegateCommand(OnRemoveLecturer); } }
         public ICommand RemoveSubjectCommand { get { return new DelegateCommand(OnRemoveSubject); } }
@@ -78,11 +78,11 @@ namespace Editor.Models
             }
         }
 
-        public void OnAddSpecialization(object param)
+        public void OnAddSpecialization(object yearOfStudy)
         {
             if (AddSpecializationDelegate != null)
             {
-                AddSpecializationDelegate(param as Specialization);
+                AddSpecializationDelegate(yearOfStudy as YearOfStudy);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Editor.Models
         {
             if (AddGroupDelegate != null)
             {
-                AddGroupDelegate(param as Group);
+                AddGroupDelegate(param as Specialization);
             }
         }
 
@@ -125,11 +125,6 @@ namespace Editor.Models
                 RemoveYearOfStudyDelegate(param as YearOfStudy);
             }
         }
- 
-        private bool CanExecuteRemoveYearOfStudy()
-        {
-            return Project.Schedule.YearsOfStudy.Count > 1;
-        }
 
         public void OnRemoveSpecialization(object param)
         {
@@ -161,6 +156,22 @@ namespace Editor.Models
             {
                 RemoveSubjectDelegate(param as Subject);
             }
+        }
+
+        #endregion
+
+        #region Command can execute
+
+        private bool CanExecuteRemoveYearOfStudy()
+        {
+            return Project.Schedule.YearsOfStudy.Count > 1;
+        }
+
+        private bool CanExecuteRemoveSpecialization()
+        {
+            return Project.Schedule.YearsOfStudy.Count == 1 &&
+                   Project.Schedule.Specializations.Count > 1 ||
+                   Project.Schedule.YearsOfStudy.Count > 1;
         }
 
         #endregion

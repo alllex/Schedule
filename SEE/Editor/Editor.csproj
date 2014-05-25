@@ -65,7 +65,7 @@
     <Compile Include="Helpers\ScrollViewerEx.cs" />
     <Compile Include="Models\ImportAndExport.cs" />
     <Compile Include="Models\ScheduleController.cs" />
-    <Compile Include="ViewModels\Controls\LeftTopContolViewModel.cs" />
+    <Compile Include="ViewModels\Controls\LeftTopControlViewModel.cs" />
     <Compile Include="ViewModels\Panels\Edit\SubjectEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\TabCategory.cs" />
@@ -142,7 +142,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Cards\SubtitleCard.xaml">
+    <Page Include="Views\Cards\GroupCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,7 +154,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Cards\TitleCard.xaml">
+    <Page Include="Views\Cards\SpecializationCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,7 +175,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\BaseConverter.cs" />
-    <Compile Include="Converters\ClassRecordToClassCardViewModelConverter.cs" />
+    <Compile Include="Converters\YearAndSpecToPairConverter.cs" />
     <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
     <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\ClipboardService.cs" />
@@ -221,8 +221,8 @@
     <Compile Include="Views\Panels\Edit\ClassroomEditPanel.xaml.cs">
       <DependentUpon>ClassroomEditPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Cards\SubtitleCard.xaml.cs">
-      <DependentUpon>SubtitleCard.xaml</DependentUpon>
+    <Compile Include="Views\Cards\GroupCard.xaml.cs">
+      <DependentUpon>GroupCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\Table.xaml.cs">
       <DependentUpon>Table.xaml</DependentUpon>
@@ -230,8 +230,8 @@
     <Compile Include="Views\Cards\TimeCard.xaml.cs">
       <DependentUpon>TimeCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Cards\TitleCard.xaml.cs">
-      <DependentUpon>TitleCard.xaml</DependentUpon>
+    <Compile Include="Views\Cards\SpecializationCard.xaml.cs">
+      <DependentUpon>SpecializationCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BaseViewModel.cs" />
     <Compile Include="ViewModels\Cards\DayCardViewModel.cs" />
@@ -241,10 +241,10 @@
     <Compile Include="ViewModels\Panels\Edit\LecturerEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Windows\ListsEditWindowViewModel.cs" />
     <Compile Include="ViewModels\Panels\Edit\ClassroomEditPanelViewModel.cs" />
-    <Compile Include="ViewModels\Cards\SubtitleCardViewModel.cs" />
+    <Compile Include="ViewModels\Cards\GroupCardViewModel.cs" />
     <Compile Include="ViewModels\Controls\TableViewModel.cs" />
     <Compile Include="ViewModels\Cards\TimeCardViewModel.cs" />
-    <Compile Include="ViewModels\Cards\TitleCardViewModel.cs" />
+    <Compile Include="ViewModels\Cards\SpecializationCardViewModel.cs" />
     <Compile Include="Views\Windows\EditorWindow.xaml.cs">
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
