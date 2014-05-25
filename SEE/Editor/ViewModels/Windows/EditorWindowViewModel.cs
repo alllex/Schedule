@@ -130,10 +130,46 @@ namespace Editor.ViewModels.Windows
 
         public ICommand ExportToExcelCommand { get { return new DelegateCommand(OnExportToExcel, CanExecuteHasActiveProject); } }
         public ICommand ImportFromExcelCommand { get { return new DelegateCommand(OnImportFromExcel); } }
+        public ICommand ExportToDatabaseCommand { get { return new DelegateCommand(OnExportToDatabase, CanExecuteHasActiveProject); } }
+        public ICommand ImportFromDatabaseCommand { get { return new DelegateCommand(OnImportFromDatabase); } }
 
         #endregion
 
         #region Command Handlers
+
+        private void OnImportFromDatabase()
+        {
+            var dlg = new OpenFileDialog
+            {
+                FileName = "Расписание",
+                DefaultExt = ".db",
+                Filter = "Расписание|*.db"
+            };
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                var schedule = SQLiteDatabaseIO.Load(dlg.FileName);
+                SetNewProject(new ScheduleProject { Schedule = schedule });
+            }
+            UpdateStatus("Импорт выполнен");
+        }
+
+        private void OnExportToDatabase()
+        {
+            UpdateStatus("Экспорт...");
+            var dlg = new SaveFileDialog
+            {
+                FileName = "Расписание",
+                DefaultExt = ".db",
+                Filter = "Расписание|*.db"
+            };
+            var result = dlg.ShowDialog();
+            if (result == true)
+            {
+                SQLiteDatabaseIO.Save(Project.Schedule, dlg.FileName);
+            }
+            UpdateStatus("Экспорт выполнен");
+        }
 
         private void OnImportFromExcel()
         {

@@ -32,11 +32,14 @@
                 <MenuItem Header="Экспорт">
                     <MenuItem Header="Excel (.xlsx)"
                           Command="{Binding ExportToExcelCommand}"/>
+                    <MenuItem Header="Database (.db)"
+                          Command="{Binding ExportToDatabaseCommand}"/>
                 </MenuItem>
-                <MenuItem Header="Импорт"
-                          IsEnabled="False">
+                <MenuItem Header="Импорт">
                     <MenuItem Header="Excel (.xlsx)"
                               Command="{Binding ImportFromExcelCommand}"/>
+                    <MenuItem Header="Database (.db)"
+                          Command="{Binding ImportFromDatabaseCommand}"/>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Правка">
