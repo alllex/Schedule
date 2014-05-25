@@ -34,7 +34,12 @@ namespace ScheduleData.SearchConflicts
             return LecterersInDifferentClassrooms(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> NextClassesAtDifferentAddress(Schedule schedule)
+        public static IEnumerable<Conflict> LecterersOnDifferentClasses(ClassesSchedule schedule)
+        {
+            return LecterersOnDifferentClasses(schedule.ToList());
+        }
+
+        public static IEnumerable<Conflict> NextClassesAtDifferentAddress(ClassesSchedule schedule)
         {
             return NextClassesAtDifferentAddress(schedule.ToList());
         }
@@ -73,9 +78,21 @@ namespace ScheduleData.SearchConflicts
             var message = "Преподаватель находится в нескольких аудиториях одновременно.";
 
             return from c in allClasses
-                   where c.Lecturer != null && c.ClassTime != null
-                   group c by new Tuple<Lecturer, ClassTime>(c.Lecturer, c.ClassTime) into g
-                   where g.Count() > 1
+                   where c.Lecturer != null && c.Time != null
+                   group c by new Tuple<Lecturer, ClassTime>(c.Lecturer, c.Time) into g
+                   where g.Select(c => c.Classroom).Distinct().Count() > 1
+                   select new Conflict(message, ConflictType.Conflict, g);
+        }
+
+
+        private static IEnumerable<Conflict> LecterersOnDifferentClasses(IEnumerable<FullClassRecord> allClasses)
+        {
+            var message = "Преподаватель находится проводит несколько занятий одновременно.";
+
+            return from c in allClasses
+                   where c.Lecturer != null && c.Time != null
+                   group c by new Tuple<Lecturer, ClassTime>(c.Lecturer, c.Time) into g
+                   where g.Select(c => c.Subject).Distinct().Count() > 1
                    select new Conflict(message, ConflictType.Conflict, g);
         }
 

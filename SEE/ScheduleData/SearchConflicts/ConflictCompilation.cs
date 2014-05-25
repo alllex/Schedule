@@ -9,6 +9,7 @@ namespace ScheduleData.SearchConflicts
         GreaterThanFourClassesPerDay,
         GroupsInDifferentClassrooms,
         LecturersInDifferentClassrooms,
+        LecterersOnDifferentClasses,        // НОВЫЙ КОНФЛИКТ: ЛЕКТОР ВЕДЁТ РАЗНЫЕ ПРЕДМЕТЫ (ВОЗМОЖНО, В ОДНОЙ АУДИТОРИИ)
         NextClassesAtDifferentAddress,
         CardsWithBlankFields
     }
