@@ -11,6 +11,7 @@
         WindowState="Maximized"
         x:Name="Window" 
         d:DataContext="{d:DesignInstance windows:EditorWindowViewModel}"
+        
         >
     
     <DockPanel>
