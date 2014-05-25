@@ -1,0 +1,34 @@
+﻿<Window x:Class="Editor.Views.Windows.ConflictSolverWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Статистика" Height="500" Width="500"
+        
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:Editor.ViewModels.Windows"
+        xmlns:cards="clr-namespace:Editor.Views.Cards"
+        mc:Ignorable="d"
+        
+        WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance viewModels:ConflictSolverWindowViewModel}"
+        
+        >
+    <Grid>
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding ConflictedClasses}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <cards:ClassCardFullEditMode DataContext="{Binding}"
+                                                     HorizontalAlignment="Center"
+                                                     Margin="5"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Window>

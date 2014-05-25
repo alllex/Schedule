@@ -6,14 +6,14 @@ namespace ScheduleData.SearchConflicts
 {
     public enum ConflictType { Warning, Conflict }
 
-    public struct Conflict
+    public class Conflict
     {
         public string Message { get; set; }
         public ConflictType ConflictType { get; set; }
         public IEnumerable<ClassRecord> ConflictingClasses { get; set; }
         public int CardsCount { get; set; }
 
-        public Conflict(string message, ConflictType conflictType, IEnumerable<ClassRecord> conflictingClasses) : this()
+        public Conflict(string message, ConflictType conflictType, IEnumerable<ClassRecord> conflictingClasses)
         {
             Message = message;
             ConflictType = conflictType;
@@ -21,7 +21,7 @@ namespace ScheduleData.SearchConflicts
             CardsCount = conflictingClasses.Count();
         }
 
-        public Conflict(String message, ConflictType conflictType, ClassRecord conflictingClass) : this()
+        public Conflict(String message, ConflictType conflictType, ClassRecord conflictingClass) 
         {
             Message = message;
             ConflictType = conflictType;

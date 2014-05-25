@@ -51,16 +51,12 @@ namespace Editor.ViewModels.Windows
 
         #region Ctor
 
-        public EditorWindowViewModel()
-        {
-            PropertyChanged += OnPropertyChanged;
-        }
-
         public EditorWindowViewModel(TableControllerViewModel tableControllerViewModel, ConflictsViewerViewModel conflictsViewerViewModel)
         {
             _tableController = tableControllerViewModel;
             _conflictsViewer = conflictsViewerViewModel;
             PropertyChanged += OnPropertyChanged;
+
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)

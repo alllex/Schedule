@@ -91,6 +91,8 @@ namespace Editor.ViewModels.Cards
         public ICommand ClearSubjectCommand { get { return new DelegateCommand(OnClearSubject, HasClass); } }
         public ICommand ClearLecturerCommand { get { return new DelegateCommand(OnClearLecturer, HasClass); } }
         public ICommand ClearClassroomCommand { get { return new DelegateCommand(OnClearClassroom, HasClass); } }
+        public ICommand ClearGroupCommand { get { return new DelegateCommand(OnClearGroup, HasClass); } }
+        public ICommand ClearClassTimeCommand { get { return new DelegateCommand(OnClearClassTime, HasClass); } }
 
         #endregion
 
@@ -111,14 +113,29 @@ namespace Editor.ViewModels.Cards
             Class.Subject = null;
         }
 
+        private void OnClearGroup()
+        {
+            Class.Group = null;
+        }
+
+        private void OnClearClassTime()
+        {
+            Class.ClassTime = null;
+        }
+
         private bool HasClass()
         {
             return Class != null;
         }
 
         #endregion
-        
+
         #region Ctor
+
+        public ClassCardViewModel()
+        {
+            PropertyChanged += OnPropertyChanged;
+        }
 
         public ClassCardViewModel(ClassRecord @class)
         {

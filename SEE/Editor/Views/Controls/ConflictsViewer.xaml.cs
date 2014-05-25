@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Editor.ViewModels.Controls;
 
 namespace Editor.Views.Controls
 {
@@ -23,6 +12,13 @@ namespace Editor.Views.Controls
         public ConflictsViewer()
         {
             InitializeComponent();
+        }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ConflictsViewerViewModel;
+            if (vm == null) return;
+            vm.OpenConflictSolverCommand.Execute(ListBox.SelectedItem);
         }
     }
 }

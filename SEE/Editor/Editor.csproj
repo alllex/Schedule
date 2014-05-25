@@ -77,8 +77,12 @@
     <Compile Include="ViewModels\Controls\LeftTopControlViewModel.cs" />
     <Compile Include="ViewModels\Panels\Edit\SubjectEditPanelViewModel.cs" />
     <Compile Include="ViewModels\Panels\Statistics\StatisticsPanelViewModel.cs" />
+    <Compile Include="ViewModels\Windows\ConflictSolverWindowViewModel.cs" />
     <Compile Include="ViewModels\Windows\TabCategory.cs" />
     <Compile Include="ViewModels\Windows\StatisticWindowViewModel.cs" />
+    <Compile Include="Views\Cards\ClassCardFullEditMode.xaml.cs">
+      <DependentUpon>ClassCardFullEditMode.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Controls\ConflictsViewer.xaml.cs">
       <DependentUpon>ConflictsViewer.xaml</DependentUpon>
     </Compile>
@@ -90,6 +94,9 @@
     </Compile>
     <Compile Include="Views\Panels\Statistics\StatPanel.xaml.cs">
       <DependentUpon>StatPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Windows\ConflictSolverWindow.xaml.cs">
+      <DependentUpon>ConflictSolverWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Windows\StatisticWindow.xaml.cs">
       <DependentUpon>StatisticWindow.xaml</DependentUpon>
@@ -107,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Cards\ClassCardEditMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Cards\ClassCardFullEditMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Panels\Statistics\StatPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Windows\ConflictSolverWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

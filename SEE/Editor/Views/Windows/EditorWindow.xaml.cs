@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using Editor.ViewModels.Controls;
 using Editor.ViewModels.Windows;
 

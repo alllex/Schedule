@@ -1,0 +1,154 @@
+﻿<UserControl x:Class="Editor.Views.Cards.ClassCardFullEditMode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:cards="clr-namespace:Editor.ViewModels.Cards"
+             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:cards1="clr-namespace:Editor.Views.Cards"
+             mc:Ignorable="d" 
+              
+             d:DataContext="{d:DesignInstance cards:ClassCardViewModel}"
+        
+        >
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding Project.Schedule.Subjects}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="Name" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <CollectionViewSource x:Key="SortedLectures" Source="{Binding Project.Schedule.Lecturers}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="Name" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <CollectionViewSource x:Key="SortedClassrooms" Source="{Binding Project.Schedule.Classrooms}">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="Name" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Width" Value="200"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <DockPanel LastChildFill="False"
+               Margin="3">
+        <GroupBox Header="Занятие">
+            <Grid DockPanel.Dock="Top">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+
+                <Label Grid.Row="1" Grid.Column="2"
+                       Content="Предмет: "
+                       Margin="3" />
+                <Label Grid.Row="2" Grid.Column="2"
+                       Content="Преподаватель: "
+                       Margin="3" />
+                <Label Grid.Row="3" Grid.Column="2"
+                       Content="Аудитория: "
+                       Margin="3" />
+
+
+                <ComboBox Grid.Row="1" Grid.Column="3"
+                          ItemsSource="{Binding Source={StaticResource SortedSubjects}}"
+                          SelectedItem="{Binding Class.Subject}"
+                          DisplayMemberPath="Name"
+                          Margin="3" />
+
+                <ComboBox Grid.Row="2" Grid.Column="3"
+                          ItemsSource="{Binding Source={StaticResource SortedLectures}}"
+                          SelectedItem="{Binding Class.Lecturer}"
+                          DisplayMemberPath="Name"
+                          Margin="3" />
+
+                <ComboBox Grid.Row="3" Grid.Column="3"
+                          ItemsSource="{Binding Source={StaticResource SortedClassrooms}}"
+                          SelectedItem="{Binding Class.Classroom}"
+                          DisplayMemberPath="Name"
+                          Margin="3" />
+
+                <Button Grid.Row="1" Grid.Column="4"
+                        Content="x"
+                        Margin="3"
+                        Click="ButtonBase_OnClick"
+                        Command="{Binding ClearSubjectCommand}" />
+
+                <Button Grid.Row="2" Grid.Column="4"
+                        Content="x"
+                        Margin="3"
+                        Command="{Binding ClearLecturerCommand}" />
+
+                <Button Grid.Row="3" Grid.Column="4"
+                        Content="x"
+                        Margin="3"
+                        Command="{Binding ClearClassroomCommand}" />
+
+                <Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
+                        BorderThickness="1"
+                        BorderBrush="Black"
+                        Background="Ivory"
+                        CornerRadius="20,20,0,0">
+                    <Grid>
+                        <TextBlock Text="{Binding Class.Group.Name}"
+                                   TextAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   Margin="10,5,10,5" />
+                    </Grid>
+                </Border>
+                
+                <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="3"
+                        BorderThickness="1"
+                        BorderBrush="Black"
+                        Background="PaleTurquoise"
+                        CornerRadius="20,0,0,20">
+                    <TextBlock Text="{Binding Class.ClassTime.Day}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="5">
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="270" />
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="3"
+                        BorderThickness="1"
+                        BorderBrush="Black"
+                        Background="Azure">
+                    <TextBlock Text="{Binding Class.ClassTime}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="5">
+                        <TextBlock.LayoutTransform>
+                            <RotateTransform Angle="270" />
+                        </TextBlock.LayoutTransform>
+                    </TextBlock>
+                </Border>
+
+            </Grid>
+        </GroupBox>
+
+    </DockPanel>
+   
+</UserControl>

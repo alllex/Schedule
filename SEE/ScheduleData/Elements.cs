@@ -244,7 +244,7 @@ namespace ScheduleData
 
         public override string ToString()
         {
-            return Day + " " + ClassIntervals[Number].Where(c => c != '\n').ToString();
+            return Day + " " + ClassIntervals[Number];
         }
     }
 
