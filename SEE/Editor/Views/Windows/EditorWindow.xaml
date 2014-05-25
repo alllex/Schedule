@@ -33,8 +33,7 @@
                     <MenuItem Header="Excel (.xlsx)"
                           Command="{Binding ExportToExcelCommand}"/>
                 </MenuItem>
-                <MenuItem Header="Импорт"
-                          IsEnabled="False">
+                <MenuItem Header="Импорт">
                     <MenuItem Header="Excel (.xlsx)"
                               Command="{Binding ImportFromExcelCommand}"/>
                 </MenuItem>
