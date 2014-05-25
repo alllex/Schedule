@@ -76,50 +76,64 @@ type Importer =
                     let groupsArray = Array.create (Array2D.length2 currentTable - Importer.HorizontalOffset) null 
 
                     let specs = [| for i in Importer.HorizontalOffset .. Array2D.length2 currentTable - 1 -> currentTable.[0,i] |]
-                    let mutable specIndex = 0
+                    let mutable currSpecialization = new Specialization(Name = specs.[0])
+                    schedule.Specializations.Add(currSpecialization)
                     for i in Importer.HorizontalOffset .. Array2D.length2 currentTable - 1 do //бежим по группам, добавляем в словарь группы и специализации 
-                        if specs.[i - Importer.HorizontalOffset] <> "" then specIndex <- i - Importer.HorizontalOffset //с учетом необъединенных ячеек
-                        let sp = new Specialization(Name = specs.[specIndex])
-                        schedule.Specializations.Add(sp)
-                        let group = new Group(Name = currentTable.[1,i], Specialization = sp, YearOfStudy = currentYear)
+                        if specs.[i - Importer.HorizontalOffset] <> "" then currSpecialization <- new Specialization(Name = specs.[i - Importer.HorizontalOffset]) 
+                                                                            schedule.Specializations.Add(currSpecialization)//с учетом необъединенных ячеек
+                        
+                        let group = new Group(Name = currentTable.[1,i], Specialization = currSpecialization, YearOfStudy = currentYear)
                         //groups.Add(group.Name, group)
                         schedule.Groups.Add(group)
                         groupsArray.[i - Importer.HorizontalOffset] <- group
                         
                     //let table = Array.create (Array2D.length1 currentTable - Importer.VerticalOffset) (Array.create (Array2D.length2 currentTable - Importer.HorizontalOffset) null) //(new sClassRecord(0, new sSubject(0, ""), new sLecturer(0, "", "", ""), new sClassroom(0, "", ""))))
+                    let reg = new Regex("^(?<Subject>[a-zA-Zа-яА-Я0-9\s]*)\n(?<Lector>[a-zA-Zа-яА-Я0-9\s]*)\n(?<Room>[a-zA-Zа-яА-Я0-9\s]*)$")
+                    
                     for i in Importer.VerticalOffset .. Array2D.length1 currentTable - 1 do
                         for j in Importer.HorizontalOffset .. Array2D.length2 currentTable - 1 do
                             let card = currentTable.[i,j]
-                            let reg = new Regex("[a-zA-Zа-яА-Я0-9]+\n[a-zA-Zа-яА-Я0-9]+\n[a-zA-Zа-яА-Я0-9]+")
-                            if (card <> "") && (reg.IsMatch(card)) then
-                                let subj = card.Substring(0, card.IndexOf('\n'))
-                                let rest = card.Substring(card.IndexOf('\n') + 1, card.Length - card.IndexOf('\n') - 1)
-                                let lect = rest.Substring(0, rest.IndexOf('\n'))
-                                let room = rest.Substring(rest.IndexOf('\n') + 1, rest.Length - rest.IndexOf('\n') - 1) //разбили card на предмет, лектора и аудиторию
+                            
+                            if (card <> "") then
+                                let matches = reg.Match(card)
+                                if matches.Success then
+                                    let subj = matches.Groups.["Subject"].Value
+                                    let lect = matches.Groups.["Lector"].Value
+                                    let room = matches.Groups.["Room"].Value //разбили card на предмет, лектора и аудиторию
                         
-                                let subject = if subjects.ContainsKey(subj) then 
-                                                    subjects.[subj]
-                                              else let subject = new Subject(Name = subj)
-                                                   subjects.Add(subject.Name, subject)
-                                                   schedule.Subjects.Add(subject)
-                                                   subject
+                                    let subject = if subj = "" then null
+                                                  elif subjects.ContainsKey(subj) then 
+                                                        subjects.[subj]
+                                                  else let subject = new Subject(Name = subj)
+                                                       subjects.Add(subject.Name, subject)
+                                                       schedule.Subjects.Add(subject)
+                                                       subject
                                      
-                                let lecturer = if lecturers.ContainsKey(lect) then 
-                                                    lecturers.[lect]
-                                               else let lecturer = new Lecturer(Name = lect)
-                                                    lecturers.Add(lecturer.Name, lecturer)
-                                                    schedule.Lecturers.Add(lecturer)
-                                                    lecturer
+                                    let lecturer = if lect = "" then null
+                                                   elif lecturers.ContainsKey(lect) then 
+                                                        lecturers.[lect]
+                                                   else let lecturer = new Lecturer(Name = lect)
+                                                        lecturers.Add(lecturer.Name, lecturer)
+                                                        schedule.Lecturers.Add(lecturer)
+                                                        lecturer
 
-                                let classroom = if classrooms.ContainsKey(room) then 
-                                                    classrooms.[room]
-                                                else let classroom = new Classroom(Name = room)
-                                                     classrooms.Add(classroom.Name, classroom)
-                                                     schedule.Classrooms.Add(classroom)
-                                                     classroom
+                                    let classroom = if room = "" then null
+                                                    elif classrooms.ContainsKey(room) then 
+                                                        classrooms.[room]
+                                                    else let classroom = new Classroom(Name = room)
+                                                         classrooms.Add(classroom.Name, classroom)
+                                                         schedule.Classrooms.Add(classroom)
+                                                         classroom
 
-                                let classRecord = new ClassRecord(Subject = subject, Lecturer = lecturer, Classroom = classroom, Group = groupsArray.[j], ClassTime = timeLine.[i])
-                                schedule.ClassRecords.Add(classRecord)
+                                    let classRecord = new ClassRecord(Subject = subject, Lecturer = lecturer, Classroom = classroom, Group = groupsArray.[j - Importer.HorizontalOffset], ClassTime = timeLine.[i - Importer.VerticalOffset])
+                                    schedule.ClassRecords.Add(classRecord)
+                                else let classRecord = new ClassRecord(Subject = new Subject(Name = "Error"), 
+                                                                       Lecturer = new Lecturer(Name = "Error"), 
+                                                                       Classroom = new Classroom(Name = "Error"), 
+                                                                       Group = groupsArray.[j - Importer.HorizontalOffset], 
+                                                                       ClassTime = timeLine.[i - Importer.VerticalOffset])
+                                     schedule.ClassRecords.Add(classRecord)
+
                                 //table.[i - Importer.VerticalOffset].[j - Importer.HorizontalOffset] <- new sClassRecord(id, subject, lecturer, classroom)
  
             schedule        
@@ -186,7 +200,10 @@ type Exporter =
                         let writeColumn i j (x : ClassRecord) =
                                 table.[i + Exporter.VerticalOffset, j + Exporter.HorizontalOffset] <-
                                     if x <> null then 
-                                        x.Subject.Name + "\n" + x.Lecturer.Name + "\n" + x.Classroom.Name
+                                        sprintf "%s\n%s\n%s" 
+                                            (if x.Subject = null then "" else x.Subject.Name) 
+                                            (if x.Lecturer = null then "" else x.Lecturer.Name) 
+                                            (if x.Classroom = null then "" else x.Classroom.Name)
                                     else ""
                         Array2D.iteri writeColumn <| Array2D.init data.TimeLine.Count currentTable.Subjects.Count (fun i j -> currentTable.GetClass(i, j))             
                  
