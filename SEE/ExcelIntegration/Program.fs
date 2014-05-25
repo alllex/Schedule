@@ -88,32 +88,37 @@ type Importer =
                         groupsArray.[i - Importer.HorizontalOffset] <- group
                         
                     //let table = Array.create (Array2D.length1 currentTable - Importer.VerticalOffset) (Array.create (Array2D.length2 currentTable - Importer.HorizontalOffset) null) //(new sClassRecord(0, new sSubject(0, ""), new sLecturer(0, "", "", ""), new sClassroom(0, "", ""))))
+                    let reg = new Regex("^(?<Subject>[a-zA-Zа-яА-Я0-9\s]*)\n(?<Lector>[a-zA-Zа-яА-Я0-9\s]*)\n(?<Room>[a-zA-Zа-яА-Я0-9\s]*)$")
+                    
                     for i in Importer.VerticalOffset .. Array2D.length1 currentTable - 1 do
                         for j in Importer.HorizontalOffset .. Array2D.length2 currentTable - 1 do
                             let card = currentTable.[i,j]
-                            let reg = new Regex("[a-zA-Zа-яА-Я0-9]+\n[a-zA-Zа-яА-Я0-9]+\n[a-zA-Zа-яА-Я0-9]+")
+                            
                             if (card <> "") then
-                                if (reg.IsMatch(card)) then
-                                    let subj = card.Substring(0, card.IndexOf('\n'))
-                                    let rest = card.Substring(card.IndexOf('\n') + 1, card.Length - card.IndexOf('\n') - 1)
-                                    let lect = rest.Substring(0, rest.IndexOf('\n'))
-                                    let room = rest.Substring(rest.IndexOf('\n') + 1, rest.Length - rest.IndexOf('\n') - 1) //разбили card на предмет, лектора и аудиторию
+                                let matches = reg.Match(card)
+                                if matches.Success then
+                                    let subj = matches.Groups.["Subject"].Value
+                                    let lect = matches.Groups.["Lector"].Value
+                                    let room = matches.Groups.["Room"].Value //разбили card на предмет, лектора и аудиторию
                         
-                                    let subject = if subjects.ContainsKey(subj) then 
+                                    let subject = if subj = "" then null
+                                                  elif subjects.ContainsKey(subj) then 
                                                         subjects.[subj]
                                                   else let subject = new Subject(Name = subj)
                                                        subjects.Add(subject.Name, subject)
                                                        schedule.Subjects.Add(subject)
                                                        subject
                                      
-                                    let lecturer = if lecturers.ContainsKey(lect) then 
+                                    let lecturer = if lect = "" then null
+                                                   elif lecturers.ContainsKey(lect) then 
                                                         lecturers.[lect]
                                                    else let lecturer = new Lecturer(Name = lect)
                                                         lecturers.Add(lecturer.Name, lecturer)
                                                         schedule.Lecturers.Add(lecturer)
                                                         lecturer
 
-                                    let classroom = if classrooms.ContainsKey(room) then 
+                                    let classroom = if room = "" then null
+                                                    elif classrooms.ContainsKey(room) then 
                                                         classrooms.[room]
                                                     else let classroom = new Classroom(Name = room)
                                                          classrooms.Add(classroom.Name, classroom)
