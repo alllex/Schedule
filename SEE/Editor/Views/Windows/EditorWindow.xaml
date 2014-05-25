@@ -59,8 +59,8 @@
             <MenuItem Header="Статистика">
                 <MenuItem Header="Получить стат. данные"
                           Command="{Binding CalcStatisticCommand}"/>
-                <MenuItem Header="Открыть окно статистики"
-                          Command="{Binding OpenStatisticWindowCommand}"/>
+<!--                <MenuItem Header="Открыть окно статистики"-->
+<!--                          Command="{Binding OpenStatisticWindowCommand}"/>-->
             </MenuItem>
 
             <MenuItem Header="Проверка расписания">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Editor.Helpers;
 
 namespace ScheduleData
@@ -241,6 +242,10 @@ namespace ScheduleData
 
         #endregion
 
+        public override string ToString()
+        {
+            return Day + " " + ClassIntervals[Number].Where(c => c != '\n').ToString();
+        }
     }
 
     public class Subject : HavingName

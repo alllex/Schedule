@@ -23,6 +23,9 @@ namespace Editor.Views.Windows
             {
                 GroupStatPanel.DataContext = new GroupStatPanelViewModel { Project = model.Project };
                 LecturerStatPanel.DataContext = new LecturerStatPanelViewModel { Project = model.Project };
+                SubjectStatPanel.DataContext = new SubjectStatPanelViewModel { Project = model.Project };
+//                ClassTimeStatPanel.DataContext = new ClassTimeStatPanelViewModel { Project = model.Project };
+                ClassroomStatPanel.DataContext = new ClassroomStatPanelViewModel { Project = model.Project };
             }
         }
 

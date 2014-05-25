@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using Editor.Models;
 using ScheduleData;
 using ScheduleData.DataMining;
 
@@ -137,6 +136,49 @@ namespace Editor.ViewModels.Panels.Statistics
         protected override Collection<Statistic<Lecturer>> GetStatistic()
         {
             return Project.StatisticCompilation != null ? Project.StatisticCompilation.LecturerStatistic : null;
+        }
+    }
+
+
+    class SubjectStatPanelViewModel : StatisticsPanelViewModel<Subject>
+    {
+
+        protected override ObservableCollection<Subject> GetCollection()
+        {
+            return Project.Schedule != null ? Project.Schedule.Subjects : null;
+        }
+
+        protected override Collection<Statistic<Subject>> GetStatistic()
+        {
+            return Project.StatisticCompilation != null ? Project.StatisticCompilation.SubjectStatistic : null;
+        }
+    }
+
+    class ClassTimeStatPanelViewModel : StatisticsPanelViewModel<ClassTime>
+    {
+
+        protected override ObservableCollection<ClassTime> GetCollection()
+        {
+            return Project.Schedule != null ? Project.Schedule.TimeLine : null;
+        }
+
+        protected override Collection<Statistic<ClassTime>> GetStatistic()
+        {
+            return Project.StatisticCompilation != null ? Project.StatisticCompilation.ClassTimeStatistic : null;
+        }
+    }
+
+    class ClassroomStatPanelViewModel : StatisticsPanelViewModel<Classroom>
+    {
+
+        protected override ObservableCollection<Classroom> GetCollection()
+        {
+            return Project.Schedule != null ? Project.Schedule.Classrooms : null;
+        }
+
+        protected override Collection<Statistic<Classroom>> GetStatistic()
+        {
+            return Project.StatisticCompilation != null ? Project.StatisticCompilation.ClassroomStatistic : null;
         }
     }
 }

@@ -30,6 +30,15 @@
             <TabItem Header="Преподаватели">
                 <statistics:StatPanel x:Name="LecturerStatPanel" />
             </TabItem>
+            <TabItem Header="Предметы">
+                <statistics:StatPanel x:Name="SubjectStatPanel" />
+            </TabItem>
+            <TabItem Header="Кабинеты">
+                <statistics:StatPanel x:Name="ClassroomStatPanel" />
+            </TabItem>
+<!--            <TabItem Header="Время">-->
+<!--                <statistics:StatPanel x:Name="ClassTimeStatPanel" />-->
+<!--            </TabItem>-->
         </TabControl>
 <!--        <Button Grid.Row="1"-->
 <!--                Content="Обновить статистику"-->
