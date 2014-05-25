@@ -94,16 +94,13 @@
         
         
         <StatusBar DockPanel.Dock="Bottom"
-                   Height="25">
+                   >
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="100" />
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
@@ -112,12 +109,6 @@
                 <TextBlock Text="{Binding Project.ProjectStatus.Status}"/>
             </StatusBarItem>
             <Separator Grid.Column="1" />
-            <StatusBarItem Grid.Column="2">
-            </StatusBarItem>
-            <Separator Grid.Column="3" />
-            <StatusBarItem Grid.Column="4">
-                
-            </StatusBarItem>
 
         </StatusBar>
 

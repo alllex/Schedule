@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -146,15 +147,17 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                var schedule = ImportExportSchedule.Import(dlg.FileName);
-                SetNewProject(new ScheduleProject { Schedule = schedule });
+                Action action = () =>
+                {
+                    var schedule = ImportExportSchedule.Import(dlg.FileName);
+                    SetNewProject(new ScheduleProject {Schedule = schedule});
+                };
+                ExecuteAction("Импорт", "Импорт выполнен", action);
             }
-            UpdateStatus("Импорт выполнен");
         }
 
         private void OnExportToExcel()
         {
-            UpdateStatus("Экспорт...");
             var dlg = new SaveFileDialog
             {
                 FileName = "Расписание",
@@ -164,9 +167,12 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                ImportExportSchedule.Export(Project.Schedule, dlg.FileName);
+                Action action = () =>
+                {
+                    ImportExportSchedule.Export(Project.Schedule, dlg.FileName);
+                };
+                ExecuteAction("Экспорт", "Экспорт выполнен", action);
             }
-            UpdateStatus("Экспорт выполнен");
         }
 
         private void OnCheckCheckAllConflicts()
@@ -227,29 +233,35 @@ namespace Editor.ViewModels.Windows
 
         private void CheckConflict(ConflictCriteria criteria)
         {
-            if (Project != null && Project.Schedule != null)
+            Action action = () =>
             {
-                Mouse.OverrideCursor = Cursors.Wait;
-                if (Project.AreConflictsShown)
+                if (Project != null && Project.Schedule != null)
                 {
-                    OnShowHideConflicts();
+                    Mouse.OverrideCursor = Cursors.Wait;
+                    if (Project.AreConflictsShown)
+                    {
+                        OnShowHideConflicts();
+                    }
+                    Project.ConflictCompilation = new ConflictCompilation(Project.Schedule, criteria);
+                    Mouse.OverrideCursor = Cursors.Arrow;
+                    if (!Project.AreConflictsShown)
+                    {
+                        OnShowHideConflicts();
+                    }
                 }
-                Project.ConflictCompilation = new ConflictCompilation(Project.Schedule, criteria);
-                Mouse.OverrideCursor = Cursors.Arrow;
-                if (!Project.AreConflictsShown)
-                {
-                    OnShowHideConflicts();
-                }
-            }
+            };
+            ExecuteAction("Поиск конфликтов", "Поиск конфликтов завершен", action);
         }
 
         private void OnCalcStatistic()
         {
             if (Project != null && Project.Schedule != null)
             {
-                Mouse.OverrideCursor = Cursors.Wait;
-                Project.StatisticCompilation = new StatisticCompilation(Project.Schedule);
-                Mouse.OverrideCursor = Cursors.Arrow;
+                Action action = () =>
+                {
+                    Project.StatisticCompilation = new StatisticCompilation(Project.Schedule);
+                };
+                ExecuteAction("Вычисление статистики", "Статистика получена", action);
                 OnOpenStatisticWindow();
             }
         }
@@ -277,7 +289,11 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                SaveLoadSchedule.Save(Project.Schedule, dlg.FileName);
+                Action action = () =>
+                {
+                    SaveLoadSchedule.Save(Project.Schedule, dlg.FileName);
+                };
+                ExecuteAction("Сохранение расписания", "Расписание сохранено", action);
             }
         }
 
@@ -292,8 +308,12 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                var schedule = SaveLoadSchedule.Load(dlg.FileName);
-                SetNewProject(new ScheduleProject{Schedule = schedule});
+                Action action = () =>
+                {
+                    var schedule = SaveLoadSchedule.Load(dlg.FileName);
+                    SetNewProject(new ScheduleProject { Schedule = schedule });
+                };
+                ExecuteAction("Открытие расписания", "Расписание загружено", action);
             }
         }
 
@@ -307,11 +327,13 @@ namespace Editor.ViewModels.Windows
 
         private void OnLoadRandomSchedule()
         {
-            Mouse.OverrideCursor = Cursors.Wait;
-            _tableController.Tables.Clear();
-            var schedule = new ScheduleRepository().Schedule;
-            SetNewProject(new ScheduleProject { Schedule = schedule, ActiveYearOfStudy = schedule.YearsOfStudy.Any() ? schedule.YearsOfStudy.First() : null});
-            Mouse.OverrideCursor = Cursors.Arrow;
+            Action action = () =>
+            {
+                _tableController.Tables.Clear();
+                var schedule = new ScheduleRepository().Schedule;
+                SetNewProject(new ScheduleProject { Schedule = schedule, ActiveYearOfStudy = schedule.YearsOfStudy.Any() ? schedule.YearsOfStudy.First() : null });
+            };
+            ExecuteAction("Генерация расписания", "Расписание сгенерировано", action);
         }
 
         private void OnOpenGroupsEditor()
@@ -375,23 +397,29 @@ namespace Editor.ViewModels.Windows
 
         public void AddYearOfStudy()
         {
+            UpdateStatus("Создание нового курса...");
             Mouse.OverrideCursor = Cursors.Wait;
             _tableController.AddYearOfStudy();
             Mouse.OverrideCursor = Cursors.Arrow;
+            UpdateStatus("Новый курс создан");
         }
 
         public void AddSpecialization(YearOfStudy yearOfStudy)
         {
+            UpdateStatus("Создание новой специальности...");
             Mouse.OverrideCursor = Cursors.Wait;
             _tableController.AddSpecialization(yearOfStudy);
             Mouse.OverrideCursor = Cursors.Arrow;
+            UpdateStatus("Новая специальность создана");
         }
 
         public void AddGroup(Specialization spec)
         {
+            UpdateStatus("Создание новой группы...");
             Mouse.OverrideCursor = Cursors.Wait;
             _tableController.AddGroup(Project.ActiveYearOfStudy, spec);
             Mouse.OverrideCursor = Cursors.Arrow;
+            UpdateStatus("Новая группа создана");
         }
 
 //        public void AddLecturer(object param)
@@ -420,23 +448,29 @@ namespace Editor.ViewModels.Windows
 //
         public void RemoveYearOfStudy(YearOfStudy yearOfStudy)
         {
+            UpdateStatus("Удаление курса...");
             Mouse.OverrideCursor = Cursors.Wait;
             _tableController.RemoveYearOfStudy(yearOfStudy);
             Mouse.OverrideCursor = Cursors.Arrow;
+            UpdateStatus("Курс удален");
         }
 
         public void RemoveSpecialization(Specialization specialization)
         {
+            UpdateStatus("Удаление специальности...");
             Mouse.OverrideCursor = Cursors.Wait;
             _tableController.RemoveSpecialization(specialization);
             Mouse.OverrideCursor = Cursors.Arrow;
+            UpdateStatus("Специальность удалена");
         }
 
         public void RemoveGroup(Group @group)
         {
+            UpdateStatus("Удаление группы...");
             Mouse.OverrideCursor = Cursors.Wait;
             _tableController.RemoveGroup(group);
             Mouse.OverrideCursor = Cursors.Arrow;
+            UpdateStatus("Группа удалена");
         }
 
 //        public void RemoveLecturer(object param)
@@ -457,7 +491,26 @@ namespace Editor.ViewModels.Windows
 
         private void UpdateStatus(string status)
         {
-            Project.ProjectStatus.Status = status;
+            if (Project != null && Project.ProjectStatus != null)
+            {
+                Project.ProjectStatus.Status = status;
+            }
+        }
+
+        #endregion
+
+        #region Helpers
+
+        private void ExecuteAction(string executingStatus, string executedStatus, Action action)
+        {
+            UpdateStatus(executingStatus + "...");
+            Mouse.OverrideCursor = Cursors.Wait;
+            if (action != null)
+            {
+                action();
+            }
+            Mouse.OverrideCursor = Cursors.Arrow;
+            UpdateStatus(executedStatus);
         }
 
         #endregion
