@@ -81,7 +81,7 @@ namespace Editor.ViewModels.Panels.Statistics
             if (s == null) return;
             if (e.PropertyName == "Project")
             {
-                if (Project != null && Project.ClassesSchedule != null)
+                if (Project != null && Project.Schedule != null)
                 {
                     ObjectList = GetCollection();
                     _subjectDictionary = new Dictionary<TSubject, int>();
@@ -117,7 +117,7 @@ namespace Editor.ViewModels.Panels.Statistics
 
         protected override ObservableCollection<Group> GetCollection()
         {
-            return Project.ClassesSchedule != null ? Project.ClassesSchedule.Groups : null;
+            return Project.Schedule != null ? Project.Schedule.Groups : null;
         }
 
         protected override Collection<Statistic<Group>> GetStatistic()
@@ -131,7 +131,7 @@ namespace Editor.ViewModels.Panels.Statistics
 
         protected override ObservableCollection<Lecturer> GetCollection()
         {
-            return Project.ClassesSchedule != null ? Project.ClassesSchedule.Lecturers : null;
+            return Project.Schedule != null ? Project.Schedule.Lecturers : null;
         }
 
         protected override Collection<Statistic<Lecturer>> GetStatistic()

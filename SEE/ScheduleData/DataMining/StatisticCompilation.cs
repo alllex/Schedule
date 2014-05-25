@@ -8,23 +8,23 @@ namespace ScheduleData.DataMining
         public Collection<Statistic<Group>> GroupStatistic = new Collection<Statistic<Group>>();
         public Collection<Statistic<Lecturer>> LecturerStatistic = new Collection<Statistic<Lecturer>>();
 
-        public StatisticCompilation(ClassesSchedule schedule)
+        public StatisticCompilation(Schedule schedule)
         {
             BuildAllStatistic(schedule);
         }
 
-        public void UpdateStatistic(ClassesSchedule schedule)
+        public void UpdateStatistic(Schedule schedule)
         {
             BuildAllStatistic(schedule);
         }
 
-        private void BuildAllStatistic(ClassesSchedule schedule)
+        private void BuildAllStatistic(Schedule schedule)
         {
             BuildGroupStatistics(schedule);
             BuildLecturerStatistics(schedule);
         }
 
-        private void BuildLecturerStatistics(ClassesSchedule schedule)
+        private void BuildLecturerStatistics(Schedule schedule)
         {
             LecturerStatistic.Clear();
             foreach (var lecturer in schedule.Lecturers)
@@ -34,7 +34,7 @@ namespace ScheduleData.DataMining
             }
         }
 
-        private void BuildGroupStatistics(ClassesSchedule schedule)
+        private void BuildGroupStatistics(Schedule schedule)
         {
             GroupStatistic.Clear();
             foreach (var group in schedule.Groups)

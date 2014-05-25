@@ -12,7 +12,7 @@ namespace Editor.ViewModels.Helpers
         public Collection<TableItem<Weekdays>> Days = new Collection<TableItem<Weekdays>>();
         public Collection<TableItem<ClassTime>> ClassesIntervals = new Collection<TableItem<ClassTime>>(); 
 
-        public TimeLineMarkup(ClassesSchedule schedule)
+        public TimeLineMarkup(Schedule schedule)
         {
             int currectRow = 0;
             var days =

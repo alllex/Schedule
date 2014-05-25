@@ -19,7 +19,7 @@ namespace Editor.ViewModels.Panels.Edit
             MessageBox.Show("Remove");
             //var year = param as Group;
             //if (year == null) return;
-            //Project.ClassesSchedule.RemoveGroup(year);
+            //Project.Schedule.RemoveGroup(year);
         }
 
         #endregion
@@ -28,7 +28,7 @@ namespace Editor.ViewModels.Panels.Edit
 
         private void OnAddGroup()
         {
-            Project.ClassesSchedule.AddGroup(new Group { Name = "Новый" });
+            Project.Schedule.AddGroup(new Group { Name = "Новый" });
         }
 
         #endregion

@@ -5,11 +5,11 @@ using System.Windows.Input;
 namespace Editor.Views.Cards
 {
     /// <summary>
-    /// Interaction logic for SubtitleCard.xaml
+    /// Interaction logic for TitleCard.xaml
     /// </summary>
-    public partial class SubtitleCard : UserControl
+    public partial class SpecializationCard : UserControl
     {
-        public SubtitleCard()
+        public SpecializationCard()
         {
             InitializeComponent();
         }
@@ -23,8 +23,17 @@ namespace Editor.Views.Cards
 
         private void TextBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox.Visibility = Visibility.Collapsed;
             TextBlock.Visibility = Visibility.Visible;
+            TextBox.Visibility = Visibility.Collapsed;
+        }
+
+        private void TextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                TextBlock.Visibility = Visibility.Visible;
+                TextBox.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

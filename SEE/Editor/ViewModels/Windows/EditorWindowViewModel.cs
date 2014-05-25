@@ -57,7 +57,7 @@ namespace Editor.ViewModels.Windows
         public EditorWindowViewModel(TableControllerViewModel tableControllerViewModel)
         {
             _tableController = tableControllerViewModel;
-            _tableController.UpdateViews = UpdateViews;
+            _tableController.UpdateViews = UpdateAll;
             PropertyChanged += OnPropertyChanged;
         }
 
@@ -78,14 +78,19 @@ namespace Editor.ViewModels.Windows
         private void SetNewProject(ScheduleProject proj)
         {
             Project = proj;
-            UpdateViews();
+            Project.ScheduleController = new ScheduleController { Project = Project };
+            AddUpdaters();
+            UpdateAll();
         }
 
-        private void UpdateViews()
+        private void AddUpdaters()
         {
-            Mouse.OverrideCursor = Cursors.Wait;
-            _tableController.UpdateTables();
-            Mouse.OverrideCursor = Cursors.Arrow;
+            Project.ScheduleController.AddYearOfStudyDelegate += AddYearOfStudy;
+            Project.ScheduleController.RemoveYearOfStudyDelegate += RemoveYearOfStudy;
+            Project.ScheduleController.AddSpecializationDelegate += AddSpecialization;
+            Project.ScheduleController.RemoveSpecializationDelegate += RemoveSpecialization;
+            Project.ScheduleController.AddGroupDelegate += AddGroup;
+            Project.ScheduleController.RemoveGroupDelegate += RemoveGroup;
         }
 
         #endregion
@@ -142,7 +147,7 @@ namespace Editor.ViewModels.Windows
             if (result == true)
             {
                 var schedule = ImportExportSchedule.Import(dlg.FileName);
-                SetNewProject(new ScheduleProject { ClassesSchedule = schedule });
+                SetNewProject(new ScheduleProject { Schedule = schedule });
             }
         }
 
@@ -157,7 +162,7 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                ImportExportSchedule.Export(Project.ClassesSchedule, dlg.FileName);
+                ImportExportSchedule.Export(Project.Schedule, dlg.FileName);
             }
         }
 
@@ -219,14 +224,14 @@ namespace Editor.ViewModels.Windows
 
         private void CheckConflict(ConflictCriteria criteria)
         {
-            if (Project != null && Project.ClassesSchedule != null)
+            if (Project != null && Project.Schedule != null)
             {
                 Mouse.OverrideCursor = Cursors.Wait;
                 if (Project.AreConflictsShown)
                 {
                     OnShowHideConflicts();
                 }
-                Project.ConflictCompilation = new ConflictCompilation(Project.ClassesSchedule, criteria);
+                Project.ConflictCompilation = new ConflictCompilation(Project.Schedule, criteria);
                 Mouse.OverrideCursor = Cursors.Arrow;
                 if (!Project.AreConflictsShown)
                 {
@@ -237,10 +242,10 @@ namespace Editor.ViewModels.Windows
 
         private void OnCalcStatistic()
         {
-            if (Project != null && Project.ClassesSchedule != null)
+            if (Project != null && Project.Schedule != null)
             {
                 Mouse.OverrideCursor = Cursors.Wait;
-                Project.StatisticCompilation = new StatisticCompilation(Project.ClassesSchedule);
+                Project.StatisticCompilation = new StatisticCompilation(Project.Schedule);
                 Mouse.OverrideCursor = Cursors.Arrow;
                 OnOpenStatisticWindow();
             }
@@ -269,7 +274,7 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                SaveLoadSchedule.Save(Project.ClassesSchedule, dlg.FileName);
+                SaveLoadSchedule.Save(Project.Schedule, dlg.FileName);
             }
         }
 
@@ -285,16 +290,16 @@ namespace Editor.ViewModels.Windows
             if (result == true)
             {
                 var schedule = SaveLoadSchedule.Load(dlg.FileName);
-                SetNewProject(new ScheduleProject{ClassesSchedule = schedule});
+                SetNewProject(new ScheduleProject{Schedule = schedule});
             }
         }
 
         private void OnNewProject()
         {
-            var schedule = new ClassesSchedule();
+            var schedule = new Schedule();
             schedule.InitStdTimeLine();
-            schedule.InitByOne();
-            SetNewProject(new ScheduleProject { ClassesSchedule = schedule });
+            schedule.AddYSG();
+            SetNewProject(new ScheduleProject { Schedule = schedule });
         }
 
         private void OnLoadRandomSchedule()
@@ -302,7 +307,7 @@ namespace Editor.ViewModels.Windows
             Mouse.OverrideCursor = Cursors.Wait;
             _tableController.Tables.Clear();
             var schedule = new ScheduleRepository().Schedule;
-            SetNewProject(new ScheduleProject { ClassesSchedule = schedule, ActiveYearOfStudy = schedule.YearsOfStudy.Any() ? schedule.YearsOfStudy.First() : null});
+            SetNewProject(new ScheduleProject { Schedule = schedule, ActiveYearOfStudy = schedule.YearsOfStudy.Any() ? schedule.YearsOfStudy.First() : null});
             Mouse.OverrideCursor = Cursors.Arrow;
         }
 
@@ -341,7 +346,7 @@ namespace Editor.ViewModels.Windows
             var vm = new ListsEditWindowViewModel(initTab){Project = Project};
             var window = new ListsEditWindow { DataContext = vm };
             window.ShowDialog();
-            UpdateViews();
+            UpdateAll();
         }
 
         private bool CanExecuteHasActiveProject()
@@ -349,6 +354,104 @@ namespace Editor.ViewModels.Windows
             return HasActiveProject;
         }
         
+        #endregion
+
+        #region Update
+
+        private void UpdateAll()
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.UpdateAll();
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        public void AddClassRecord(ClassRecord classRecord)
+        {
+            
+        }
+
+        public void AddYearOfStudy()
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.AddYearOfStudy();
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        public void AddSpecialization(YearOfStudy yearOfStudy)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.AddSpecialization(yearOfStudy);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        public void AddGroup(Specialization spec)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.AddGroup(Project.ActiveYearOfStudy, spec);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+//        public void AddLecturer(object param)
+//        {
+//            if (AddLecturerDelegate != null)
+//            {
+//                AddLecturerDelegate(param as Lecturer);
+//            }
+//        }
+//
+//        public void AddSubject(object param)
+//        {
+//            if (AddSubjectDelegate != null)
+//            {
+//                AddSubjectDelegate(param as Subject);
+//            }
+//        }
+//
+//        public void RemoveClassRecord(object param)
+//        {
+//            if (RemoveClassRecordDelegate != null)
+//            {
+//                RemoveClassRecordDelegate(param as ClassRecord);
+//            }
+//        }
+//
+        public void RemoveYearOfStudy(YearOfStudy yearOfStudy)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.RemoveYearOfStudy(yearOfStudy);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        public void RemoveSpecialization(Specialization specialization)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.RemoveSpecialization(specialization);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        public void RemoveGroup(Group @group)
+        {
+            Mouse.OverrideCursor = Cursors.Wait;
+            _tableController.RemoveGroup(group);
+            Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+//        public void RemoveLecturer(object param)
+//        {
+//            if (RemoveLecturerDelegate != null)
+//            {
+//                RemoveLecturerDelegate(param as Lecturer);
+//            }
+//        }
+//
+//        public void RemoveSubject(object param)
+//        {
+//            if (RemoveSubjectDelegate != null)
+//            {
+//                RemoveSubjectDelegate(param as Subject);
+//            }
+//        }
+
         #endregion
     }
 }

@@ -5,7 +5,7 @@ using ScheduleData;
 
 namespace Editor.ViewModels.Cards
 {
-    internal class SubtitleCardViewModel : HasProjectProperty
+    internal class GroupCardViewModel : HasProjectProperty
     {
         #region Properties
 
@@ -33,7 +33,7 @@ namespace Editor.ViewModels.Cards
 
         #region Ctor
 
-        public SubtitleCardViewModel(Group group, Action updateViews)
+        public GroupCardViewModel(Group group, Action updateViews)
         {
             Group = group;
             _updateViews = updateViews;
@@ -49,7 +49,7 @@ namespace Editor.ViewModels.Cards
         {
             if (_updateViews != null)
             {
-                Project.ClassesSchedule.RemoveGroup(Group);
+                Project.Schedule.RemoveGroup(Group);
                 _updateViews();
             }
         }

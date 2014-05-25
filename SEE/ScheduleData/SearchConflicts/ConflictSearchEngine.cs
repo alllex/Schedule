@@ -6,7 +6,7 @@ namespace ScheduleData.SearchConflicts
 {
     class ConflictSearchEngine
     {
-        public static IEnumerable<Conflict> SearchAllConflicts(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> SearchAllConflicts(Schedule schedule)
         {
             var conflicts = new List<Conflict>();
             var allClasses = schedule.ToList();
@@ -19,27 +19,27 @@ namespace ScheduleData.SearchConflicts
             return conflicts;
         }
         
-        public static IEnumerable<Conflict> GreaterThanFourClassesPerDay(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> GreaterThanFourClassesPerDay(Schedule schedule)
         {
             return GreaterThanFourClassesPerDay(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> GroupsInDifferentClassrooms(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> GroupsInDifferentClassrooms(Schedule schedule)
         {
             return GroupsInDifferentClassrooms(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> LecterersInDifferentClassrooms(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> LecterersInDifferentClassrooms(Schedule schedule)
         {
             return LecterersInDifferentClassrooms(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> NextClassesAtDifferentAddress(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> NextClassesAtDifferentAddress(Schedule schedule)
         {
             return NextClassesAtDifferentAddress(schedule.ToList());
         }
 
-        public static IEnumerable<Conflict> CardsWithBlankFields(ClassesSchedule schedule)
+        public static IEnumerable<Conflict> CardsWithBlankFields(Schedule schedule)
         {
             return CardsWithBlankFields(schedule.ToList());
         }
@@ -51,8 +51,8 @@ namespace ScheduleData.SearchConflicts
             var message = "Больше 4х занятий в день";
 
             return from c in allClasses
-                   where c.Group != null && c.Time != null
-                   group c by new Tuple<Group, Weekdays>(c.Group, c.Time.Day) into g
+                   where c.Group != null && c.ClassTime != null
+                   group c by new Tuple<Group, Weekdays>(c.Group, c.ClassTime.Day) into g
                    where g.Count() > 4 
                    select new Conflict(message, ConflictType.Warning, g);
         }
@@ -62,8 +62,8 @@ namespace ScheduleData.SearchConflicts
             var message = "Группа находится в нескольких аудиториях одновременно.";
 
             return from c in allClasses
-                   where c.Group != null && c.Time != null
-                   group c by new Tuple<Group, ClassTime>(c.Group, c.Time) into g
+                   where c.Group != null && c.ClassTime != null
+                   group c by new Tuple<Group, ClassTime>(c.Group, c.ClassTime) into g
                    where g.Count() > 1
                    select new Conflict(message, ConflictType.Conflict, g);
         }
@@ -73,8 +73,8 @@ namespace ScheduleData.SearchConflicts
             var message = "Преподаватель находится в нескольких аудиториях одновременно.";
 
             return from c in allClasses
-                   where c.Lecturer != null && c.Time != null
-                   group c by new Tuple<Lecturer, ClassTime>(c.Lecturer, c.Time) into g
+                   where c.Lecturer != null && c.ClassTime != null
+                   group c by new Tuple<Lecturer, ClassTime>(c.Lecturer, c.ClassTime) into g
                    where g.Count() > 1
                    select new Conflict(message, ConflictType.Conflict, g);
         }
@@ -85,7 +85,7 @@ namespace ScheduleData.SearchConflicts
             var message = "Адреса двух аудиторий, в которых проходят два соседних занятия, различны.";
 
             var classes = from c in allClasses
-                          orderby c.Group.Name, c.Time.Day, c.Time.Number
+                          orderby c.Group.Name, c.ClassTime.Day, c.ClassTime.Number
                           select c;
 
             var prevClass = classes.ElementAt(0);
@@ -94,10 +94,10 @@ namespace ScheduleData.SearchConflicts
             {
                 var currClass = classes.ElementAt(i);
 
-                if (currClass.Time != null && prevClass.Time != null &&
+                if (currClass.ClassTime != null && prevClass.ClassTime != null &&
                     currClass.Classroom != null && prevClass.Classroom != null &&
-                    prevClass.Time.Day == currClass.Time.Day &&
-                    currClass.Time.Number - prevClass.Time.Number <= 1 &&
+                    prevClass.ClassTime.Day == currClass.ClassTime.Day &&
+                    currClass.ClassTime.Number - prevClass.ClassTime.Number <= 1 &&
                     prevClass.Classroom.Address != currClass.Classroom.Address)
                 {
                     var conflictingClasses = new List<FullClassRecord> { prevClass, currClass };

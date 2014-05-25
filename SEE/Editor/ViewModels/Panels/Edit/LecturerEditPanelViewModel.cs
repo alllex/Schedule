@@ -19,7 +19,7 @@ namespace Editor.ViewModels.Panels.Edit
             MessageBox.Show("Remove");
             //var year = param as Lecturer;
             //if (year == null) return;
-            //Project.ClassesSchedule.RemoveLecturer(year);
+            //Project.Schedule.RemoveLecturer(year);
         }
 
         #endregion
@@ -28,7 +28,7 @@ namespace Editor.ViewModels.Panels.Edit
 
         private void OnAddLecturer()
         {
-            Project.ClassesSchedule.AddLecturer(new Lecturer { Name = "Новый" });
+            Project.Schedule.AddLecturer(new Lecturer { Name = "Новый" });
         }
 
         #endregion 

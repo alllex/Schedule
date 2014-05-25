@@ -4,33 +4,66 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Editor.Views.Controls"
-             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:controls1="clr-namespace:Editor.ViewModels.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance controls1:TableControllerViewModel}"
              >
 
-    <DockPanel>
-        <GroupBox Header="Редактор таблиц"
-                  Padding="5">
-            <TabControl ItemsSource="{Binding Tables}"
-                        SelectedIndex="{Binding SelectedIndex}">
-                <TabControl.ItemContainerStyle>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Header" Value="{Binding TableHeader}"/>
-                        <Setter Property="ContentTemplate">
-                            <Setter.Value>
-                                <DataTemplate>
-                                    <DockPanel>
-                                        <controls:Table DataContext="{Binding}"/>
-                                    </DockPanel>
-                                </DataTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabControl.ItemContainerStyle>
-            </TabControl>
+    <Grid>
+        <GroupBox Header="Редактор таблиц">
+            <Grid>
+                <Button Content="Добавить курс"
+                        Margin="0,0,5,0"
+                        Padding="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Command="{Binding Project.ScheduleController.AddYearOfStudyCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Project}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <TabControl ItemsSource="{Binding Tables}"
+                            SelectedIndex="{Binding SelectedIndex}"
+                            Margin="5,10,5,5">
+                    <TabControl.ItemContainerStyle>
+                        <Style TargetType="TabItem">
+                            <Setter Property="HeaderTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding TableHeader}">
+                                            <TextBlock.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Удалить курс"
+                                                              Command="{Binding Project.ScheduleController.RemoveYearOfStudyCommand}"
+                                                              CommandParameter="{Binding YearOfStudy}"/>
+                                                </ContextMenu>
+                                            </TextBlock.ContextMenu>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <DockPanel>
+                                            <controls:Table DataContext="{Binding}"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.ItemContainerStyle>
+                </TabControl>
+            </Grid>
         </GroupBox>
-    </DockPanel>
+    </Grid>
 </UserControl>

@@ -19,7 +19,7 @@ namespace Editor.ViewModels.Panels.Edit
             MessageBox.Show("Remove");
             //var year = param as Classroom;
             //if (year == null) return;
-            //Project.ClassesSchedule.RemoveClassroom(year);
+            //Project.Schedule.RemoveClassroom(year);
         }
 
         #endregion
@@ -28,7 +28,7 @@ namespace Editor.ViewModels.Panels.Edit
 
         private void OnAddClassroom()
         {
-            Project.ClassesSchedule.AddClassroom(new Classroom { Name = "Новый" });
+            Project.Schedule.AddClassroom(new Classroom { Name = "Новый" });
         }
 
         #endregion

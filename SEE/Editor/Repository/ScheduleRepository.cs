@@ -11,7 +11,7 @@ namespace Editor.Repository
 
         private static readonly Random Rnd = new Random();
 
-        public ClassesSchedule Schedule = new ClassesSchedule();
+        public Schedule Schedule = new Schedule();
 
         public ScheduleRepository()
         {
@@ -130,31 +130,56 @@ namespace Editor.Repository
             }
         }
 
+//        private void InitClasses()
+//        {
+//            Schedule.CreateNewTables();
+//            foreach (var classesTable in Schedule.Tables)
+//            {
+//                int classCount = classesTable.Groups.Count() * Schedule.TimeLine.Count;
+//                for (int i = 0; i < classCount; i++)
+//                {
+//                    Subject s = Schedule.Subjects[Rnd.Next(Schedule.Subjects.Count)];
+//                    Lecturer l = Schedule.Lecturers[Rnd.Next(Schedule.Lecturers.Count)];
+//                    Classroom c = Schedule.Classrooms[Rnd.Next(Schedule.Classrooms.Count)];
+//
+//                    var timeIndex = Rnd.Next(Schedule.TimeLine.Count);
+//                    var groupIndex = Rnd.Next(classesTable.Groups.Count());
+//
+//                    if (classesTable.Table[timeIndex][groupIndex] == null)
+//                    {
+//                        classesTable.Table[timeIndex][groupIndex] = new ClassRecord
+//                        {
+//                            Subject = s,
+//                            Lecturer = l,
+//                            Classroom = c
+//                        };
+//                    }
+//
+//                }
+//            }
+//            
+//        }
+
         private void InitClasses()
         {
-            Schedule.CreateNewTables();
-            foreach (var classesTable in Schedule.Tables)
+            //int classCount = Schedule.Groups.Count() * Schedule.TimeLine.Count;
+            foreach (var classTime in Schedule.TimeLine)
             {
-                int classCount = classesTable.Groups.Count() * Schedule.TimeLine.Count;
-                for (int i = 0; i < classCount; i++)
+                foreach (var @group in Schedule.Groups)
                 {
                     Subject s = Schedule.Subjects[Rnd.Next(Schedule.Subjects.Count)];
                     Lecturer l = Schedule.Lecturers[Rnd.Next(Schedule.Lecturers.Count)];
                     Classroom c = Schedule.Classrooms[Rnd.Next(Schedule.Classrooms.Count)];
-
-                    var timeIndex = Rnd.Next(Schedule.TimeLine.Count);
-                    var groupIndex = Rnd.Next(classesTable.Groups.Count());
-
-                    if (classesTable.Table[timeIndex][groupIndex] == null)
-                    {
-                        classesTable.Table[timeIndex][groupIndex] = new ClassRecord
+                    if (Rnd.Next(100) < 40) continue;
+                        var @class = new ClassRecord
                         {
+                            Classroom = c,
+                        Group = @group,
                             Subject = s,
                             Lecturer = l,
-                            Classroom = c
+                            ClassTime = classTime
                         };
-                    }
-
+                        Schedule.ClassRecords.Add(@class);
                 }
             }
             

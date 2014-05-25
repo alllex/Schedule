@@ -25,21 +25,25 @@
 
                 <DataTrigger Binding="{Binding HasConflict}" Value="False">
                     <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="Background" Value="White"/>
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding HasWarning}" Value="False">
                     <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="Background" Value="White"/>
                 </DataTrigger>
                 
                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
                     <Setter Property="BorderBrush" Value="MediumBlue"/>
+                    <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="Background" Value="SkyBlue"/>
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding IsSelected}" Value="False">
                     <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="Background" Value="White"/>
                 </DataTrigger>
 
@@ -49,7 +53,18 @@
                         <Condition Binding="{Binding Class}" Value="{x:Null}" />
                     </MultiDataTrigger.Conditions>
                     <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="Background" Value="Transparent" />
+                </MultiDataTrigger>
+
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsSelected}" Value="True" />
+                        <Condition Binding="{Binding HasWarning}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="BorderBrush" Value="Yellow"/>
+                    <Setter Property="BorderThickness" Value="3" />
+                    <Setter Property="Background" Value="SkyBlue" />
                 </MultiDataTrigger>
 
                 <MultiDataTrigger>
@@ -58,15 +73,27 @@
                         <Condition Binding="{Binding HasWarning}" Value="True" />
                     </MultiDataTrigger.Conditions>
                     <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="Background" Value="Yellow" />
                 </MultiDataTrigger>
 
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsSelected}" Value="True" />
+                        <Condition Binding="{Binding HasConflict}" Value="True" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="3" />
+                    <Setter Property="Background" Value="SkyBlue" />
+                </MultiDataTrigger>
+                
                 <MultiDataTrigger>
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding IsSelected}" Value="False" />
                         <Condition Binding="{Binding HasConflict}" Value="True" />
                     </MultiDataTrigger.Conditions>
                     <Setter Property="BorderBrush" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="Background" Value="Red" />
                 </MultiDataTrigger>
 
@@ -83,6 +110,7 @@
     
     <DockPanel x:Name="DockPanel">
         <Border MinWidth="150"
+                MinHeight="90"
                 Style="{StaticResource BorderStyle}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"

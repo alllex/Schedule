@@ -1,164 +1,105 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ScheduleData
 {
-    public class ClassesTable
+    public abstract class ClassesTable<TSubject>
     {
-        private readonly ClassesSchedule _schedule;
-        public readonly YearOfStudy YearOfStudy;
 
-        public Group[] Groups;
-        public Dictionary<Group, int> GroupIndexes = new Dictionary<Group, int>();
+        public List<TSubject> Subjects;
+        public Dictionary<TSubject, int> SubjectIndexes = new Dictionary<TSubject, int>();
         public Dictionary<ClassTime, int> TimeIndexes = new Dictionary<ClassTime, int>();
-        public ClassRecord[][] Table;
 
-        public ClassesTable(ClassesSchedule schedule, YearOfStudy yearOfStudy)
+        protected Schedule Schedule;
+        //protected ClassRecord[][] Table;
+        protected Dictionary<TSubject, Dictionary<ClassTime, ClassRecord>> TableDictionary = new Dictionary<TSubject, Dictionary<ClassTime, ClassRecord>>(); 
+
+        protected ClassesTable(Schedule schedule)
         {
-            _schedule = schedule;
-            YearOfStudy = yearOfStudy;
-            SetGroups();
-            SetGroupIndexes();
+            Schedule = schedule;
             SetTime();
-            CreateTable();
         }
 
         private void SetTime()
         {
             TimeIndexes.Clear();
-            for (int i = 0; i < _schedule.TimeLine.Count(); i++)
-                TimeIndexes.Add(_schedule.TimeLine[i], i);
+            for (int i = 0; i < Schedule.TimeLine.Count(); i++)
+                TimeIndexes.Add(Schedule.TimeLine[i], i);
         }
 
-        private void SetGroups()
+        protected void SetSubjectIndexes()
         {
-            var gps =
-                from g in _schedule.CorrectGroups()
-                where g.YearOfStudy == YearOfStudy
-                select g;
-            Groups = sortGroups(gps);   
+            SubjectIndexes.Clear();
+            for (int i = 0; i < Subjects.Count(); i++)
+                SubjectIndexes.Add(Subjects[i], i);
         }
 
-        private Group[] sortGroups(IEnumerable<Group> groups)
+//        protected void CreateTable()
+//        {
+//            var rowsCount = TimeCardsCount();
+//            var colsCount = SubjectsCount();
+//            Table = new ClassRecord[rowsCount][];
+//            for (int i = 0; i < rowsCount; i++)
+//            {
+//                Table[i] = new ClassRecord[colsCount];
+//            }
+//        }
+
+        protected void CreateTableDictionary()
         {
-            var newGroups = new List<Group>(groups.Count());
-            var groupsOfGroups = from g in groups
-                                 group g by g.Specialization;
-
-            foreach (var g in groupsOfGroups)
-                newGroups.AddRange(g);
-
-            return newGroups.ToArray();
-        }
-
-        private void SetGroupIndexes()
-        {
-            GroupIndexes.Clear();
-            for (int i = 0; i < Groups.Count(); i++)
-                GroupIndexes.Add(Groups[i], i);
-        }
-
-        private void CreateTable()
-        {
-            int rowsCount = _schedule.TimeLine.Count();
-            int colsCount = Groups.Count();
-            Table = new ClassRecord[rowsCount][];
-            for (int i = 0; i < rowsCount; i++)
+            foreach (var subject in Subjects)
             {
-                Table[i] = new ClassRecord[colsCount];
+                TableDictionary[subject] = new Dictionary<ClassTime, ClassRecord>();
             }
         }
 
-        public int RowsCount()
+        public int TimeCardsCount()
         {
-            return _schedule.TimeLine.Count();
+            return TimeIndexes.Count;
         }
 
-        public int ColumnsCount()
+        public int SubjectsCount()
         {
-            return Groups.Count(g => g.Specialization != null);
+            return SubjectIndexes.Count;
         }
 
-        public void AddGroup(Group group)
+        public ClassRecord GetClass(int timeIndex, int subjectIndex)
         {
-            if (group == null || group.YearOfStudy != YearOfStudy || Groups.Contains(group)) return;
+            if (!AreIndexesCorrect(timeIndex, subjectIndex)) return null;
+            var subject = Subjects[subjectIndex];
+            var time = Schedule.TimeLine[timeIndex];
+            return TableDictionary[subject].ContainsKey(time) ? TableDictionary[subject][time] : null;
+        }
 
-            var oldGroups = Groups.ToList();
-            oldGroups.Add(group);
-            Groups = sortGroups(oldGroups);
-            SetGroupIndexes();
-
-            if (group.Specialization == null) return;
-           
-            var countGroups = Groups.Length;
-            var countTime = TimeIndexes.Count;
-            var indexOfNewGroup = GroupIndexes[group];
-            var newTable = new ClassRecord[countTime][];
-
-            for (int i = 0; i < countTime; ++i)
+        public ClassRecord SetClass(int timeIndex, int subjectIndex, ClassRecord classRecord)
+        {
+            if (!AreIndexesCorrect(timeIndex, subjectIndex)) return null;
+            var subject = Subjects[subjectIndex];
+            var time = Schedule.TimeLine[timeIndex];
+            if (TableDictionary[subject].ContainsKey(time))
             {
-                newTable[i] = new ClassRecord[countGroups];
-                for (int j = 0; j < countGroups; ++j)
-                    if (j != indexOfNewGroup)
-                        newTable[i][j] = Table[i][j < indexOfNewGroup ? j : j - 1];
+                Schedule.RemoveClass(TableDictionary[subject][time]);
             }
-            Table = newTable;
+            Schedule.AddClass(classRecord);
+            TableDictionary[subject][time] = classRecord;
+            return classRecord;
         }
 
-        public void AddGroup(Group group, ClassRecord[] classes)
+        public void RemoveClass(int timeIndex, int subjectIndex)
         {
-            AddGroup(group);
-            var countTime = TimeIndexes.Count;
-            var indexOfGroup = GroupIndexes[group];
-            for (int i = 0; i < countTime; ++i)
-                Table[i][indexOfGroup] = classes[i];
-        }
-
-        public void RemoveGroup(Group group)
-        {
-            if (group == null || Groups.All(g => g != group)) return;
-
-            var indexOfGroup = GroupIndexes[group];
-            var countTime = TimeIndexes.Count;
-            var newCountGroups = Groups.Length - 1;
-            var newGroups = new Group[newCountGroups];
-
-            for (int j = 0; j < newCountGroups + 1; ++j)
-                if (j != indexOfGroup)
-                    newGroups[j < indexOfGroup ? j : j - 1] = Groups[j];
-
-            Groups = newGroups;
-            SetGroupIndexes();
-
-            var newTable = new ClassRecord[countTime][];
-
-            if (countTime != 0 && indexOfGroup < Table[0].Length)
+            if (!AreIndexesCorrect(timeIndex, subjectIndex)) return;
+            var subject = Subjects[subjectIndex];
+            var time = Schedule.TimeLine[timeIndex];
+            if (TableDictionary[subject].ContainsKey(time))
             {
-                for (int i = 0; i < countTime; ++i)
-                {
-                    newTable[i] = new ClassRecord[newCountGroups];
-                    for (int j = 0; j < newCountGroups + 1; ++j)
-                        if (j != indexOfGroup)
-                            newTable[i][j < indexOfGroup ? j : j - 1] = Table[i][j];
-                }
-
-                Table = newTable;
+                Schedule.RemoveClass(TableDictionary[subject][time]);
+                TableDictionary[subject].Remove(time);
             }
         }
 
-        public ClassRecord[] AllClassesOfGroup(Group group)
+        private bool AreIndexesCorrect(int timeIndex, int subjectIndex)
         {
-            if (group == null || Groups.All(g => g != group)) return null;
-
-            var indexOfGroup = GroupIndexes[group];
-            var countTime = TimeIndexes.Count;
-            var classes = new ClassRecord[countTime];
-
-            if (countTime != 0 && indexOfGroup < Table[0].Length)
-                for (int i = 0; i < countTime; ++i)
-                    classes[i] = Table[i][indexOfGroup];
-
-            return classes;
+            return timeIndex >= 0 && timeIndex < TimeCardsCount() && subjectIndex >= 0 && subjectIndex < SubjectsCount();
         }
     }
 }

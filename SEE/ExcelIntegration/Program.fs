@@ -10,6 +10,7 @@ type TransferData = (string [,] * string) []
 
 type Importer = 
     class
+    (*
         static member VerticalOffset = 2 //2 extra rows for group & subgroup numbers
         static member HorizontalOffset = 2 //2 extra columns for weekday and time
 
@@ -111,6 +112,7 @@ type Importer =
                     id <- id + 1
                 
             new sClassesSchedule(id, timeLine, groups, lecturers, classrooms, subjects, specializations, yearsOfStudy, classesTables)
+            *)
     end
 
 type Exporter =
@@ -132,19 +134,20 @@ type Exporter =
             workbook.SaveAs(Filename = path)
             app.Quit()
 
-        static member Export(path : string, data : sClassesSchedule) =
-            let numberOfSheets = data.Tables.Length
+        static member Export(path : string, data : Schedule) =
+            let numberOfSheets = data.YearsOfStudy.Count
             let schedule = Array.create numberOfSheets (Array2D.create 0 0 "", "")
             for sheet in 0 .. numberOfSheets - 1 do
                 let getSheet sheetNumber =
-                    let currentTable = data.Tables.[sheetNumber]
-                    let groups = [| for i in data.Groups -> i.Value |]
-                    let numberOfGroups = groups.Length
+                    // Здесь создаем таблицы для групп
+                    let currentTable = new GroupClasses(data, data.YearsOfStudy.[sheetNumber])
+                    let groups = currentTable.Subjects //[| for i in data.Groups -> i.Value |]
+                    let numberOfGroups = groups.Count
                     let numberOfColumns = numberOfGroups + Exporter.HorizontalOffset
-                    let numberOfRows = data.TimeLine.Length + Exporter.VerticalOffset 
+                    let numberOfRows = data.TimeLine.Count + Exporter.VerticalOffset 
                     let table = Array2D.create numberOfRows numberOfColumns "" //empty table (1 sheet)
 
-                    if data.TimeLine.Length > 0 then
+                    if data.TimeLine.Count > 0 then
                         let currentDay = ref data.TimeLine.[0].Day
                         let writeTimes i (x : sClassTime) = 
                             table.[i + Exporter.VerticalOffset, 1] <- ClassTime.ClassIntervals.[x.Number]
@@ -154,8 +157,8 @@ type Exporter =
                                 currentDay.Value <- x.Day
             
                         table.[Exporter.VerticalOffset, 0] <- currentDay.Value.ToString() 
-                        Array.iteri writeTimes data.TimeLine
-
+                        //Array.iteri writeTimes data.TimeLine
+                   (*
                     if currentTable.Groups.Length > 0 then
                         let currentSpecialization = ref currentTable.Groups.[0].Specialization
                         let writeGroups i (x : sGroup) = 
@@ -176,12 +179,11 @@ type Exporter =
                                         x.Subject.Name + "\n" + x.Lecturer.Name + "\n" + x.Classroom.Name
                                     else ""
                             Array.iteri writeClasses x
-                        Array.iteri writeColumn currentTable.Table
-                         
-                    table, currentTable.YearOfStudy.Name + " курс"            
+                        Array.iteri writeColumn currentTable.Table              
+                 *)
+                    table, currentTable.YearOfStudy.Name + " курс" 
 
                 schedule.[numberOfSheets - 1 - sheet] <- getSheet sheet
 
             Exporter.ExportFromData(path, schedule)
-
     end

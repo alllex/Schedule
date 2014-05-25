@@ -124,7 +124,7 @@ namespace Editor.ViewModels.Controls
         public LeftTopControl LeftTopControl;
 
         public ClassCardViewMode[][] ClassesCards;
-        private ClassesTable _classesTable;
+        private GroupClasses _groupClasses;
         private TimeLineMarkup _timeLineMarkup;
         private TitlesMarkup _titlesMarkup;
 
@@ -153,10 +153,10 @@ namespace Editor.ViewModels.Controls
                 foreach (var conflictingClass in conflict.ConflictingClasses)
                 {
                     var group = conflictingClass.Group;
-                    if (group.YearOfStudy != _classesTable.YearOfStudy) continue;
-                    var time = conflictingClass.Time;
-                    var row = _classesTable.TimeIndexes[time];
-                    var column = _classesTable.GroupIndexes[group];
+                    if (group.YearOfStudy != _groupClasses.YearOfStudy) continue;
+                    var time = conflictingClass.ClassTime;
+                    var row = _groupClasses.TimeIndexes[time];
+                    var column = _groupClasses.SubjectIndexes[group];
                     if (row < 0 || column < 0 || row >= ClassesRowsCount || column >= ClassesColumnsCount)
                     {
                         continue;
@@ -196,7 +196,7 @@ namespace Editor.ViewModels.Controls
 
         private void InitializeLeftTop()
         {
-            var viewModel = new LeftTopContolViewModel(_updateViews) {Project = Project};
+            var viewModel = new LeftTopControlViewModel(_updateViews) {Project = Project};
             LeftTopControl = new LeftTopControl { DataContext = viewModel };
             Grid.SetRow(LeftTopControl, 0);
             Grid.SetColumn(LeftTopControl, 0);
@@ -209,8 +209,8 @@ namespace Editor.ViewModels.Controls
             Titles = new ObservableCollection<UIElement>();
             foreach (var title in _titlesMarkup.Titles)
             {
-                var tvm = new TitleCardViewModel(title.Item, _updateViews) { Project = Project };
-                var tc = new TitleCard { DataContext = tvm };
+                var tvm = new SpecializationCardViewModel(title.Item, _updateViews) { Project = Project };
+                var tc = new SpecializationCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
                 Grid.SetColumn(tc, TitleRowsCount + title.Column);
                 Grid.SetRowSpan(tc, title.RowSpan);
@@ -219,8 +219,8 @@ namespace Editor.ViewModels.Controls
             }
             foreach (var title in _titlesMarkup.Subtitles)
             {
-                var tvm = new SubtitleCardViewModel(title.Item, _updateViews) { Project = Project };
-                var tc = new SubtitleCard { DataContext = tvm };
+                var tvm = new GroupCardViewModel(title.Item, _updateViews) { Project = Project };
+                var tc = new GroupCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
                 Grid.SetColumn(tc, TitleRowsCount + title.Column);
                 Grid.SetRowSpan(tc, title.RowSpan);
@@ -267,8 +267,8 @@ namespace Editor.ViewModels.Controls
 
         private void InitLectureCards()
         {
-            ClassesRowsCount = _classesTable.RowsCount();
-            ClassesColumnsCount = _classesTable.ColumnsCount();
+            ClassesRowsCount = _groupClasses.TimeCardsCount();
+            ClassesColumnsCount = _groupClasses.SubjectsCount();
             ClassesCards = new ClassCardViewMode[ClassesRowsCount][];
             for (var row = 0; row < ClassesRowsCount; row++)
             {
@@ -282,11 +282,11 @@ namespace Editor.ViewModels.Controls
 
         private ClassCardViewMode CreateClassCard(int row, int column)
         {
-            var viewModel = new ClassCardViewModel(_classesTable.Table[row][column]) { Project = Project };
+            var viewModel = new ClassCardViewModel(_groupClasses.GetClass(row, column)) { Project = Project };
             var classCard = new ClassCardViewMode { DataContext = viewModel };
             Grid.SetRow(classCard, row + TitleRowsCount);
             Grid.SetColumn(classCard, column + TimeColumnsCount);
-            if (Project.ClassesSchedule.TimeLine[row].Number + 1 == ClassesPerDayMax)
+            if (Project.Schedule.TimeLine[row].Number + 1 == ClassesPerDayMax)
             {
                 classCard.Margin = new Thickness(0, 0, 0, DayMarginOffset);
             }
@@ -387,8 +387,7 @@ namespace Editor.ViewModels.Controls
             if (_selectedCard == null) return;
             if (_selectedCard.Class == null)
             {
-                _classesTable.Table[_selectedRow][_selectedColumn] = new ClassRecord();
-                _selectedCard.Class = _classesTable.Table[_selectedRow][_selectedColumn];
+                _selectedCard.Class = _groupClasses.SetClass(_selectedRow, _selectedColumn, new ClassRecord());
             }
             var cliped = ClipboardService.GetData<ClassRecord>();
             ClassRecord.Copy(cliped, _selectedCard.Class);
@@ -408,14 +407,14 @@ namespace Editor.ViewModels.Controls
             var col = Grid.GetColumn(classCard) - TimeColumnsCount;
 
             var @class = new ClassRecord();
-            ClassRecord.Copy(_classesTable.Table[row][col], @class);
+            ClassRecord.Copy(_groupClasses.GetClass(row, col), @class);
             ClipboardService.SetData(@class);
 
             var vmodel = classCard.DataContext as ClassCardViewModel;
             if (vmodel == null) return;
 
             vmodel.Class = null;
-            _classesTable.Table[row][col] = null;
+            _groupClasses.RemoveClass(row, col);
 
         }
 
@@ -435,7 +434,7 @@ namespace Editor.ViewModels.Controls
             if (vmodel == null) return;
 
             vmodel.Class = null;
-            _classesTable.Table[row][col] = null;
+            _groupClasses.RemoveClass(row, col);
         }
 
         #endregion
@@ -513,7 +512,7 @@ namespace Editor.ViewModels.Controls
             UpdateSelection(classCard);
             if (e.ClickCount == 2)
             {
-                OpenCardEditor(classCard);
+                OnEditClass();
             }
         }
         
@@ -571,16 +570,19 @@ namespace Editor.ViewModels.Controls
 
             var row = Grid.GetRow(card) - TitleRowsCount;
             var col = Grid.GetColumn(card) - TimeColumnsCount;
-            var @class = _classesTable.Table[row][col];
-            if (@class == null)
-            {
-                _classesTable.Table[row][col] = new ClassRecord();
-                @class = _classesTable.Table[row][col];
-            }
+            var @class = _groupClasses.GetClass(row, col) ?? new ClassRecord();
             var model = new ClassCardViewModel(@class) { Project = Project };
             var edit = new ClassCardEditMode(centerX, centerY) { DataContext = model };
             edit.ShowDialog();
-            ClassesCards[row][col].DataContext = model;
+            if (@class.Classroom != null || @class.Lecturer != null || @class.Subject != null)
+            {
+                _groupClasses.SetClass(row, col, @class);
+                ClassesCards[row][col].DataContext = model;
+            }
+            else
+            {
+                ClassesCards[row][col].DataContext = new ClassCardViewModel(null) { Project = Project }; ;
+            }
             UpdateSelection(row, col);
         }
         
@@ -589,7 +591,7 @@ namespace Editor.ViewModels.Controls
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
             var cm = new ContextMenu();
-            cm.Items.Add(new MenuItem { Header = "Редактировать", Command = EditClassCommand, InputGestureText = "Enter"});
+            cm.Items.Add(new MenuItem { Header = "Редактировать", Command = EditClassCommand});
             cm.Items.Add(new MenuItem { Header = "Скопировать", Command = CopyClassCommand, InputGestureText = "Ctrl+C" });
             cm.Items.Add(new MenuItem { Header = "Вставить", Command = PasteClassCommand, InputGestureText = "Ctrl+V" });
             cm.Items.Add(new MenuItem { Header = "Вырезать", Command = CutClassCommand, InputGestureText = "Ctrl+X" });
@@ -616,8 +618,9 @@ namespace Editor.ViewModels.Controls
         {
             if (YearOfStudy == null) return;
             TableHeader = YearOfStudy.ToString();
-            _classesTable = Project.ClassesSchedule.GetClassesTable(YearOfStudy);
-            _titlesMarkup = new TitlesMarkup(_classesTable.Groups);
+
+            _groupClasses = new GroupClasses(Project.Schedule, YearOfStudy); 
+            _titlesMarkup = new TitlesMarkup(_groupClasses.Subjects);
             InitializeLeftTop();
             InitializeTitles();
             InitLectureCards();
@@ -625,7 +628,7 @@ namespace Editor.ViewModels.Controls
 
         private void OnProjectChanged()
         {
-            _timeLineMarkup = new TimeLineMarkup(Project.ClassesSchedule);
+            _timeLineMarkup = new TimeLineMarkup(Project.Schedule);
             InitDayLine();
             InitTimeIntervalLine();
 
@@ -637,6 +640,13 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
+        #region Update views
 
+        public void AddGroup(Group @group)
+        {
+//            _groupClasses.AddGroup(@group);
+        }
+
+        #endregion
     }
 }

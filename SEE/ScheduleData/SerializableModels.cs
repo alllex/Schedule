@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
@@ -19,6 +20,11 @@ namespace ScheduleData
         protected sHavingId(HavingId havingId)
         {
             ID = havingId.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return ID;
         }
     }    
     
@@ -170,19 +176,20 @@ namespace ScheduleData
             YearOfStudy = yearOfStudy;
         }
         
-        public sGroup(Group group, sClassesSchedule schedule) : base(group)
+        public sGroup(Group group, sSchedule schedule) : base(group)
         {
-            Specialization = schedule.Specializations[group.Specialization.GetHashCode()];
-            YearOfStudy = schedule.YearsOfStudy[group.YearOfStudy.GetHashCode()];
+            if (group == null) return;
+            Specialization = group.Specialization == null ? null : schedule.sDictionaries.Specializations[group.Specialization.GetHashCode()];
+            YearOfStudy = group.YearOfStudy == null ? null : schedule.sDictionaries.YearsOfStudy[group.YearOfStudy.GetHashCode()];
         }
 
-        public Group ToNonSerializable(ScheduleAndDicts scheduleAndDicts)
+        public Group ToNonSerializable(sSchedule schedule)
         {
             return new Group
             {
                 Name = Name,
-                Specialization = scheduleAndDicts.Specializations[Specialization.ID],
-                YearOfStudy = scheduleAndDicts.YearsOfStudy[YearOfStudy.ID]
+                Specialization = Specialization == null ? null : schedule.Dictionaries.Specializations[Specialization.ID],
+                YearOfStudy = YearOfStudy == null ? null : schedule.Dictionaries.YearsOfStudy[YearOfStudy.ID]
             };
         }
     }
@@ -193,323 +200,244 @@ namespace ScheduleData
         public sSubject Subject;
         public sLecturer Lecturer;
         public sClassroom Classroom;
+        public sClassTime ClassTime;
+        public sGroup Group;
 
-        public sClassRecord(int id, sSubject subject, sLecturer lecturer, sClassroom classroom) : base(id)
+        public sClassRecord(int id, sSubject subject, sLecturer lecturer, sClassroom classroom, sClassTime classTime, sGroup group) : base(id)
         {
             Subject = subject;
             Lecturer = lecturer;
             Classroom = classroom;
+            ClassTime = classTime;
+            Group = group;          
         }
         
-        public sClassRecord(ClassRecord classRecord, sClassesSchedule schedule) : base(classRecord)
+        public sClassRecord(ClassRecord classRecord, sSchedule schedule) : base(classRecord)
         {
-            Subject = classRecord.Subject == null ? null : schedule.Subjects[classRecord.Subject.GetHashCode()];
-            Lecturer = classRecord.Lecturer == null ? null : schedule.Lecturers[classRecord.Lecturer.GetHashCode()];
-            Classroom = classRecord.Classroom == null ? null : schedule.Classrooms[classRecord.Classroom.GetHashCode()];
+            if (classRecord == null) return;
+            Subject = classRecord.Subject == null ? null : schedule.sDictionaries.Subjects[classRecord.Subject.GetHashCode()];
+            Lecturer = classRecord.Lecturer == null ? null : schedule.sDictionaries.Lecturers[classRecord.Lecturer.GetHashCode()];
+            Classroom = classRecord.Classroom == null ? null : schedule.sDictionaries.Classrooms[classRecord.Classroom.GetHashCode()];
+            ClassTime = classRecord.ClassTime == null ? null : schedule.sDictionaries.TimeLine[classRecord.ClassTime.GetHashCode()];
+            Group = classRecord.Group == null ? null : schedule.sDictionaries.Groups[classRecord.Group.GetHashCode()];
         }
 
-        public ClassRecord ToNoneSerializable(ScheduleAndDicts scheduleAndDicts)
+        public ClassRecord ToNoneSerializable(sSchedule schedule)
         {
             return new ClassRecord
             {
-                Classroom = Classroom == null ? null : scheduleAndDicts.Classrooms[Classroom.ID],
-                Lecturer = Lecturer == null ? null : scheduleAndDicts.Lecturers[Lecturer.ID],
-                Subject = Subject == null ? null : scheduleAndDicts.Subjects[Subject.ID]
+                Classroom = Classroom == null ? null : schedule.Dictionaries.Classrooms[Classroom.ID],
+                ClassTime = ClassTime == null ? null : schedule.Dictionaries.TimeLine[ClassTime.ID],
+                Lecturer = Lecturer == null ? null : schedule.Dictionaries.Lecturers[Lecturer.ID],
+                Subject = Subject == null ? null : schedule.Dictionaries.Subjects[Subject.ID],
+                Group = Group == null ? null : schedule.Dictionaries.Groups[Group.ID]
             };
         }
     }
 
-    [Serializable]
-    public class sClassesTable : sHavingId
+    public class Dictionaries
     {
-        public sYearOfStudy YearOfStudy;
-        public sClassRecord[][] Table;
-        public sGroup[] Groups;
-
-        public sClassesTable(int id, sYearOfStudy yearOfStudy, sClassRecord[][] table, sGroup[] groups) : base(id)
-        {
-            YearOfStudy = yearOfStudy;
-            Table = table;
-            Groups = groups;
-        }
-        
-        public sClassesTable(ClassesTable table, sClassesSchedule schedule) : base(table.YearOfStudy)
-        {  
-            CopyYearOfStudy(table, schedule);
-            CopyGroups(table, schedule);
-            CopyTable(table, schedule);
-        }
-
-        private void CopyGroups(ClassesTable table, sClassesSchedule schedule)
-        {
-            var length = table.Groups.Length;
-            Groups = new sGroup[length];
-            for (int i = 0; i < length; ++i)
-                Groups[i] = schedule.Groups[table.Groups[i].GetHashCode()];
-        }
-
-        private void CopyYearOfStudy(ClassesTable table, sClassesSchedule schedule)
-        {
-            YearOfStudy = schedule.YearsOfStudy[table.YearOfStudy.GetHashCode()];
-        }
-
-        private void CopyTable(ClassesTable table, sClassesSchedule schedule)
-        {
-            var oldTable = table.Table;
-            Table = new sClassRecord[oldTable.Length][];
-            for (int i = 0; i < oldTable.Length; ++i)
-            {
-                Table[i] = new sClassRecord[oldTable[i].Length];
-                for (int j = 0; j < oldTable[i].Length; ++j)
-                    if (oldTable[i][j] != null)
-                        Table[i][j] = new sClassRecord(oldTable[i][j], schedule);
-            }       
-        }
-
-        public ClassesTable ToNonSerializable(ScheduleAndDicts scheduleAndDicts)
-        {
-            var yearOfStudy = scheduleAndDicts.YearsOfStudy[YearOfStudy.ID];
-            var table = new ClassesTable(scheduleAndDicts.Schedule, yearOfStudy);
-
-            for (int i = 0; i < Table.Length; ++i)
-                for (int j = 0; j < Table[i].Length; ++j)
-                    if (Table[i][j] != null)
-                        table.Table[i][j] = Table[i][j].ToNoneSerializable(scheduleAndDicts);
-
-            return table;
-        }
-    }
-
-    public class ScheduleAndDicts
-    {
-        public ClassTime[] TimeLine;
+        public Dictionary<int, ClassTime> TimeLine;
         public Dictionary<int, Group> Groups;
         public Dictionary<int, Lecturer> Lecturers;
         public Dictionary<int, Classroom> Classrooms;
         public Dictionary<int, Subject> Subjects;
         public Dictionary<int, Specialization> Specializations;
         public Dictionary<int, YearOfStudy> YearsOfStudy;
-        public ClassesTable[] Tables;
-        public ClassesSchedule Schedule;
+        public Dictionary<int, ClassRecord> ClassRecords;
     }
-    
+
     [Serializable]
-    public class sClassesSchedule : sHavingId
+    public class sDictionaries
     {
-        public sClassTime[] TimeLine;
+        public Dictionary<int, sClassTime> TimeLine;
         public Dictionary<int, sGroup> Groups;
         public Dictionary<int, sLecturer> Lecturers;
         public Dictionary<int, sClassroom> Classrooms;
         public Dictionary<int, sSubject> Subjects;
         public Dictionary<int, sSpecialization> Specializations;
         public Dictionary<int, sYearOfStudy> YearsOfStudy;
-        public sClassesTable[] Tables;
+        public Dictionary<int, sClassRecord> ClassRecords;
+    }
+    
+    [Serializable]
+    public class sSchedule : sHavingId
+    {
+        public sClassTime[] TimeLine;
+        public sGroup[] Groups;
+        public sLecturer[] Lecturers;
+        public sClassroom[] Classrooms;
+        public sSubject[] Subjects;
+        public sSpecialization[] Specializations;
+        public sYearOfStudy[] YearsOfStudy;
+        public sClassRecord[] ClassRecords;
 
-        public sClassesSchedule(int id, sClassTime[] timeline, Dictionary<int, sGroup> groups, Dictionary<int, sLecturer> lecturers, Dictionary<int, sClassroom> classrooms, Dictionary<int, sSubject> subjects, Dictionary<int, sSpecialization> specializations, Dictionary<int, sYearOfStudy> yearsOfStudy, sClassesTable[] tables) : base(id)
-        {
-            TimeLine = timeline;
-            Groups = groups;
-            Lecturers = lecturers;
-            Classrooms = classrooms;
-            Subjects = subjects;
-            Specializations = specializations;
-            YearsOfStudy = yearsOfStudy;
-            Tables = tables;
-        }
+        [NonSerialized]
+        public sDictionaries sDictionaries;
+
+        [NonSerialized]
+        public Schedule Schedule;
+
+        [NonSerialized]
+        public Dictionaries Dictionaries;
 
         # region Create
 
-        public static sClassesSchedule Create(ClassesSchedule schedule)
+        public static sSchedule Create(Schedule schedule)
         {
-            return new sClassesSchedule(schedule);
+            return new sSchedule(schedule);
         }
 
-        private sClassesSchedule(ClassesSchedule schedule) : base(schedule.GetHashCode())
+        private sSchedule(Schedule schedule) : base(schedule.GetHashCode())
         {
-            CopySubjects(schedule);
-            CopySpecializations(schedule);
-            CopyYearsOfStudy(schedule);
-            CopyLecturers(schedule);
-            CopyClassrooms(schedule);
-            CopyTimeLine(schedule);
-            CopyGroups(schedule);
-            CopyTables(schedule);
+            sDictionaries = new sDictionaries();
+            Schedule = schedule;
+
+            CopySubjects();
+            CopySpecializations();
+            CopyYearsOfStudy();
+            CopyLecturers();
+            CopyClassrooms();
+            CopyTimeLine();
+            CopyGroups();
+            CopyClassRecords();
         }
 
-        private void CopySubjects(ClassesSchedule schedule)
+        private void Copy<T, sT>(ObservableCollection<T> from, out sT[] to, out Dictionary<int, sT> dict, Func<T, sT> converter)
         {
-            Subjects = new Dictionary<int, sSubject>(schedule.Subjects.Count);
-            foreach (var subject in schedule.Subjects)
-                Subjects.Add(subject.GetHashCode(), new sSubject(subject));
+
+            var count = from.Count;
+            dict = new Dictionary<int, sT>(count);
+            to = new sT[count];
+            for (int i = 0; i < count; ++i)
+            {
+                var oldObject = from[i];
+                var newObject = converter(oldObject);
+                to[i] = newObject;
+                dict.Add(oldObject.GetHashCode(), newObject);
+            }
         }
 
-        private void CopySpecializations(ClassesSchedule schedule)
+        private void CopySubjects()
         {
-            Specializations = new Dictionary<int, sSpecialization>(schedule.Specializations.Count);
-            foreach (var specialization in schedule.Specializations)
-                Specializations.Add(specialization.GetHashCode(), new sSpecialization(specialization));
+            Copy(Schedule.Subjects, out Subjects, out sDictionaries.Subjects, s => new sSubject(s));
+        }
+        
+        private void CopySpecializations()
+        {
+            Copy(Schedule.Specializations, out Specializations, out sDictionaries.Specializations, s => new sSpecialization(s)); 
         }
 
-        private void CopyYearsOfStudy(ClassesSchedule schedule)
+        private void CopyYearsOfStudy()
         {
-            YearsOfStudy = new Dictionary<int, sYearOfStudy>(schedule.YearsOfStudy.Count);
-            foreach (var yearOfStudy in schedule.YearsOfStudy)
-                YearsOfStudy.Add(yearOfStudy.GetHashCode(), new sYearOfStudy(yearOfStudy));
+            Copy(Schedule.YearsOfStudy, out YearsOfStudy, out sDictionaries.YearsOfStudy, y => new sYearOfStudy(y));
         }
 
-        private void CopyLecturers(ClassesSchedule schedule)
+        private void CopyLecturers()
         {
-            Lecturers = new Dictionary<int, sLecturer>(schedule.Lecturers.Count);
-            foreach (var lecturer in schedule.Lecturers)
-                Lecturers.Add(lecturer.GetHashCode(), new sLecturer(lecturer));
+            Copy(Schedule.Lecturers, out Lecturers, out sDictionaries.Lecturers, l => new sLecturer(l));
         }
 
-        private void CopyClassrooms(ClassesSchedule schedule)
+        private void CopyClassrooms()
         {
-            Classrooms = new Dictionary<int, sClassroom>(schedule.Classrooms.Count);
-            foreach (var classroom in schedule.Classrooms)
-                Classrooms.Add(classroom.GetHashCode(), new sClassroom(classroom));
+            Copy(Schedule.Classrooms, out Classrooms, out sDictionaries.Classrooms, c => new sClassroom(c));
         }
 
-        private void CopyGroups(ClassesSchedule schedule)
+        private void CopyTimeLine()
         {
-            Groups = new Dictionary<int, sGroup>(schedule.Groups.Count);
-            foreach (var group in schedule.Groups)
-                Groups.Add(group.GetHashCode(), new sGroup(group, this));
+            Copy(Schedule.TimeLine, out TimeLine, out sDictionaries.TimeLine, t => new sClassTime(t));
+        }
+        
+        private void CopyGroups()
+        {
+            Copy(Schedule.Groups, out Groups, out sDictionaries.Groups, g => new sGroup(g, this));
         }
 
-        private void CopyTimeLine(ClassesSchedule schedule)
+        private void CopyClassRecords()
         {
-            var oldTimeLine = schedule.TimeLine;
-            TimeLine = new sClassTime[oldTimeLine.Count];
-            for (int i = 0; i < oldTimeLine.Count; ++i)
-                TimeLine[i] = new sClassTime(oldTimeLine[i]);
-        }
-
-        private void CopyTables(ClassesSchedule schedule)
-        {
-            var oldTables = schedule.Tables;
-            Tables = new sClassesTable[oldTables.Count];
-            for (int i = 0; i < oldTables.Count; ++i)
-                Tables[i] = new sClassesTable(oldTables[i], this);
+            Copy(Schedule.ClassRecords, out ClassRecords, out sDictionaries.ClassRecords, c => new sClassRecord(c, this));
         }
 
         # endregion
 
-        # region ToClassesSchedule
+        # region ToMainSchedule
 
-        public ClassesSchedule ToClassesSchedule()
+        public Schedule ToMainSchedule()
         {
-            var scheduleAndDicts = new ScheduleAndDicts();
+            Dictionaries = new Dictionaries();
+            Schedule = new Schedule();
 
-            scheduleAndDicts.Schedule = new ClassesSchedule();
-            NonSerializableTimeLine(scheduleAndDicts);
-            NonSerializableLectures(scheduleAndDicts);
-            NonSerializableClassrooms(scheduleAndDicts);
-            NonSerializableSubjects(scheduleAndDicts);
-            NonSerializableSpecializations(scheduleAndDicts);
-            NonSerializableYearsOfStudy(scheduleAndDicts);
-            NonSerializableGroups(scheduleAndDicts);
-            NonSerializableTables(scheduleAndDicts);
+            NonSerializableTimeLine();
+            NonSerializableLectures();
+            NonSerializableClassrooms();
+            NonSerializableSubjects();
+            NonSerializableSpecializations();
+            NonSerializableYearsOfStudy();
+            NonSerializableGroups();
+            NonSerializableClassRecords();
 
-            return scheduleAndDicts.Schedule;
+            return Schedule;
         }
 
-        private void NonSerializableTimeLine(ScheduleAndDicts scheduleAndDicts)
+        private void Copy<sT, T>(sT[] from, ObservableCollection<T> to, out Dictionary<int, T> dict, Func<sT, T> converter)
         {
-            var length = TimeLine.Length;
-            scheduleAndDicts.TimeLine = new ClassTime[length];
-            for (int i = 0; i < length; ++i)
+
+            var count = from.Length;
+            dict = new Dictionary<int, T>(count);
+            for (int i = 0; i < count; ++i)
             {
-                var time = TimeLine[i].ToNonSerializable();
-                scheduleAndDicts.TimeLine[i] = time;
-                scheduleAndDicts.Schedule.TimeLine.Add(time);
+                var oldObject = from[i];
+                var newObject = converter(oldObject);
+                to.Add(newObject);
+                dict.Add(oldObject.GetHashCode(), newObject);
             }
         }
 
-        private void NonSerializableLectures(ScheduleAndDicts scheduleAndDicts)
+        private void NonSerializableTimeLine()
         {
-            scheduleAndDicts.Lecturers = new Dictionary<int, Lecturer>(Lecturers.Count);
-            foreach (var pair in Lecturers)
-            {
-                var lecturer = pair.Value.ToNonSerializable();
-                scheduleAndDicts.Lecturers.Add(pair.Key, lecturer);
-                scheduleAndDicts.Schedule.Lecturers.Add(lecturer);
-            }
+            Copy(TimeLine, Schedule.TimeLine, out Dictionaries.TimeLine, t => t.ToNonSerializable());
         }
 
-        private void NonSerializableClassrooms(ScheduleAndDicts scheduleAndDicts)
+        private void NonSerializableLectures()
         {
-            scheduleAndDicts.Classrooms = new Dictionary<int, Classroom>(Classrooms.Count);
-            foreach (var pair in Classrooms)
-            {
-                var classroom = pair.Value.ToNonSerializable();
-                scheduleAndDicts.Classrooms.Add(pair.Key, classroom);
-                scheduleAndDicts.Schedule.Classrooms.Add(classroom);
-            }
+            Copy(Lecturers, Schedule.Lecturers, out Dictionaries.Lecturers, l => l.ToNonSerializable());
         }
 
-        private void NonSerializableSubjects(ScheduleAndDicts scheduleAndDicts)
+        private void NonSerializableClassrooms()
         {
-            scheduleAndDicts.Subjects = new Dictionary<int, Subject>(Subjects.Count);
-            foreach (var pair in Subjects)
-            {
-                var subject = pair.Value.ToNonSerializable();
-                scheduleAndDicts.Subjects.Add(pair.Key, subject);
-                scheduleAndDicts.Schedule.Subjects.Add(subject);
-            }
+            Copy(Classrooms, Schedule.Classrooms, out Dictionaries.Classrooms, c => c.ToNonSerializable());
         }
 
-        private void NonSerializableSpecializations(ScheduleAndDicts scheduleAndDicts)
+        private void NonSerializableSubjects()
         {
-            scheduleAndDicts.Specializations = new Dictionary<int, Specialization>(Specializations.Count);
-            foreach (var pair in Specializations)
-            {
-                var specialization = pair.Value.ToNonSerializable();
-                scheduleAndDicts.Specializations.Add(pair.Key, specialization);
-                scheduleAndDicts.Schedule.Specializations.Add(specialization);
-            }
+            Copy(Subjects, Schedule.Subjects, out Dictionaries.Subjects, s => s.ToNonSerializable());
         }
 
-        private void NonSerializableYearsOfStudy(ScheduleAndDicts scheduleAndDicts)
+        private void NonSerializableSpecializations()
         {
-            scheduleAndDicts.YearsOfStudy = new Dictionary<int, YearOfStudy>(YearsOfStudy.Count);
-            foreach (var pair in YearsOfStudy)
-            {
-                var yearOfStudy = pair.Value.ToNonSerializable();
-                scheduleAndDicts.YearsOfStudy.Add(pair.Key, yearOfStudy);
-                scheduleAndDicts.Schedule.YearsOfStudy.Add(yearOfStudy);
-            }
+            Copy(Specializations, Schedule.Specializations, out Dictionaries.Specializations, s => s.ToNonSerializable());
         }
 
-        private void NonSerializableGroups(ScheduleAndDicts scheduleAndDicts)
+        private void NonSerializableYearsOfStudy()
         {
-            scheduleAndDicts.Groups = new Dictionary<int, Group>(Groups.Count);
-            foreach (var pair in Groups)
-            {
-                var group = pair.Value.ToNonSerializable(scheduleAndDicts);
-                scheduleAndDicts.Groups.Add(pair.Key, group);
-                scheduleAndDicts.Schedule.Groups.Add(group);
-            }
+            Copy(YearsOfStudy, Schedule.YearsOfStudy, out Dictionaries.YearsOfStudy, y => y.ToNonSerializable());
         }
 
-        private void NonSerializableTables(ScheduleAndDicts scheduleAndDicts)
+        private void NonSerializableGroups()
         {
-            var length = Tables.Length;
-            scheduleAndDicts.Tables = new ClassesTable[length];
-            for (int i = 0; i < length; ++i)
-            {
-                var table = Tables[i].ToNonSerializable(scheduleAndDicts);
-                scheduleAndDicts.Tables[i] = table;
-                scheduleAndDicts.Schedule.Tables.Add(table);
-            }
+            Copy(Groups, Schedule.Groups, out Dictionaries.Groups, g => g.ToNonSerializable(this));
+        }
+
+        private void NonSerializableClassRecords()
+        {
+            Copy(ClassRecords, Schedule.ClassRecords, out Dictionaries.ClassRecords, c => c.ToNoneSerializable(this));
         }
 
         #endregion
 
         #region Serialize
 
-        public static void Save(sClassesSchedule schedule, string path)
+        public static void Save(sSchedule schedule, string path)
         {
             var streamSave = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
             var serializer = new BinaryFormatter();
@@ -518,12 +446,12 @@ namespace ScheduleData
             streamSave.Close();
         }
 
-        public static sClassesSchedule Load(string path)
+        public static sSchedule Load(string path)
         {
             var streamLoad = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
             var deserializer = new BinaryFormatter();
 
-            var schedule = (sClassesSchedule)deserializer.Deserialize(streamLoad);
+            var schedule = (sSchedule)deserializer.Deserialize(streamLoad);
             streamLoad.Close();
             return schedule;
         }
@@ -538,14 +466,14 @@ namespace ScheduleData
 
     public class SaveLoadSchedule
     {
-        public static void Save(ClassesSchedule schedule, string path)
+        public static void Save(Schedule schedule, string path)
         {
-            sClassesSchedule.Create(schedule).Save(path);
+            sSchedule.Create(schedule).Save(path);
         }
 
-        public static ClassesSchedule Load(string path)
+        public static Schedule Load(string path)
         {
-            return sClassesSchedule.Load(path).ToClassesSchedule();
+            return sSchedule.Load(path).ToMainSchedule();
         }
     }
 }

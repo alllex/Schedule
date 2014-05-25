@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using ScheduleData;
 
 namespace Editor.ViewModels.Controls
 {
@@ -74,7 +76,7 @@ namespace Editor.ViewModels.Controls
             {
                 if (SelectedIndex >= 0)
                 {
-                    Project.ActiveYearOfStudy = Project.ClassesSchedule.YearsOfStudy[SelectedIndex];
+                    Project.ActiveYearOfStudy = Project.Schedule.YearsOfStudy[SelectedIndex];
                 }
             }
         }
@@ -97,16 +99,63 @@ namespace Editor.ViewModels.Controls
             }
         }
 
-        public void UpdateTables()
+        public void UpdateAll()
         {
             Tables.Clear();
-            foreach (var yearOfStudy in Project.ClassesSchedule.YearsOfStudy)
+            foreach (var yearOfStudy in Project.Schedule.YearsOfStudy)
             {
-                if (Project.ClassesSchedule.HasGroups(yearOfStudy))
+                if (Project.Schedule.HasGroups(yearOfStudy))
                 {
                     Tables.Add(new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = yearOfStudy });
                 }
             }
+            if (Tables.Count > 0)
+            {
+                SelectedIndex = 0;
+            }
+        }
+
+        public void AddYearOfStudy()
+        {
+            var group = Project.Schedule.AddYSG();
+            Tables.Add(new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = group.YearOfStudy });
+        }
+
+        public void RemoveYearOfStudy(YearOfStudy yearOfStudy)
+        {
+            Project.Schedule.RemoveYearOfStudy(yearOfStudy);
+            Tables.Remove(Tables.First(t => t.YearOfStudy == yearOfStudy));
+        }
+
+        public void AddSpecialization(YearOfStudy yearOfStudy)
+        {
+            Project.Schedule.AddNewSG(yearOfStudy);
+            UpdateAll();
+        }
+
+        public void RemoveSpecialization(Specialization specialization)
+        {
+            Project.Schedule.RemoveSpecialization(specialization);
+            UpdateAll();
+        }
+
+        public void AddGroup(YearOfStudy year, Specialization spec)
+        {
+            var group = Project.Schedule.AddNewGroup(year, spec);
+//            var table = Tables.First(t => t.YearOfStudy == year);
+//            var index = Tables.IndexOf(table);
+//            Tables[index].AddGroup(group);
+            UpdateAll();
+        }
+
+        public void RemoveGroup(Group @group)
+        {
+            Project.Schedule.RemoveGroup(group);
+            var table = Tables.First(t => t.YearOfStudy == group.YearOfStudy);
+            var index = Tables.IndexOf(table);
+            Tables.RemoveAt(index);
+            Tables.Insert(index, new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = group.YearOfStudy });
+            //UpdateAll();
             if (Tables.Count > 0)
             {
                 SelectedIndex = 0;

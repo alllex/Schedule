@@ -17,7 +17,7 @@ namespace ScheduleData.SearchConflicts
     {
         public IEnumerable<Conflict> Conflicts;
 
-        public ConflictCompilation(ClassesSchedule schedule, ConflictCriteria criteria)
+        public ConflictCompilation(Schedule schedule, ConflictCriteria criteria)
         {
             switch (criteria)
             {
