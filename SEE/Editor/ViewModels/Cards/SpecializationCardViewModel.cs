@@ -30,31 +30,13 @@ namespace Editor.ViewModels.Cards
 
         #endregion
 
-        private readonly Action _updateViews;
 
         #region Ctor
 
 
-        public SpecializationCardViewModel(Specialization specialization, Action updateViews)
+        public SpecializationCardViewModel(Specialization specialization)
         {
             Specialization = specialization;
-            _updateViews = updateViews;
-        }
-
-        #endregion
-
-        #region Commands
-
-        public ICommand AddGroupCommand { get { return new DelegateCommand(OnAddGroup); } }
-
-        private void OnAddGroup()
-        {
-            if (_updateViews != null)
-            {
-                var group = new Group { Name = "Новая группа", Specialization = Specialization, YearOfStudy = Project.ActiveYearOfStudy};
-                Project.Schedule.AddGroup(group);
-                _updateViews();
-            }
         }
 
         #endregion

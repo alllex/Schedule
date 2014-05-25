@@ -48,8 +48,6 @@ namespace Editor.ViewModels.Controls
         #endregion
 
         #region Fields
-
-        public Action UpdateViews;
        
         #endregion
 
@@ -107,7 +105,7 @@ namespace Editor.ViewModels.Controls
             {
                 if (Project.Schedule.HasGroups(yearOfStudy))
                 {
-                    Tables.Add(new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = yearOfStudy });
+                    Tables.Add(new TableViewModel { Project = Project, YearOfStudy = yearOfStudy });
                 }
             }
             if (Tables.Count > 0)
@@ -127,7 +125,7 @@ namespace Editor.ViewModels.Controls
         public void AddYearOfStudy()
         {
             var group = Project.Schedule.AddYSG();
-            Tables.Add(new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = group.YearOfStudy });
+            Tables.Add(new TableViewModel { Project = Project, YearOfStudy = group.YearOfStudy });
         }
 
         public void RemoveYearOfStudy(YearOfStudy yearOfStudy)

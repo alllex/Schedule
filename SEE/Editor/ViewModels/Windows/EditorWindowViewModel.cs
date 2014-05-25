@@ -58,7 +58,6 @@ namespace Editor.ViewModels.Windows
         public EditorWindowViewModel(TableControllerViewModel tableControllerViewModel)
         {
             _tableController = tableControllerViewModel;
-            _tableController.UpdateViews = UpdateAll;
             PropertyChanged += OnPropertyChanged;
         }
 

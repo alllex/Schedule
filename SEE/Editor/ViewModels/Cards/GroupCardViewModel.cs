@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-using Editor.Helpers;
-using ScheduleData;
+﻿using ScheduleData;
 
 namespace Editor.ViewModels.Cards
 {
@@ -29,29 +26,12 @@ namespace Editor.ViewModels.Cards
 
         #endregion
 
-        private readonly Action _updateViews;
 
         #region Ctor
 
-        public GroupCardViewModel(Group group, Action updateViews)
+        public GroupCardViewModel(Group group)
         {
             Group = group;
-            _updateViews = updateViews;
-        }
-
-        #endregion
-
-        #region Commands
-
-        public ICommand RemoveGroupCommand { get { return new DelegateCommand(OnRemoveGroup);}}
-
-        private void OnRemoveGroup()
-        {
-            if (_updateViews != null)
-            {
-                Project.Schedule.RemoveGroup(Group);
-                _updateViews();
-            }
         }
 
         #endregion

@@ -21,9 +21,7 @@ namespace Editor.Views.Windows
             DataContext = viewModel;
             viewModel.PropertyChanged += (s, e) =>
             {
-                var x = s as EditorWindowViewModel;
-                if (x == null) return;
-                if (e.PropertyName == "Project")
+                if (s is EditorWindowViewModel && e.PropertyName == "Project")
                 {
                     tableControllerViewModel.Project = viewModel.Project;
                 }

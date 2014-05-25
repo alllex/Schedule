@@ -130,14 +130,11 @@ namespace Editor.ViewModels.Controls
 
         private ClassCardViewModel _selectedCard;
         private int _selectedRow, _selectedColumn;
-
-        private readonly Action _updateViews;
-
+        
         #region Ctor
 
-        public TableViewModel(Action updateViews)
+        public TableViewModel()
         {
-            _updateViews = updateViews;
             PropertyChanged += OnPropertyChanged;
         }
 
@@ -203,7 +200,7 @@ namespace Editor.ViewModels.Controls
 
         private void InitializeLeftTop()
         {
-            var viewModel = new LeftTopControlViewModel(_updateViews) {Project = Project};
+            var viewModel = new LeftTopControlViewModel {Project = Project};
             LeftTopControl = new LeftTopControl { DataContext = viewModel };
             Grid.SetRow(LeftTopControl, 0);
             Grid.SetColumn(LeftTopControl, 0);
@@ -216,7 +213,7 @@ namespace Editor.ViewModels.Controls
             Titles = new ObservableCollection<UIElement>();
             foreach (var title in _titlesMarkup.Titles)
             {
-                var tvm = new SpecializationCardViewModel(title.Item, _updateViews) { Project = Project };
+                var tvm = new SpecializationCardViewModel(title.Item) { Project = Project };
                 var tc = new SpecializationCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
                 Grid.SetColumn(tc, TitleRowsCount + title.Column);
@@ -226,7 +223,7 @@ namespace Editor.ViewModels.Controls
             }
             foreach (var title in _titlesMarkup.Subtitles)
             {
-                var tvm = new GroupCardViewModel(title.Item, _updateViews) { Project = Project };
+                var tvm = new GroupCardViewModel(title.Item) { Project = Project };
                 var tc = new GroupCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
                 Grid.SetColumn(tc, TitleRowsCount + title.Column);
