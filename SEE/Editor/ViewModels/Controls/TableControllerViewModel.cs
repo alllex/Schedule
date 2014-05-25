@@ -101,6 +101,7 @@ namespace Editor.ViewModels.Controls
 
         public void UpdateAll()
         {
+            var lastSelectedYearOfStudy = Tables.Count != 0 ? Tables[SelectedIndex].YearOfStudy : null;
             Tables.Clear();
             foreach (var yearOfStudy in Project.Schedule.YearsOfStudy)
             {
@@ -111,7 +112,15 @@ namespace Editor.ViewModels.Controls
             }
             if (Tables.Count > 0)
             {
-                SelectedIndex = 0;
+                if (lastSelectedYearOfStudy != null)
+                {
+                    var table = Tables.First(t => t.YearOfStudy == lastSelectedYearOfStudy);
+                    SelectedIndex = Tables.IndexOf(table);
+                }
+                else
+                {
+                    SelectedIndex = 0;
+                }
             }
         }
 
