@@ -5,13 +5,13 @@ using ScheduleData;
 
 namespace Editor.ViewModels.Controls
 {
-    class LeftTopContolViewModel : HasProjectProperty
+    class LeftTopControlViewModel : HasProjectProperty
     {
         private readonly Action _updateViews;
 
         #region Ctor
 
-        public LeftTopContolViewModel(Action updateViews)
+        public LeftTopControlViewModel(Action updateViews)
         {
             _updateViews = updateViews;
         }

@@ -18,7 +18,7 @@ namespace Editor.ViewModels.Panels.Edit
             MessageBox.Show("Remove");
             //var year = param as YearOfStudy;
             //if (year == null) return;
-            //Project.ClassesSchedule.RemoveYearOfStudy(year);
+            //Project.Schedule.RemoveYearOfStudy(year);
         }
 
         #endregion

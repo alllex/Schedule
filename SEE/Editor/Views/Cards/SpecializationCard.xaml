@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Editor.Views.Cards.SubtitleCard"
+﻿<UserControl x:Class="Editor.Views.Cards.SpecializationCard"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,24 +6,30 @@
              xmlns:cards="clr-namespace:Editor.ViewModels.Cards"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance cards:SubtitleCardViewModel}"
+             d:DataContext="{d:DesignInstance cards:SpecializationCardViewModel}"
              
              >
-    
+
     <UserControl.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Удалить группу" 
-                      Command="{Binding RemoveGroupCommand}"/>
+            <MenuItem Header="Добавить группу" 
+                      Command="{Binding Project.ScheduleController.AddGroupCommand}" 
+                      CommandParameter="{Binding Specialization}"/>
+            <Separator />
+            <MenuItem Header="Удалить специальность"
+                      Command="{Binding Project.ScheduleController.RemoveSpecializationCommand}"
+                      CommandParameter="{Binding Specialization}"/>
         </ContextMenu>
     </UserControl.ContextMenu>
- 
+    
     <Grid>
         <Border BorderThickness="1"
                 BorderBrush="Black"
-                Background="LemonChiffon" >
+                Background="Ivory"
+                CornerRadius="20,20,0,0">
             <Grid>
                 <TextBlock x:Name="TextBlock"
-                       Text="{Binding Group.Name}"
+                       Text="{Binding Specialization.Name}"
                        TextAlignment="Center"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
@@ -31,13 +37,14 @@
                        Margin="10,5,10,5" 
                        MouseDown="TextBlock_OnMouseDown"/>
                 <TextBox x:Name="TextBox"
-                         Text="{Binding Group.Name}"
+                         Text="{Binding Specialization.Name}"
                          Visibility="Collapsed"
                          HorizontalAlignment="Center"
                          VerticalAlignment="Center"
                          TextWrapping="Wrap"
                          Margin="10,5,10,5" 
                          LostFocus="TextBox_OnLostFocus"
+                         PreviewKeyDown="TextBox_OnPreviewKeyDown"
                          />
             </Grid>
         </Border>

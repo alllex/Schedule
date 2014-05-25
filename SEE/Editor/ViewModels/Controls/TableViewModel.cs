@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Editor.Helpers;
-using Editor.Models;
 using Editor.ViewModels.Cards;
 using Editor.ViewModels.Helpers;
 using Editor.Views.Cards;
@@ -197,7 +196,7 @@ namespace Editor.ViewModels.Controls
 
         private void InitializeLeftTop()
         {
-            var viewModel = new LeftTopContolViewModel(_updateViews) {Project = Project};
+            var viewModel = new LeftTopControlViewModel(_updateViews) {Project = Project};
             LeftTopControl = new LeftTopControl { DataContext = viewModel };
             Grid.SetRow(LeftTopControl, 0);
             Grid.SetColumn(LeftTopControl, 0);
@@ -210,8 +209,8 @@ namespace Editor.ViewModels.Controls
             Titles = new ObservableCollection<UIElement>();
             foreach (var title in _titlesMarkup.Titles)
             {
-                var tvm = new TitleCardViewModel(title.Item, _updateViews) { Project = Project };
-                var tc = new TitleCard { DataContext = tvm };
+                var tvm = new SpecializationCardViewModel(title.Item, _updateViews) { Project = Project };
+                var tc = new SpecializationCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
                 Grid.SetColumn(tc, TitleRowsCount + title.Column);
                 Grid.SetRowSpan(tc, title.RowSpan);
@@ -220,8 +219,8 @@ namespace Editor.ViewModels.Controls
             }
             foreach (var title in _titlesMarkup.Subtitles)
             {
-                var tvm = new SubtitleCardViewModel(title.Item, _updateViews) { Project = Project };
-                var tc = new SubtitleCard { DataContext = tvm };
+                var tvm = new GroupCardViewModel(title.Item, _updateViews) { Project = Project };
+                var tc = new GroupCard { DataContext = tvm };
                 Grid.SetRow(tc, title.Row);
                 Grid.SetColumn(tc, TitleRowsCount + title.Column);
                 Grid.SetRowSpan(tc, title.RowSpan);
@@ -641,6 +640,13 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
+        #region Update views
 
+        public void AddGroup(Group @group)
+        {
+//            _groupClasses.AddGroup(@group);
+        }
+
+        #endregion
     }
 }

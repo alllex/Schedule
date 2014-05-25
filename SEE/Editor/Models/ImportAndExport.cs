@@ -6,7 +6,7 @@ namespace Editor.Models
     {
         public static void Export(Schedule schedule, string path)
         {
-            //Exporter.Export(path, sClassesSchedule.Create(schedule));
+            //Exporter.Export(path, sSchedule.Create(schedule));
         }
 
         public static Schedule Import(string path)
