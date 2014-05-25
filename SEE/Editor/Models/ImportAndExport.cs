@@ -12,7 +12,7 @@ namespace Editor.Models
 
         public static Schedule Import(string path)
         {
-            return null; // Заглушка
+            return Importer.Import(path);
         }
     }
 }
