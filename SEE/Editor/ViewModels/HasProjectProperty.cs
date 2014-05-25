@@ -15,28 +15,12 @@ namespace Editor.ViewModels
             {
                 if (_project != value)
                 {
-//                    if (_Project != null && _Project.ItemChangedProperty != null)
-//                    {
-//                        _Project.ItemChangedProperty -= RaiseProjectChanged;
-//                    }
                     _project = value;
-//                    if (_Project != null)
-//                    {
-//                        _Project.ItemChangedProperty += RaiseProjectChanged;
-//                    }
-                    //ProjectOnPropertyChanged();
                     RaisePropertyChanged(() => Project);
                 }
             }
         }
 
         #endregion
-
-//        private void RaiseProjectChanged()
-//        {
-//            ProjectOnPropertyChanged();
-//        }
-//
-//        protected virtual void ProjectOnPropertyChanged(){}
     }
 }

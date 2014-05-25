@@ -80,6 +80,8 @@ namespace ScheduleData
             {
                 Schedule.RemoveClass(TableDictionary[subject][time]);
             }
+            SetSubject(classRecord, subject);
+            classRecord.ClassTime = time;
             Schedule.AddClass(classRecord);
             TableDictionary[subject][time] = classRecord;
             return classRecord;
@@ -101,5 +103,8 @@ namespace ScheduleData
         {
             return timeIndex >= 0 && timeIndex < TimeCardsCount() && subjectIndex >= 0 && subjectIndex < SubjectsCount();
         }
+
+        protected abstract TSubject GetSubject(ClassRecord classRecord);
+        protected abstract void SetSubject(ClassRecord classRecord, TSubject subject);
     }
 }

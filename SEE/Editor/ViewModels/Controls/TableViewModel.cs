@@ -143,6 +143,13 @@ namespace Editor.ViewModels.Controls
 
         #endregion
 
+        #region Delegate
+
+        public delegate void UpdateTableView(TableViewModel table);
+        public UpdateTableView UpdateTableViewDelegate { get; set; }
+
+        #endregion
+
         #region Public
 
         public void ShowConflicts()
@@ -621,7 +628,6 @@ namespace Editor.ViewModels.Controls
 
             _groupClasses = new GroupClasses(Project.Schedule, YearOfStudy); 
             _titlesMarkup = new TitlesMarkup(_groupClasses.Subjects);
-            InitializeLeftTop();
             InitializeTitles();
             InitLectureCards();
         }
@@ -631,6 +637,7 @@ namespace Editor.ViewModels.Controls
             _timeLineMarkup = new TimeLineMarkup(Project.Schedule);
             InitDayLine();
             InitTimeIntervalLine();
+            InitializeLeftTop();
 
             if (YearOfStudy != null)
             {
@@ -644,9 +651,28 @@ namespace Editor.ViewModels.Controls
 
         public void AddGroup(Group @group)
         {
-//            _groupClasses.AddGroup(@group);
+            _groupClasses.AddGroup(@group);
+            _titlesMarkup = new TitlesMarkup(_groupClasses.Subjects);
+            InitializeTitles();
+            InitLectureCards();
+            if (UpdateTableViewDelegate != null)
+            {
+                UpdateTableViewDelegate(this);
+            }
         }
 
         #endregion
+
+        public void RemoveGroup(Group @group)
+        {
+            _groupClasses.RemoveGroup(@group);
+            _titlesMarkup = new TitlesMarkup(_groupClasses.Subjects);
+            InitializeTitles();
+            InitLectureCards();
+            if (UpdateTableViewDelegate != null)
+            {
+                UpdateTableViewDelegate(this);
+            }
+        }
     }
 }

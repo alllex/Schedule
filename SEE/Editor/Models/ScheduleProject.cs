@@ -145,7 +145,7 @@ namespace Editor.Models
 
         #region ProjectStatus
 
-        private ProjectStatus _projectStatus;
+        private ProjectStatus _projectStatus = new ProjectStatus();
 
         public ProjectStatus ProjectStatus
         {

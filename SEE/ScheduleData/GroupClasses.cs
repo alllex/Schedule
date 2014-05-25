@@ -73,8 +73,17 @@ namespace ScheduleData
         public void AddGroup(Group group)
         {
             if (group.YearOfStudy != YearOfStudy || TableDictionary.ContainsKey(group)) return;
-            
+            SetSubjects();
+            SetSubjectIndexes();
             TableDictionary[group] = new Dictionary<ClassTime, ClassRecord>();
+        }
+
+        public void RemoveGroup(Group group)
+        {
+            if (group.YearOfStudy != YearOfStudy || !TableDictionary.ContainsKey(group)) return;
+            SetSubjects();
+            SetSubjectIndexes();
+            TableDictionary.Remove(group);
         }
 
 //        public void AddGroup(Group group)
@@ -159,5 +168,14 @@ namespace ScheduleData
 //            return classes;
 //        }
 
+        protected override Group GetSubject(ClassRecord classRecord)
+        {
+            return classRecord.Group;
+        }
+
+        protected override void SetSubject(ClassRecord classRecord, Group subject)
+        {
+            classRecord.Group = subject;
+        }
     }
 }

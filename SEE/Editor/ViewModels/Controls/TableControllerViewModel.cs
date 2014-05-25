@@ -151,23 +151,29 @@ namespace Editor.ViewModels.Controls
         public void AddGroup(YearOfStudy year, Specialization spec)
         {
             var group = Project.Schedule.AddNewGroup(year, spec);
-//            var table = Tables.First(t => t.YearOfStudy == year);
-//            var index = Tables.IndexOf(table);
-//            Tables[index].AddGroup(group);
-            UpdateAll();
+            var table = Tables.First(t => t.YearOfStudy == year);
+            var index = Tables.IndexOf(table);
+            Tables[index].AddGroup(group);
         }
 
         public void RemoveGroup(Group @group)
         {
+            var lastSelectedYearOfStudy = Tables.Count != 0 ? Tables[SelectedIndex].YearOfStudy : null;
             Project.Schedule.RemoveGroup(group);
             var table = Tables.First(t => t.YearOfStudy == group.YearOfStudy);
             var index = Tables.IndexOf(table);
-            Tables.RemoveAt(index);
-            Tables.Insert(index, new TableViewModel(UpdateViews) { Project = Project, YearOfStudy = group.YearOfStudy });
-            //UpdateAll();
+            Tables[index].RemoveGroup(group);
             if (Tables.Count > 0)
             {
-                SelectedIndex = 0;
+                if (lastSelectedYearOfStudy != null)
+                {
+                    var table1 = Tables.First(t => t.YearOfStudy == lastSelectedYearOfStudy);
+                    SelectedIndex = Tables.IndexOf(table1);
+                }
+                else
+                {
+                    SelectedIndex = 0;
+                }
             }
         }
     }

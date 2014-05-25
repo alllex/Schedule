@@ -26,7 +26,13 @@ namespace Editor.Views.Controls
         {
             var tableViewModel = DataContext as TableViewModel;
             if (tableViewModel == null) return;
-            ReorganizeChildren(tableViewModel);
+            UpdateView(tableViewModel);
+            tableViewModel.UpdateTableViewDelegate += UpdateView;
+        }
+
+        private void UpdateView(TableViewModel table)
+        {
+            ReorganizeChildren(table);
         }
 
         private void ReorganizeChildren(TableViewModel model)
