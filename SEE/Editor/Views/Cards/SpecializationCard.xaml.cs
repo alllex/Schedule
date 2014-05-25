@@ -35,5 +35,11 @@ namespace Editor.Views.Cards
                 TextBox.Visibility = Visibility.Collapsed;
             }
         }
+
+        private void MenuItemRename_OnClick(object sender, RoutedEventArgs e)
+        {
+            TextBlock.Visibility = Visibility.Collapsed;
+            TextBox.Visibility = Visibility.Visible;
+        }
     }
 }

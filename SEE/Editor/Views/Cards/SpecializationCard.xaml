@@ -16,6 +16,9 @@
                       Command="{Binding Project.ScheduleController.AddGroupCommand}" 
                       CommandParameter="{Binding Specialization}"/>
             <Separator />
+            <MenuItem Header="Переименовать группу"
+                      Click="MenuItemRename_OnClick"
+                      />
             <MenuItem Header="Удалить специальность"
                       Command="{Binding Project.ScheduleController.RemoveSpecializationCommand}"
                       CommandParameter="{Binding Specialization}"/>
