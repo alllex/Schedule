@@ -1,23 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Data.SQLite;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SQLite;
 
 namespace ScheduleData
 {
-    class SQLiteDatabaseIO
+    public class SQLiteDatabaseIO
     {
-    	private static void SaveSubjects(Schedule schedule, SQLiteCommand command)
+
+        #region Public
+
+        public static void Save(Schedule schedule, string path)
+        {
+            SQLiteConnection.CreateFile(path);
+            var connection = new SQLiteConnection("data source=" + path);
+            var command = new SQLiteCommand(connection);
+            connection.Open();
+
+            const string dropAllTables = "select 'drop table ' || name || ';' from sqlite_master where type = 'table';";
+            command.CommandText = dropAllTables;
+            command.ExecuteNonQuery();
+
+            SaveSchedule(schedule, command);
+
+            connection.Close();
+        }
+
+        public static Schedule Load(string path)
+        {
+            var connection = new SQLiteConnection("data source=" + path);
+            var command = new SQLiteCommand(connection);
+            connection.Open();
+
+            var schedule = LoadSchedule(command);
+
+            connection.Close();
+            return schedule;
+        }
+
+        #endregion
+
+        #region Private
+
+        private static void SaveSubjects(Schedule schedule, SQLiteCommand command)
     	{
-            string create_table = @"
+            const string createTable = @"
         		create table subjects
 				(
 					id integer primary key autoincrement,
 					name text not null
 				);";
-			command.CommandText = create_table;
+			command.CommandText = createTable;
             command.ExecuteNonQuery();
 
             foreach (var subject in schedule.Subjects)
@@ -30,13 +61,13 @@ namespace ScheduleData
     	}
     	private static void SaveSpecializations(Schedule schedule, SQLiteCommand command)
     	{
-            string create_table = @"
+            const string createTable = @"
         		create table specializations
 				(
 					id integer primary key autoincrement,
 					name text not null
 				);";
-			command.CommandText = create_table;
+			command.CommandText = createTable;
             command.ExecuteNonQuery();
 
             foreach (var specialization in schedule.Specializations)
@@ -49,13 +80,13 @@ namespace ScheduleData
     	}
     	private static void SaveYearsOfStudy(Schedule schedule, SQLiteCommand command)
     	{
-            string create_table = @"
+            const string createTable = @"
         		create table years_of_study
 				(
 					id integer primary key autoincrement,
 					name text not null
 				);";
-			command.CommandText = create_table;
+			command.CommandText = createTable;
             command.ExecuteNonQuery();
 
             foreach (var year in schedule.YearsOfStudy)
@@ -68,7 +99,7 @@ namespace ScheduleData
     	}
     	private static void SaveLecturers(Schedule schedule, SQLiteCommand command)
     	{
-            string create_table = @"
+            const string createTable = @"
         		create table lecturers
 				(
 					id integer primary key autoincrement,
@@ -76,64 +107,61 @@ namespace ScheduleData
 					degree text not null,
 					department text not null
 				);";
-			command.CommandText = create_table;
+			command.CommandText = createTable;
             command.ExecuteNonQuery();
 
-            foreach (var lecturer in schedule.Lecturers)
+            foreach (var insert in schedule.Lecturers.Select(lecturer => "insert into lecturers (name, degree, department) values ('" + 
+                                                                            lecturer.Name + "', '" + 
+                                                                            lecturer.Degree + "', '" + 
+                                                                            lecturer.Department + "');"))
             {
-            	string insert = "insert into lecturers (name, degree, department) values ('" + 
-            					lecturer.Name + "', '" + 
-            					lecturer.Degree + "', '" + 
-            					lecturer.Department + "');";
-				command.CommandText = insert;
-	            command.ExecuteNonQuery();
+                command.CommandText = insert;
+                command.ExecuteNonQuery();
             }
     	}
     	private static void SaveClassrooms(Schedule schedule, SQLiteCommand command)
     	{
-            string create_table = @"
+            const string createTable = @"
         		create table classrooms
 				(
 					id integer primary key autoincrement,
 					name text not null,
 					address text not null
 				);";
-			command.CommandText = create_table;
+			command.CommandText = createTable;
             command.ExecuteNonQuery();
 
-            foreach (var classroom in schedule.Classrooms)
+            foreach (var insert in schedule.Classrooms.Select(classroom => "insert into classrooms (name, address) values ('" + 
+                                                                              classroom.Name + "', '" + 
+                                                                              classroom.Address + "');"))
             {
-            	string insert = "insert into classrooms (name, address) values ('" + 
-            					classroom.Name + "', '" + 
-            					classroom.Address + "');";
-				command.CommandText = insert;
-	            command.ExecuteNonQuery();
+                command.CommandText = insert;
+                command.ExecuteNonQuery();
             }
     	}
     	private static void SaveTimeLine(Schedule schedule, SQLiteCommand command)
     	{
-            string create_table = @"
+            const string createTable = @"
         		create table time_line
 				(
 					id integer primary key autoincrement,
 					day int not null,
 					number int not null
 				);";
-			command.CommandText = create_table;
+			command.CommandText = createTable;
             command.ExecuteNonQuery();
 
-            foreach (var classtime in schedule.TimeLine)
+            foreach (var insert in schedule.TimeLine.Select(classtime => "insert into time_line (day, number) values (" + 
+                                                                         (int)classtime.Day + ", " + 
+                                                                         classtime.Number + ");"))
             {
-            	string insert = "insert into time_line (day, number) values (" + 
-            					(int)classtime.Day + ", " + 
-            					classtime.Number + ");";
-				command.CommandText = insert;
-	            command.ExecuteNonQuery();
+                command.CommandText = insert;
+                command.ExecuteNonQuery();
             }
     	}
     	private static void SaveGroups(Schedule schedule, SQLiteCommand command)
     	{
-            string create_table = @"
+            const string createTable = @"
         		create table groups
 				(
 					id integer primary key autoincrement,
@@ -141,7 +169,7 @@ namespace ScheduleData
 					spec int not null,
 					year int not null
 				);";
-			command.CommandText = create_table;
+			command.CommandText = createTable;
             command.ExecuteNonQuery();
 
             foreach (var grp in schedule.Groups)
@@ -156,7 +184,7 @@ namespace ScheduleData
     	}
     	private static void SaveRecords(Schedule schedule, SQLiteCommand command)
     	{
-            string create_table = @"
+            const string createTable = @"
         		create table records
 				(
 					id integer primary key autoincrement,
@@ -166,22 +194,19 @@ namespace ScheduleData
 					room int not null,
 					time int not null
 				);";
-			command.CommandText = create_table;
+			command.CommandText = createTable;
             command.ExecuteNonQuery();
 
-			for (int i = 0; i < schedule.ClassRecords.Count; i++)
-            {
-            	var record = schedule.ClassRecords[i];
-                string insert = "insert into records (year, sub, grp, lect, room, time) values (" +
-                                schedule.Subjects.IndexOf(record.Subject) + ", " +
-                                schedule.Groups.IndexOf(record.Group) + ", " +
-                                schedule.Lecturers.IndexOf(record.Lecturer) + ", " +
-                                schedule.Classrooms.IndexOf(record.Classroom) + ", " +
-                                schedule.TimeLine.IndexOf(record.ClassTime) + ");";
-				command.CommandText = insert;
-	            command.ExecuteNonQuery();
-
-            }
+			foreach (var insert in schedule.ClassRecords.Select(record => "insert into records (sub, grp, lect, room, time) values (" +
+			                                                                 schedule.Subjects.IndexOf(record.Subject) + ", " +
+			                                                                 schedule.Groups.IndexOf(record.Group) + ", " +
+			                                                                 schedule.Lecturers.IndexOf(record.Lecturer) + ", " +
+			                                                                 schedule.Classrooms.IndexOf(record.Classroom) + ", " +
+			                                                                 schedule.TimeLine.IndexOf(record.ClassTime) + ");"))
+			{
+			    command.CommandText = insert;
+			    command.ExecuteNonQuery();
+			}
     	}
         private static void SaveSchedule(Schedule schedule, SQLiteCommand command)
         {
@@ -195,31 +220,15 @@ namespace ScheduleData
             SaveRecords(schedule, command);
         	
         }
-        public static void Save(Schedule schedule, string path)
-        {
-            SQLiteConnection.CreateFile(path);
-            SQLiteConnection connection = new SQLiteConnection("data source=" + path);
-            SQLiteCommand command = new SQLiteCommand(connection);
-            connection.Open();
-
-            string drop_all_tables = "select 'drop table ' || name || ';' from sqlite_master where type = 'table';";
-            command.CommandText = drop_all_tables;
-            command.ExecuteNonQuery();
-
-            SaveSchedule(schedule, command);
-
-            connection.Close();
-        }
 
         private static void LoadSubjects(Schedule schedule, SQLiteCommand command)
         {
             command.CommandText = "select * from subjects";
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var subject = new Subject();
-                subject.Name = (string)reader["name"];
+                var subject = new Subject {Name = (string) reader["name"]};
                 schedule.Subjects.Add(subject);
             }
             reader.Close();
@@ -229,11 +238,10 @@ namespace ScheduleData
         {
             command.CommandText = "select * from specializations";
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var specialization = new Specialization();
-                specialization.Name = (string)reader["name"];
+                var specialization = new Specialization {Name = (string) reader["name"]};
                 schedule.Specializations.Add(specialization);
             }
             reader.Close();
@@ -242,11 +250,10 @@ namespace ScheduleData
         {
             command.CommandText = "select * from years_of_study";
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var year = new YearOfStudy();
-                year.Name = (string)reader["name"];
+                var year = new YearOfStudy {Name = (string) reader["name"]};
                 schedule.YearsOfStudy.Add(year);
             }
             reader.Close();
@@ -255,13 +262,15 @@ namespace ScheduleData
         {
             command.CommandText = "select * from lecturers";
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var lecturer = new Lecturer();
-                lecturer.Name = (string)reader["name"];
-                lecturer.Degree = (string)reader["degree"];
-                lecturer.Department = (string)reader["department"];
+                var lecturer = new Lecturer
+                {
+                    Name = (string) reader["name"],
+                    Degree = (string) reader["degree"],
+                    Department = (string) reader["department"]
+                };
                 schedule.Lecturers.Add(lecturer);
             }
             reader.Close();
@@ -273,9 +282,7 @@ namespace ScheduleData
             SQLiteDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var classroom = new Classroom();
-                classroom.Name = (string)reader["name"];
-                classroom.Address = (string)reader["address"];
+                var classroom = new Classroom {Name = (string) reader["name"], Address = (string) reader["address"]};
                 schedule.Classrooms.Add(classroom);
             }
             reader.Close();
@@ -284,12 +291,10 @@ namespace ScheduleData
         {
             command.CommandText = "select * from time_line";
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var classtime = new ClassTime();
-                classtime.Day = (Weekdays)reader["day"];
-                classtime.Number = (int)reader["number"];
+                var classtime = new ClassTime {Day = (Weekdays) reader["day"], Number = (int) reader["number"]};
                 schedule.TimeLine.Add(classtime);
             }
             reader.Close();
@@ -298,13 +303,15 @@ namespace ScheduleData
         {
             command.CommandText = "select * from groups";
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var grp = new Group();
-                grp.Name = (string)reader["name"];
-                grp.Specialization = schedule.Specializations[(int)reader["spec"]];
-                grp.YearOfStudy = schedule.YearsOfStudy[(int)reader["year"]];
+                var grp = new Group
+                {
+                    Name = (string) reader["name"],
+                    Specialization = schedule.Specializations[(int) reader["spec"]],
+                    YearOfStudy = schedule.YearsOfStudy[(int) reader["year"]]
+                };
                 schedule.Groups.Add(grp);
             }
             reader.Close();
@@ -313,15 +320,17 @@ namespace ScheduleData
         {
             command.CommandText = "select * from records";
 
-            SQLiteDataReader reader = command.ExecuteReader();
+            var reader = command.ExecuteReader();
             while (reader.Read())
             {
-                var record = new ClassRecord();
-                record.Subject = schedule.Subjects[(int)reader["sub"]];
-                record.Group = schedule.Groups[(int)reader["grp"]];
-                record.Lecturer = schedule.Lecturers[(int)reader["lect"]];
-                record.Classroom = schedule.Classrooms[(int)reader["room"]];
-                record.ClassTime = schedule.TimeLine[(int)reader["time"]];
+                var record = new ClassRecord
+                {
+                    Subject = schedule.Subjects[(int) reader["sub"]],
+                    Group = schedule.Groups[(int) reader["grp"]],
+                    Lecturer = schedule.Lecturers[(int) reader["lect"]],
+                    Classroom = schedule.Classrooms[(int) reader["room"]],
+                    ClassTime = schedule.TimeLine[(int) reader["time"]]
+                };
                 schedule.ClassRecords.Add(record);
             }
             reader.Close();
@@ -341,16 +350,7 @@ namespace ScheduleData
         	
         	return schedule;
         }
-        public static Schedule Load(string path)
-        {
-            SQLiteConnection connection = new SQLiteConnection("data source=" + path);
-            SQLiteCommand command = new SQLiteCommand(connection);
-            connection.Open();
 
-            var schedule = LoadSchedule(command);
-
-            connection.Close();
-            return schedule;
-        }
+        #endregion
     }
 }
