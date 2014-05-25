@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:windows="clr-namespace:Editor.ViewModels.Windows"
         mc:Ignorable="d"
-        Title="EditorWindow" Height="700" Width="1000"
+        Title="Редактор расписания" Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         x:Name="Window" 
@@ -22,7 +22,7 @@
                 <MenuItem Header="Новый проект"
                           Command="{Binding NewProjectCommand}"/>
                 <Separator />
-                <MenuItem Header="Сгенерировать"
+                <MenuItem Header="Случайное расписание"
                           Command="{Binding LoadRandomScheduleCommand}"/>
                 <Separator />
                 <MenuItem Header="Сохранить"
@@ -90,14 +90,6 @@
             </MenuItem>
         </Menu>
         
-<!--        <Expander DockPanel.Dock="Left"-->
-<!--                  HorizontalAlignment="Left"-->
-<!--                  ExpandDirection="Right"-->
-<!--                  IsExpanded="False"-->
-<!--                  Header="Cards pool">-->
-<!--            <controls:CardClipboard x:Name="CardClipboard"/>-->
-<!--        </Expander>-->
-        
         <Expander DockPanel.Dock="Right"
                   ExpandDirection="Left"
                   Header="Конфликты"
@@ -125,9 +117,30 @@
 
         </StatusBar>
 
-        <controls:TableController  
-            x:Name="TablesController"    
-            DockPanel.Dock="Left" />
+        <Grid>
+            <controls:TableController Grid.Row="0" Grid.Column="0" 
+                x:Name="TablesController"  
+                                      Visibility="Collapsed"/>
+            
+            <StackPanel Grid.Row="0" Grid.Column="0"
+                        x:Name="OnStartUpPanel"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="MaxWidth" Value="150" />
+                        <Setter Property="Height" Value="30" />
+                    </Style>
+                </StackPanel.Resources>
+                <Button Content="Новый проект"
+                        Command="{Binding NewProjectCommand}"/>
+                <Button Content="Случайное расписание"
+                        Command="{Binding LoadRandomScheduleCommand}"/>
+                <Button Content="Открыть"
+                        Command="{Binding OpenProjectCommand}"/>
+            </StackPanel>
+        </Grid>
         
     </DockPanel>
 </Window>

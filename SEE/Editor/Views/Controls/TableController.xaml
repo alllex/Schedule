@@ -11,10 +11,8 @@
              >
 
     <Grid>
-        <GroupBox Header="Редактор таблиц">
-            <Grid>
                 <Button Content="Добавить курс"
-                        Margin="0,0,5,0"
+                        Margin="0,5,5,0"
                         Padding="2"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Top"
@@ -63,7 +61,5 @@
                         </Style>
                     </TabControl.ItemContainerStyle>
                 </TabControl>
-            </Grid>
-        </GroupBox>
     </Grid>
 </UserControl>

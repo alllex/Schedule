@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using Editor.ViewModels.Controls;
 using Editor.ViewModels.Windows;
+using Editor.Views.Controls;
 
 namespace Editor.Views.Windows
 {
@@ -19,14 +20,37 @@ namespace Editor.Views.Windows
             DataContext = viewModel;
             viewModel.PropertyChanged += (s, e) =>
             {
-                if (s is EditorWindowViewModel && e.PropertyName == "Project")
+                if (s is EditorWindowViewModel)
                 {
-                    tableControllerViewModel.Project = viewModel.Project;
-                    conflictsViewerViewModel.Project = viewModel.Project;
+                    if (e.PropertyName == "Project")
+                    {
+                        tableControllerViewModel.Project = viewModel.Project;
+                        conflictsViewerViewModel.Project = viewModel.Project;
+                    }
+                    else if (e.PropertyName == "HasActiveProject")
+                    {
+                        OnHasActiveProjectChanged(viewModel.HasActiveProject);
+                    }
                 }
             };
             TablesController.DataContext = tableControllerViewModel;
             ConflictsViewer.DataContext = conflictsViewerViewModel;
         }
+
+        private void OnHasActiveProjectChanged(bool has)
+        {
+            if (has)
+            {
+                TablesController.Visibility = Visibility.Visible;
+                OnStartUpPanel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                TablesController.Visibility = Visibility.Collapsed;
+                OnStartUpPanel.Visibility = Visibility.Visible;
+            }
+        }
     }
+
+
 }
