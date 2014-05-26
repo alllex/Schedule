@@ -9,8 +9,8 @@ namespace Editor.ViewModels.Cards
 
         #region Day
 
-        private string _day;
-        public string Day
+        private Weekdays _day;
+        public Weekdays Day
         {
             get { return _day; }
             set
@@ -31,7 +31,7 @@ namespace Editor.ViewModels.Cards
 
         public DayCardViewModel(Weekdays day)
         {
-            Day = day.ToString();
+            Day = day;
         }
 
         #endregion

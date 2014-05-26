@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using Editor.Helpers;
 
 namespace Editor.ViewModels.Windows
 {

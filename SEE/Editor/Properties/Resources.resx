@@ -117,6 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ButtonAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ButtonApply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="ConflictOpenConflictSolverCommand" xml:space="preserve">
+    <value>View cards</value>
+  </data>
+  <data name="EditorExport" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="EditorImport" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="EditorLoadRandomDataCommand" xml:space="preserve">
+    <value>Randomize schedule</value>
+  </data>
+  <data name="EditorNewProjectCommand" xml:space="preserve">
+    <value>New Project</value>
+  </data>
+  <data name="EditorOpenCommand" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="EditorSaveCommand" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="HeaderCopyClassCommand" xml:space="preserve">
     <value>Copy</value>
   </data>
@@ -131,5 +158,131 @@
   </data>
   <data name="HeaderPasteClassCommand" xml:space="preserve">
     <value>Paste</value>
+  </data>
+  <data name="LabelAddress" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="LabelClassroom" xml:space="preserve">
+    <value>Classroom:</value>
+  </data>
+  <data name="LabelConflict" xml:space="preserve">
+    <value>Conflict:</value>
+  </data>
+  <data name="LabelConflictCount" xml:space="preserve">
+    <value>Cards in conflict:</value>
+  </data>
+  <data name="LabelInitials" xml:space="preserve">
+    <value>Initials:</value>
+  </data>
+  <data name="LabelLecturer" xml:space="preserve">
+    <value>Lecturer:</value>
+  </data>
+  <data name="LabelName" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="LabelSpecialization" xml:space="preserve">
+    <value>Specialization:</value>
+  </data>
+  <data name="LabelSubject" xml:space="preserve">
+    <value>Subject:</value>
+  </data>
+  <data name="LabelYearOfStudy" xml:space="preserve">
+    <value>Year of study:</value>
+  </data>
+  <data name="MsgBoxHeaderNoConflicts" xml:space="preserve">
+    <value>Conflicts search</value>
+  </data>
+  <data name="MsgBoxMessageNoConflicts" xml:space="preserve">
+    <value>No conflict found</value>
+  </data>
+  <data name="ProjectFileDefaultName" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="ProjectFileExtensionDatabase" xml:space="preserve">
+    <value>db</value>
+  </data>
+  <data name="ProjectFileExtensionExcel" xml:space="preserve">
+    <value>xlsx</value>
+  </data>
+  <data name="ProjectFileExtensionNative" xml:space="preserve">
+    <value>sch</value>
+  </data>
+  <data name="ProjectFileFilterDatabase" xml:space="preserve">
+    <value>Schedule database</value>
+  </data>
+  <data name="ProjectFileFilterExcel" xml:space="preserve">
+    <value>Schedule Excel</value>
+  </data>
+  <data name="ProjectFileFilterNative" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="ProjectFileFilterOtherFiles" xml:space="preserve">
+    <value>Other files</value>
+  </data>
+  <data name="ScheduleControllerAddSpecializationCommand" xml:space="preserve">
+    <value>Add new specialization</value>
+  </data>
+  <data name="ScheduleControllerRemoveYearOfStudyCommand" xml:space="preserve">
+    <value>Remove year of study</value>
+  </data>
+  <data name="StatisticPanelHeaderEveryDayLoad" xml:space="preserve">
+    <value>Everyday load</value>
+  </data>
+  <data name="StatisticPanelLabelAverageClassesPerWeek" xml:space="preserve">
+    <value>Average count of classes per week:</value>
+  </data>
+  <data name="StatisticPanelLabelCountClassesPerWeek" xml:space="preserve">
+    <value>Count of classes per week:</value>
+  </data>
+  <data name="TabItemHeaderClassrooms" xml:space="preserve">
+    <value>Classrooms</value>
+  </data>
+  <data name="TabItemHeaderGroups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="TabItemHeaderLecturers" xml:space="preserve">
+    <value>Lecturers</value>
+  </data>
+  <data name="TabItemHeaderSpecializations" xml:space="preserve">
+    <value>Specializations</value>
+  </data>
+  <data name="TabItemHeaderSubjects" xml:space="preserve">
+    <value>Subjects</value>
+  </data>
+  <data name="TabItemHeaderYearsOfStudy" xml:space="preserve">
+    <value>Years of study</value>
+  </data>
+  <data name="TableControllerButtonAddYear" xml:space="preserve">
+    <value>Add year of study</value>
+  </data>
+  <data name="WeekdayFriday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="WeekdayMonday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="WeekdaySaturday" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+  <data name="WeekdayThursday" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="WeekdayTuesday" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="WeekdayWednesday" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+  <data name="WindowTitleConflictSolver" xml:space="preserve">
+    <value>Cards in conflict</value>
+  </data>
+  <data name="WindowTitleEdit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="WindowTitleEditor" xml:space="preserve">
+    <value>Schedule Editor</value>
+  </data>
+  <data name="WindowTitleStatistics" xml:space="preserve">
+    <value>Statistics</value>
   </data>
 </root>

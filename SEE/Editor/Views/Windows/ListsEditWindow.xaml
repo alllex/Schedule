@@ -2,13 +2,15 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:converters="clr-namespace:Editor.Converters"
-        Title="Списки" Height="500" Width="700"
+        Title="{x:Static p:Resources.WindowTitleEdit}"
+        Height="500" Width="700"
         WindowStartupLocation="CenterScreen"
         
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Editor.ViewModels.Windows"
         xmlns:edit="clr-namespace:Editor.Views.Panels.Edit"
+        xmlns:p="clr-namespace:Editor.Properties"
         mc:Ignorable="d"
         
         d:DataContext="{d:DesignInstance viewModels:ListsEditWindowViewModel}"
@@ -17,22 +19,22 @@
     <DockPanel>
         <TabControl x:Name="SectionsTabControl"
                     SelectedIndex="{Binding ActiveTab, Converter={converters:ListsEditorTabToIntConverter}}">
-            <TabItem Header="Группы">
+            <TabItem Header="{x:Static p:Resources.TabItemHeaderGroups}">
                     <edit:GroupEditPanel x:Name="GroupEditPanel"/>
             </TabItem>
-            <TabItem Header="Предметы">
+            <TabItem Header="{x:Static p:Resources.TabItemHeaderSubjects}">
                 <edit:SubjectEditPanel x:Name="SubjectEditPanel"/>
             </TabItem>
-            <TabItem Header="Преподаватели">
+            <TabItem Header="{x:Static p:Resources.TabItemHeaderLecturers}">
                 <edit:LecturerEditPanel  x:Name="LecturerEditPanel"/>
             </TabItem>
-            <TabItem Header="Аудитории">
+            <TabItem Header="{x:Static p:Resources.TabItemHeaderClassrooms}">
                 <edit:ClassroomEditPanel x:Name="ClassroomEditPanel"/>
             </TabItem>
-            <TabItem Header="Специальности">
+            <TabItem Header="{x:Static p:Resources.TabItemHeaderSpecializations}">
                 <edit:SpecializationEditPanel x:Name="SpecializationEditPanel"/>
             </TabItem>
-            <TabItem Header="Курсы">
+            <TabItem Header="{x:Static p:Resources.TabItemHeaderYearsOfStudy}">
                 <edit:YearOfStudyEditPanel x:Name="YearOfStudyEditPanel"/>
             </TabItem>
         </TabControl>

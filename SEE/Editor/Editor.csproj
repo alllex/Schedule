@@ -69,8 +69,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\WeekdaysToStringConverter.cs" />
     <Compile Include="Helpers\ScrollViewerEx.cs" />
-    <Compile Include="Models\ImportAndExport.cs" />
+    <Compile Include="Models\ImportExport.cs" />
     <Compile Include="Models\ProjectStatus.cs" />
     <Compile Include="Models\ScheduleController.cs" />
     <Compile Include="ViewModels\Controls\ConflictsViewerViewModel.cs" />
@@ -193,7 +194,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\BaseConverter.cs" />
+    <Compile Include="Converters\BaseConverters.cs" />
     <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
     <Compile Include="Helpers\ClipboardService.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
@@ -290,6 +291,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

@@ -5,8 +5,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:windows="clr-namespace:Editor.ViewModels.Windows"
+        xmlns:p="clr-namespace:Editor.Properties"
         mc:Ignorable="d"
-        Title="Редактор расписания" Height="700" Width="1000"
+        Title="{x:Static p:Resources.WindowTitleEditor}"
+        Height="700" Width="1000"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         x:Name="Window" 
@@ -19,24 +21,24 @@
               DockPanel.Dock="Top"
               KeyboardNavigation.TabNavigation="None">
             <MenuItem Header="Файл">
-                <MenuItem Header="Новый проект"
+                <MenuItem Header="{x:Static p:Resources.EditorNewProjectCommand}"
                           Command="{Binding NewProjectCommand}"/>
                 <Separator />
-                <MenuItem Header="Случайное расписание"
+                <MenuItem Header="{x:Static p:Resources.EditorLoadRandomDataCommand}"
                           Command="{Binding LoadRandomScheduleCommand}"/>
                 <Separator />
-                <MenuItem Header="Сохранить"
+                <MenuItem Header="{x:Static p:Resources.EditorSaveCommand}"
                           Command="{Binding SaveProjectCommand}"/>
-                <MenuItem Header="Открыть"
+                <MenuItem Header="{x:Static p:Resources.EditorOpenCommand}"
                           Command="{Binding OpenProjectCommand}"/>
                 <Separator />
-                <MenuItem Header="Экспорт">
+                <MenuItem Header="{x:Static p:Resources.EditorExport}">
                     <MenuItem Header="Excel (.xlsx)"
                           Command="{Binding ExportToExcelCommand}"/>
                     <MenuItem Header="Database (.db)"
                           Command="{Binding ExportToDatabaseCommand}"/>
                 </MenuItem>
-                <MenuItem Header="Импорт">
+                <MenuItem Header="{x:Static p:Resources.EditorImport}">
                     <MenuItem Header="Excel (.xlsx)"
                               Command="{Binding ImportFromExcelCommand}"/>
                     <MenuItem Header="Database (.db)"

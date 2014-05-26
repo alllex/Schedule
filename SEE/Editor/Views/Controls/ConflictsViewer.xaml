@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:p="clr-namespace:Editor.Properties"
              xmlns:controls="clr-namespace:Editor.ViewModels.Controls"
              xmlns:searchConflicts="clr-namespace:ScheduleData.SearchConflicts;assembly=ScheduleData"
              mc:Ignorable="d" 
@@ -57,17 +58,17 @@
 
                                             <Grid.ContextMenu>
                                                 <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
-                                                    <MenuItem Header="Посмотреть карточки" 
+                                                    <MenuItem Header="{x:Static p:Resources.ConflictOpenConflictSolverCommand}" 
                                                               Click="MenuItem_OnClick"/>
                                                 </ContextMenu>
                                             </Grid.ContextMenu>
 
-                                            <TextBlock Text="Конфликт:"/>
+                                            <TextBlock Text="{x:Static p:Resources.LabelConflict}"/>
                                             <TextBlock Grid.Row="0" Grid.Column="1" 
                                                    Text="{Binding Message}"
                                                    TextWrapping="Wrap"/>
                                             <TextBlock Grid.Row="1" Grid.Column="0" 
-                                                   Text="Количество:"/>
+                                                   Text="{x:Static p:Resources.LabelConflictCount}"/>
                                             <TextBlock Grid.Row="1" Grid.Column="1" 
                                                    Text="{Binding CardsCount}"
                                                    TextWrapping="Wrap"

@@ -16,9 +16,11 @@ using ScheduleData.SearchConflicts;
 namespace Editor.ViewModels.Windows
 {
 
+    using Resx = Properties.Resources;
+
     class EditorWindowViewModel : HasProjectProperty
     {
-
+        
         #region Properties
 
         #region HasActiveProject
@@ -139,16 +141,19 @@ namespace Editor.ViewModels.Windows
 
         private void OnImportFromDatabase()
         {
+            var fileName = Resx.ProjectFileDefaultName;
+            var fileExt = Resx.ProjectFileExtensionDatabase;
+            var filter = Resx.ProjectFileFilterDatabase;
             var dlg = new OpenFileDialog
             {
-                FileName = "Расписание",
-                DefaultExt = ".db",
-                Filter = "Расписание|*.db"
+                FileName = fileName,
+                DefaultExt = "." + fileExt,
+                Filter = filter + "|*." + fileExt
             };
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                var schedule = SQLiteDatabaseIO.Load(dlg.FileName);
+                var schedule = ScheduleImporter.DatabaseImport(dlg.FileName);
                 SetNewProject(new ScheduleProject { Schedule = schedule });
             }
             UpdateStatus("Импорт выполнен");
@@ -156,35 +161,40 @@ namespace Editor.ViewModels.Windows
 
         private void OnExportToDatabase()
         {
-            UpdateStatus("Экспорт...");
+            var fileName = Resx.ProjectFileDefaultName;
+            var fileExt = Resx.ProjectFileExtensionDatabase;
+            var filter = Resx.ProjectFileFilterDatabase;
             var dlg = new SaveFileDialog
             {
-                FileName = "Расписание",
-                DefaultExt = ".db",
-                Filter = "Расписание|*.db"
+                FileName = fileName,
+                DefaultExt = "." + fileExt,
+                Filter = filter + "|*." + fileExt
             };
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                SQLiteDatabaseIO.Save(Project.Schedule, dlg.FileName);
+                ScheduleExporter.DatabaseExport(Project.Schedule, dlg.FileName);
             }
             UpdateStatus("Экспорт выполнен");
         }
 
         private void OnImportFromExcel()
         {
+            var fileName = Resx.ProjectFileDefaultName;
+            var fileExt = Resx.ProjectFileExtensionExcel;
+            var filter = Resx.ProjectFileFilterExcel;
             var dlg = new OpenFileDialog
             {
-                FileName = "Расписание",
-                DefaultExt = ".xlsx",
-                Filter = "Расписание|*.xlsx"
+                FileName = fileName,
+                DefaultExt = "." + fileExt,
+                Filter = filter + "|*." + fileExt
             };
             var result = dlg.ShowDialog();
             if (result == true)
             {
                 Action action = () =>
                 {
-                    var schedule = ScheduleImporter.Import(dlg.FileName);
+                    var schedule = ScheduleImporter.ExcelImport(dlg.FileName);
                     SetNewProject(new ScheduleProject {Schedule = schedule});
                 };
                 ExecuteAction("Импорт", "Импорт выполнен", action);
@@ -193,19 +203,19 @@ namespace Editor.ViewModels.Windows
 
         private void OnExportToExcel()
         {
+            var fileName = Resx.ProjectFileDefaultName;
+            var fileExt = Resx.ProjectFileExtensionExcel;
+            var filter = Resx.ProjectFileFilterExcel;
             var dlg = new SaveFileDialog
             {
-                FileName = "Расписание",
-                DefaultExt = ".xlsx",
-                Filter = "Расписание|*.xlsx"
+                FileName = fileName,
+                DefaultExt = "." + fileExt,
+                Filter = filter + "|*." + fileExt
             };
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                Action action = () =>
-                {
-                    ScheduleExporter.Export(Project.Schedule, dlg.FileName);
-                };
+                Action action = () => ScheduleExporter.ExcelExport(Project.Schedule, dlg.FileName);
                 ExecuteAction("Экспорт", "Экспорт выполнен", action);
             }
         }
@@ -261,7 +271,7 @@ namespace Editor.ViewModels.Windows
                 }
                 else
                 {
-                    MessageBox.Show("Ни одного конфликта не найдено", "Поиск конфликтов");
+                    MessageBox.Show(Resx.MsgBoxMessageNoConflicts, Resx.MsgBoxHeaderNoConflicts);
                 }
             }
         }
@@ -320,11 +330,14 @@ namespace Editor.ViewModels.Windows
 
         private void OnSaveProject()
         {
+            var fileName = Resx.ProjectFileDefaultName;
+            var fileExt = Resx.ProjectFileExtensionNative;
+            var filter = Resx.ProjectFileFilterNative;
             var dlg = new SaveFileDialog
             {
-                FileName = "Расписание",
-                DefaultExt = ".sch",
-                Filter = "Расписание|*.sch|Другие файлы|*.*"
+                FileName = fileName,
+                DefaultExt = "." + fileExt,
+                Filter = filter + "|*." + fileExt
             };
             var result = dlg.ShowDialog();
             if (result == true)
@@ -336,11 +349,14 @@ namespace Editor.ViewModels.Windows
 
         private void OnOpenProject()
         {
+            var fileName = Resx.ProjectFileDefaultName;
+            var fileExt = Resx.ProjectFileExtensionNative;
+            var filter = Resx.ProjectFileFilterNative;
             var dlg = new OpenFileDialog
             {
-                FileName = "Расписание",
-                DefaultExt = ".sch",
-                Filter = "Расписание|*.sch|Другие файлы|*.*"
+                FileName = fileName,
+                DefaultExt = "." + fileExt,
+                Filter = filter + "|*." + fileExt
             };
             var result = dlg.ShowDialog();
             if (result == true)
@@ -530,7 +546,7 @@ namespace Editor.ViewModels.Windows
         {
             if (Project != null && Project.ProjectStatus != null)
             {
-                Project.ProjectStatus.Status = status;
+                //Project.ProjectStatus.Status = status;
             }
         }
 

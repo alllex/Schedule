@@ -5,7 +5,6 @@ using Editor.Helpers;
 using Editor.ViewModels.Cards;
 using Editor.ViewModels.Windows;
 using Editor.Views.Windows;
-using ScheduleData;
 using ScheduleData.SearchConflicts;
 
 namespace Editor.ViewModels.Controls

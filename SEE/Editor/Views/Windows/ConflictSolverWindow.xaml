@@ -1,13 +1,15 @@
 ﻿<Window x:Class="Editor.Views.Windows.ConflictSolverWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Карточки с конфликтами" Height="500" Width="500"
+        Title="{x:Static p:Resources.WindowTitleConflictSolver}"
+        Height="500" Width="500"
         
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Editor.ViewModels.Windows"
         xmlns:cards="clr-namespace:Editor.Views.Cards"
         xmlns:searchConflicts="clr-namespace:ScheduleData.SearchConflicts;assembly=ScheduleData"
+        xmlns:p="clr-namespace:Editor.Properties"
         mc:Ignorable="d"
         
         WindowStartupLocation="CenterScreen"
@@ -51,12 +53,12 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="Конфликт:"/>
+                <Label Content="{x:Static p:Resources.LabelConflict}"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" 
                                                    Text="{Binding Conflict.Message}"
                                                    TextWrapping="Wrap"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" 
-                                                   Text="Количество:"/>
+                <Label Grid.Row="1" Grid.Column="0" 
+                       Content="{x:Static p:Resources.LabelConflictCount}"/>
                 <TextBlock Grid.Row="1" Grid.Column="1" 
                                                    Text="{Binding Conflict.CardsCount}"
                                                    TextWrapping="Wrap"

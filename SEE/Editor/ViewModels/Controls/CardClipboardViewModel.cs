@@ -1,37 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Editor.Helpers;
-using Editor.Models;
-using Editor.ViewModels.Cards;
-using Editor.Views.Cards;
+﻿using Editor.Models;
 
 namespace Editor.ViewModels.Controls
 {
-    class CardClipboardViewModel : BaseViewModel    
+    class CardClipboardViewModel : HasProjectProperty    
     {
-
-        #region Project
-
-        private ScheduleProject _project;
-
-        public ScheduleProject Project
-        {
-            get { return _project; }
-            set
-            {
-                if (_project != value)
-                {
-                    _project = value;
-                    RaisePropertyChanged(() => Project);
-                }
-            }
-        }
-
-        #endregion
 
         //private ClassCardViewModel _selectedCard;
 

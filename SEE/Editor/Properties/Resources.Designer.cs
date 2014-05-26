@@ -61,6 +61,87 @@ namespace Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string ButtonAdd {
+            get {
+                return ResourceManager.GetString("ButtonAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        public static string ButtonApply {
+            get {
+                return ResourceManager.GetString("ButtonApply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View cards.
+        /// </summary>
+        public static string ConflictOpenConflictSolverCommand {
+            get {
+                return ResourceManager.GetString("ConflictOpenConflictSolverCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string EditorExport {
+            get {
+                return ResourceManager.GetString("EditorExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import.
+        /// </summary>
+        public static string EditorImport {
+            get {
+                return ResourceManager.GetString("EditorImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Randomize schedule.
+        /// </summary>
+        public static string EditorLoadRandomDataCommand {
+            get {
+                return ResourceManager.GetString("EditorLoadRandomDataCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Project.
+        /// </summary>
+        public static string EditorNewProjectCommand {
+            get {
+                return ResourceManager.GetString("EditorNewProjectCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string EditorOpenCommand {
+            get {
+                return ResourceManager.GetString("EditorOpenCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string EditorSaveCommand {
+            get {
+                return ResourceManager.GetString("EditorSaveCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy.
         /// </summary>
         public static string HeaderCopyClassCommand {
@@ -102,6 +183,384 @@ namespace Editor.Properties {
         public static string HeaderPasteClassCommand {
             get {
                 return ResourceManager.GetString("HeaderPasteClassCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Address:.
+        /// </summary>
+        public static string LabelAddress {
+            get {
+                return ResourceManager.GetString("LabelAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classroom:.
+        /// </summary>
+        public static string LabelClassroom {
+            get {
+                return ResourceManager.GetString("LabelClassroom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conflict:.
+        /// </summary>
+        public static string LabelConflict {
+            get {
+                return ResourceManager.GetString("LabelConflict", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cards in conflict:.
+        /// </summary>
+        public static string LabelConflictCount {
+            get {
+                return ResourceManager.GetString("LabelConflictCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initials:.
+        /// </summary>
+        public static string LabelInitials {
+            get {
+                return ResourceManager.GetString("LabelInitials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lecturer:.
+        /// </summary>
+        public static string LabelLecturer {
+            get {
+                return ResourceManager.GetString("LabelLecturer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name:.
+        /// </summary>
+        public static string LabelName {
+            get {
+                return ResourceManager.GetString("LabelName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specialization:.
+        /// </summary>
+        public static string LabelSpecialization {
+            get {
+                return ResourceManager.GetString("LabelSpecialization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subject:.
+        /// </summary>
+        public static string LabelSubject {
+            get {
+                return ResourceManager.GetString("LabelSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year of study:.
+        /// </summary>
+        public static string LabelYearOfStudy {
+            get {
+                return ResourceManager.GetString("LabelYearOfStudy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conflicts search.
+        /// </summary>
+        public static string MsgBoxHeaderNoConflicts {
+            get {
+                return ResourceManager.GetString("MsgBoxHeaderNoConflicts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No conflict found.
+        /// </summary>
+        public static string MsgBoxMessageNoConflicts {
+            get {
+                return ResourceManager.GetString("MsgBoxMessageNoConflicts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule.
+        /// </summary>
+        public static string ProjectFileDefaultName {
+            get {
+                return ResourceManager.GetString("ProjectFileDefaultName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to db.
+        /// </summary>
+        public static string ProjectFileExtensionDatabase {
+            get {
+                return ResourceManager.GetString("ProjectFileExtensionDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to xlsx.
+        /// </summary>
+        public static string ProjectFileExtensionExcel {
+            get {
+                return ResourceManager.GetString("ProjectFileExtensionExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sch.
+        /// </summary>
+        public static string ProjectFileExtensionNative {
+            get {
+                return ResourceManager.GetString("ProjectFileExtensionNative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule database.
+        /// </summary>
+        public static string ProjectFileFilterDatabase {
+            get {
+                return ResourceManager.GetString("ProjectFileFilterDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule Excel.
+        /// </summary>
+        public static string ProjectFileFilterExcel {
+            get {
+                return ResourceManager.GetString("ProjectFileFilterExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule.
+        /// </summary>
+        public static string ProjectFileFilterNative {
+            get {
+                return ResourceManager.GetString("ProjectFileFilterNative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other files.
+        /// </summary>
+        public static string ProjectFileFilterOtherFiles {
+            get {
+                return ResourceManager.GetString("ProjectFileFilterOtherFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new specialization.
+        /// </summary>
+        public static string ScheduleControllerAddSpecializationCommand {
+            get {
+                return ResourceManager.GetString("ScheduleControllerAddSpecializationCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove year of study.
+        /// </summary>
+        public static string ScheduleControllerRemoveYearOfStudyCommand {
+            get {
+                return ResourceManager.GetString("ScheduleControllerRemoveYearOfStudyCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Everyday load.
+        /// </summary>
+        public static string StatisticPanelHeaderEveryDayLoad {
+            get {
+                return ResourceManager.GetString("StatisticPanelHeaderEveryDayLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average count of classes per week:.
+        /// </summary>
+        public static string StatisticPanelLabelAverageClassesPerWeek {
+            get {
+                return ResourceManager.GetString("StatisticPanelLabelAverageClassesPerWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count of classes per week:.
+        /// </summary>
+        public static string StatisticPanelLabelCountClassesPerWeek {
+            get {
+                return ResourceManager.GetString("StatisticPanelLabelCountClassesPerWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classrooms.
+        /// </summary>
+        public static string TabItemHeaderClassrooms {
+            get {
+                return ResourceManager.GetString("TabItemHeaderClassrooms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Groups.
+        /// </summary>
+        public static string TabItemHeaderGroups {
+            get {
+                return ResourceManager.GetString("TabItemHeaderGroups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lecturers.
+        /// </summary>
+        public static string TabItemHeaderLecturers {
+            get {
+                return ResourceManager.GetString("TabItemHeaderLecturers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specializations.
+        /// </summary>
+        public static string TabItemHeaderSpecializations {
+            get {
+                return ResourceManager.GetString("TabItemHeaderSpecializations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subjects.
+        /// </summary>
+        public static string TabItemHeaderSubjects {
+            get {
+                return ResourceManager.GetString("TabItemHeaderSubjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Years of study.
+        /// </summary>
+        public static string TabItemHeaderYearsOfStudy {
+            get {
+                return ResourceManager.GetString("TabItemHeaderYearsOfStudy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add year of study.
+        /// </summary>
+        public static string TableControllerButtonAddYear {
+            get {
+                return ResourceManager.GetString("TableControllerButtonAddYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friday.
+        /// </summary>
+        public static string WeekdayFriday {
+            get {
+                return ResourceManager.GetString("WeekdayFriday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Monday.
+        /// </summary>
+        public static string WeekdayMonday {
+            get {
+                return ResourceManager.GetString("WeekdayMonday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saturday.
+        /// </summary>
+        public static string WeekdaySaturday {
+            get {
+                return ResourceManager.GetString("WeekdaySaturday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thursday.
+        /// </summary>
+        public static string WeekdayThursday {
+            get {
+                return ResourceManager.GetString("WeekdayThursday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tuesday.
+        /// </summary>
+        public static string WeekdayTuesday {
+            get {
+                return ResourceManager.GetString("WeekdayTuesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wednesday.
+        /// </summary>
+        public static string WeekdayWednesday {
+            get {
+                return ResourceManager.GetString("WeekdayWednesday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cards in conflict.
+        /// </summary>
+        public static string WindowTitleConflictSolver {
+            get {
+                return ResourceManager.GetString("WindowTitleConflictSolver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string WindowTitleEdit {
+            get {
+                return ResourceManager.GetString("WindowTitleEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule Editor.
+        /// </summary>
+        public static string WindowTitleEditor {
+            get {
+                return ResourceManager.GetString("WindowTitleEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string WindowTitleStatistics {
+            get {
+                return ResourceManager.GetString("WindowTitleStatistics", resourceCulture);
             }
         }
     }

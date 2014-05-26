@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cards="clr-namespace:Editor.ViewModels.Cards"
-             xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:p="clr-namespace:Editor.Properties"
+             xmlns:converters="clr-namespace:Editor.Converters"
              mc:Ignorable="d" 
               
              d:DataContext="{d:DesignInstance cards:ClassCardViewModel}"
@@ -57,13 +58,13 @@
 
 
                 <Label Grid.Row="1" Grid.Column="2"
-                       Content="Предмет: "
+                       Content="{x:Static p:Resources.LabelSubject}"
                        Margin="3" />
                 <Label Grid.Row="2" Grid.Column="2"
-                       Content="Преподаватель: "
+                       Content="{x:Static p:Resources.LabelLecturer}"
                        Margin="3" />
                 <Label Grid.Row="3" Grid.Column="2"
-                       Content="Аудитория: "
+                       Content="{x:Static p:Resources.LabelClassroom}"
                        Margin="3" />
 
                 <Label Grid.Row="1" Grid.Column="3"
@@ -134,7 +135,7 @@
                         BorderBrush="Black"
                         Background="PaleTurquoise"
                         CornerRadius="20,0,0,20">
-                    <TextBlock Text="{Binding Class.ClassTime.Day}"
+                    <TextBlock Text="{Binding Class.ClassTime.Day, Converter={converters:WeekdaysToStringConverter}}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Margin="5">

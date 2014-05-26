@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:p="clr-namespace:Editor.Properties"
              xmlns:controls="clr-namespace:Editor.Views.Controls"
              xmlns:controls1="clr-namespace:Editor.ViewModels.Controls"
              mc:Ignorable="d" 
@@ -11,7 +12,7 @@
              >
 
     <Grid>
-                <Button Content="Добавить курс"
+        <Button Content="{x:Static p:Resources.TableControllerButtonAddYear}"
                         Margin="0,5,5,0"
                         Padding="2"
                         HorizontalAlignment="Right"
@@ -40,7 +41,7 @@
                                         <TextBlock Text="{Binding TableHeader}">
                                             <TextBlock.ContextMenu>
                                                 <ContextMenu>
-                                                    <MenuItem Header="Удалить курс"
+                                            <MenuItem Header="{x:Static p:Resources.ScheduleControllerRemoveYearOfStudyCommand}"
                                                               Command="{Binding Project.ScheduleController.RemoveYearOfStudyCommand}"
                                                               CommandParameter="{Binding YearOfStudy}"/>
                                                 </ContextMenu>

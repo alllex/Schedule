@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:p="clr-namespace:Editor.Properties"
         mc:Ignorable="d"
         xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:cards="clr-namespace:Editor.ViewModels.Cards"
@@ -62,14 +63,14 @@
 
 
 
-            <Label Content="Предмет: "
+            <Label Content="{x:Static p:Resources.LabelSubject}"
                       Margin="3" />
             <Label Grid.Row="1" Grid.Column="0"
-                   Content="Преподаватель: " 
+                   Content="{x:Static p:Resources.LabelLecturer}"
                       Margin="3"
                    />
             <Label Grid.Row="2" Grid.Column="0"
-                   Content="Аудитория: " 
+                   Content="{x:Static p:Resources.LabelClassroom}"
                       Margin="3"/>
 
 
