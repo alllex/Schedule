@@ -4,7 +4,19 @@ using System.Linq;
 
 namespace ScheduleData.SearchConflicts
 {
-    class ConflictSearchEngine
+
+    public enum ConflictCriteria
+    {
+        All,
+        MoreThanFourClassesPerDay,
+        GroupsInDifferentClassrooms,
+        LecturersInDifferentClassrooms,
+        LecturersOnDifferentClasses,
+        NextClassesAtDifferentAddress,
+        CardsWithBlankFields
+    }
+
+    public class ConflictSearchEngine
     {
         public static IEnumerable<Conflict> SearchAllConflicts(Schedule schedule)
         {
@@ -54,7 +66,7 @@ namespace ScheduleData.SearchConflicts
 
         private static IEnumerable<Conflict> GreaterThanFourClassesPerDay(IEnumerable<ClassRecord> allClasses)
         {
-            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.GreaterThanFourClassesPerDay);
+            var message = ConflictCompilation.ConflictDescription(ConflictCriteria.MoreThanFourClassesPerDay);
 
             return from c in allClasses
                    where c.Group != null && c.ClassTime != null

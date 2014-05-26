@@ -217,7 +217,7 @@ namespace Editor.ViewModels.Windows
 
         private void OnCheckConflictGreaterThanFourClassesPerDay()
         {
-            CheckConflict(ConflictCriteria.GreaterThanFourClassesPerDay);
+            CheckConflict(ConflictCriteria.MoreThanFourClassesPerDay);
         }
 
         private void OnCheckConflictLecturersOnDifferentClasses()
@@ -329,10 +329,7 @@ namespace Editor.ViewModels.Windows
             var result = dlg.ShowDialog();
             if (result == true)
             {
-                Action action = () =>
-                {
-                    SaveLoadSchedule.Save(Project.Schedule, dlg.FileName);
-                };
+                Action action = () => SaveLoadSchedule.Save(Project.Schedule, dlg.FileName);
                 ExecuteAction("Сохранение расписания", "Расписание сохранено", action);
             }
         }

@@ -1,21 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using Editor.Helpers;
 
 namespace ScheduleData.SearchConflicts
 {
-
-    public enum ConflictCriteria
-    {
-        All,
-        GreaterThanFourClassesPerDay,
-        GroupsInDifferentClassrooms,
-        LecturersInDifferentClassrooms,
-        LecturersOnDifferentClasses,        // НОВЫЙ КОНФЛИКТ: ЛЕКТОР ВЕДЁТ РАЗНЫЕ ПРЕДМЕТЫ (ВОЗМОЖНО, В ОДНОЙ АУДИТОРИИ)
-        NextClassesAtDifferentAddress,
-        CardsWithBlankFields
-    }
-
+    
     public class ConflictCompilation : NotificationObject
     {
         #region Conflicts
@@ -37,7 +25,7 @@ namespace ScheduleData.SearchConflicts
 
         #endregion
 
-        
+
         public void CreateConflictCompilation(Schedule schedule, ConflictCriteria criteria)
         {
 
@@ -46,7 +34,7 @@ namespace ScheduleData.SearchConflicts
                 case ConflictCriteria.All:
                     Conflicts = new ObservableCollection<Conflict>(ConflictSearchEngine.SearchAllConflicts(schedule));
                     break;
-                case ConflictCriteria.GreaterThanFourClassesPerDay:
+                case ConflictCriteria.MoreThanFourClassesPerDay:
                     Conflicts = new ObservableCollection<Conflict>(ConflictSearchEngine.GreaterThanFourClassesPerDay(schedule));
                     break;
                 case ConflictCriteria.CardsWithBlankFields:
@@ -72,19 +60,19 @@ namespace ScheduleData.SearchConflicts
             switch (criteria)
             {
                 case ConflictCriteria.All:
-                    return "Все типы конфликтов";
-                case ConflictCriteria.GreaterThanFourClassesPerDay:
-                    return "Больше 4х занятий в день";
+                    return Properties.Resources.ConflictCriteriaAll;
+                case ConflictCriteria.MoreThanFourClassesPerDay:
+                    return Properties.Resources.ConflictCriteriaMoreThanFourClassesPerDay;
                 case ConflictCriteria.CardsWithBlankFields:
-                    return "У карточки не заполнены некоторые поля";
+                    return Properties.Resources.ConflictCriteriaCardsWithBlankFields;
                 case ConflictCriteria.GroupsInDifferentClassrooms:
-                    return "Группа находится в нескольких аудиториях одновременно";
+                    return Properties.Resources.ConflictCriteriaGroupsInDifferentClassrooms;
                 case ConflictCriteria.LecturersInDifferentClassrooms:
-                    return "Преподаватель находится в нескольких аудиториях одновременно";
+                    return Properties.Resources.ConflictCriteriaLecturersInDifferentClassrooms;
                 case ConflictCriteria.NextClassesAtDifferentAddress:
-                    return "Адреса двух аудиторий, в которых проходят два соседних занятия, различны";
+                    return Properties.Resources.ConflictCriteriaNextClassesAtDifferentAddress;
                 case ConflictCriteria.LecturersOnDifferentClasses:
-                    return "Преподаватель находится проводит несколько занятий одновременно";
+                    return Properties.Resources.ConflictCriteriaLecturersOnDifferentClasses;
             }
             return "";
         }

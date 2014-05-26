@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Editor.Helpers;
 
 namespace ScheduleData
@@ -308,11 +307,11 @@ namespace ScheduleData
 
         #endregion
 
-        public override string ToString()
-        {
-            return String.Format("Группа {0}; \nСпециальность: {1}; " +
-                                 "\nКурс: {2}", Name, Specialization, YearOfStudy);
-        }
+//        public override string ToString()
+//        {
+//            return String.Format("Группа {0}; \nСпециальность: {1}; " +
+//                                 "\nКурс: {2}", Name, Specialization, YearOfStudy);
+//        }
     }
 
     public class Lecturer : HavingName

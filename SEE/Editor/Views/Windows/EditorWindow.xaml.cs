@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using Editor.ViewModels.Controls;
 using Editor.ViewModels.Windows;
-using Editor.Views.Controls;
 
 namespace Editor.Views.Windows
 {
@@ -13,6 +12,8 @@ namespace Editor.Views.Windows
         public EditorWindow()
         {
             InitializeComponent();
+
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
 
             var conflictsViewerViewModel = new ConflictsViewerViewModel();
             var tableControllerViewModel = new TableControllerViewModel();
