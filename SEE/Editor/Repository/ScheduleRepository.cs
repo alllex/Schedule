@@ -58,7 +58,11 @@ namespace Editor.Repository
 
         private void InitSubjects()
         {
-            string[] subjectNames = { "Matan", "Algebra", "Programming", "Diffirence Equations", "Math Logic", "Algorithms", "Functional Analisys" };
+            string[] subjectNames =
+            {
+                "Matan", "Algebra", "Programming", "Diffirence Equations", "Math Logic", "Algorithms", "Functional Analisys",
+                "Economics", "English", "History", "Software development"
+            };
             int subjectsCount = subjectNames.Length;
             for (int i = 0; i < subjectsCount; i++)
             {
@@ -68,7 +72,11 @@ namespace Editor.Repository
 
         private void InitLecturers()
         {
-            string[] lecturerNames = { "Ivanov", "Petrov", "Sidirov", "Baranov", "Semenov", "Kirilenko", "Polozov", "Luciv" };
+            string[] lecturerNames =
+            {
+                "Ivanov", "Petrov", "Sidirov", "Baranov", "Semenov", "Kirilenko", "Polozov", "Luciv",
+                "Tarasov", "Nemeshev", "Tapochkin", "Hamilton"
+            };
             int lecturersCount = lecturerNames.Length;
             for (int i = 0; i < lecturersCount; i++)
             {

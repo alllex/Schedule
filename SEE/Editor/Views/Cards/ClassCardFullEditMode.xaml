@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cards="clr-namespace:Editor.ViewModels.Cards"
              xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:cards1="clr-namespace:Editor.Views.Cards"
              mc:Ignorable="d" 
               
              d:DataContext="{d:DesignInstance cards:ClassCardViewModel}"
@@ -13,33 +12,33 @@
         >
 
     <UserControl.Resources>
-        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding Project.Schedule.Subjects}">
-            <CollectionViewSource.SortDescriptions>
-                <componentModel:SortDescription PropertyName="Name" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-
-        <CollectionViewSource x:Key="SortedLectures" Source="{Binding Project.Schedule.Lecturers}">
-            <CollectionViewSource.SortDescriptions>
-                <componentModel:SortDescription PropertyName="Name" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-
-        <CollectionViewSource x:Key="SortedClassrooms" Source="{Binding Project.Schedule.Classrooms}">
-            <CollectionViewSource.SortDescriptions>
-                <componentModel:SortDescription PropertyName="Name" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-
-        <Style TargetType="ComboBox">
-            <Setter Property="Width" Value="200"/>
-        </Style>
+        
+<!--        <CollectionViewSource x:Key="SortedSubjects" Source="{Binding Project.Schedule.Subjects}">-->
+<!--            <CollectionViewSource.SortDescriptions>-->
+<!--                <componentModel:SortDescription PropertyName="Name" />-->
+<!--            </CollectionViewSource.SortDescriptions>-->
+<!--        </CollectionViewSource>-->
+<!---->
+<!--        <CollectionViewSource x:Key="SortedLectures" Source="{Binding Project.Schedule.Lecturers}">-->
+<!--            <CollectionViewSource.SortDescriptions>-->
+<!--                <componentModel:SortDescription PropertyName="Name" />-->
+<!--            </CollectionViewSource.SortDescriptions>-->
+<!--        </CollectionViewSource>-->
+<!---->
+<!--        <CollectionViewSource x:Key="SortedClassrooms" Source="{Binding Project.Schedule.Classrooms}">-->
+<!--            <CollectionViewSource.SortDescriptions>-->
+<!--                <componentModel:SortDescription PropertyName="Name" />-->
+<!--            </CollectionViewSource.SortDescriptions>-->
+<!--        </CollectionViewSource>-->
+<!---->
+<!--        <Style TargetType="ComboBox">-->
+<!--            <Setter Property="Width" Value="200"/>-->
+<!--        </Style>-->
 
     </UserControl.Resources>
 
     <DockPanel LastChildFill="False"
                Margin="3">
-        <GroupBox Header="Занятие">
             <Grid DockPanel.Dock="Top">
 
                 <Grid.ColumnDefinitions>
@@ -67,40 +66,53 @@
                        Content="Аудитория: "
                        Margin="3" />
 
+                <Label Grid.Row="1" Grid.Column="3"
+                           Content="{Binding Class.Subject.Name}"
+                           Margin="3"
+                       MinWidth="150"/>
+                <Label Grid.Row="2" Grid.Column="3"
+                           Content="{Binding Class.Lecturer.Name}"
+                       MinWidth="150"
+                           Margin="3" />
+                <Label Grid.Row="3" Grid.Column="3"
+                           Content="{Binding Class.Classroom.Name}"
+                       MinWidth="150"
+                           Margin="3" />
 
-                <ComboBox Grid.Row="1" Grid.Column="3"
-                          ItemsSource="{Binding Source={StaticResource SortedSubjects}}"
-                          SelectedItem="{Binding Class.Subject}"
-                          DisplayMemberPath="Name"
-                          Margin="3" />
 
-                <ComboBox Grid.Row="2" Grid.Column="3"
-                          ItemsSource="{Binding Source={StaticResource SortedLectures}}"
-                          SelectedItem="{Binding Class.Lecturer}"
-                          DisplayMemberPath="Name"
-                          Margin="3" />
+<!--            <ComboBox Grid.Row="1" Grid.Column="3"-->
+<!--                          ItemsSource="{Binding Source={StaticResource SortedSubjects}}"-->
+<!--                          SelectedItem="{Binding Class.Subject}"-->
+<!--                          DisplayMemberPath="Name"-->
+<!--                          Margin="3" />-->
+<!---->
+<!--                <ComboBox Grid.Row="2" Grid.Column="3"-->
+<!--                          ItemsSource="{Binding Source={StaticResource SortedLectures}}"-->
+<!--                          SelectedItem="{Binding Class.Lecturer}"-->
+<!--                          DisplayMemberPath="Name"-->
+<!--                          Margin="3" />-->
+<!---->
+<!--                <ComboBox Grid.Row="3" Grid.Column="3"-->
+<!--                          ItemsSource="{Binding Source={StaticResource SortedClassrooms}}"-->
+<!--                          SelectedItem="{Binding Class.Classroom}"-->
+<!--                          DisplayMemberPath="Name"-->
+<!--                          Margin="3" />-->
 
-                <ComboBox Grid.Row="3" Grid.Column="3"
-                          ItemsSource="{Binding Source={StaticResource SortedClassrooms}}"
-                          SelectedItem="{Binding Class.Classroom}"
-                          DisplayMemberPath="Name"
-                          Margin="3" />
-
-                <Button Grid.Row="1" Grid.Column="4"
-                        Content="x"
-                        Margin="3"
-                        Click="ButtonBase_OnClick"
-                        Command="{Binding ClearSubjectCommand}" />
-
-                <Button Grid.Row="2" Grid.Column="4"
-                        Content="x"
-                        Margin="3"
-                        Command="{Binding ClearLecturerCommand}" />
-
-                <Button Grid.Row="3" Grid.Column="4"
-                        Content="x"
-                        Margin="3"
-                        Command="{Binding ClearClassroomCommand}" />
+<!--                <Button Grid.Row="1" Grid.Column="4"-->
+<!--                        Content="x"-->
+<!--                        Margin="3"-->
+<!--                        Click="ButtonBase_OnClick"-->
+<!--                        Command="{Binding ClearSubjectCommand}" />-->
+<!---->
+<!--                <Button Grid.Row="2" Grid.Column="4"-->
+<!--                        Content="x"-->
+<!--                        Margin="3"-->
+<!--                        Command="{Binding ClearLecturerCommand}" />-->
+<!---->
+<!--                <Button Grid.Row="3" Grid.Column="4"-->
+<!--                        Content="x"-->
+<!--                        Margin="3"-->
+<!--                        Command="{Binding ClearClassroomCommand}" />-->
 
                 <Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3"
                         BorderThickness="1"
@@ -146,9 +158,13 @@
                     </TextBlock>
                 </Border>
 
-            </Grid>
-        </GroupBox>
+            <Border Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" Grid.ColumnSpan="3"
+                        BorderThickness="1"
+                        BorderBrush="Black"
+                        Background="Transparent"
+                        />
 
+            </Grid>
     </DockPanel>
    
 </UserControl>

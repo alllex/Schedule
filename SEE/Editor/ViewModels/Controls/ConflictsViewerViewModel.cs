@@ -22,10 +22,11 @@ namespace Editor.ViewModels.Controls
             var vm = new ConflictSolverWindowViewModel
             {
                 Project = Project,
+                Conflict = conf,
                 ConflictedClasses = new ObservableCollection<ClassCardViewModel>(from c in conf.ConflictingClasses select (new ClassCardViewModel(c)))
             };
             var wind = new ConflictSolverWindow{DataContext = vm};
-            wind.ShowDialog();
+            wind.Show();
         }
     }
 }

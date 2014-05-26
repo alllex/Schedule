@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Editor.ViewModels.Cards;
+using ScheduleData.SearchConflicts;
 
 namespace Editor.ViewModels.Windows
 {
@@ -24,6 +25,27 @@ namespace Editor.ViewModels.Windows
         }
 
         #endregion
+
+        #region Conflict
+
+        private Conflict _conflict;
+
+        public Conflict Conflict
+        {
+            get { return _conflict; }
+            set
+            {
+                if (_conflict != value)
+                {
+                    _conflict = value;
+                    RaisePropertyChanged(() => Conflict);
+                }
+            }
+        }
+
+        #endregion
+
+        
         
     }
 }

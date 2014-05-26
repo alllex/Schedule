@@ -198,7 +198,7 @@ namespace ScheduleData
 
     public class ClassTime : HavingId
     {
-        public static string[] ClassIntervals = { "09:00-\n10:00", "10:00-\n11:00", "11:00-\n12:00", "12:00-\n13:00", "13:00-\n14:00", "14:00-\n15:00" };
+        public static string[] ClassIntervals = { "09:00-\n10:00", "10:00-\n11:00", "11:00-\n12:00", "12:00-\n13:00"/*, "13:00-\n14:00", "14:00-\n15:00" */};
 
         protected bool Equals(ClassTime other)
         {
@@ -235,6 +235,7 @@ namespace ScheduleData
                 if (_number != value)
                 {
                     _number = value;
+
                     RaisePropertyChanged(() => Number);
                 }
             }
@@ -244,7 +245,7 @@ namespace ScheduleData
 
         public override string ToString()
         {
-            return Day + " " + ClassIntervals[Number];
+            return ClassIntervals[Number];
         }
     }
 
