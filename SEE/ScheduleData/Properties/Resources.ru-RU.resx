@@ -138,4 +138,13 @@
   <data name="ConflictCriteriaNextClassesAtDifferentAddress" xml:space="preserve">
     <value>Смежные занятия проходят в зданиях с разными адресами</value>
   </data>
+  <data name="GroupNewName" xml:space="preserve">
+    <value>Новая группа</value>
+  </data>
+  <data name="SpecializationNewName" xml:space="preserve">
+    <value>Новая специальность</value>
+  </data>
+  <data name="YearOfStudyNewName" xml:space="preserve">
+    <value>Новый курс</value>
+  </data>
 </root>

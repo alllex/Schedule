@@ -379,9 +379,29 @@ namespace ScheduleData
         /// </summary>
         public Group AddYSG()
         {
-            var year = new YearOfStudy { Name = "Новый курс" };
-            var spec = new Specialization { Name = "Специальность" };
-            var group = new Group { Name = "Группа", YearOfStudy = year, Specialization = spec };
+            var yearNewName = Properties.Resources.YearOfStudyNewName;
+            var yearNewNameCount = YearsOfStudy.Count(y => y.Name.StartsWith(yearNewName));
+            var year = new YearOfStudy
+            {
+                Name = yearNewName + (yearNewNameCount > 0 ? (" " + yearNewNameCount) : "")
+            };
+
+            var specNewName = Properties.Resources.SpecializationNewName;
+            var specNewNameCount = Specializations.Count(y => y.Name.StartsWith(specNewName));
+            var spec = new Specialization
+            {
+                Name = specNewName + (specNewNameCount > 0 ? (" " + specNewNameCount) : "")
+            };
+
+            var groupNewName = Properties.Resources.GroupNewName;
+            var groupNewNameCount = Groups.Count(y => y.Name.StartsWith(groupNewName));
+            var group = new Group
+            {
+                Name = groupNewName + (groupNewNameCount > 0 ? (" " + groupNewNameCount) : ""),
+                YearOfStudy = year,
+                Specialization = spec
+            };
+
             AddYearOfStudy(year);
             AddSpecialization(spec);
             AddGroup(group);
@@ -394,8 +414,23 @@ namespace ScheduleData
         /// <param name="year"></param>
         public void AddYSG(YearOfStudy year)
         {
-            var spec = new Specialization { Name = "Специальность" };
-            var group = new Group { Name = "Группа", YearOfStudy = year, Specialization = spec };
+
+            var specNewName = Properties.Resources.SpecializationNewName;
+            var specNewNameCount = Specializations.Count(y => y.Name.StartsWith(specNewName));
+            var spec = new Specialization
+            {
+                Name = specNewName + (specNewNameCount > 0 ? (" " + specNewNameCount) : "")
+            };
+
+            var groupNewName = Properties.Resources.GroupNewName;
+            var groupNewNameCount = Groups.Count(y => y.Name.StartsWith(groupNewName));
+            var group = new Group
+            {
+                Name = groupNewName + (groupNewNameCount > 0 ? (" " + groupNewNameCount) : ""),
+                YearOfStudy = year,
+                Specialization = spec
+            };
+
             AddYearOfStudy(year);
             AddSpecialization(spec);
             AddGroup(group);
@@ -407,15 +442,39 @@ namespace ScheduleData
         /// <param name="year"></param>
         public void AddNewSG(YearOfStudy year)
         {
-            var spec = new Specialization { Name = "Новая специальность" };
-            var group = new Group { Name = "Новая группа", YearOfStudy = year, Specialization = spec };
+
+            var specNewName = Properties.Resources.SpecializationNewName;
+            var specNewNameCount = Specializations.Count(y => y.Name.StartsWith(specNewName));
+            var spec = new Specialization
+            {
+                Name = specNewName + (specNewNameCount > 0 ? (" " + specNewNameCount) : "")
+            };
+
+            var groupNewName = Properties.Resources.GroupNewName;
+            var groupNewNameCount = Groups.Count(y => y.Name.StartsWith(groupNewName));
+            var group = new Group
+            {
+                Name = groupNewName + (groupNewNameCount > 0 ? (" " + groupNewNameCount) : ""),
+                YearOfStudy = year,
+                Specialization = spec
+            };
+
             AddSpecialization(spec);
             AddGroup(group);
         }
 
         public Group AddNewGroup(YearOfStudy year, Specialization spec)
         {
-            var group = new Group { Name = "Новая группа", YearOfStudy = year, Specialization = spec };
+
+            var groupNewName = Properties.Resources.GroupNewName;
+            var groupNewNameCount = Groups.Count(y => y.Name.StartsWith(groupNewName));
+            var group = new Group
+            {
+                Name = groupNewName + (groupNewNameCount > 0 ? (" " + groupNewNameCount) : ""),
+                YearOfStudy = year,
+                Specialization = spec
+            };
+
             AddGroup(group);
             return group;
         }
@@ -506,15 +565,6 @@ namespace ScheduleData
             }
             return groups;
         }
-
-//        public void CreateNewTables()
-//        {
-//            Tables.Clear();
-//            foreach (var yearOfStudy in YearsOfStudy)
-//            {
-//                Tables.Add(new ClassesTable(this, yearOfStudy));
-//            }
-//        }
 
         public bool HasGroups(YearOfStudy year)
         {

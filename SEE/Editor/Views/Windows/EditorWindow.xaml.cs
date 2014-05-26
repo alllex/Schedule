@@ -13,7 +13,7 @@ namespace Editor.Views.Windows
         {
             InitializeComponent();
 
-            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("ru-RU");
 
             var conflictsViewerViewModel = new ConflictsViewerViewModel();
             var tableControllerViewModel = new TableControllerViewModel();

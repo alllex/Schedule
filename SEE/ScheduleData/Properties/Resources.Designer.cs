@@ -122,5 +122,32 @@ namespace ScheduleData.Properties {
                 return ResourceManager.GetString("ConflictCriteriaNextClassesAtDifferentAddress", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New group.
+        /// </summary>
+        public static string GroupNewName {
+            get {
+                return ResourceManager.GetString("GroupNewName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New specialization.
+        /// </summary>
+        public static string SpecializationNewName {
+            get {
+                return ResourceManager.GetString("SpecializationNewName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New year.
+        /// </summary>
+        public static string YearOfStudyNewName {
+            get {
+                return ResourceManager.GetString("YearOfStudyNewName", resourceCulture);
+            }
+        }
     }
 }
