@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-using Editor.Helpers;
-using ScheduleData;
+﻿using ScheduleData;
 
 namespace Editor.ViewModels.Cards
 {

@@ -1,7 +1,4 @@
-using Editor.Helpers;
-using Editor.Models;
-
-namespace Editor.ViewModels
+namespace Editor.Helpers
 {
     public abstract class BaseViewModel : NotificationObject
     {

@@ -1,6 +1,4 @@
-﻿using Editor.Models;
-
-namespace Editor.Helpers
+﻿namespace Editor.Helpers
 {
     class TableItem<T> : SpannedItem<T>
     {

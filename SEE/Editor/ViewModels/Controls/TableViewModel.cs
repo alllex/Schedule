@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Editor.Helpers;
+using Editor.Properties;
 using Editor.ViewModels.Cards;
 using Editor.ViewModels.Helpers;
 using Editor.Views.Cards;
@@ -596,11 +596,11 @@ namespace Editor.ViewModels.Controls
             var model = classCard.DataContext as ClassCardViewModel;
             if (model == null) return;
             var cm = new ContextMenu();
-            cm.Items.Add(new MenuItem { Header = "Редактировать", Command = EditClassCommand});
-            cm.Items.Add(new MenuItem { Header = "Скопировать", Command = CopyClassCommand, InputGestureText = "Ctrl+C" });
-            cm.Items.Add(new MenuItem { Header = "Вставить", Command = PasteClassCommand, InputGestureText = "Ctrl+V" });
-            cm.Items.Add(new MenuItem { Header = "Вырезать", Command = CutClassCommand, InputGestureText = "Ctrl+X" });
-            cm.Items.Add(new MenuItem { Header = "Удалить", Command = DeleteClassCommand, InputGestureText = "Del" });
+            cm.Items.Add(new MenuItem { Header = Resources.HeaderEditClassCommand, Command = EditClassCommand});
+            cm.Items.Add(new MenuItem { Header = Resources.HeaderCopyClassCommand, Command = CopyClassCommand, InputGestureText = "Ctrl+C" });
+            cm.Items.Add(new MenuItem { Header = Resources.HeaderPasteClassCommand, Command = PasteClassCommand, InputGestureText = "Ctrl+V" });
+            cm.Items.Add(new MenuItem { Header = Resources.HeaderCutClassCommand, Command = CutClassCommand, InputGestureText = "Ctrl+X" });
+            cm.Items.Add(new MenuItem { Header = Resources.HeaderDeleteClassCommand, Command = DeleteClassCommand, InputGestureText = "Del" });
             //cm.Items.Add(new MenuItem { Header = "Send to Clipboard", Command = SendToCardClipboardCommand });
             cm.IsOpen = true;
         }

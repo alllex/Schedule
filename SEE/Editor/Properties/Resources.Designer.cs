@@ -59,5 +59,50 @@ namespace Editor.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy.
+        /// </summary>
+        public static string HeaderCopyClassCommand {
+            get {
+                return ResourceManager.GetString("HeaderCopyClassCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cut.
+        /// </summary>
+        public static string HeaderCutClassCommand {
+            get {
+                return ResourceManager.GetString("HeaderCutClassCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string HeaderDeleteClassCommand {
+            get {
+                return ResourceManager.GetString("HeaderDeleteClassCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string HeaderEditClassCommand {
+            get {
+                return ResourceManager.GetString("HeaderEditClassCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste.
+        /// </summary>
+        public static string HeaderPasteClassCommand {
+            get {
+                return ResourceManager.GetString("HeaderPasteClassCommand", resourceCulture);
+            }
+        }
     }
 }

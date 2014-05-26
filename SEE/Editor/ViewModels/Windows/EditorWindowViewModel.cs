@@ -184,7 +184,7 @@ namespace Editor.ViewModels.Windows
             {
                 Action action = () =>
                 {
-                    var schedule = ImportExportSchedule.Import(dlg.FileName);
+                    var schedule = ScheduleImporter.Import(dlg.FileName);
                     SetNewProject(new ScheduleProject {Schedule = schedule});
                 };
                 ExecuteAction("Импорт", "Импорт выполнен", action);
@@ -204,7 +204,7 @@ namespace Editor.ViewModels.Windows
             {
                 Action action = () =>
                 {
-                    ImportExportSchedule.Export(Project.Schedule, dlg.FileName);
+                    ScheduleExporter.Export(Project.Schedule, dlg.FileName);
                 };
                 ExecuteAction("Экспорт", "Экспорт выполнен", action);
             }

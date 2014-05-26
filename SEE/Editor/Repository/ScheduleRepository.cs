@@ -43,7 +43,7 @@ namespace Editor.Repository
             const int minRoomNumber = 1000;
             const int maxRoomNumber = 2001;
 
-            string[] addresses = {"Petergoff", "Saint-Petersburg"};
+            string[] addresses = {"Петергоф", "Питер"};
 
             for (int i = 0; i < classroomsCount; i++)
             {
@@ -60,8 +60,10 @@ namespace Editor.Repository
         {
             string[] subjectNames =
             {
-                "Matan", "Algebra", "Programming", "Diffirence Equations", "Math Logic", "Algorithms", "Functional Analisys",
-                "Economics", "English", "History", "Software development"
+                "Математический анализ", "Алгебра", "Практика на ЭВМ", 
+                "Дифференциальные уравнения", "Математическая логика", 
+                "Алгоритмы и структуры данных", "Функциональный анализ",
+                "Экономика", "Английский", "История", "Разработка ПО"
             };
             int subjectsCount = subjectNames.Length;
             for (int i = 0; i < subjectsCount; i++)
@@ -74,8 +76,8 @@ namespace Editor.Repository
         {
             string[] lecturerNames =
             {
-                "Ivanov", "Petrov", "Sidirov", "Baranov", "Semenov", "Kirilenko", "Polozov", "Luciv",
-                "Tarasov", "Nemeshev", "Tapochkin", "Hamilton"
+                "Иванов", "Петров", "Сидоров", "Баранов", "Семенов", "Кириленко", "Полозов", "Луцив",
+                "Тарасов", "Немешев", "Волков", "Пупкин"
             };
             int lecturersCount = lecturerNames.Length;
             for (int i = 0; i < lecturersCount; i++)
@@ -90,7 +92,7 @@ namespace Editor.Repository
             const int yearsCount = 1;
             for (int i = yearsStart; i < yearsStart + yearsCount; i++)
             {
-                Schedule.YearsOfStudy.Add(new YearOfStudy{Name = "Курс " + i.ToString(CultureInfo.InvariantCulture)});
+                Schedule.YearsOfStudy.Add(new YearOfStudy{Name = i.ToString(CultureInfo.InvariantCulture) + " курс"});
             }
         }
 

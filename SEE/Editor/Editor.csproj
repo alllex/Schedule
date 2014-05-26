@@ -101,18 +101,6 @@
     <Compile Include="Views\Windows\StatisticWindow.xaml.cs">
       <DependentUpon>StatisticWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Resources\IconsResourceDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\ImplicitStylesResourceDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Resources\StylesResourceDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Cards\ClassCardEditMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -206,9 +194,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\BaseConverter.cs" />
-    <Compile Include="Converters\YearAndSpecToPairConverter.cs" />
     <Compile Include="Converters\ListsEditorTabToIntConverter.cs" />
-    <Compile Include="Converters\IsBiggerThanConverter.cs" />
     <Compile Include="Helpers\ClipboardService.cs" />
     <Compile Include="Helpers\DelegateCommand.cs" />
     <Compile Include="Helpers\SpannedItem.cs" />
@@ -327,6 +313,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="schedule-icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

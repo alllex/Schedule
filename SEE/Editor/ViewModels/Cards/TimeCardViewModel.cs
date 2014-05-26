@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Editor.Helpers;
-using Editor.Models;
 using ScheduleData;
 
 namespace Editor.ViewModels.Cards

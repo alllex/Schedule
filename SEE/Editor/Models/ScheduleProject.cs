@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Editor.ViewModels;
+using Editor.Helpers;
 using Editor.ViewModels.Cards;
 using ScheduleData;
 using ScheduleData.DataMining;
