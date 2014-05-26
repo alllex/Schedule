@@ -90,7 +90,7 @@ namespace Editor.Repository
             const int yearsCount = 1;
             for (int i = yearsStart; i < yearsStart + yearsCount; i++)
             {
-                Schedule.YearsOfStudy.Add(new YearOfStudy{Name = i.ToString(CultureInfo.InvariantCulture)});
+                Schedule.YearsOfStudy.Add(new YearOfStudy{Name = "Курс " + i.ToString(CultureInfo.InvariantCulture)});
             }
         }
 

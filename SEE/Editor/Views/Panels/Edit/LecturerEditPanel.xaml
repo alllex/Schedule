@@ -31,7 +31,10 @@
             <Label Content="ФИО"/>
             <TextBox Text="{Binding Name}"/>
 <!--            <Label Content="Кафедра"/>-->
-<!--            <TextBox Text="{Binding Degree}"/>-->
+            <!--            <TextBox Text="{Binding Degree}"/>-->
+            <Button Content="Применить"
+                    Margin="5"
+                    HorizontalAlignment="Right"/>
         </StackPanel>
     </DockPanel>
 </UserControl>

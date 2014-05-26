@@ -27,6 +27,9 @@
             <Label Content="Специальность"/>
             <TextBox Text="{Binding Name}"
                      AcceptsReturn="True"/>
+            <Button Content="Применить"
+                    Margin="5"
+                    HorizontalAlignment="Right"/>
         </StackPanel>
     </DockPanel>
     
