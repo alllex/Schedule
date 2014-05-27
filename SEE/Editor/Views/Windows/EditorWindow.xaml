@@ -91,6 +91,17 @@
                 <MenuItem Header="{x:Static p:Resources.EditorMenuShowHideConflictsCommand}"
                           Command="{Binding ShowHideConflictsCommand}"/>
             </MenuItem>
+
+            <MenuItem Header="{x:Static p:Resources.EditorMenuGroupHeaderSettings}">
+                <MenuItem Header="{x:Static p:Resources.EditorMenuHeaderLanguage}">
+                    <MenuItem Header="{x:Static p:Resources.EditorMenuHeaderLanguageENG}"
+                              Command="{Binding ChangeLangEngCommand}"
+                              />
+                    <MenuItem Header="{x:Static p:Resources.EditorMenuHeaderLanguageRU}"
+                              Command="{Binding ChangeLangRuCommand}"
+                              />
+                </MenuItem>
+            </MenuItem>
         </Menu>
         
         <Expander DockPanel.Dock="Right"

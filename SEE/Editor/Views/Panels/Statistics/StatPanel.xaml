@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:p="clr-namespace:Editor.Properties"
              xmlns:statistics="clr-namespace:Editor.ViewModels.Panels.Statistics"
+             xmlns:converters="clr-namespace:Editor.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500"
              d:DataContext="{d:DesignInstance statistics:GroupStatPanelViewModel}"
@@ -36,8 +37,26 @@
             </StackPanel>
             <GroupBox Header="{x:Static p:Resources.StatisticPanelHeaderEveryDayLoad}"
                       Padding="5">
+                
                 <DataGrid ItemsSource="{Binding StatisticOnSelected.CountOfClassesPerWeekday}" 
-                          />
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="{x:Static p:Resources.WeekdaysName}" Width="Auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Weekday, Converter={converters:WeekdaysToStringConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="{x:Static p:Resources.StatisticPanelCountTableCount}" Width="Auto" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Count}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </GroupBox>
         </StackPanel>
         

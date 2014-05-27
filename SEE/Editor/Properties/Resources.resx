@@ -150,11 +150,23 @@
   <data name="EditorMenuGroupHeaderFile" xml:space="preserve">
     <value>File</value>
   </data>
+  <data name="EditorMenuGroupHeaderSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="EditorMenuHeaderDatabase" xml:space="preserve">
     <value>Database</value>
   </data>
   <data name="EditorMenuHeaderExcel" xml:space="preserve">
     <value>Excel</value>
+  </data>
+  <data name="EditorMenuHeaderLanguage" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="EditorMenuHeaderLanguageENG" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="EditorMenuHeaderLanguageRU" xml:space="preserve">
+    <value>Russian</value>
   </data>
   <data name="EditorMenuShowHideConflictsCommand" xml:space="preserve">
     <value>Show/Hide conflicts</value>
@@ -273,6 +285,9 @@
   <data name="ScheduleControllerRemoveYearOfStudyCommand" xml:space="preserve">
     <value>Remove year of study</value>
   </data>
+  <data name="StatisticPanelCountTableCount" xml:space="preserve">
+    <value>Count</value>
+  </data>
   <data name="StatisticPanelHeaderEveryDayLoad" xml:space="preserve">
     <value>Everyday load</value>
   </data>
@@ -311,6 +326,9 @@
   </data>
   <data name="WeekdaySaturday" xml:space="preserve">
     <value>Saturday</value>
+  </data>
+  <data name="WeekdaysName" xml:space="preserve">
+    <value>Weekdays</value>
   </data>
   <data name="WeekdayThursday" xml:space="preserve">
     <value>Thursday</value>

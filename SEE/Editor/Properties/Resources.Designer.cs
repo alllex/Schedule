@@ -160,6 +160,15 @@ namespace Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string EditorMenuGroupHeaderSettings {
+            get {
+                return ResourceManager.GetString("EditorMenuGroupHeaderSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Database.
         /// </summary>
         public static string EditorMenuHeaderDatabase {
@@ -174,6 +183,33 @@ namespace Editor.Properties {
         public static string EditorMenuHeaderExcel {
             get {
                 return ResourceManager.GetString("EditorMenuHeaderExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string EditorMenuHeaderLanguage {
+            get {
+                return ResourceManager.GetString("EditorMenuHeaderLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string EditorMenuHeaderLanguageENG {
+            get {
+                return ResourceManager.GetString("EditorMenuHeaderLanguageENG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Russian.
+        /// </summary>
+        public static string EditorMenuHeaderLanguageRU {
+            get {
+                return ResourceManager.GetString("EditorMenuHeaderLanguageRU", resourceCulture);
             }
         }
         
@@ -529,6 +565,15 @@ namespace Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Count.
+        /// </summary>
+        public static string StatisticPanelCountTableCount {
+            get {
+                return ResourceManager.GetString("StatisticPanelCountTableCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Everyday load.
         /// </summary>
         public static string StatisticPanelHeaderEveryDayLoad {
@@ -642,6 +687,15 @@ namespace Editor.Properties {
         public static string WeekdaySaturday {
             get {
                 return ResourceManager.GetString("WeekdaySaturday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weekdays.
+        /// </summary>
+        public static string WeekdaysName {
+            get {
+                return ResourceManager.GetString("WeekdaysName", resourceCulture);
             }
         }
         

@@ -150,11 +150,23 @@
   <data name="EditorMenuGroupHeaderFile" xml:space="preserve">
     <value>Файл</value>
   </data>
+  <data name="EditorMenuGroupHeaderSettings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
   <data name="EditorMenuHeaderDatabase" xml:space="preserve">
     <value>Database</value>
   </data>
   <data name="EditorMenuHeaderExcel" xml:space="preserve">
     <value>Excel</value>
+  </data>
+  <data name="EditorMenuHeaderLanguage" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="EditorMenuHeaderLanguageENG" xml:space="preserve">
+    <value>Английский</value>
+  </data>
+  <data name="EditorMenuHeaderLanguageRU" xml:space="preserve">
+    <value>Русский</value>
   </data>
   <data name="EditorMenuShowHideConflictsCommand" xml:space="preserve">
     <value>Показать/скрыть конфликты</value>
@@ -273,6 +285,9 @@
   <data name="ScheduleControllerRemoveYearOfStudyCommand" xml:space="preserve">
     <value>Удалить курс</value>
   </data>
+  <data name="StatisticPanelCountTableCount" xml:space="preserve">
+    <value>Количество</value>
+  </data>
   <data name="StatisticPanelHeaderEveryDayLoad" xml:space="preserve">
     <value>Ежедневная нагрузка</value>
   </data>
@@ -311,6 +326,9 @@
   </data>
   <data name="WeekdaySaturday" xml:space="preserve">
     <value>Суббота</value>
+  </data>
+  <data name="WeekdaysName" xml:space="preserve">
+    <value>Учебный день</value>
   </data>
   <data name="WeekdayThursday" xml:space="preserve">
     <value>Четверг</value>

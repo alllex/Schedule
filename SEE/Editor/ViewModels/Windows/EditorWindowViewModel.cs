@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -135,9 +136,23 @@ namespace Editor.ViewModels.Windows
         public ICommand ExportToDatabaseCommand { get { return new DelegateCommand(OnExportToDatabase, CanExecuteHasActiveProject); } }
         public ICommand ImportFromDatabaseCommand { get { return new DelegateCommand(OnImportFromDatabase); } }
 
+
+        public ICommand ChangeLangEngCommand { get { return new DelegateCommand(OnChangeLangEng); } }
+        public ICommand ChangeLangRuCommand { get { return new DelegateCommand(OnChangeLangRu); } }
+
         #endregion
 
         #region Command Handlers
+
+        private void OnChangeLangEng()
+        {
+            App.ChangeCulture(new CultureInfo("en-US"));
+        }
+
+        private void OnChangeLangRu()
+        {
+            App.ChangeCulture(new CultureInfo("ru-RU"));
+        }
 
         private void OnImportFromDatabase()
         {
