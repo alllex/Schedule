@@ -88,6 +88,15 @@ namespace Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Conflicts.
+        /// </summary>
+        public static string EditorConflictsPanelHeader {
+            get {
+                return ResourceManager.GetString("EditorConflictsPanelHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
         public static string EditorExport {
@@ -111,6 +120,87 @@ namespace Editor.Properties {
         public static string EditorLoadRandomDataCommand {
             get {
                 return ResourceManager.GetString("EditorLoadRandomDataCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run search.
+        /// </summary>
+        public static string EditorMenuConflictRun {
+            get {
+                return ResourceManager.GetString("EditorMenuConflictRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conflict searching.
+        /// </summary>
+        public static string EditorMenuConflictSearching {
+            get {
+                return ResourceManager.GetString("EditorMenuConflictSearching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string EditorMenuEdit {
+            get {
+                return ResourceManager.GetString("EditorMenuEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        public static string EditorMenuGroupHeaderFile {
+            get {
+                return ResourceManager.GetString("EditorMenuGroupHeaderFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database.
+        /// </summary>
+        public static string EditorMenuHeaderDatabase {
+            get {
+                return ResourceManager.GetString("EditorMenuHeaderDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excel.
+        /// </summary>
+        public static string EditorMenuHeaderExcel {
+            get {
+                return ResourceManager.GetString("EditorMenuHeaderExcel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show/Hide conflicts.
+        /// </summary>
+        public static string EditorMenuShowHideConflictsCommand {
+            get {
+                return ResourceManager.GetString("EditorMenuShowHideConflictsCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Statistics.
+        /// </summary>
+        public static string EditorMenuStatistics {
+            get {
+                return ResourceManager.GetString("EditorMenuStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get statistics data.
+        /// </summary>
+        public static string EditorMenuStatisticsGetStatistic {
+            get {
+                return ResourceManager.GetString("EditorMenuStatisticsGetStatistic", resourceCulture);
             }
         }
         
@@ -142,6 +232,24 @@ namespace Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new group.
+        /// </summary>
+        public static string HeaderAddGroup {
+            get {
+                return ResourceManager.GetString("HeaderAddGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new specialization.
+        /// </summary>
+        public static string HeaderAddSpecialization {
+            get {
+                return ResourceManager.GetString("HeaderAddSpecialization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy.
         /// </summary>
         public static string HeaderCopyClassCommand {
@@ -169,6 +277,24 @@ namespace Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete group.
+        /// </summary>
+        public static string HeaderDeleteGroup {
+            get {
+                return ResourceManager.GetString("HeaderDeleteGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete specialization.
+        /// </summary>
+        public static string HeaderDeleteSpecialization {
+            get {
+                return ResourceManager.GetString("HeaderDeleteSpecialization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string HeaderEditClassCommand {
@@ -183,6 +309,24 @@ namespace Editor.Properties {
         public static string HeaderPasteClassCommand {
             get {
                 return ResourceManager.GetString("HeaderPasteClassCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename group.
+        /// </summary>
+        public static string HeaderRenameGroupCommand {
+            get {
+                return ResourceManager.GetString("HeaderRenameGroupCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rename specialization.
+        /// </summary>
+        public static string HeaderRenameSpecialization {
+            get {
+                return ResourceManager.GetString("HeaderRenameSpecialization", resourceCulture);
             }
         }
         

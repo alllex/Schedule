@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:cards="clr-namespace:Editor.ViewModels.Cards"
+             xmlns:p="clr-namespace:Editor.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance cards:SpecializationCardViewModel}"
@@ -12,14 +13,14 @@
 
     <UserControl.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Добавить группу" 
+            <MenuItem Header="{x:Static p:Resources.HeaderAddGroup}"
                       Command="{Binding Project.ScheduleController.AddGroupCommand}" 
                       CommandParameter="{Binding Specialization}"/>
             <Separator />
-            <MenuItem Header="Переименовать группу"
+            <MenuItem Header="{x:Static p:Resources.HeaderRenameGroupCommand}"
                       Click="MenuItemRename_OnClick"
                       />
-            <MenuItem Header="Удалить специальность"
+            <MenuItem Header="{x:Static p:Resources.HeaderDeleteSpecialization}"
                       Command="{Binding Project.ScheduleController.RemoveSpecializationCommand}"
                       CommandParameter="{Binding Specialization}"/>
         </ContextMenu>

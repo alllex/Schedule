@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:windows="clr-namespace:Editor.ViewModels.Windows"
         xmlns:p="clr-namespace:Editor.Properties"
+        xmlns:p2="clr-namespace:ScheduleData.Properties;assembly=ScheduleData"
         mc:Ignorable="d"
         Title="{x:Static p:Resources.WindowTitleEditor}"
         Height="700" Width="1000"
@@ -20,7 +21,7 @@
         <Menu Height="20"
               DockPanel.Dock="Top"
               KeyboardNavigation.TabNavigation="None">
-            <MenuItem Header="Файл">
+            <MenuItem Header="{x:Static p:Resources.EditorMenuGroupHeaderFile}">
                 <MenuItem Header="{x:Static p:Resources.EditorNewProjectCommand}"
                           Command="{Binding NewProjectCommand}"/>
                 <Separator />
@@ -33,68 +34,68 @@
                           Command="{Binding OpenProjectCommand}"/>
                 <Separator />
                 <MenuItem Header="{x:Static p:Resources.EditorExport}">
-                    <MenuItem Header="Excel (.xlsx)"
+                    <MenuItem Header="{x:Static p:Resources.EditorMenuHeaderExcel}"
                           Command="{Binding ExportToExcelCommand}"/>
-                    <MenuItem Header="Database (.db)"
+                    <MenuItem Header="{x:Static p:Resources.EditorMenuHeaderDatabase}"
                           Command="{Binding ExportToDatabaseCommand}"/>
                 </MenuItem>
                 <MenuItem Header="{x:Static p:Resources.EditorImport}">
-                    <MenuItem Header="Excel (.xlsx)"
+                    <MenuItem Header="{x:Static p:Resources.EditorMenuHeaderExcel}"
                               Command="{Binding ImportFromExcelCommand}"/>
-                    <MenuItem Header="Database (.db)"
+                    <MenuItem Header="{x:Static p:Resources.EditorMenuHeaderDatabase}"
                           Command="{Binding ImportFromDatabaseCommand}"/>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Правка">
-                <MenuItem Header="Группы"
+            <MenuItem Header="{x:Static p:Resources.EditorMenuEdit}">
+                <MenuItem Header="{x:Static p:Resources.TabItemHeaderGroups}"
                           Command="{Binding OpenGroupsEditorCommand}"
                           />
-                <MenuItem Header="Преподаватели"
+                <MenuItem Header="{x:Static p:Resources.TabItemHeaderLecturers}"
                           Command="{Binding OpenLecturersEditorCommand}"
                           />
-                <MenuItem Header="Аудитории"
+                <MenuItem Header="{x:Static p:Resources.TabItemHeaderClassrooms}"
                           Command="{Binding OpenClassroomsEditorCommand}"
                           />
-                <MenuItem Header="Специальности"
+                <MenuItem Header="{x:Static p:Resources.TabItemHeaderSpecializations}"
                           Command="{Binding OpenSpecializationsEditorCommand}"
                           />
-                <MenuItem Header="Курсы"
+                <MenuItem Header="{x:Static p:Resources.TabItemHeaderYearsOfStudy}"
                           Command="{Binding OpenYearsOfStudyEditorCommand}"
                           />
             </MenuItem>
-            <MenuItem Header="Статистика">
-                <MenuItem Header="Получить стат. данные"
+            <MenuItem Header="{x:Static p:Resources.EditorMenuStatistics}">
+                <MenuItem Header="{x:Static p:Resources.EditorMenuStatisticsGetStatistic}"
                           Command="{Binding CalcStatisticCommand}"/>
 <!--                <MenuItem Header="Открыть окно статистики"-->
 <!--                          Command="{Binding OpenStatisticWindowCommand}"/>-->
             </MenuItem>
 
-            <MenuItem Header="Проверка расписания">
-                <MenuItem Header="Выполнить проверку">
-                    <MenuItem Header="Все проверки"
+            <MenuItem Header="{x:Static p:Resources.EditorMenuConflictSearching}">
+                <MenuItem Header="{x:Static p:Resources.EditorMenuConflictRun}">
+                    <MenuItem Header="{x:Static p2:Resources.ConflictCriteriaAll}"
                         Command="{Binding CheckAllConflictsCommand}"/>
-                    <MenuItem Header="Карточки, с незаполненными полями"
+                    <MenuItem Header="{x:Static p2:Resources.ConflictCriteriaCardsWithBlankFields}"
                         Command="{Binding CheckConflictCardsWithBlankFieldsCommand}"/>
-                    <MenuItem Header="Больше 4х пар в день"
+                    <MenuItem Header="{x:Static p2:Resources.ConflictCriteriaMoreThanFourClassesPerDay}"
                         Command="{Binding CheckConflictGreaterThanFourClassesPerDayCommand}"/>
-                    <MenuItem Header="Группа одновременно на разных занятиях"
+                    <MenuItem Header="{x:Static p2:Resources.ConflictCriteriaGroupsInDifferentClassrooms}"
                         Command="{Binding CheckConflictGroupsInDifferentClassroomsCommand}"/>
-                    <MenuItem Header="Преподаватель одновременно в разных кабинетах"
+                    <MenuItem Header="{x:Static p2:Resources.ConflictCriteriaLecturersInDifferentClassrooms}"
                         Command="{Binding CheckConflictLecturersInDifferentClassroomsCommand}"/>
-                    <MenuItem Header="Преподаватель одновременно ведет различные занятия"
+                    <MenuItem Header="{x:Static p2:Resources.ConflictCriteriaLecturersOnDifferentClasses}"
                         Command="{Binding CheckConflictLecturersOnDifferentClassesCommand}"/>
-                    <MenuItem Header="Соседние пары по разным адресам"
+                    <MenuItem Header="{x:Static p2:Resources.ConflictCriteriaNextClassesAtDifferentAddress}"
                         Command="{Binding CheckConflictNextClassesAtDifferentAddressCommand}"/>
                 </MenuItem>
-                
-                <MenuItem Header="Показать/Скрыть конфликты"
+
+                <MenuItem Header="{x:Static p:Resources.EditorMenuShowHideConflictsCommand}"
                           Command="{Binding ShowHideConflictsCommand}"/>
             </MenuItem>
         </Menu>
         
         <Expander DockPanel.Dock="Right"
                   ExpandDirection="Left"
-                  Header="Конфликты"
+                  Header="{x:Static p:Resources.EditorConflictsPanelHeader}"
                   IsExpanded="False">
             <controls:ConflictsViewer x:Name="ConflictsViewer"/>
         </Expander>
@@ -135,11 +136,11 @@
                         <Setter Property="Height" Value="30" />
                     </Style>
                 </StackPanel.Resources>
-                <Button Content="Новый проект"
+                <Button Content="{x:Static p:Resources.EditorNewProjectCommand}"
                         Command="{Binding NewProjectCommand}"/>
-                <Button Content="Случайное расписание"
+                <Button Content="{x:Static p:Resources.EditorLoadRandomDataCommand}"
                         Command="{Binding LoadRandomScheduleCommand}"/>
-                <Button Content="Открыть"
+                <Button Content="{x:Static p:Resources.EditorOpenCommand}"
                         Command="{Binding OpenProjectCommand}"/>
             </StackPanel>
         </Grid>

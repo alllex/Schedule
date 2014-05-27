@@ -148,7 +148,7 @@
     <value>Edit</value>
   </data>
   <data name="EditorMenuGroupHeaderFile" xml:space="preserve">
-    <value>File</value>
+    <value>_File</value>
   </data>
   <data name="EditorMenuHeaderDatabase" xml:space="preserve">
     <value>Database</value>
